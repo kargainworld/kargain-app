@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Path, StaticGoogleMap } from 'react-static-google-map';
-import { makeStyles } from '@material-ui/styles';
-import config from '../config/config';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Marker, Path, StaticGoogleMap } from 'react-static-google-map'
+import { makeStyles } from '@material-ui/styles'
+import config from '../config/config'
 
 const useStyles = makeStyles(theme => ({
     test: {
@@ -27,13 +27,13 @@ const useStyles = makeStyles(theme => ({
         }
     }
     )
-}));
+}))
 
 const GoogleMapStatic = ({ zoom, width, height, markers, drawPath }) => {
     const classes = useStyles({
         width,
         height
-    });
+    })
 
     return (
         <div className={classes.root}>
@@ -46,8 +46,8 @@ const GoogleMapStatic = ({ zoom, width, height, markers, drawPath }) => {
                 {drawPath && <Path points={markers}/>}
             </StaticGoogleMap>
         </div>
-    );
-};
+    )
+}
 
 GoogleMapStatic.propTypes = {
     markers: PropTypes.arrayOf(PropTypes.string),
@@ -55,12 +55,12 @@ GoogleMapStatic.propTypes = {
     zoom: PropTypes.number,
     width: PropTypes.number,
     height: PropTypes.number
-};
+}
 
 GoogleMapStatic.defaultProps = {
     markers: [],
     width: 600,
     height: 600,
     zoom: 9
-};
-export default GoogleMapStatic;
+}
+export default GoogleMapStatic

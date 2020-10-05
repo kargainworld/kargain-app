@@ -70,7 +70,7 @@ const ProtectedRouter = ({ children, pageProps }) => {
     const isAdminRoute = router.route.split('/').includes('admin')
     const { isAuthReady, forceLoginModal, isAuthenticated, isAuthenticatedUserAdmin } = useAuth()
     const showLoginModal = (requiredAuth && !isAuthenticated) || forceLoginModal
-    const { searchStateContext }  = useContext(SearchContext)
+    const { searchStateContext } = useContext(SearchContext)
     const { modalStateContext } = useContext(ModalContext)
     
     if (isAdminRoute) {
