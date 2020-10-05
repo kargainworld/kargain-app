@@ -83,7 +83,7 @@ const ModalSearchResults = () => {
                             <div className={classes.wrapperLeft}>
                                 {loading && <Loading/>}
                                 <Typography variant="h3">
-                                    Membres ({results?.users?.length})
+                                    {t('layout:members')} ({results?.users?.length})
                                 </Typography>
                                 <div className={classes.listRows}>
                                     {results?.users?.length !== 0 ? results.users.map((userRaw, index) => {
@@ -108,7 +108,7 @@ const ModalSearchResults = () => {
                         </Col>
                         <Col sm={12} md={7}>
                             <Typography variant="h3">
-                                Announces ({results?.announces?.length})
+                                {t('layout:announces')} ({results?.announces?.length})
                             </Typography>
                             <div className={classes.listRows}>
                                 {loading && <Loading/>}
