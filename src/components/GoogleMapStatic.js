@@ -37,7 +37,7 @@ const GoogleMapStatic = ({ zoom, width, height, markers, drawPath }) => {
 
     return (
         <div className={classes.root}>
-            <StaticGoogleMap apiKey={config.google.STATIC_API_KEY}
+            <StaticGoogleMap apiKey={config.google.static.STATIC_API_KEY}
                 zoom={zoom}
                 size={`${width}x${height}`}>
                 <Marker.Group label="T" color="blue">
