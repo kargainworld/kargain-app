@@ -11,7 +11,8 @@ const defaultContext = {
     isAuthenticated: false,
     isAuthenticatedUserAdmin: false,
     forceLoginModal: false,
-    avoidCloseLoginModal: false
+    avoidCloseLoginModal: false,
+    initializeAuth : () => {}
 }
 
 const AuthContext = createContext(defaultContext)
@@ -62,11 +63,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             dispatchModalError({err})
         }
-    };
-    
-    useEffect(() => {
-        initializeAuth();
-    }, []);
+    }
 
     return (
         <AuthContext.Provider value={{
