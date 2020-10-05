@@ -37,7 +37,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         height: '90vh',
         margin: 'auto',
-        zIndex: 5
+        zIndex: 5,
+
+        [theme.breakpoints.up('sm')]: {
+            width: '90vh',
+            maxWidth : '1500px',
+            flexShrink: 0
+        }
     },
 
     list: {
