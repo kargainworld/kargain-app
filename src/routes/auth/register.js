@@ -26,129 +26,129 @@ const RegisterPage = () => {
     const router = useRouter()
 
     const onSubmit = (form) => {
-        // eslint-disable-next-line unused-imports/no-unused-vars
-        const { confirm, confirmPwd, ...data } = form
-        AuthService.register(data)
-            .then(() => {
-                router.push('/auth/login')
+	// eslint-disable-next-line unused-imports/no-unused-vars
+	const { confirm, confirmPwd, ...data } = form
+	AuthService.register(data)
+	    .then(() => {
+		router.push('/auth/login')
 
-                dispatchModal({
-                    persist: true,
-                    msg: t('layout:account_created')
-                })
-            }).catch(err => {
-                dispatchModalError({ err })
-            }
-            )
+		dispatchModal({
+		    persist: true,
+		    msg: t('layout:account_created')
+		})
+	    }).catch(err => {
+		dispatchModalError({ err })
+	    }
+	    )
     }
 
     return (
-        <Container>
-            <h1>{t('vehicles:register')}</h1>
-            <Row>
-                <Col className="m-auto" sm="12" md="10">
-                    <SSOProviders/>
+	<Container>
+	    <h1>{t('vehicles:register')}</h1>
+	    <Row>
+		<Col className="m-auto" sm="12" md="10">
+		   // <SSOProviders/>
 
-                    <div className="mx-auto text-center">
-                        <CTALink
-                            title={t('vehicles:register-pro')}
-                            href="/auth/register-pro"
-                        />
-                    </div>
+		   // <div className="mx-auto text-center">
+		   //     <CTALink
+		   //         title={t('vehicles:register-pro')}
+		   //         href="/auth/register-pro"
+		   //     />
+		   // </div>
 
-                    <form className="p-3 mx-auto"
-                        onSubmit={handleSubmit(onSubmit)}
-                        style={{
-                            borderRadius: '5px',
-                            maxWidth: '500px'
-                        }}>
-                        <FieldWrapper label={t('vehicles:firstname')}>
-                            <TextInput
-                                name="firstname"
-                                errors={errors}
-                                control={control}
-                                rules={{ required: t('form_validations:required')}}
-                            />
-                        </FieldWrapper>
+		    <form className="p-3 mx-auto"
+			onSubmit={handleSubmit(onSubmit)}
+			style={{
+			    borderRadius: '5px',
+			    maxWidth: '500px'
+			}}>
+			<FieldWrapper label={t('vehicles:firstname')}>
+			    <TextInput
+				name="firstname"
+				errors={errors}
+				control={control}
+				rules={{ required: t('form_validations:required')}}
+			    />
+			</FieldWrapper>
 
-                        <FieldWrapper label={t('vehicles:lastname')}>
-                            <TextInput
-                                name="lastname"
-                                errors={errors}
-                                control={control}
-                                rules={{ required: t('form_validations:required')}}
-                            />
-                        </FieldWrapper>
+			<FieldWrapper label={t('vehicles:lastname')}>
+			    <TextInput
+				name="lastname"
+				errors={errors}
+				control={control}
+				rules={{ required: t('form_validations:required')}}
+			    />
+			</FieldWrapper>
 
-                        <FieldWrapper label="Email" required>
-                            <EmailInput
-                                name="email"
-                                errors={errors}
-                                control={control}
-                                rules={{ required: t('form_validations:required')}}
-                            />
-                        </FieldWrapper>
+			<FieldWrapper label="Email" required>
+			    <EmailInput
+				name="email"
+				errors={errors}
+				control={control}
+				rules={{ required: t('form_validations:required')}}
+			    />
+			</FieldWrapper>
 
-                        <FieldWrapper label={t('vehicles:password')}>
-                            <PasswordInput
-                                name="password"
-                                errors={errors}
-                                control={control}
-                                rules={{
-                                    required: t('form_validations:required'),
-                                    pattern: {
-                                        value : /^(?=.*\d).{4,16}$/,
-                                        message : t('form_validations:regexPwd{min}{max}',{
-                                            min : 4, max : 16
-                                        })
-                                    }}
-                                }
-                            />
-                        </FieldWrapper>
+			<FieldWrapper label={t('vehicles:password')}>
+			    <PasswordInput
+				name="password"
+				errors={errors}
+				control={control}
+				rules={{
+				    required: t('form_validations:required'),
+				    pattern: {
+					value : /^(?=.*\d).{4,16}$/,
+					message : t('form_validations:regexPwd{min}{max}',{
+					    min : 4, max : 16
+					})
+				    }}
+				}
+			    />
+			</FieldWrapper>
 
-                        <FieldWrapper label={t('vehicles:password_confirm')}>
-                            <PasswordInput
-                                name="confirmPwd"
-                                errors={errors}
-                                control={control}
-                                rules={{
-                                    required: t('form_validations:required'),
-                                    pattern: {
-                                        value : /^(?=.*\d).{4,16}$/,
-                                        message : t('form_validations:regexPwd{min}{max}',{
-                                            min : 4, max : 16
-                                        })
-                                    },
-                                    validate: {
-                                        matchesPreviousPassword: (value) => {
-                                            const { password } = getValues()
-                                            return password === value || t('form_validations:form_validations')
-                                        }
-                                    }
-                                }}
-                            />
-                        </FieldWrapper>
+			<FieldWrapper label={t('vehicles:password_confirm')}>
+			    <PasswordInput
+				name="confirmPwd"
+				errors={errors}
+				control={control}
+				rules={{
+				    required: t('form_validations:required'),
+				    pattern: {
+					value : /^(?=.*\d).{4,16}$/,
+					message : t('form_validations:regexPwd{min}{max}',{
+					    min : 4, max : 16
+					})
+				    },
+				    validate: {
+					matchesPreviousPassword: (value) => {
+					    const { password } = getValues()
+					    return password === value || t('form_validations:form_validations')
+					}
+				    }
+				}}
+			    />
+			</FieldWrapper>
 
-                        <FieldWrapper>
-                            <CheckBoxInput
-                                name="confirm"
-                                label={t('vehicles:accept-cgu')}
-                                errors={errors}
-                                control={control}
-                                rules={{ required: t('form_validations:required') }}
-                            />
-                        </FieldWrapper>
+			<FieldWrapper>
+			    <CheckBoxInput
+				name="confirm"
+				label={t('vehicles:accept-cgu')}
+				errors={errors}
+				control={control}
+				rules={{ required: t('form_validations:required') }}
+			    />
+			</FieldWrapper>
 
-                        <div className="submit">
-                            <CTAButton
-                                title={t('vehicles:register')}
-                                submit
-                            />
-                        </div>
-                    </form>
-                </Col>
-            </Row>
-        </Container>
+			<div className="submit">
+			    <CTAButton
+				title={t('vehicles:register')}
+				submit
+			    />
+			</div>
+		    </form>
+		</Col>
+	    </Row>
+	</Container>
     )
 }
 
