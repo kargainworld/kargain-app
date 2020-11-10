@@ -47,14 +47,7 @@ const RegisterPage = () => {
 	    <h1>{t('vehicles:register')}</h1>
 	    <Row>
 		<Col className="m-auto" sm="12" md="10">
-		    <SSOProviders/>
 
-		    <div className="mx-auto text-center">
-			<CTALink
-			    title={t('vehicles:register-pro')}
-			    href="/auth/register-pro"
-			/>
-		    </div>
 
 		    <form className="p-3 mx-auto"
 			onSubmit={handleSubmit(onSubmit)}
