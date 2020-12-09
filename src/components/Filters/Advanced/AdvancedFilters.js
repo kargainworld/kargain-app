@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import clsx from 'clsx'
+import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import makeStyles from '@material-ui/core/styles/makeStyles'
