@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../services/AuthService'
 import UserModel from '../models/user.model'
@@ -64,6 +64,10 @@ export const AuthProvider = ({ children }) => {
             dispatchModalError({err})
         }
     }
+
+    useEffect(() => {
+        initializeAuth()
+    }, [])
 
     return (
         <AuthContext.Provider value={{

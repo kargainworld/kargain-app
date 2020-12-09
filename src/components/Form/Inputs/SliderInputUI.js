@@ -40,18 +40,15 @@ const ValueLabelComponent = ({ suffix, ...innerProps }) => {
     const { children, open, value } = innerProps
     const title = suffix ? `${value} ${suffix}` : value
 
-    if(value){
-        return (
-            <Tooltip
-                open={open}
-                enterTouchDelay={0}
-                placement="top"
-                title={title}>
-                {children}
-            </Tooltip>
-        )
-    }
-    return null
+    return (
+        <Tooltip
+            open={open}
+            enterTouchDelay={0}
+            placement="top"
+            title={title}>
+            {children}
+        </Tooltip>
+    )
 }
 
 ValueLabelComponent.propTypes = {
@@ -80,7 +77,7 @@ const RangeSlider = ({ name, rules, control, errors, ...props }) => {
                 margin: '0 auto'
             }}>
                 <CustomSlider
-                    value={value}
+                    value={value <= 0 ? 0 : value}
                     onChange={handleChange}
                     step={props.step}
                     min={props.min}

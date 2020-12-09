@@ -48,7 +48,13 @@ const CommentsList = ({ comments }) => {
 
             <ul className="commentsCardList">
                 {comments && comments.map((comment, index) => {
-                    const isOwn = authenticatedUser.getID === comment.getAuthor.getID
+                    const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
+
+                    if (!comment.getMessage || !comment.getAuthor?.getProfileLink) {
+                        // TODO: new comment doesn't have getAuthor accessor.
+                        // it appears only after full page reload.
+                        return null
+                    }
 
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
@@ -60,10 +66,10 @@ const CommentsList = ({ comments }) => {
                                 </span>
                             )}
 
-                            <Link href={comment.getAuthor.getProfileLink}>
+                            <Link href={comment.getAuthor?.getProfileLink}>
                                 <a>
                                     <Typography as="p" gutterBottom className="mx-1">
-                                        <strong>{comment.getAuthor.getFullName} : </strong>
+                                        <strong>{comment.getAuthor?.getFullName} : </strong>
                                     </Typography>
                                 </a>
                             </Link>

@@ -4,12 +4,9 @@ import clsx from 'clsx'
 import Button from '@material-ui/core/Button'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
-import { cleanObj } from '../../../libs/utils'
 import filterProps from '../../../libs/filterProps'
-import FiltersChanges from '../FiltersChanges'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { useAuth } from '../../../context/AuthProvider'
@@ -47,7 +44,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
     const isMobile = useMediaQuery('(max-width:768px)')
     const { dispatchModalError } = useContext(MessageContext)
     const [hiddenForm, hideForm] = useState(true)
-    const [changes, setChanges] = useState({})
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes)
     const defaultValues = {
@@ -72,9 +68,17 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
 
+    useEffect(() => {
+        setValue('manufacturer.model', null);
+        setValue('year', null);
+    }, [selectedMake]);
+
+    useEffect(() => {
+        setValue('year', null);
+    }, [selectedModel]);
+
     const onSubmit = (form, e) => {
         const { coordinates, radius } = form
-        const changes = cleanObj(form)
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
 
@@ -85,22 +89,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
         }
 
         e.preventDefault()
-        setChanges(changes)
         updateFilters(data)
     }
 
-    const resetValue = (name) => {
-        const defaultValue = defaultValues?.[name]
-        setValue(name, defaultValue)
-        setChanges(changes => {
-            const { [name]: rm, ...rest } = changes
-            return rest
-        })
-    }
-
     const toggleFilters = () => {
-        hideForm(hiddenForm => !hiddenForm)
-    }
+        hideForm((hiddenForm) => !hiddenForm);
+    };
 
     const fetchMakes = useCallback(async () => {
         const cacheKey = `${vehicleType}_makes`
@@ -246,7 +240,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                 })
             )
         }
-    },[vehicleTypeModel])
+    },[vehicleTypeModel, selectedMake?.value, selectedModel?.value])
 
     useEffect(()=>{
         toggleFilters()
@@ -286,8 +280,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                     <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
                 </Typography>
             </div>
-
-            <FiltersChanges {...{changes, resetValue}} />
 
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <ControlButtons/>

@@ -100,7 +100,7 @@ const ActivatedBullet = ({ username, value }) => {
                 </div>
             ) : (
                 <BooleanBullet
-                    bool={value}
+                    bool={activated}
                     onClick={() => {
                         setClicked(true)
                     }}/>
