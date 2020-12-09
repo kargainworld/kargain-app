@@ -19,7 +19,7 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
     const [, , coordinates] = useAddress()
     const isCar = vehicleType === vehicleTypes.car
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
-    const { control, errors, watch } = methods
+    const { control, errors, watch, setValue } = methods
     const countrySelect = watch('countrySelect')
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
@@ -34,6 +34,15 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
     const [formData, setFormData] = useState({
         RadioChoicesGas: []
     })
+
+    useEffect(() => {
+        setValue('manufacturer.model', null)
+        setValue('manufacturer.year', null)
+    }, [selectedMake])
+
+    useEffect(() => {
+        setValue('manufacturer.year', null)
+    }, [selectedModel])
     
     const getData = useCallback(async () => {
         try{
@@ -50,7 +59,6 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
         if(!cache.current[cacheKey]) {
             console.log('fetch makes')
             await VehiclesService.getMakes(vehicleTypeModel)
-                .then(result => new Array(result))
                 .then(makes => {
                     const makesOptions = makes.map(row => {
                         const { _id, make } = row
@@ -100,7 +108,6 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
                 : VehiclesService.getMakeModels
             
             await modelsService(vehicleTypeModel, make)
-                .then(result => new Array(result))
                 .then(models => {
                     let modelsOptions
                     
@@ -149,7 +156,7 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
     },[vehicleType, isCar, selectedMake])
     
     const fetchModelsYears = useCallback(async() => {
-        const make = selectedMake?.value
+        const make = selectedMake?.label
         const model = selectedModel?.value
         const cacheKey = `${vehicleType}_makes_${make}_models_${model}`
         
@@ -157,7 +164,6 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
         if(!cache.current[cacheKey]) {
             console.log('fetch cars models years')
             await VehiclesService.getCarsMakeModelTrimYears(make, model)
-                .then(result => new Array(result))
                 .then(years => {
                     const yearsOptions = years.map(row => {
                         const { _id, year } = row
@@ -193,7 +199,7 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
                 })
             )
         }
-    },[vehicleTypeModel])
+    },[vehicleTypeModel, selectedMake, selectedModel])
     
     useEffect(() => {
         getData()

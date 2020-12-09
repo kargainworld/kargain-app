@@ -117,13 +117,7 @@ const Edit = () => {
             title: t('vehicles:my-profile')
         },
         {
-            title: t('vehicles:subscriptions')
-        },
-        {
             title: t('vehicles:payments-bills')
-        },
-        {
-            title: t('vehicles:notifications')
         },
         {
             title: t('vehicles:confidentiality-security')
@@ -207,7 +201,10 @@ const Edit = () => {
                         color="warning"
                         className={classes.button}
                         startIcon={<DeleteIcon/>}
-                        onClick={() => handleRemove}>
+                        onClick={() => handleRemove}
+                        // TODO: think it possibly not working. check this.
+                        // looks like you need to call handleRemove() here
+                    >
                         {t('vehicles:remove-announce')}
                     </Button>
                 </DialogActions>
@@ -292,29 +289,21 @@ const MultiTabsForm = ({offer, activeTab, formRef, defaultValues, triggerSubmit,
             {errors && <ValidationErrors errors={errors}/>}
             <TabContent activeTab={activeTab}>
                 <TabPane tabId={0}>
-                    <ProfilePartialForm {...{
-                        control,
-                        watch,
-                        errors
-                    }}/>
+                    <ProfilePartialForm
+                        {...{
+                            control,
+                            watch,
+                            errors
+                        }}
+                    />
                 </TabPane>
                 <TabPane tabId={1}>
                     <Typography component="h2" variant="h2" className="text-center" gutterBottom>
-                        {t('vehicles:subscriptions')}
-                    </Typography>
-                </TabPane>
-                <TabPane tabId={2}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
                         {t('vehicles:payments-bills')}
                     </Typography>
-                    <OffersPurchaseForm offer={offer}/>
+                    <OffersPurchaseForm offer={offer} />
                 </TabPane>
-                <TabPane tabId={3}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
-                        {t('vehicles:notifications')}
-                    </Typography>
-                </TabPane>
-                <TabPane tabId={4}>
+                <TabPane tabId={2}>
                     <Typography component="h2" variant="h2" className="text-center" gutterBottom>
                         {t('vehicles:confidentiality-security')}
                     </Typography>
@@ -322,8 +311,9 @@ const MultiTabsForm = ({offer, activeTab, formRef, defaultValues, triggerSubmit,
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<DeleteIcon/>}
-                        onClick={handleOpenDialogRemove}>
+                        startIcon={<DeleteIcon />}
+                        onClick={handleOpenDialogRemove}
+                    >
                         {t('vehicles:remove-profile')}
                     </Button>
                 </TabPane>

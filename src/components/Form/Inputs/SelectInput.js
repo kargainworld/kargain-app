@@ -34,7 +34,7 @@ const customStyles = {
     })
 }
 
-const SelectInput = ({ name, control, rules, errors, ...props }) => {
+const SelectInput = ({ name, control, rules, errors, value, ...props }) => {
     const { options, selected } = props
     let defaultValues = null
     let selectedOptions = selected
@@ -42,7 +42,8 @@ const SelectInput = ({ name, control, rules, errors, ...props }) => {
         if (!Array.isArray(selectedOptions)) selectedOptions = [selectedOptions]
         defaultValues = selectedOptions.reduce((carry, selected) =>
             ([...carry, options.find(option => {
-                if (typeof selected === "object") return option?.value?.toLowerCase() === selected?.value?.toString()?.toLowerCase()
+                if (typeof selected === "object")
+                    return option?.value?.toLowerCase() === selected?.value?.toString()?.toLowerCase()
                 return option?.value?.toLowerCase() === selected?.toString()?.toLowerCase()
             })]), [])
     }
@@ -67,7 +68,8 @@ const SelectInput = ({ name, control, rules, errors, ...props }) => {
                             isMulti={props.isMulti}
                             isDisabled={props.disabled}
                             styles={{ customStyles }}
-                            defaultValue={defaultValues}
+                            defaultValue={typeof value === 'undefined' ? defaultValues : undefined}
+                            value={value || null}
                             placeholder={props.placeholder}
                             components={{ clearValue: ClearIndicator }}
                             forwardProps={{ featured: props.featured }}
