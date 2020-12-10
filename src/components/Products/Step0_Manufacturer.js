@@ -19,7 +19,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
     const { dispatchModalError } = useContext(MessageContext)
     const { formDataContext } = useContext(FormContext)
-    const { watch, control, errors, handleSubmit } = useForm({
+    const { watch, control, errors, handleSubmit, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
@@ -35,6 +35,15 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
     const selectedYear = watch('manufacturer.year')
+
+    useEffect(() => {
+        setValue('manufacturer.model', null)
+        setValue('manufacturer.year', null)
+    }, [selectedMake, setValue])
+
+    useEffect(() => {
+        setValue('manufacturer.year', null)
+    }, [selectedModel, setValue])
 
     const triggerSubmit = () => {
         formRef.current.dispatchEvent(new Event('submit'))
