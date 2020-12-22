@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { FormContext } from '../../context/FormContext'
 import { useAuth } from '../../context/AuthProvider'
 import vehicleTypes from '../../business/vehicleTypes.js'
-import AnnounceTypes from '../../business/announceTypes.js'
+import announceTypes from '../../business/announceTypes.js'
 import ValidationErrors from '../../components/Form/Validations/ValidationErrors'
 
 const path = require('path')
@@ -52,7 +52,7 @@ const Page = () => {
 
                 <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
                 <Row className="justify-content-center">
-                    {vehicleTypes && vehicleTypes.map((tab, index) => {
+                    {vehicleTypes() && vehicleTypes().map((tab, index) => {
                         return (
                             <Col key={index} xs={6} sm={6} md={3} lg={3}>
                                 <div className="form-check form-check-vehicle m-0" style={{ minHeight: '5rem' }}>
@@ -78,7 +78,7 @@ const Page = () => {
 
                 <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
                 <Row className="justify-content-center">
-                    {AnnounceTypes && AnnounceTypes
+                    {announceTypes() && announceTypes()
                         .filter(type => {
                             if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
                             return true

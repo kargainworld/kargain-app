@@ -5,6 +5,7 @@
   "settings" : "settings",
   "create-announce" : "Create an announce",
   "search" : "Search",
+  "advanced-search": "Advanced search",
   "my-profile" : "My profile",
   "logout" : "Logout",
   "login" : "Login",

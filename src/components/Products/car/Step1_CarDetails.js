@@ -37,7 +37,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
@@ -46,7 +46,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -61,6 +61,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioTypeFunction}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -71,6 +72,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioFunctionVehicle}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -107,6 +109,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesGas}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -117,6 +120,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesEngine}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -186,7 +190,6 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
-
                         />
                     </FieldWrapper>
                 </Col>
@@ -200,6 +203,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesEmission}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -215,6 +219,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             placeholder="Select number of doors"
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -226,6 +231,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             placeholder={t('vehicles:select_seats_quantity')}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -239,6 +245,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesPaints}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -250,6 +257,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesMaterials}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -260,6 +268,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesExternalColor}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -270,6 +279,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesExternalColor}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import FieldWrapper from '../Form/FieldWrapper'
+import TextInput from '../Form/Inputs/TextInput'
 import StepNavigation from '../Form/StepNavigation'
 import SelectInput from '../Form/Inputs/SelectInput'
 import { FormContext } from '../../context/FormContext'
@@ -28,12 +29,22 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const [manufacturersData, setManufacturersData] = useState({
         makes: [],
         models: [],
-        generations: [],
+        month: [
+            {
+                label: 'Juilet',
+                value: 'juilet',
+            },
+            {
+                label: 'Juilet',
+                value: 'juilet',
+            }
+        ],
         years: []
     })
 
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
+    const selectedVersion = watch('manufacturer.version');
     const selectedYear = watch('manufacturer.year')
 
     useEffect(() => {
@@ -42,6 +53,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     }, [selectedMake, setValue])
 
     useEffect(() => {
+        setValue('manufacturer.version', null)
         setValue('manufacturer.year', null)
     }, [selectedModel, setValue])
 
@@ -64,7 +76,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
                     const defaultOption = {
                         value: 'other',
-                        label: 'Je ne sais pas/Autre'
+                        label: t(`vehicles:i_dont_know_other`)
                     }
 
                     const data = [...makesOptions, defaultOption]
@@ -121,7 +133,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
                     const defaultOption = {
                         value: 'other',
-                        label: 'Je ne sais pas/Autre'
+                        label: t(`vehicles:i_dont_know_other`)
                     }
 
                     const data = [...modelsOptions, defaultOption]
@@ -169,7 +181,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
                     const defaultOption = {
                         value: 'other',
-                        label: 'Je ne sais pas/Autre'
+                        label: t(`vehicles:i_dont_know_other`)
                     }
 
                     const data = [...yearsOptions, defaultOption]
@@ -232,10 +244,10 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
                 <Col md={4}>
-                    <FieldWrapper label="Marque" labelTop>
+                    <FieldWrapper label={t(`vehicles:make`)} labelTop>
                         <SelectInput
                             name="manufacturer.make"
-                            placeholder="Select a vehicle make"
+                            placeholder={t('vehicles:select')}
                             control={control}
                             errors={errors}
                             options={manufacturersData.makes}
@@ -243,10 +255,10 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                     </FieldWrapper>
                 </Col>
                 <Col md={4}>
-                    <FieldWrapper label="Modele" labelTop>
+                    <FieldWrapper label={t(`vehicles:model`)} labelTop>
                         <SelectInput
                             name="manufacturer.model"
-                            placeholder="Select a motorcycle model"
+                            placeholder={t('vehicles:select')}
                             options={manufacturersData.models}
                             disabled={!watch('manufacturer.make')}
                             control={control}
@@ -256,10 +268,34 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                 </Col>
 
                 <Col md={4}>
+                    <FieldWrapper label="Version" labelTop>
+                        <TextInput
+                            disabled={!watch('manufacturer.model')}
+                            name="manufacturer.version"
+                            control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
+
+                <Col md={4}>
+                    <FieldWrapper label='Mois' labelTop>
+                        <SelectInput
+                            name="manufacturer.month"
+                            placeholder={t('vehicles:select')}
+                            options={manufacturersData.month}
+                            control={control}
+                            errors={errors}
+                            disabled={!watch('manufacturer.model') || !isCar}
+                        />
+                    </FieldWrapper>
+                </Col>
+
+                <Col md={4}>
                     <FieldWrapper label={t('vehicles:year')}>
                         <SelectInput
                             name="manufacturer.year"
-                            placeholder="Select year"
+                            placeholder={t('vehicles:select')}
                             options={manufacturersData.years}
                             control={control}
                             errors={errors}
@@ -268,7 +304,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                     </FieldWrapper>
                 </Col>
             </Row>
-            <button className="btn" onClick={triggerSkipStep}>Passer cette étape</button>
+            <button className="btn" onClick={triggerSkipStep}>{t(`vehicles:skip-step`)}</button>
             <StepNavigation prev={prevStep} submit/>
         </form>
     )

@@ -22,8 +22,12 @@ export const RadioTypeFunction = [
         value: 'snowmobile'
     },
     {
-        label: 'Moto-sport',
-        value: 'moto-sport'
+        label: 'Sportbike',
+        value: 'sportbike'
+    },
+    {
+        label: 'Moto legere',
+        value: 'light-motorcycle'
     },
     {
         label: 'Mini bike',
@@ -34,14 +38,19 @@ export const RadioTypeFunction = [
         value: 'scooter'
     },
     {
-        label: 'Sportive',
-        value: 'sport-bike,'
+        label: 'Motosport',
+        value: 'motosport'
+    },
+    {
+        label: 'Moto Classic',
+        value: 'classic-motorcycle'
     },
     {
         label: 'Autre',
         value: 'other'
     }
 ]
+
 export const RadioChoicesEngine = [
     {
         label: 'Automatique',
