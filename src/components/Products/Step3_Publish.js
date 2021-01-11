@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import NumberInput from '../Form/Inputs/NumberInput'
+import TelInput from  '../Form/Inputs/TelInput'
 import SelectCountryFlags from '../Form/Inputs/SelectCountryFlags'
 import CheckboxMUI from '../Form/Inputs/CheckboxMUI'
 import TextareaInput from '../Form/Inputs/TextareaInput'
@@ -25,9 +26,12 @@ const Step = ({ handleSubmitForm, prevStep }) => {
         defaultValues: {
             ...formDataContext,
             showCellPhone: true,
+            vat: false,
             visible: true
         }
     })
+
+    const vat = watch('vat');
 
     const getFiles = (files) => {
         setValue('images', files)
@@ -84,8 +88,35 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                         />
                     </FieldWrapper>
                 </Col>
+
+                <Col sm={12} md={6} >
+                    <FieldWrapper >
+                        <CheckboxMUI
+                            name="vat"
+                            label={t('vehicles:vat')}
+                            control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
             </Row>
-    
+
+            {vat && 
+                <Row>
+                    <Col sm={12} md={6}>
+                        <FieldWrapper>
+                            <NumberInput
+                                name="priceHTCoefficient"
+                                placeholder="HT"
+                                errors={errors}
+                                control={control}
+                                rules={{
+                                    required: t('form_validations:required')
+                                }}
+                            />
+                        </FieldWrapper>
+                    </Col>
+                </Row>}
             <FieldWrapper label={t('vehicles:description')}>
                 <TextareaInput
                     name="description"
@@ -94,7 +125,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
     
-            <FieldWrapper label="Tags">
+            <FieldWrapper label={t('vehicles:tags')}>
                 <TagsControlled
                     name="tags"
                     control={control}
@@ -102,15 +133,6 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
             
-            <FieldWrapper >
-                <CheckboxMUI
-                    name="showCellPhone"
-                    label={t('vehicles:show-cell-phone')}
-                    control={control}
-                    errors={errors}
-                />
-            </FieldWrapper>
-
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
                     name="countrySelect"
@@ -127,6 +149,18 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     errors={errors}
                     rules={{ required: t('form_validations:required') }}>
                 </SearchLocationInput>
+            </FieldWrapper>
+
+            <FieldWrapper label={t('vehicles:phone')}>
+                <TelInput
+                    name="phone"
+                    errors={errors}
+                    control={control}
+                    rules={{ required: t('form_validations:field-is-required') }}
+                    innerProps={{
+                        country: 'fr'
+                    }}
+                />
             </FieldWrapper>
 
             <Header text={t('vehicles:pictures')}/>

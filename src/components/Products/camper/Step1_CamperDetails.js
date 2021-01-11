@@ -55,23 +55,12 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
-                <Col sm={12} md={6}>
+                <Col>
                     <FieldWrapper label={t('vehicles:type')}>
                         <SelectInput
                             name="vehicleFunctionType"
                             options={formData.RadioTypeFunction}
                             control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
-                </Col>
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:vehicle_function')}>
-                        <SelectInput
-                            name="vehicleFunction"
-                            options={formData.RadioFunctionVehicle}
-                            control={control}
-                            rules={{ required: t('form_validations:field-is-required') }}
                             errors={errors}
                         />
                     </FieldWrapper>
@@ -139,6 +128,19 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                         <NumberInput
                             name="powerCh"
                             control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col sm={12} md={6}>
+                    <FieldWrapper label={t('vehicles:weight')}>
+                        <NumberInput
+                            name="weight"
+                            placeholder="kg"
+                            control={control} 
                             errors={errors}
                         />
                     </FieldWrapper>
@@ -240,7 +242,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                     </FieldWrapper>
                 </Col>
                 <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:beds-quantity')}>
+                    <FieldWrapper label={t('vehicles:beds-type')}>
                         <SelectInput
                             name="bedType"
                             className="mb-2"

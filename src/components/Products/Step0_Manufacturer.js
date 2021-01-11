@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
+import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import FieldWrapper from '../Form/FieldWrapper'
@@ -13,7 +14,7 @@ import VehiclesService from '../../services/VehiclesService'
 import { vehicleTypes, vehicleTypeRefModels } from '../../business/vehicleTypes'
 
 const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
-    const { t } = useTranslation()
+    const { t, lang } = useTranslation()
     const cache = useRef({})
     const formRef = useRef(null)
     const isCar = vehicleType === vehicleTypes.car
@@ -29,16 +30,6 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const [manufacturersData, setManufacturersData] = useState({
         makes: [],
         models: [],
-        month: [
-            {
-                label: 'Juilet',
-                value: 'juilet',
-            },
-            {
-                label: 'Juilet',
-                value: 'juilet',
-            }
-        ],
         years: []
     })
 
@@ -46,6 +37,11 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const selectedModel = watch('manufacturer.model')
     const selectedVersion = watch('manufacturer.version');
     const selectedYear = watch('manufacturer.year')
+
+    const getMonths = () => moment.localeData(lang)
+        .months()
+        .map(month => ({value: month, label: month}))
+    
 
     useEffect(() => {
         setValue('manufacturer.model', null)
@@ -268,7 +264,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                 </Col>
 
                 <Col md={4}>
-                    <FieldWrapper label="Version" labelTop>
+                    <FieldWrapper label={t('vehicles:version')} labelTop>
                         <TextInput
                             disabled={!watch('manufacturer.model')}
                             name="manufacturer.version"
@@ -279,11 +275,11 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                 </Col>
 
                 <Col md={4}>
-                    <FieldWrapper label='Mois' labelTop>
+                    <FieldWrapper label={t('vehicles:month')} labelTop>
                         <SelectInput
                             name="manufacturer.month"
                             placeholder={t('vehicles:select')}
-                            options={manufacturersData.month}
+                            options={getMonths()}
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.model') || !isCar}

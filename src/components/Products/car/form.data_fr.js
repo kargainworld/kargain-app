@@ -264,3 +264,22 @@ export const RadioChoicesMaterials = [
         label: 'Autre'
     }
 ]
+
+export const RadioChoicesDefective = [
+    {
+        value: 'service-book',
+        label: "Carnet d'entretien"
+    },
+    {
+        value: 'guarantee',
+        label: "Garantie"
+    },
+    {
+        value: 'non-smoker',
+        label: "Non-fumeur"
+    },
+    {
+        value: 'particle-filter',
+        label: "Filtre à particules"
+    }
+]

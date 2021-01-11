@@ -54,7 +54,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
-                <Col sm={12} md={6}>
+                <Col>
                     <FieldWrapper label={t('vehicles:type')}>
                         <SelectInput
                             name="vehicleFunctionType"
@@ -65,17 +65,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                         />
                     </FieldWrapper>
                 </Col>
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:vehicle_function')}>
-                        <SelectInput
-                            name="vehicleFunction"
-                            options={formData.RadioFunctionVehicle}
-                            control={control}
-                            errors={errors}
-                            placeholder={t('vehicles:select')}
-                        />
-                    </FieldWrapper>
-                </Col>
+
             </Row>
 
             <Row>

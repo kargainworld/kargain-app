@@ -232,3 +232,14 @@ export const RadioVehicleGeneralState = SelectOptionsUtils([
     'Véhicule de démonstration',
     'Pré-enregistré'
 ])
+
+export const RadioChoicesDefective = [
+    {
+        value: 'service-book',
+        label: "Carnet d'entretien"
+    },
+    {
+        value: 'guarantee',
+        label: "Garantie"
+    }
+]
