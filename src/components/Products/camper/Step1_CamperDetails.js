@@ -15,15 +15,17 @@ import Header from '../../Header'
 
 const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
     
     const { t, lang } = useTranslation()
-    const { control, errors, handleSubmit } = useForm({
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
     
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
@@ -51,6 +53,14 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     useEffect(() => {
         getData()
     }, [getData])
+
+    const onPowerKwChange = ({ target: { value } }) => {
+        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+    }
+
+    const onPowerChChange = ({ target: { value } }) => {
+        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+    }
 
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
@@ -131,6 +141,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                             name="powerKw"
                             control={control}
                             errors={errors}
+                            onChange={onPowerKwChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -140,6 +151,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                             name="powerCh"
                             control={control}
                             errors={errors}
+                            onChange={onPowerChChange}
                         />
                     </FieldWrapper>
                 </Col>

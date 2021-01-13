@@ -14,13 +14,15 @@ import { vehicleTypes } from '../../../business/vehicleTypes'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-    const { control, errors, getValues, handleSubmit } = useForm({
+    const { control, errors, getValues, handleSubmit, watch } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
     
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],

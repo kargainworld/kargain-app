@@ -17,7 +17,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -31,11 +31,13 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesExternalColor: []
     })
 
-    const { control, errors, handleSubmit } = useForm({
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
 
     const getData = useCallback(async () => {
         try{
@@ -49,6 +51,14 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     useEffect(() => {
         getData()
     }, [getData])
+
+    const onPowerKwChange = ({ target: { value } }) => {
+        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+    }
+
+    const onPowerChChange = ({ target: { value } }) => {
+        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+    }
 
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
@@ -128,6 +138,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerKwChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -138,6 +149,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerChChange}
                         />
                     </FieldWrapper>
                 </Col>

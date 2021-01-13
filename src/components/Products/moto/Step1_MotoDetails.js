@@ -16,12 +16,14 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
-    const { formDataContext } = useContext(FormContext)
-    const { control, errors, handleSubmit } = useForm({
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
     
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
@@ -48,6 +50,14 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     useEffect(() => {
         getData()
     }, [getData])
+
+    const onPowerKwChange = ({ target: { value } }) => {
+        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+    }
+
+    const onPowerChChange = ({ target: { value } }) => {
+        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+    }
     
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
@@ -128,6 +138,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerKwChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -138,6 +149,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerChChange}
                         />
                     </FieldWrapper>
                 </Col>

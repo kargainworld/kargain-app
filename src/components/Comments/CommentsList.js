@@ -13,7 +13,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 
-const CommentsList = ({ comments }) => {
+const CommentsList = ({ comments, moreLink }) => {
     const { authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
@@ -74,9 +74,31 @@ const CommentsList = ({ comments }) => {
                                 </a>
                             </Link>
 
-                            <Typography as="p" gutterBottom>
-                                {comment.getMessage}
-                            </Typography>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    maxWidth: '100%',
+                                    marginBottom: 8
+                                }}
+                            >
+                                <Typography
+                                    as="p"
+                                    gutterBottom
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        maxWidth: '100%',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                        marginRight: 16,
+                                        marginBottom: 0
+                                    }}
+                                >
+                                    {comment.getMessage}
+                                </Typography>
+
+                                {moreLink}
+                            </div>
                         </li>
                     )
                 })}

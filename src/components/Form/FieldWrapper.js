@@ -13,12 +13,13 @@ const useStyles = makeStyles(() => ({
 }))
 
 const FieldWrapper = ({ isRow, children, ...props }) => {
-    const { tooltip, label } = props
-    const { name, rules } = children.props
-    const { required } = rules || {}
     const classes = useStyles()
 
     if(!children) return null
+
+    const { tooltip, label } = props
+    const { name, rules } = children.props
+    const { required } = rules || {}
 
     return (
         <div className={clsx(isRow && 'row align-items-center', 'FieldWrapper m-2')}>

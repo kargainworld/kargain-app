@@ -6,6 +6,7 @@ const BASE_ROUTE = `${config.api}/payments`
 function createPaymentIntent (data) {
     const requestOptions = {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     }

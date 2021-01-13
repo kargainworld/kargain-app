@@ -18,7 +18,9 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const isCar = vehicleType === vehicleTypes.car
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
     const { dispatchModalError } = useContext(MessageContext)
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate,
+        // registerInterceptor
+    } = useContext(FormContext)
     const { watch, control, errors, handleSubmit, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -32,18 +34,31 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
         years: []
     })
 
+    // useEffect(() => {
+    //     registerInterceptor('powerCh', (value) => {
+    //         const convertedValue = (+value * 0.735499).toString()
+    //
+    //         return ({
+    //             powerCh: value,
+    //             powerKw: convertedValue
+    //         })
+    //     })
+    //
+    //     registerInterceptor('powerKw', (value) => {
+    //         const convertedValue = (+value / 0.735499).toString()
+    //
+    //         return ({
+    //             powerCh: convertedValue,
+    //             powerKw: value
+    //         })
+    //     })
+    // }, [])
+
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
     const selectedYear = watch('manufacturer.year')
 
-    useEffect(() => {
-        setValue('manufacturer.model', null)
-        setValue('manufacturer.year', null)
-    }, [selectedMake, setValue])
-
-    useEffect(() => {
-        setValue('manufacturer.year', null)
-    }, [selectedModel, setValue])
+    dispatchFormUpdate(watch(), { compare: true })
 
     const triggerSubmit = () => {
         formRef.current.dispatchEvent(new Event('submit'))
@@ -227,7 +242,20 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
         if(year) triggerSubmit()
     }, [selectedMake, selectedModel, selectedYear])
-    
+
+    const onMakeChange = value => {
+        setValue('manufacturer.model', null)
+        setValue('manufacturer.year', null)
+
+        return value
+    }
+
+    const onModelChange = value => {
+        setValue('manufacturer.year', null)
+
+        return value
+    }
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -239,9 +267,11 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                             control={control}
                             errors={errors}
                             options={manufacturersData.makes}
+                            onChange={onMakeChange}
                         />
                     </FieldWrapper>
                 </Col>
+
                 <Col md={4}>
                     <FieldWrapper label="Modele" labelTop>
                         <SelectInput
@@ -251,6 +281,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                             disabled={!watch('manufacturer.make')}
                             control={control}
                             errors={errors}
+                            onChange={onModelChange}
                         />
                     </FieldWrapper>
                 </Col>

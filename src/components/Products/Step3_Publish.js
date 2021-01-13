@@ -18,7 +18,7 @@ import Header from '../Header'
 const Step = ({ handleSubmitForm, prevStep }) => {
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { watch, control, errors, setValue, register, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -28,6 +28,8 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             visible: true
         }
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
 
     const getFiles = (files) => {
         setValue('images', files)
@@ -43,6 +45,8 @@ const Step = ({ handleSubmitForm, prevStep }) => {
     useEffect(() => {
         register({ name: 'images' })
     }, [])
+
+    const initialImagesRef = React.useRef(formDataContext.images)
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
@@ -131,6 +135,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
 
             <Header text={t('vehicles:pictures')}/>
             <UploadDropZone
+                initialFiles={initialImagesRef.current}
                 maxFiles={15}
                 getFiles={getFiles}
                 hideSubmit
