@@ -8,12 +8,15 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import AlertTriangle from '@geist-ui/react-icons/alertTriangle'
+
 
 import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 
 const CommentsList = ({ comments, moreLink }) => {
+    const [deletedComments, setDeletedComments] = useState([])
     const { authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
@@ -38,6 +41,19 @@ const CommentsList = ({ comments, moreLink }) => {
             })
     }
 
+    const complain = async (id) => {
+        try {
+            await CommentsService.complainToComment(id)
+
+            dispatchModal({ msg: 'Complaint added' })
+        } catch (err) {
+            setDeletedComments([...deletedComments, id])
+            dispatchModal({ msg: 'Comment already deleted' })
+        }
+    }
+
+    const filterComments = (CommentModel) => !deletedComments.includes(CommentModel.getID)
+
     return (
         <div className="comments">
             <ModalConfirmRemoveComment
@@ -47,7 +63,7 @@ const CommentsList = ({ comments, moreLink }) => {
             />
 
             <ul className="commentsCardList">
-                {comments && comments.map((comment, index) => {
+                {comments && comments.filter(filterComments).map((comment, index) => {
                     const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
 
                     if (!comment.getMessage || !comment.getAuthor?.getProfileLink) {
@@ -58,6 +74,10 @@ const CommentsList = ({ comments, moreLink }) => {
 
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
+                            {!isOwn && (
+                                <AlertTriangle onClick={() => complain(comment.getID)} />
+                            )}
+
                             {isOwn && (
                                 <span
                                     className="mx-1 top-profile-location edit"
