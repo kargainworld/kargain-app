@@ -2,12 +2,16 @@ import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 
 export const RadioTypeFunction = [
     {
+        label: 'Mobile home',
+        value: 'mobile-home'
+    },
+    {
         label: 'Intégrale',
         value: 'full'
     },
     {
-        label: 'Mobile home',
-        value: 'mobile-home'
+        label: 'Motor home',
+        value: 'motor-home'
     },
     {
         label: 'Caravane',
@@ -259,5 +263,20 @@ export const RadioChoicesPaints = [
     {
         value: 'autre',
         label: 'Autre'
+    }
+]
+
+export const RadioChoicesDefective = [
+    {
+        value: 'service-book',
+        label: "Carnet d'entretien"
+    },
+    {
+        value: 'guarantee',
+        label: "Garantie"
+    },
+    {
+        value: 'non-smoker',
+        label: "Non-fumeur"
     }
 ]

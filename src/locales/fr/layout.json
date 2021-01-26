@@ -5,6 +5,7 @@
   "settings" : "Préférences",
   "create-announce" : "Ajouter une annonce",
   "search" : "Rechercher",
+  "advanced-search": "Recherche avancée",
   "my-profile" : "Mon profil",
   "logout" : "Déconnexion",
   "login" : "Se connecter",

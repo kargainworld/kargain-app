@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Alert from '@material-ui/lab/Alert'
 import filterProps from '../../../libs/filterProps'
 import vehicleTypes from '../../../business/vehicleTypes.js'
-import AnnounceTypes from '../../../business/announceTypes.js'
+import announceTypes from '../../../business/announceTypes.js'
 import { useAuth } from '../../../context/AuthProvider'
 import HomeFiltersForm from './HomeFiltersForm'
 import CTAButton from '../../CTAButton'
@@ -46,7 +46,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
-    const [vehicleType, setVehicleType] = useState(vehicleTypes[0].value)
+    const [vehicleType, setVehicleType] = useState(vehicleTypes()[0].value)
     const methods = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -75,7 +75,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     return(
         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
             <Row className="justify-content-center">
-                {vehicleTypes && vehicleTypes.map((tab, index) => {
+                {vehicleTypes() && vehicleTypes().map((tab, index) => {
                     const isActive = vehicleType === tab.value
                     return (
                         <Col key={index} xs={6} sm={3} md={3} lg={3}>
@@ -96,7 +96,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             </Row>
 
             <Row className="justify-content-center">
-                {AnnounceTypes && AnnounceTypes
+                {announceTypes() && announceTypes()
                     .filter(type => {
                         if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
                         return true
@@ -137,7 +137,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
 
             <Row style={{width: "fitContent", margin: "0 auto", justifyContent : "center" }}>
                 <div className="submit mx-2">
-                    <CTALink href="/advanced-search" title="Recherche avancée"/>
+                    <CTALink href="/advanced-search" title={t('layout:advanced-search')}/>
                 </div>
 
                 <div className="submit mx-2">

@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation';
+
 export const vehicleTypeRefModels = {
     car : "cars",
     moto : "motorcycles",
@@ -12,30 +14,36 @@ export const vehicleTypes = {
     camper : "camper"
 }
 
-export default [
-    {
-        "value": "car",
-        "label": "Voiture",
-        "img": "tab-car.png",
-        "imgSelected": "tab-car-blue.png"
-    },
-    {
-        "value": "moto",
-        "label": "Moto",
-        "img": "tab-moto.png",
-        "imgSelected": "tab-moto-blue.png"
-    },
-    {
-        "value": "utility",
-        "label": "Utilitaire",
-        "img": "tab-gruz.png",
-        "imgSelected": "tab-gruz-blue.png"
+export default () => {
+    const { t } = useTranslation();
 
-    },
-    {
-        "value": "camper",
-        "label": "Camping car",
-        "img": "tab-camper.png",
-        "imgSelected": "tab-camper-blue.png"
-    }
-]
+    return [
+        {
+            "value": "car",
+            "label": t('vehicles:car'),
+            "img": "tab-car.png",
+            "imgSelected": "tab-car-blue.png"
+        },
+        {
+            "value": "moto",
+            "label": t('vehicles:moto'),
+            "img": "tab-moto.png",
+            "imgSelected": "tab-moto-blue.png"
+        },
+        {
+            "value": "utility",
+            "label": t('vehicles:utility'),
+            "img": "tab-gruz.png",
+            "imgSelected": "tab-gruz-blue.png"
+    
+        },
+        {
+            "value": "camper",
+            "label": t('vehicles:camper'),
+            "img": "tab-camper.png",
+            "imgSelected": "tab-camper-blue.png"
+        }
+    ]
+}
+
+
