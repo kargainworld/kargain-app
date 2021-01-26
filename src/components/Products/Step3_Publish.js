@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import NumberInput from '../Form/Inputs/NumberInput'
+import TelInput from  '../Form/Inputs/TelInput'
 import SelectCountryFlags from '../Form/Inputs/SelectCountryFlags'
 import CheckboxMUI from '../Form/Inputs/CheckboxMUI'
 import TextareaInput from '../Form/Inputs/TextareaInput'
@@ -18,16 +19,21 @@ import Header from '../Header'
 const Step = ({ handleSubmitForm, prevStep }) => {
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { watch, control, errors, setValue, register, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: {
             ...formDataContext,
             showCellPhone: true,
+            vat: false,
             visible: true
         }
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
+
+    const vat = watch('vat');
 
     const getFiles = (files) => {
         setValue('images', files)
@@ -43,6 +49,8 @@ const Step = ({ handleSubmitForm, prevStep }) => {
     useEffect(() => {
         register({ name: 'images' })
     }, [])
+
+    const initialImagesRef = React.useRef(formDataContext.images)
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
@@ -84,8 +92,35 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                         />
                     </FieldWrapper>
                 </Col>
+
+                <Col sm={12} md={6} >
+                    <FieldWrapper >
+                        <CheckboxMUI
+                            name="vat"
+                            label={t('vehicles:vat')}
+                            control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
             </Row>
-    
+
+            {vat &&
+                <Row>
+                    <Col sm={12} md={6}>
+                        <FieldWrapper>
+                            <NumberInput
+                                name="priceHTCoefficient"
+                                placeholder="HT"
+                                errors={errors}
+                                control={control}
+                                rules={{
+                                    required: t('form_validations:required')
+                                }}
+                            />
+                        </FieldWrapper>
+                    </Col>
+                </Row>}
             <FieldWrapper label={t('vehicles:description')}>
                 <TextareaInput
                     name="description"
@@ -93,19 +128,10 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
-            <FieldWrapper label="Tags">
+
+            <FieldWrapper label={t('vehicles:tags')}>
                 <TagsControlled
                     name="tags"
-                    control={control}
-                    errors={errors}
-                />
-            </FieldWrapper>
-            
-            <FieldWrapper >
-                <CheckboxMUI
-                    name="showCellPhone"
-                    label={t('vehicles:show-cell-phone')}
                     control={control}
                     errors={errors}
                 />
@@ -129,8 +155,21 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 </SearchLocationInput>
             </FieldWrapper>
 
+            <FieldWrapper label={t('vehicles:phone')}>
+                <TelInput
+                    name="phone"
+                    errors={errors}
+                    control={control}
+                    rules={{ required: t('form_validations:field-is-required') }}
+                    innerProps={{
+                        country: 'fr'
+                    }}
+                />
+            </FieldWrapper>
+
             <Header text={t('vehicles:pictures')}/>
             <UploadDropZone
+                initialFiles={initialImagesRef.current}
                 maxFiles={15}
                 getFiles={getFiles}
                 hideSubmit

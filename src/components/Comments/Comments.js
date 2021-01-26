@@ -6,6 +6,7 @@ import { MessageContext } from '../../context/MessageContext'
 import commentsService from '../../services/CommentsService'
 import CommentsList from './CommentsList'
 import CommentForm from './CommentForm'
+import CommentModel from '../../models/comment.model'
 
 const Comments = ({ announceRaw }) => {
     const router = useRouter()
@@ -41,7 +42,7 @@ const Comments = ({ announceRaw }) => {
             dispatchModal({ msg: 'comment added successfully' })
             setComments(comments => [
                 ...comments,
-                comment
+                new CommentModel(comment)
             ])
         } catch (err) {
             setDoneSubmitting(true)

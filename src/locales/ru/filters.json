@@ -10,7 +10,7 @@
         "make": "Marque"
     },
     "vehicleFunctionUse": "Fonction du véhicule",
-    "vehicleGeneralState": "Etat général du véhicule",
+    "vehicleGeneralState": "Состояние",
     "vehicleEngine.type": "Type de moteur",
     "vehicleEngine.gas": "Type de carburant",
     "vehicleEngine.cylinder": "Nombre de cylindres",

@@ -16,14 +16,16 @@ import Header from '../../Header'
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
-    const { formDataContext } = useContext(FormContext)
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
     
-    const { control, errors, handleSubmit } = useForm({
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
     
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
@@ -37,7 +39,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
@@ -46,34 +48,34 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
 
+    const onPowerKwChange = ({ target: { value } }) => {
+        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+    }
+
+    const onPowerChChange = ({ target: { value } }) => {
+        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+    }
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
-                <Col sm={12} md={6}>
+                <Col>
                     <FieldWrapper label={t('vehicles:type')}>
                         <SelectInput
                             name="vehicleFunctionType"
                             options={formData.RadioTypeFunction}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:vehicle_function')}>
-                        <SelectInput
-                            name="vehicleFunction"
-                            options={formData.RadioFunctionVehicle}
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
-                </Col>
+
             </Row>
 
             <Row>
@@ -107,6 +109,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesGas}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -117,6 +120,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesEngine}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -130,6 +134,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerKwChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -140,6 +145,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerChChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -186,7 +192,6 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
-
                         />
                     </FieldWrapper>
                 </Col>
@@ -200,6 +205,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesEmission}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -215,6 +221,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             placeholder="Select number of doors"
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -226,6 +233,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             placeholder={t('vehicles:select_seats_quantity')}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -239,6 +247,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesPaints}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -250,6 +259,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesMaterials}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -260,6 +270,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesExternalColor}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>
@@ -270,6 +281,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             options={formData.RadioChoicesExternalColor}
                             control={control}
                             errors={errors}
+                            placeholder={t('vehicles:select')}
                         />
                     </FieldWrapper>
                 </Col>

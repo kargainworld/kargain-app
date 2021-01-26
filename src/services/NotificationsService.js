@@ -3,6 +3,20 @@ import config from '../config/config'
 
 const baseRoute = `${config.api}/announces`
 
+export function fetchNotifications() {
+    const requestOptions = {
+        method: 'GET',
+        credentials: 'include',
+    }
+
+    return fetch(`${config.api}/notifications`, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 //admin
 function sendTokenToDb (token) {
     const requestOptions = {

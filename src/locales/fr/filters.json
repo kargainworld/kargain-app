@@ -10,7 +10,7 @@
         "make": "Marque"
     },
     "vehicleFunctionUse": "Fonction du véhicule",
-    "vehicleGeneralState": "Etat général du véhicule",
+    "vehicleGeneralState": "État",
     "mileage": "Kilométrage",
     "powerKw": "Puissance",
     "consumptionGkm" : "Consommation",

@@ -7,6 +7,7 @@ import BarChartIcon from '@material-ui/icons/BarChart'
 import HomeIcon from '@material-ui/icons/Home'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
 import CommuteIcon from '@material-ui/icons/Commute'
+import SmsFailed from '@material-ui/icons/SmsFailed'
 
 import SidebarNav from "./SidebarNav"
 
@@ -78,6 +79,11 @@ const Sidebar = props => {
             title: 'Utilisateurs',
             href: '/admin/users',
             icon : <PeopleAltIcon/>
+        },
+        {
+            title: 'Comments',
+            href: '/admin/comments',
+            icon : <SmsFailed/>
         }
     ]
 

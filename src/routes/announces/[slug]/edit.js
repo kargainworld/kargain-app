@@ -830,7 +830,7 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                 />
             </FieldWrapper>
     
-            <FieldWrapper label="Tags">
+            <FieldWrapper label={t('vehicles:tags')}>
                 <TagsControlled
                     name="tags"
                     control={control}

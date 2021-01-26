@@ -10,7 +10,7 @@
         "make": "Make"
     },
     "vehicleFunctionUse": "Vehicle function",
-    "vehicleGeneralState": "Vehicle general state",
+    "vehicleGeneralState": "State",
     "mileage": "Mileage",
     "powerKw": "Power",
     "countrySelect": "Country",

@@ -16,12 +16,14 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
-    const { formDataContext } = useContext(FormContext)
-    const { control, errors, handleSubmit } = useForm({
+    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
+
+    dispatchFormUpdate(watch(), { compare: true })
     
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
@@ -48,25 +50,23 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     useEffect(() => {
         getData()
     }, [getData])
+
+    const onPowerKwChange = ({ target: { value } }) => {
+        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+    }
+
+    const onPowerChChange = ({ target: { value } }) => {
+        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+    }
     
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
-                <Col sm={12} md={6}>
+                <Col>
                     <FieldWrapper label={t('vehicles:type')}>
                         <SelectInput
                             name="vehicleFunctionType"
                             options={formData.RadioTypeFunction}
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
-                </Col>
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:vehicle_function')}>
-                        <SelectInput
-                            name="vehicleFunction"
-                            options={formData.RadioFunctionVehicle}
                             control={control}
                             errors={errors}
                         />
@@ -128,6 +128,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerKwChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -138,6 +139,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
+                            onChange={onPowerChChange}
                         />
                     </FieldWrapper>
                 </Col>
@@ -216,18 +218,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                         />
                     </FieldWrapper>
                 </Col>
-                
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:materials')}>
-                        <SelectInput
-                            name="materials"
-                            options={formData.RadioChoicesMaterials}
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
-                </Col>
-                
+                                
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:external_color')}>
                         <SelectInput

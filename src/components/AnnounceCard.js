@@ -210,7 +210,12 @@ const AnnounceCard = ({ announceRaw, featuredImgHeight }) => {
                 <TagsList tags={announce.getTags}/>
 
                 {announce.getCountComments > 0 && (
-                    <CommentsList comments={announce.getComments}/>
+                    <CommentsList
+                        comments={announce.getComments.slice(0, 1)}
+                        moreLink={announce.getCountComments > 1 ? (
+                            <Link href={announce.getAnnounceLink}>more</Link>
+                        ) : null}
+                    />
                 )}
 
                 <div className="my-2 text-center">

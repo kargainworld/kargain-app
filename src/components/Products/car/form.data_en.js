@@ -2,7 +2,7 @@ import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 
 export const RadioTypeFunction = [
     {
-        label: 'Compact,',
+        label: 'Compact',
         value: 'compact'
     },
     {

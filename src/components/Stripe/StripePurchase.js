@@ -313,7 +313,7 @@ const StripeCard = ({ offer }) => {
                     {/* Show any error that happens when processing the payment */}
                     {error && (
                         <div className="card-error" role="alert">
-                            {error}
+                            {error.message}
                         </div>
                     )}
                 </>

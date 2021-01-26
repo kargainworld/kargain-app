@@ -24,6 +24,7 @@ import NotificationsNav from '../components/Notifications/NotificationsNav'
 import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
+import {ClickAwayListener} from "@material-ui/core"
 
 const useStyles = makeStyles(theme => ({
     navBarClient: {
@@ -223,20 +224,29 @@ const LoggedInUserNav = ({vertical}) => {
         }))
     }
 
+    const closeAll = () => setState({
+        isOpen1: false,
+        isOpen2: false
+    })
+
     return (
-        <Nav navbar className={clsx("my-2", "justify-content-center", vertical ? "flex-column" : "flex-row-nav")}>
-            <NavItem>
-                <Link href="/feed" prefetch={false}>
-                    <a>
-                        <IconButton color="inherit">
-                            <HomeIcon/>
-                        </IconButton>
-                    </a>
-                </Link>
-            </NavItem>
-            <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
-            <DropdownUser isOpen={state.isOpen2} keyName="isOpen2" toggle={toggle}/>
-        </Nav>
+        <ClickAwayListener onClickAway={closeAll}>
+            <div style={{ marginLeft: 'auto' }}>
+                <Nav navbar className={clsx("my-2", "justify-content-center", vertical ? "flex-column" : "flex-row-nav")}>
+                    <NavItem>
+                        <Link href="/feed" prefetch={false}>
+                            <a>
+                                <IconButton color="inherit">
+                                    <HomeIcon/>
+                                </IconButton>
+                            </a>
+                        </Link>
+                    </NavItem>
+                    <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
+                    <DropdownUser isOpen={state.isOpen2} keyName="isOpen2" toggle={toggle}/>
+                </Nav>
+            </div>
+        </ClickAwayListener>
     )
 }
 

@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import ValidationError from '../Validations/ValidationError'
 
-const NumberInput = ({ name, rules, control, errors, ...props }) => {
+const NumberInput = ({ name, rules, control, errors, onChange, ...props }) => {
     const numericRegex = /[0-9]|\./
 
     const onValidate = e => {
@@ -23,6 +23,10 @@ const NumberInput = ({ name, rules, control, errors, ...props }) => {
         } else {
             if (rules.positive) e.target.value = Math.abs(Number(e.target.value))
             if (rules.integer) e.target.value = Math.round(Number(e.target.value))
+        }
+
+        if (onChange) {
+            onChange(e)
         }
     }
 

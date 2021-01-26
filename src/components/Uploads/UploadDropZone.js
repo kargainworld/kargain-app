@@ -184,6 +184,7 @@ const UploadDropZone = ({ fireFiles, ...props }) => {
             <DropZone
                 onSubmit={handleSubmit}
                 maxFiles={max}
+                initialFiles={props.initialFiles}
                 accept={props.accept}
                 multiple={props.multiple}
                 canCancel={props.canCancel}
@@ -196,6 +197,7 @@ const UploadDropZone = ({ fireFiles, ...props }) => {
                         hideSubmit={props.hideSubmit}
                     />}
                 onChangeStatus={(meta, status, metas) => {
+
                     const files = metas.map(meta => meta.file)
                     props.getFiles(files)
                 }}
