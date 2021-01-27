@@ -26,14 +26,14 @@ const useStyles = makeStyles(() => ({
 
 const SearchFiltersAdvanced = ({query, updateFilters}) => {
     const classes = useStyles()
-    const [vehicleType, setVehicleType] = useState(vehicleTypes[0].value)
+    const [vehicleType, setVehicleType] = useState(vehicleTypes[0]?.value)
 
     return (
         <Container>
             {vehicleTypes.length !== 0 && (
                 <Tabs
                     defaultActive={0}
-                    handleClickTab={(index) => setVehicleType(vehicleTypes[index].value)}>
+                    handleClickTab={(index) => setVehicleType(vehicleTypes[index]?.value)}>
                     {vehicleTypes && vehicleTypes.map((tab, index) => {
                         const isActive = vehicleType === tab.value
                         return (

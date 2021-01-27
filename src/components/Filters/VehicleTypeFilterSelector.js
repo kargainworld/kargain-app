@@ -33,7 +33,7 @@ const VehicleTypeFilterSelector = ({ handleSelectVehicleType, name, control, rul
     const [type, setType] = useState(null)
 
     const handleSelect = (index) => {
-        const type = tabsRadio[index].value
+        const type = tabsRadio[index]?.value
         setType(type)
         handleSelectVehicleType(type)
     }
