@@ -58,14 +58,14 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
         validateCriteriaMode: 'all',
         defaultValues
     })
-    
+
     const [manufacturersData, setManufacturersData] = useState({
         makes: [],
         models: [],
         generations: [],
         years: []
     })
-    
+
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
 
@@ -284,7 +284,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
 
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <ControlButtons/>
-    
+
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <FieldWrapper label={t('vehicles:vehicle-type')}>
                         <SelectInput
@@ -298,7 +298,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             }}
                         />
                     </FieldWrapper>
-    
+
                     <FieldWrapper label={t('vehicles:announce-type')}>
                         <SelectInput
                             name="adType"
@@ -311,7 +311,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             }}
                         />
                     </FieldWrapper>
-    
+
                     <FieldWrapper label={t('vehicles:make')}>
                         <SelectInput
                             name="manufacturer.make"
@@ -320,7 +320,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             options={manufacturersData.makes}
                         />
                     </FieldWrapper>
-    
+
                     <FieldWrapper label={t('vehicles:model')}>
                         <SelectInput
                             name="manufacturer.model"
@@ -330,7 +330,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             disabled={!watch('manufacturer.make')}
                         />
                     </FieldWrapper>
-    
+
                     <FieldWrapper label={t('vehicles:year')}>
                         <SelectInput
                             name="year"
@@ -341,7 +341,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             disabled={!watch('manufacturer.model') || !isCar}
                         />
                     </FieldWrapper>
-    
+
                     {DynamicFiltersComponent && (
                         <DynamicFiltersComponent
                             control={control}
@@ -374,7 +374,7 @@ const ControlButtons = () => {
 }
 
 AdvancedFilters.defaultProps = {
-    vehicleType : vehicleTypesDefault[0].value
+    vehicleType : vehicleTypesDefault[0]?.value
 }
 
 export default memo(AdvancedFilters)

@@ -46,7 +46,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
-    const [vehicleType, setVehicleType] = useState(vehicleTypes()[0].value)
+    const [vehicleType, setVehicleType] = useState(vehicleTypes()[0]?.value)
     const methods = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
