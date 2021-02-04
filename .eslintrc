@@ -78,7 +78,7 @@
         ],
         "react/prop-types": 0,
         "no-unused-vars": "off",
-        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-imports": "warn",
         "unused-imports/no-unused-vars": [
             "warn",
             {
@@ -87,6 +87,7 @@
                 "args": "after-used",
                 "argsIgnorePattern": "^_"
             }
-        ]
+        ],
+        "object-curly-spacing": [2, "always"]
     }
 }

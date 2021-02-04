@@ -14,8 +14,9 @@ import AlertTriangle from '@geist-ui/react-icons/alertTriangle'
 import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
+import clsx from "clsx"
 
-const CommentsList = ({ comments, moreLink }) => {
+const CommentsList = ({ comments, moreLink, className }) => {
     const [deletedComments, setDeletedComments] = useState([])
     const { authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
@@ -55,7 +56,7 @@ const CommentsList = ({ comments, moreLink }) => {
     const filterComments = (CommentModel) => !deletedComments.includes(CommentModel.getID)
 
     return (
-        <div className="comments">
+        <div className={clsx(comments, className)}>
             <ModalConfirmRemoveComment
                 openDialogRemove={openDialogRemove}
                 handleCloseDialogRemove={handleCloseDialogRemove}
@@ -127,7 +128,7 @@ const CommentsList = ({ comments, moreLink }) => {
     )
 }
 
-const ModalConfirmRemoveComment = ({openDialogRemove, handleCloseDialogRemove, handleCallback}) => {
+const ModalConfirmRemoveComment = ({ openDialogRemove, handleCloseDialogRemove, handleCallback }) => {
     const { t } = useTranslation()
 
     return(

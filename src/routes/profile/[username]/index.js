@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'reactstrap'
-import clsx from 'clsx'
 import useDimensions from 'react-use-dimensions'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
@@ -42,7 +41,7 @@ const Profile = () => {
         isAdmin: false,
         profile: new UserModel()
     })
-    
+
     const [filterState, setFilterState] = useState({
         loading: false,
         sorter: {},
@@ -50,9 +49,9 @@ const Profile = () => {
         page: 1,
         total: 0
     })
-    
+
     const profile = state.profile
-    
+
     const handleFollowProfile = async () => {
         if (!isAuthenticated) return setForceLoginModal(true)
         try {
@@ -162,11 +161,11 @@ const Profile = () => {
 
     return (
         <Container>
-    
+
             <NextSeo
                 title={`${profile.getFullName} - Kargain`}
             />
-            
+
             {state.isAdmin && (
                 <Alert severity="info" className="mb-2">
                     Connected as Admin
@@ -232,7 +231,7 @@ const Profile = () => {
                                     openModalFollowers : true,
                                     modalFollowersProfiles : profile.getFollowers,
                                     modalFollowersTitle : t('vehicles:followers')
-                                    
+
                                 })}>
                                 <div className="top-profile-followers">
                                     {state.isSelf ? (
@@ -241,7 +240,7 @@ const Profile = () => {
                                                 {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
                                             </span>
                                             <span>
-                                                {followerCounter} {t('vehicles:followers', {count : followerCounter})}
+                                                {followerCounter} {t('vehicles:followers', { count : followerCounter })}
                                             </span>
                                         </>
                                     ) : (
@@ -253,7 +252,7 @@ const Profile = () => {
                                                 {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
                                             </span>
                                             <span>
-                                                {followerCounter} {t('vehicles:followers', {count : followerCounter})}
+                                                {followerCounter} {t('vehicles:followers', { count : followerCounter })}
                                             </span>
                                         </>
                                     )}
@@ -289,9 +288,9 @@ const Profile = () => {
                                     modalFollowersProfiles : profile.getFollowings,
                                     modalFollowersTitle : t('vehicles:subscriptions')
                                 })}>
-                                
+
                                 <span className="top-profile-followers">
-                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings})}
+                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
                                 </span>
 
                                 {profile.getCountFollowings !== 0 && (
@@ -342,99 +341,106 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
     return (
         <Container>
             <Row>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={3}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count : filterState.total})}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters}/>
                 </Col>
-                <Col sm={12} md={8}>
-                    <div ref={refWidth}>
-                        <Tabs defaultActive={0} className="nav-tabs-profile">
-                            <Tabs.Item id="home-tab" title="Vitrine">
-                                <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                            <Col key={index} sm={12} md={12} lg={width < 1200 ? 12 : 6} xl={width < 1200 ? 12 : 6} className="my-2">
-                                                <AnnounceCard announceRaw={announce.getRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-found-announces')}</p>
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
+                <Col sm={12} md={9}>
+                    {/*<div ref={refWidth}>*/}
+                    <Tabs defaultActive={0} className="nav-tabs-profile">
+                        <Tabs.Item id="home-tab" title="Vitrine">
+                            <section className={filtersOpened && 'filter-is-visible'}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
+                                        <Col
+                                            key={index}
+                                            sm={12}
+                                            md={6}
+                                            lg={6}
+                                            xl={6}
+                                            className="my-2"
+                                        >
+                                            <AnnounceCard announceRaw={announce.getRaw}/>
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{t('vehicles:no-found-announces')}</p>
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
 
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </section>
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
+                            </section>
+                        </Tabs.Item>
+
+                        {isSelf && (
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
+                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                            <AnnounceCard announceRaw={announceRaw}/>
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{t('vehicles:no-hidden-announces')}</p>
+
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
+
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
                             </Tabs.Item>
+                        )}
 
-                            {isSelf && (
-                                <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                            <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                                <AnnounceCard announceRaw={announceRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-hidden-announces')}</p>
+                        {isSelf && (
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
+                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                            <AnnounceCard announceRaw={announceRaw}/>
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{(t('vehicles:no-favorite-announces'))}</p>
 
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
 
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </Tabs.Item>
-                            )}
-
-                            {isSelf && (
-                                <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                            <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                                <AnnounceCard announceRaw={announceRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{(t('vehicles:no-favorite-announces'))}</p>
-
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
-
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </Tabs.Item>
-                            )}
-                        </Tabs>
-                    </div>
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
+                            </Tabs.Item>
+                        )}
+                    </Tabs>
+                    {/*</div>*/}
                 </Col>
             </Row>
         </Container>

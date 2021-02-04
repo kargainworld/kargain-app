@@ -260,7 +260,7 @@ const Edit = () => {
     )
 }
 
-const MultiTabsForm = ({offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink}) => {
+const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink }) => {
     const theme = useTheme()
     const classes = useStyles()
     const { t } = useTranslation()

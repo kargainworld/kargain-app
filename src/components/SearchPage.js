@@ -15,7 +15,7 @@ import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from '../components/Loading'
 import CTALink from './CTALink'
 
-const SearchPage = ({fetchFeed, ...props}) => {
+const SearchPage = ({ fetchFeed, ...props }) => {
     const { t } = useTranslation()
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()

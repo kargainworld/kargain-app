@@ -40,7 +40,7 @@ body {
     //font-family: "Helvetica Neue";
     position: relative;
     overflow-x: hidden;
-    font-weight: 700;
+    font-weight: 400;
 }
 
 article,
@@ -303,7 +303,7 @@ img.img_scale {
 }
 
 svg {
-    fill: currentColor;
+    //fill: currentColor; // TODO
     display: inline-block;
     transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     user-select: none;

@@ -135,13 +135,13 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 </Alert>
             )}
 
-            <Row style={{width: "fitContent", margin: "0 auto", justifyContent : "center" }}>
+            <Row style={{ width: "fitContent", margin: "0 auto", justifyContent : "center" }}>
                 <div className="submit mx-2">
                     <CTALink href="/advanced-search" title={t('layout:advanced-search')}/>
                 </div>
 
                 <div className="submit mx-2">
-                    <CTAButton submit title={t('vehicles:show_results_({count})', {count : totalResult})}/>
+                    <CTAButton submit title={t('vehicles:show_results_({count})', { count : totalResult })}/>
                 </div>
             </Row>
         </form>

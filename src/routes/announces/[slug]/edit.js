@@ -20,7 +20,7 @@ import resolveObjectKey from '../../../libs/resolveObjectKey'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import AnnounceModel from '../../../models/announce.model'
-import {vehicleTypes} from '../../../business/vehicleTypes'
+import { vehicleTypes } from '../../../business/vehicleTypes'
 import { MessageContext } from '../../../context/MessageContext'
 import AnnounceService from '../../../services/AnnounceService'
 import FieldWrapper from '../../../components/Form/FieldWrapper'
@@ -209,9 +209,9 @@ const AnnounceEdit = () => {
         try{
             const result = await AnnounceService.getAnnounceBySlug(slug)
             const { announce, isAdmin, isSelf } = result
-    
+
             console.log(result)
-            
+
             setState(state => ({
                 ...state,
                 stateReady : true,
@@ -305,7 +305,7 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
         validateCriteriaMode: 'all',
         defaultValues
     })
-    
+
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -318,20 +318,20 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleType, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[vehicleType, lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
-    
+
     const onSubmit = (form) => {
         const updates = inflate(Object.keys(allowedFields).reduce((carry, key) => {
             const value = resolveObjectKey(form, key)
@@ -384,7 +384,7 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
                         errors
                     }} />
                 </TabPane>
-                
+
                 <TabPane tabId={1}>
                     <div className="form-fields">
                         <Typography component="h3" variant="h3" className="text-center" gutterBottom>
@@ -452,7 +452,7 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
 
 const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => {
     const { t } = useTranslation()
-    
+
     return (
         <div className="form-fields">
             <Typography component="h3" variant="h3" className="text-center" gutterBottom>
@@ -695,7 +695,7 @@ const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => 
             <Typography component="h3" variant="h3" className="text-center" gutterBottom>
                 {t('vehicles:additional-data')}
             </Typography>
-            
+
             {vehicleType !== vehicleTypes.moto && (
                 <Row>
                     <Col>
@@ -760,7 +760,7 @@ const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => 
                         </FieldWrapper>
                     </Col>
                 )}
-                
+
                 <Col>
                     <FieldWrapper label={t('vehicles:external_color')}>
                         <SelectInput
@@ -815,13 +815,13 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                         required: t('form_validations:required'),
                         validate: val => {
                             const value = Number(val)
-                            if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€'})
-                            if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€'})
+                            if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€' })
+                            if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€' })
                         }
                     }}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:description')}>
                 <TextareaInput
                     name="description"
@@ -829,7 +829,7 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:tags')}>
                 <TagsControlled
                     name="tags"
@@ -837,7 +837,7 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
                     name="countrySelect"
@@ -856,11 +856,11 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                 </SearchLocationInput>
             </FieldWrapper>
 
-            <div style={{ border : '1px solid', padding : '1rem'}}>
+            <div style={{ border : '1px solid', padding : '1rem' }}>
                 <Typography component="h3" variant="h3" className="text-center" gutterBottom>
                     {t('vehicles:announce-management')}
                 </Typography>
-    
+
                 <FieldWrapper >
                     <CheckboxMUI
                         name="showCellPhone"
@@ -869,7 +869,7 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                         errors={errors}
                     />
                 </FieldWrapper>
-                
+
                 <CheckboxMUI
                     name="status"
                     value="active"
@@ -919,7 +919,7 @@ const Buttons = ({ triggerSubmit, announcePageLink }) => {
     const { t } = useTranslation()
 
     return (
-        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth : '300px'}}>
+        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth : '300px' }}>
             <Button
                 variant="contained"
                 color="primary"

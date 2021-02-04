@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import useTranslation from 'next-translate/useTranslation'
-import { Alert, Col, Row, TabContent, TabPane } from 'reactstrap'
+import { Col, Row, TabContent, TabPane } from 'reactstrap'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
@@ -158,7 +158,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
     return (
         <section className="anno">
             <DamagesNavResponsive
-                {...{activeTab,
+                {...{ activeTab,
                     setActiveTab,
                     damagesTabs: damagesTabs
                         .filter(tab => tab.display)
@@ -194,7 +194,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         <div className={clsx(classes.annoInputs)}>
                                             <Header h3> {t('vehicles:damages')} :</Header>
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
-                                            {stages.length >= max && <Alert color="warning">Max {max} damages</Alert>}
+                                            {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
                                             {stages.map((stage, indexStage) => {
                                                 return (
                                                     <div key={indexStage} className={classes.annoInput}>
@@ -218,7 +218,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                                 onChange={(e) => onInputStageChange(indexTab, indexStage, e.target.value)}
                                                                 className={clsx('form-control form-control-sm')}
                                                                 name={`annotation_${indexStage + 1}`}
-                                                                placeholder={t('vehicles:damages-{number}-description',{ number : indexStage + 1})}
+                                                                placeholder={t('vehicles:damages-{number}-description',{ number : indexStage + 1 })}
                                                             />
                                                         </div>
                                                     </div>

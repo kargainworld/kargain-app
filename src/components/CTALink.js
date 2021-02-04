@@ -6,9 +6,10 @@ const CTALink = ({ href, icon: Icon, title, id, className }) => {
     return (
         <Link href={href} prefetch={false} passHref>
             <a id={id} className={
-                clsx(className,
+                clsx(
                     'btn btn-outline-primary',
-                    'm-1'
+                    'm-1',
+                    className
                 )
             }>
                 {Icon && (
