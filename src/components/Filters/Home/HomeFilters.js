@@ -1,49 +1,19 @@
 import React, { useState } from 'react'
-import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
-import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
 import Alert from '@material-ui/lab/Alert'
 import filterProps from '../../../libs/filterProps'
 import vehicleTypes from '../../../business/vehicleTypes.js'
 import announceTypes from '../../../business/announceTypes.js'
 import { useAuth } from '../../../context/AuthProvider'
-import HomeFiltersForm from './HomeFiltersForm'
 import CTAButton from '../../CTAButton'
 import CTALink from '../../CTALink'
+import AnnounceTypeRadioButton from "../../AnnounceTypeRadioButton";
+import VehicleTypeSelect from "../../VehicleTypeSelect";
 
-const useStyles = makeStyles(() => ({
-    vehicleType: {
-        border: 'none',
-        borderBottom: '4px solid #c2bdbd',
-        borderRadius: 0,
-        color: '#c2bdbd',
-        textAlign: 'center',
-        textDecoration: 'none',
-        margin: '0 1px'
-    },
 
-    vehicleTypeActive : {
-        border: 'none',
-        color: '#569ffc',
-        textAlign: 'center',
-        background: 'none',
-        borderBottom: '4px solid #569ffc'
-    },
-
-    img: {
-        marginBottom: '7px',
-        marginTop: '2px',
-        maxWidth: '80px',
-        objectFit: 'contain',
-        height: '30px'
-    }
-}))
 
 const HomeFilters = ({ updateFilters, totalResult }) => {
-    const classes = useStyles()
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
     const [vehicleType, setVehicleType] = useState(vehicleTypes()[0]?.value)
@@ -74,60 +44,39 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
 
     return(
         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
-            <Row className="justify-content-center">
-                {vehicleTypes() && vehicleTypes().map((tab, index) => {
-                    const isActive = vehicleType === tab.value
-                    return (
-                        <Col key={index} xs={6} sm={3} md={3} lg={3}>
-                            <div
-                                onClick={() => { setVehicleType(tab.value)}}
-                                className={clsx(classes.vehicleType, isActive && classes.vehicleTypeActive)}
-                            >
-                                <img
-                                    src={isActive ? `/images/${tab.imgSelected}` : `/images/${tab.img}`}
-                                    alt={tab.label}
-                                    title={tab.label}
-                                    className={classes.img}
-                                />
-                            </div>
-                        </Col>
-                    )
-                })}
-            </Row>
-
-            <Row className="justify-content-center">
+            <div
+                style={{
+                    maxWidth: 532,
+                    width: '100%',
+                    margin: '0 auto',
+                    display: 'flex',
+                    justifyContent: 'center'
+                }}
+            >
                 {announceTypes() && announceTypes()
                     .filter(type => {
                         if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
                         return true
                     })
-                    .map((tab, index) => {
-                        return (
-                            <Col key={index} xs={6} sm={3} md={3} lg={4}>
-                                <div
-                                    className="form-check-transparent"
-                                    style={{ minHeight: '5rem' }}>
-                                    <input id={`ad_type${index}`}
-                                        type="radio"
-                                        name="adType"
-                                        value={tab.value}
-                                        ref={register}
-                                    />
-                                    <label htmlFor={`ad_type${index}`}>
-                                        <Typography component="h3" variant="h3">
-                                            {tab.label}
-                                        </Typography>
-                                    </label>
-                                </div>
-                            </Col>
-                        )
-                    })}
-            </Row>
+                    .map((tab, index) => (
+                        <AnnounceTypeRadioButton
+                            id={`ad_type${index}`}
+                            register={register}
+                            name="adType"
+                            value={tab.value}
+                            label={tab.label}
+                        />
+                    ))}
+            </div>
 
-            <HomeFiltersForm
-                vehicleType={vehicleType}
-                methods={methods}
-            />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <VehicleTypeSelect
+                    value={vehicleType}
+                    items={vehicleTypes()}
+                    onChange={setVehicleType}
+                    style={{ maxWidth: 532, width: '100%' }}
+                />
+            </div>
 
             {Object.keys(errors).length !== 0 && (
                 <Alert severity="warning" className="mb-2">
@@ -135,15 +84,24 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 </Alert>
             )}
 
-            <Row style={{ width: "fitContent", margin: "0 auto", justifyContent : "center" }}>
-                <div className="submit mx-2">
+            <div
+                style={{
+                    width: "fitContent",
+                    margin: "0 auto",
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: "center",
+                    marginTop: 40
+                }}
+            >
+                <div className="submit mx-2" style={{ marginTop: 0 }}>
                     <CTALink href="/advanced-search" title={t('layout:advanced-search')}/>
                 </div>
 
-                <div className="submit mx-2">
+                <div className="submit mx-2" style={{ marginTop: 0 }}>
                     <CTAButton submit title={t('vehicles:show_results_({count})', { count : totalResult })}/>
                 </div>
-            </Row>
+            </div>
         </form>
     )
 }

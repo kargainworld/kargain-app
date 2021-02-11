@@ -29,22 +29,6 @@ import CTALink from './CTALink'
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
 
-// const useStyles = makeStyles(theme => ({
-//     navBarClient: {
-//         display: 'flex',
-//         flex: 1,
-//         width: 'min-content'
-//     },
-//
-//     inputSearch: {
-//         maxWidth: '300px',
-//
-//         [theme.breakpoints.down('md')]: {
-//             width: '200px'
-//         }
-//     }
-// }))
-
 const Root = styled.header`
   
 `
@@ -154,6 +138,7 @@ const NavbarAction = ({ vertical }) => {
                         type="search"
                         placeholder={t('layout:search')}
                         iconRight={<Search />}
+
                     />
 
                     <button

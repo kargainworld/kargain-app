@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 import { ProgressBar } from 'react-step-progress-bar'
 import useTranslation from 'next-translate/useTranslation'
+import styled from "styled-components"
+
 import ControlledStep from './ControlledStep'
 import BreadcrumbSteps from './BreadcrumbSteps'
 import useIsMounted from '../../hooks/useIsMounted'
@@ -13,6 +15,15 @@ import Header from '../Header'
 const calculatePourcent = (current, length) => {
     return ((current + 1) / (length + 1)) * 100
 }
+
+const Root = styled.main`
+  max-width: 1140px;    
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+`
 
 const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     const isMounted = useIsMounted()
@@ -49,13 +60,13 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
         triggerDispatchFormData(data)
         setEndForm(true)
     }
-    
+
     useEffect(() => {
         dispatchFormUpdate({
             vehicleType : formKey.toLowerCase()
         })
     },[])
-    
+
     useEffect(() => {
         window.scrollTo(0, 0)
         if (isMounted) {
@@ -64,7 +75,7 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
             setPourcent(calculatePourcent(activeStep, steps.length))
         }
     }, [activeStep])
-    
+
     useEffect(() => {
         if (isMounted && endForm) {
             console.log('end form reached')
@@ -72,40 +83,42 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
             setEndForm(false)
         }
     }, [endForm])
-    
+
     return (
-        <div className="formWizardContainer">
-            <BreadcrumbSteps activeStepIndex={activeStep}
-                steps={steps}
-                setStep={setStep}
-                maxActiveStep={maxActiveStep}
-            />
-            <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
-            <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
+        <Root>
+            <div className="formWizardContainer">
+                <BreadcrumbSteps activeStepIndex={activeStep}
+                                 steps={steps}
+                                 setStep={setStep}
+                                 maxActiveStep={maxActiveStep}
+                />
+                <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
+                <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
 
-            <ControlledStep
-                step={steps[activeStep]}
-                onSubmitStep={onSubmitStep}
-                prevStep={prevStep}
-                nextStep={nextStep}
-                handleSubmitForm={handleSubmitForm}
-            />
+                <ControlledStep
+                    step={steps[activeStep]}
+                    onSubmitStep={onSubmitStep}
+                    prevStep={prevStep}
+                    nextStep={nextStep}
+                    handleSubmitForm={handleSubmitForm}
+                />
 
-            {debug && (
-                <Row>
-                    <Col>
-                        <div>
-                            <h2> formContext </h2>
-                            <pre>{JSON.stringify(formDataContext, null, 2)}</pre>
-                        </div>
-                    </Col>
-                    <Col>
-                        <DebugLocalStorage value="formData"/>
-                    </Col>
-                </Row>
-            )}
+                {debug && (
+                    <Row>
+                        <Col>
+                            <div>
+                                <h2> formContext </h2>
+                                <pre>{JSON.stringify(formDataContext, null, 2)}</pre>
+                            </div>
+                        </Col>
+                        <Col>
+                            <DebugLocalStorage value="formData"/>
+                        </Col>
+                    </Row>
+                )}
 
-        </div>
+            </div>
+        </Root>
     )
 }
 

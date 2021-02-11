@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
         color: '#569ffc',
         textAlign: 'center',
         background: 'none',
-        borderBottom: '4px solid #569ffc'
+        borderBottom: '4px solid #000000'
     },
 
     img: {

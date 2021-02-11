@@ -2,11 +2,12 @@
 @import "variables";
 
 button, input, textarea {
-    padding: .5rem 1rem;
+    padding: 7.5px 10px;
     border: none;
-    border-radius: 0;
+    border-radius: 5px;
     box-shadow: unset;
-    border-bottom: 1px solid;
+    border: 1px solid #EAEAEA;
+    background-color: #fff;
 
     &:focus, &:active {
         outline: 0;

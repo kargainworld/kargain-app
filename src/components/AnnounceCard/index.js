@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import * as i from '@geist-ui/react-icons'
+import * as i from '@material-ui/icons'
 import PropTypes from 'prop-types'
 import Link from 'next-translate/Link'
 import useDimensions from 'react-use-dimensions'
@@ -31,9 +31,10 @@ import {
     Image,
     Title,
     CommentListStyled,
-    Footer
-
+    Footer,
+    ImageCounter, ImagePlaceholder
 } from './components'
+import {CardActions, CardContent} from "@material-ui/core";
 
 
 const Index = ({ announceRaw, featuredImgHeight }) => {
@@ -71,112 +72,142 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
     return (
         <Root>
-            <User>
-                <Avatar src={announce.getAuthor.getAvatar} size="medium" />
+            <CardContent>
+                <User>
+                    <Avatar src={announce.getAuthor.getAvatar} size="medium" />
 
-                <Info>
-                    <AuthorName href={announce.getAuthor.getProfileLink}>
-                        {announce.getAuthor.getFullName}
-                    </AuthorName>
+                    <Info>
+                        <AuthorName href={announce.getAuthor.getProfileLink}>
+                            {announce.getAuthor.getFullName}
+                        </AuthorName>
 
-                    {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                        <Location
-                            href={announce.buildAddressGoogleMapLink()}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            <i.MapPin size={18} />
-                            {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
-                        </Location>
-                    )}
-                </Info>
+                        {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                            <Location
+                                href={announce.buildAddressGoogleMapLink()}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <i.Room size={18} />
+                                {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                            </Location>
+                        )}
+                    </Info>
 
-                <Meta>
-                    <CreationDate>
-                        <i.Clock />
+                    <Meta>
+                        <CreationDate>
+                            <i.AccessTime />
 
-                        {getTimeAgo(announce.getCreationDate.raw, lang)}
-                    </CreationDate>
+                            {getTimeAgo(announce.getCreationDate.raw, lang)}
+                        </CreationDate>
 
-                    <ShareIcon
-                        // onClick={TODO}
-                    />
-                </Meta>
-            </User>
+                        <ShareIcon
+                            // onClick={TODO}
+                        />
+                    </Meta>
+                </User>
 
-            <SubHeader>
-                <Action
-                    title={t('vehicles:i-like')}
-                    onClick={() => handleClickLikeButton()}
-                >
-                    <i.Bookmark
-                        style={{
-                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
-                        }}
-                    />
-                    <span>{likesCounter}</span>
-                </Action>
+                <SubHeader>
+                    <Action
+                        title={t('vehicles:i-like')}
+                        onClick={() => handleClickLikeButton()}
+                    >
+                        <i.BookmarkBorder
+                            style={{
+                                color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
+                            }}
+                        />
+                        <span>{likesCounter}</span>
+                    </Action>
 
-                <Action
-                    title={t('vehicles:comment_plural')}
-                >
-                    <i.MessageCircle />
-                    <span>{announce.getCountComments}</span>
-                </Action>
+                    <Action
+                        title={t('vehicles:comment_plural')}
+                    >
+                        <i.Message style={{ marginRight: 4 }} />
+                        <span>{announce.getCountComments}</span>
+                    </Action>
 
-                <Action
-                    onClick={() => dispatchModalState({
-                        openModalMessaging : true,
-                        modalMessagingProfile : announce.getAuthor
-                    })}
-                >
-                    <i.Mail />
-                </Action>
+                    <Action
+                        onClick={() => dispatchModalState({
+                            openModalMessaging : true,
+                            modalMessagingProfile : announce.getAuthor
+                        })}
+                    >
+                        <i.MailOutline />
+                    </Action>
 
-                <Price>€ {announce.getPrice}</Price>
-            </SubHeader>
+                    <Price>€ {announce.getPrice}</Price>
+                </SubHeader>
 
-            <Body>
-                {announce.getFeaturedImg && (
+                <Body>
+                    {/*{announce.getFeaturedImg && (*/}
+                    {/*    <ImageWrapper>*/}
+                    {/*        <Link href={announce.getAnnounceLink} prefetch={false}>*/}
+                    {/*            <a>*/}
+                    {/*                <Image*/}
+                    {/*                    effect="blur"*/}
+                    {/*                    src={announce.getFeaturedImg.getLocation}*/}
+                    {/*                    alt={announce.getFeaturedImg.getName}*/}
+                    {/*                    height={featuredImgHeight}*/}
+                    {/*                    width="100%"*/}
+                    {/*                />*/}
+                    {/*            </a>*/}
+                    {/*        </Link>*/}
+
+                    {/*        <ImageCounter>*/}
+                    {/*            <i.CameraAlt />*/}
+                    {/*            {announce.getCountImages}*/}
+                    {/*        </ImageCounter>*/}
+                    {/*    </ImageWrapper>*/}
+                    {/*)}*/}
+
                     <ImageWrapper>
                         <Link href={announce.getAnnounceLink} prefetch={false}>
                             <a>
-                                <Image
-                                    effect="blur"
-                                    src={announce.getFeaturedImg.getLocation}
-                                    // src="https://media.wired.com/photos/5d09594a62bcb0c9752779d9/1:1/w_1500,h_1500,c_limit/Transpo_G70_TA-518126.jpg"
-                                    alt={announce.getFeaturedImg.getName}
-                                    height={featuredImgHeight}
-                                    width="100%"
-                                />
+                                {announce.getFeaturedImg && (
+                                    <Image
+                                        effect="blur"
+                                        src={announce.getFeaturedImg.getLocation}
+                                        alt={announce.getFeaturedImg.getName}
+                                        height={featuredImgHeight}
+                                        width="100%"
+                                    />
+                                )}
+
+                                {!announce.getFeaturedImg && (
+                                    <ImagePlaceholder>
+                                        <i.CameraAlt fontSize="large" />
+                                    </ImagePlaceholder>
+                                )}
                             </a>
                         </Link>
 
-                        <ImageCounter>
-                            <i.Camera />
-                            {announce.getCountImages}
-                        </ImageCounter>
+                        {announce.getFeaturedImg && (
+                            <ImageCounter>
+                                <i.CameraAlt />
+                                {announce.getCountImages}
+                            </ImageCounter>
+                        )}
                     </ImageWrapper>
-                )}
 
-                <Link href={announce.getAnnounceLink}>
-                    <a>
-                        <Title>{announce.getAnnounceTitle}</Title>
-                    </a>
-                </Link>
+                    <Link href={announce.getAnnounceLink}>
+                        <a>
+                            <Title>{announce.getAnnounceTitle}</Title>
+                        </a>
+                    </Link>
 
-                {announce.getTags?.length > 0 && <TagsList tags={announce.getTags}/>}
+                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags}/>}
 
-                {announce.getCountComments > 0 && (
-                    <CommentListStyled
-                        comments={announce.getComments.slice(0, 1)}
-                        moreLink={announce.getCountComments > 1
-                            ? <Link href={announce.getAnnounceLink}>more</Link>
-                            : null
-                        }
-                    />
-                )}
-            </Body>
+                    {announce.getCountComments > 0 && (
+                        <CommentListStyled
+                            comments={announce.getComments.slice(0, 1)}
+                            moreLink={announce.getCountComments > 1
+                                ? <Link href={announce.getAnnounceLink}>more</Link>
+                                : null
+                            }
+                        />
+                    )}
+                </Body>
+            </CardContent>
 
             <Footer>
                 <CTALink

@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import AlertTriangle from '@geist-ui/react-icons/alertTriangle'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 
 import { useAuth } from '../../context/AuthProvider'
@@ -76,7 +76,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
                             {!isOwn && (
-                                <AlertTriangle onClick={() => complain(comment.getID)} />
+                                <ErrorOutlineIcon onClick={() => complain(comment.getID)} />
                             )}
 
                             {isOwn && (

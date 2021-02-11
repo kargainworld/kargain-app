@@ -107,7 +107,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: state.announces.length })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} />
+                    <AdvancedFilters updateFilters={updateFilters}/>
                 </Col>
 
                 <Col sm={12} md={8}>

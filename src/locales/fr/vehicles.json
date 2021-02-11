@@ -14,7 +14,7 @@
   "apply-filters": "Appliquer les filtres",
   "edit_filters": "Modifier les filtres",
   "reset-filters": "Reinitialiser les filtres",
-  "{count}_results_search" : "{{count}} résultats de recherche",
+  "{count}_results_search" : "{{count}} résultats",
   "show_results_({count})" : "Afficher les résultats ({{count}})",
   "my-profile" : "Mon profil",
   "edit-my-profile" : "Editer mon profil",

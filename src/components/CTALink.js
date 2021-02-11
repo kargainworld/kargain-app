@@ -1,26 +1,20 @@
 import React from 'react'
-import clsx from 'clsx'
 import Link from 'next-translate/Link'
+import { Button } from '@material-ui/core'
 
-const CTALink = ({ href, icon: Icon, title, id, className }) => {
-    return (
-        <Link href={href} prefetch={false} passHref>
-            <a id={id} className={
-                clsx(
-                    'btn btn-outline-primary',
-                    'm-1',
-                    className
-                )
-            }>
-                {Icon && (
-                    <span className="mx-2">
-                        <Icon/>
-                    </span>)}
-                {title}
-            </a>
-        </Link>
-    )
-}
+const CTALink = ({ href, icon: Icon, title, id, className }) => (
+    <Link href={href} prefetch={false} passHref>
+        <Button component="a" id={id} className={className} variant="outlined">
+            {Icon && (
+                <span className="mx-2">
+                    <Icon />
+                </span>
+            )}
+
+            {title}
+        </Button>
+    </Link>
+)
 
 CTALink.defaultProps = {
     href: '/'

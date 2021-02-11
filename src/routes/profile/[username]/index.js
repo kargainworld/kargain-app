@@ -24,8 +24,54 @@ import AdvancedFilters from '../../../components/Filters/Advanced/AdvancedFilter
 import { ReactComponent as StarSVGYellow } from '../../../../public/images/svg/star-yellow.svg'
 import { ReactComponent as StarSVG } from '../../../../public/images/svg/star.svg'
 import Error from '../../_error'
+import {makeStyles} from "@material-ui/styles";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) => ({
+    subscriptionWrapper: {
+      display: 'flex'
+    },
+    userName: {
+        color: theme.palette.primary.light
+    },
+    tabs: {
+        '& > .nav': {
+            display: 'flex',
+            flexWrap: 'nowrap'
+        },
+    },
+    followContainer: {
+        marginTop: theme.spacing(2),
+
+        '& > div': {
+            display: 'flex',
+            alignItems: 'center'
+        },
+
+        '&:not(:last-child)': {
+            marginRight: theme.spacing(3)
+        }
+    },
+    followItem: {
+        display: "block",
+        lineHeight: 1,
+
+        '& svg': {
+            width: 16
+        }
+    },
+    filters: {
+        padding: '0 !important',
+
+        '& .FieldWrapper': {
+            marginRight: '0 !important',
+            marginLeft: '0 !important'
+        }
+    }
+}))
 
 const Profile = () => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const router = useRouter()
     const { username } = router.query
@@ -186,9 +232,9 @@ const Profile = () => {
                         {state.isSelf ? (
                             <div className="mx-2">
                                 <Link href={profile.getProfileEditLink}>
-                                    <a className="btn btn-outline-dark">
+                                    <Button component="a" variant="outlined">
                                         {t('vehicles:edit-my-profile')}
-                                    </a>
+                                    </Button>
                                 </Link>
                             </div>
                         ) : (
@@ -207,114 +253,109 @@ const Profile = () => {
                         )}
                     </div>
 
-                    <p className="top-profile-login">
+                    <p className={classes.userName}>
                         @{profile.getUsername}
                     </p>
 
-                    <Row>
-                        {profile.getAddressParts.fullAddress && (
-                            <Col xs={12} sm={4} md={4}>
-                                <a href={profile.buildAddressGoogleMapLink()}
-                                    target="_blank"
-                                    rel="noreferrer">
-                                    <span className="top-profile-location">
-                                        <img className="mx-1" src="/images/location.png" alt=""/>
-                                        {profile.buildAddressString()}
-                                    </span>
-                                </a>
-                            </Col>
-                        )}
+                    {profile.getAddressParts.fullAddress && (
+                        <a href={profile.buildAddressGoogleMapLink()}
+                           target="_blank"
+                           rel="noreferrer">
+                                <span className="top-profile-location">
+                                    <img className="mx-1" src="/images/location.png" alt=""/>
+                                    {profile.buildAddressString()}
+                                </span>
+                        </a>
+                    )}
 
-                        <Col xs={12} sm={4} md={4}>
-                            <div className="follow_container"
-                                onClick={() => dispatchModalState({
-                                    openModalFollowers : true,
-                                    modalFollowersProfiles : profile.getFollowers,
-                                    modalFollowersTitle : t('vehicles:followers')
+                    <div className={classes.subscriptionWrapper}>
+                        <div className={classes.followContainer}
+                             onClick={() => dispatchModalState({
+                                 openModalFollowers : true,
+                                 modalFollowersProfiles : profile.getFollowers,
+                                 modalFollowersTitle : t('vehicles:followers')
 
-                                })}>
-                                <div className="top-profile-followers">
-                                    {state.isSelf ? (
-                                        <>
-                                            <span className="mx-1">
-                                                {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
-                                            </span>
-                                            <span>
-                                                {followerCounter} {t('vehicles:followers', { count : followerCounter })}
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="mx-1" onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleFollowProfile()
-                                            }}>
-                                                {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
-                                            </span>
-                                            <span>
-                                                {followerCounter} {t('vehicles:followers', { count : followerCounter })}
-                                            </span>
-                                        </>
-                                    )}
-                                </div>
-
-                                {profile.getCountFollowers !== 0 && (
-                                    <div className="my-2">
-                                        <ul className="d-flex align-items-center list-style-none">
-                                            {profile.getFollowers.slice(0, 3)
-                                                .map((user, index) => {
-                                                    return (
-                                                        <li key={index} className="nav-item navbar-dropdown p-1">
-                                                            <img className="dropdown-toggler rounded-circle"
-                                                                width="30"
-                                                                height="30"
-                                                                src={user.getAvatar}
-                                                                title={user.getFullName}
-                                                                alt={user.getUsername}
-                                                            />
-                                                        </li>
-                                                    )
-                                                })}
-                                        </ul>
-                                    </div>
+                             })}>
+                            <div>
+                                {state.isSelf ? (
+                                    <>
+                                        <span className={clsx('mx-1', classes.followItem)}>
+                                            {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
+                                        </span>
+                                        <span>
+                                            {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleFollowProfile()
+                                        }}>
+                                            {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
+                                        </span>
+                                        <span>
+                                            {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                        </span>
+                                    </>
                                 )}
                             </div>
-                        </Col>
 
-                        <Col xs={12} sm={4} md={4}>
-                            <div className="follow_container"
-                                onClick={() => dispatchModalState({
-                                    openModalFollowers : true,
-                                    modalFollowersProfiles : profile.getFollowings,
-                                    modalFollowersTitle : t('vehicles:subscriptions')
-                                })}>
-
-                                <span className="top-profile-followers">
-                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
-                                </span>
-
-                                {profile.getCountFollowings !== 0 && (
-                                    <div className="my-2">
-                                        <ul className="d-flex align-items-center list-style-none">
-                                            {profile.getFollowings.slice(0, 3).map((user, index) => {
+                            {profile.getCountFollowers !== 0 && (
+                                <div className="my-2">
+                                    <ul className="d-flex align-items-center list-style-none">
+                                        {profile.getFollowers.slice(0, 3)
+                                            .map((user, index) => {
                                                 return (
                                                     <li key={index} className="nav-item navbar-dropdown p-1">
                                                         <img className="dropdown-toggler rounded-circle"
-                                                            width="30"
-                                                            height="30"
-                                                            src={user.getAvatar}
-                                                            title={user.getFullName}
-                                                            alt={user.getUsername}
+                                                             width="30"
+                                                             height="30"
+                                                             src={user.getAvatar}
+                                                             title={user.getFullName}
+                                                             alt={user.getUsername}
                                                         />
                                                     </li>
                                                 )
                                             })}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </Col>
-                    </Row>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
+
+                        <div className={classes.followContainer}
+                             onClick={() => dispatchModalState({
+                                 openModalFollowers : true,
+                                 modalFollowersProfiles : profile.getFollowings,
+                                 modalFollowersTitle : t('vehicles:subscriptions')
+                             })}>
+
+                                <span>
+                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
+                                </span>
+
+                            {/*{profile.getCountFollowings !== 0 && (*/}
+                            {/*    <div className="my-2">*/}
+                            {/*        <ul className="d-flex align-items-center list-style-none">*/}
+                            {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
+                            {/*                return (*/}
+                            {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
+                            {/*                        <img className="dropdown-toggler rounded-circle"*/}
+                            {/*                             width="30"*/}
+                            {/*                             height="30"*/}
+                            {/*                             src={user.getAvatar}*/}
+                            {/*                             title={user.getFullName}*/}
+                            {/*                             alt={user.getUsername}*/}
+                            {/*                        />*/}
+                            {/*                    </li>*/}
+                            {/*                )*/}
+                            {/*            })}*/}
+                            {/*        </ul>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
+                        </div>
+                    </div>
 
                     <p className="top-profile-desc">
                         {profile.getDescription}
@@ -332,6 +373,7 @@ const Profile = () => {
 }
 
 const TabsContainer = ({ state, filterState, updateFilters }) => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const [refWidth, { width }] = useDimensions()
     const { isAuthenticated } = useAuth()
@@ -345,11 +387,11 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count : filterState.total})}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters}/>
+                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters}/>
                 </Col>
                 <Col sm={12} md={9}>
                     {/*<div ref={refWidth}>*/}
-                    <Tabs defaultActive={0} className="nav-tabs-profile">
+                    <Tabs defaultActive={0} className={classes.tabs}>
                         <Tabs.Item id="home-tab" title="Vitrine">
                             <section className={filtersOpened && 'filter-is-visible'}>
                                 <Row className="my-2 d-flex justify-content-center">

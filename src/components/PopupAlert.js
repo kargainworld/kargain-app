@@ -1,5 +1,6 @@
-import  { useContext, useEffect } from 'react'
-import { useToasts } from "@geist-ui/react"
+import React, { useContext, useEffect } from 'react'
+import Snackbar from '@material-ui/core/Snackbar'
+import Alert from '@material-ui/lab/Alert'
 
 import { MessageContext } from '../context/MessageContext'
 import useTranslation from 'next-translate/useTranslation'
@@ -14,23 +15,24 @@ const getMessage = (state, t) => {
 }
 
 const PopupAlert = () => {
-    const [, setToast] = useToasts()
-
     const { t } = useTranslation()
     const { modalState: state  = {}} = useContext(MessageContext)
 
     const message = getMessage(state, t)
 
-    useEffect(() => {
-        if (state.active) {
-            setToast({
-                text: message,
-                type: state.type
-            })
-        }
-    }, [state.active, message])
-
-    return null
+    return (
+        <Snackbar
+            open={!!message}
+            autoHideDuration={5000}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+            <Alert
+                severity={typeof state.type === 'string' ? state.type : 'info'}
+            >
+                {message}
+            </Alert>
+        </Snackbar>
+    )
 }
 
 export default PopupAlert
