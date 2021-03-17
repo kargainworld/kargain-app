@@ -19,8 +19,7 @@ const CommentForm = ({ onSubmitComment, textareaCommentRef, doneSubmitting }) =>
             <div className="mx-auto my-2">
                 <button
                     disabled={!doneSubmitting}
-                    type="submit"
-                    className="btn btn-primary">
+                    type="submit">
                     {t('vehicles:add_a_comment')}
                 </button>
             </div>

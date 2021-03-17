@@ -16,10 +16,10 @@ import ActivatedBullet from './components/ActivatedBullet'
 import CommentsListAdmin from '../../Comments/CommentsListAdmin'
 
 const columnsData = [
-    {
-        title: 'ID',
-        render: rowData => rowData.tableData.id + 1
-    },
+    // {
+    //     title: 'ID',
+    //     render: rowData => rowData.tableData?.id + 1
+    // },
     {
         title: 'Avatar',
         filtering: false,

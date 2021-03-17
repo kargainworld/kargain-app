@@ -35,6 +35,7 @@ import {
     ImageCounter, ImagePlaceholder
 } from './components'
 import {CardActions, CardContent} from "@material-ui/core";
+import announceService from '../../services/AnnounceService'
 
 
 const Index = ({ announceRaw, featuredImgHeight }) => {
@@ -70,6 +71,13 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
         }
     }
 
+    const isOwn = authenticatedUser?.raw?.id === announceRaw?.user?.id
+
+    const toggleVisibility = () => {
+        announceService.updateAnnounce(announce.getSlug, {visible: !announceRaw.visible})
+          .then(() => window.location.reload())
+    }
+
     return (
         <Root>
             <CardContent>
@@ -100,13 +108,22 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                             {getTimeAgo(announce.getCreationDate.raw, lang)}
                         </CreationDate>
 
+                        <img />
                         <ShareIcon
-                            // onClick={TODO}
+                          // onClick={TODO}
+                          src="/images/share.png"
+                          alt=""
                         />
                     </Meta>
                 </User>
 
                 <SubHeader>
+                    {isOwn && (
+                      <Action onClick={toggleVisibility}>
+                          <i.RemoveRedEyeOutlined/>
+                      </Action>
+                    )}
+
                     <Action
                         title={t('vehicles:i-like')}
                         onClick={() => handleClickLikeButton()}
@@ -121,8 +138,11 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
                     <Action
                         title={t('vehicles:comment_plural')}
+                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
                     >
-                        <i.Message style={{ marginRight: 4 }} />
+                        <i.ChatBubbleOutline
+                          style={{ marginRight: 4 }}
+                        />
                         <span>{announce.getCountComments}</span>
                     </Action>
 
@@ -199,7 +219,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
                     {announce.getCountComments > 0 && (
                         <CommentListStyled
-                            comments={announce.getComments.slice(0, 1)}
+                            comments={announce.getComments.reverse().slice(0, 1)}
                             moreLink={announce.getCountComments > 1
                                 ? <Link href={announce.getAnnounceLink}>more</Link>
                                 : null

@@ -1,8 +1,8 @@
 @import 'variables';
 
 $font-size-base: 0.925rem;
-$base-color: #66f;
-$text-dark: #3c4250;
+$base-color: lighten(#000, 30%);
+$text-dark: #000;
 $border-color: #ececec;
 $navbar-body-color: $white;
 $navbar-link-hover: $base-color;
@@ -201,7 +201,7 @@ header {
     .nav-item {
         .nav-link {
             &:hover {
-                color: $blue;
+                color: $base-color;
                 //font-weight: bold;
             }
         }

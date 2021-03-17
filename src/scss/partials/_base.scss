@@ -35,7 +35,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     color: $default-font-color;
     font-family: $default-font-family;
-    //font-family : "Quicksand";
+    //font-family : "Roboto";
     //font-family : "valeraRound";
     //font-family: "Helvetica Neue";
     position: relative;
@@ -87,6 +87,12 @@ p {
 a {
     cursor: pointer;
     text-decoration: none;
+    color: black;
+
+    &:hover {
+        color: black;
+        text-decoration: underline;
+    }
 }
 
 main {
@@ -197,7 +203,7 @@ main {
     border-color: #569ffc;
     padding: .5rem;
     border-radius: 50px;
-    font: 700 16px Quicksand;
+    font: 700 16px Roboto;
     text-decoration: none;
 
     &:hover {

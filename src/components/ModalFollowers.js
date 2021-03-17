@@ -4,6 +4,9 @@ import Link from 'next-translate/Link'
 import Modal from '@material-ui/core/Modal'
 import Fade from '@material-ui/core/Fade'
 import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton';
+import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
+
 import { ModalContext } from '../context/ModalContext'
 
 const useStyles = makeStyles((theme) => ({
@@ -16,22 +19,32 @@ const useStyles = makeStyles((theme) => ({
     
     paper: {
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3)
+        padding: theme.spacing(2, 4, 3),
+        width: '100%',
+        maxWidth: 400,
+        borderRadius: 5,
+        position: 'relative',
+        border: 'none',
+        outline: 'none'
     },
 
     list: {
         listStyleType: 'none',
-        height: '500px',
-        width: '300px',
         overflowX: 'hidden',
-        overflowY: 'scroll'
+        overflowY: 'auto'
     },
 
     pointerClose: {
-        display: 'flex',
-        cursor: 'pointer'
+        position: 'absolute',
+        top: 3,
+        right: 3,
+        color: 'black'
+    },
+
+    title: {
+        textAlign: 'center',
+        color: 'black'
     }
 }))
 
@@ -50,9 +63,14 @@ export default function ModalFollowers () {
             onClose={handleClose}>
             <Fade in={modalStateContext.openModalFollowers}>
                 <div className={classes.paper}>
-                    <Typography component="h2" variant="h2">
+                    <Typography component="h2" variant="h2" className={classes.title}>
                         {modalStateContext.modalFollowersTitle} ({modalStateContext.modalFollowersProfiles.length})
                     </Typography>
+
+                    <IconButton className={classes.pointerClose} onClick={handleClose}>
+                        <HighlightOffOutlinedIcon />
+                    </IconButton>
+
                     <div className="my-2">
                         <ul className={classes.list}>
                             {modalStateContext.modalFollowersProfiles.map((user, index) => {

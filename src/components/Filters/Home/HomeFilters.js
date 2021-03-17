@@ -95,12 +95,18 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 }}
             >
                 <div className="submit mx-2" style={{ marginTop: 0 }}>
-                    <CTALink href="/advanced-search" title={t('layout:advanced-search')}/>
+                    <CTALink
+                      href="/advanced-search"
+                      color="primary"
+                      variant="contained"
+                      style={{ paddingLeft: 40, paddingRight: 40 }}
+                      title={<span style={{color: 'white'}}>GO</span>}
+                    />
                 </div>
 
-                <div className="submit mx-2" style={{ marginTop: 0 }}>
-                    <CTAButton submit title={t('vehicles:show_results_({count})', { count : totalResult })}/>
-                </div>
+                {/*<div className="submit mx-2" style={{ marginTop: 0 }}>*/}
+                {/*    <CTAButton submit title={t('vehicles:show_results_({count})', { count : totalResult })}/>*/}
+                {/*</div>*/}
             </div>
         </form>
     )

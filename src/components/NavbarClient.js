@@ -16,6 +16,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
 import CloseIcon from '@material-ui/icons/Close'
+import StarIcon from '@material-ui/icons/Star'
 import SettingsIcon from '@material-ui/icons/Settings'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import FaceIcon from '@material-ui/icons/Face'
@@ -34,12 +35,29 @@ const Root = styled.header`
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
-  max-width: 300px;
+  width: 100% !important;
+  max-width: 250px;
+  
+  input {
+    padding-right: 30px;
+  }
   
   ${theme.breakpoints?.down('md')} {
     width: 200px
   }
 `)
+
+const SearchInputContainer = styled.div`
+    position: relative;
+    
+  svg {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.3;
+  }
+`
 
 const NavbarClient = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -100,7 +118,8 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            type="secondary"
+            variant="contained"
+            color="primary"
         />
     )
 }
@@ -132,14 +151,17 @@ const NavbarAction = ({ vertical }) => {
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
                 <form className="search-form" onSubmit={handleSubmit(onSubmitSearch)}>
-                    <SearchInput
-                        ref={register}
-                        name="query"
-                        type="search"
-                        placeholder={t('layout:search')}
-                        iconRight={<Search />}
+                    <SearchInputContainer>
+                        <SearchInput
+                          ref={register}
+                          name="query"
+                          type="search"
+                          placeholder={t('layout:search')}
+                          iconRight={<Search />}
 
-                    />
+                        />
+                        <SearchIcon />
+                    </SearchInputContainer>
 
                     <button
                         type="submit"
@@ -174,6 +196,15 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                         </Link>
                     </li>
                 )}
+                <li className="px-0 dropdown-item">
+                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
+                        <a className="nav-link text-left"><StarIcon/>
+                            <span className="m-1">
+                                {t('layout:favorites')}
+                            </span>
+                        </a>
+                    </Link>
+                </li>
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
                         <a className="nav-link text-left"><FaceIcon/>

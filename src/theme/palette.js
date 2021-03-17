@@ -21,7 +21,7 @@ export default {
     secondary: {
         contrastText: white,
         dark: colors.grey[900],
-        main: colors.grey['A400'],
+        main: '#444444',
         light: colors.grey['A400']
     },
     success: {

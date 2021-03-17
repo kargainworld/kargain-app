@@ -10,10 +10,6 @@ import { getTimeAgo } from '../../../libs/utils'
 
 const columnsData = [
     {
-        title: 'ID',
-        render: rowData => rowData.tableData.id + 1
-    },
-    {
         title: 'Avatar',
         filtering: false,
         grouping: false,

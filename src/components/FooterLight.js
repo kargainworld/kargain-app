@@ -18,10 +18,10 @@ const useStyles = makeStyles((theme) => ({
     },
 
     link: {
-        borderRight: '1px solid gainsboro',
-        color: '#343333',
-        fontWeight: 700,
-        paddingRight : '10px'
+        color: '#999999',
+        fontWeight: 'normal',
+        paddingRight : '10px',
+        textDecoration: 'none !important'
     }
 }))
 

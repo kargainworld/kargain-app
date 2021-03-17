@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'reactstrap'
-import useDimensions from 'react-use-dimensions'
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
@@ -206,7 +206,7 @@ const Profile = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
 
     return (
-        <Container>
+        <Container style={{ marginTop: 25 }}>
 
             <NextSeo
                 title={`${profile.getFullName} - Kargain`}
@@ -224,10 +224,10 @@ const Profile = () => {
                 </Col>
                 <Col md={10}>
                     <div className="top-profile-name-btn">
-                        <h2>
+                        <h1>
                             {profile.getFullName}
                             {(profile.getIsPro && profile.getIsActivated) && <img className="mx-2" src="/images/star.png" alt=""/>}
-                        </h2>
+                        </h1>
 
                         {state.isSelf ? (
                             <div className="mx-2">
@@ -262,7 +262,7 @@ const Profile = () => {
                            target="_blank"
                            rel="noreferrer">
                                 <span className="top-profile-location">
-                                    <img className="mx-1" src="/images/location.png" alt=""/>
+                                    <LocationOnOutlinedIcon />
                                     {profile.buildAddressString()}
                                 </span>
                         </a>
@@ -278,14 +278,9 @@ const Profile = () => {
                              })}>
                             <div>
                                 {state.isSelf ? (
-                                    <>
-                                        <span className={clsx('mx-1', classes.followItem)}>
-                                            {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
-                                        </span>
-                                        <span>
-                                            {followerCounter} {t('vehicles:followers', { count : followerCounter })}
-                                        </span>
-                                    </>
+                                    <span>
+                                        {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                    </span>
                                 ) : (
                                     <>
                                         <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
@@ -372,13 +367,35 @@ const Profile = () => {
     )
 }
 
+const getParams = () => {
+    if (typeof window === 'undefined') {
+        return {}
+    }
+
+    return window.location.search.substring(1).split('&').reduce((acc, param) => {
+        const [key, value] = param.split('=')
+
+        return {
+            ...acc,
+            [key]: value
+        }
+    }, {})
+}
+
 const TabsContainer = ({ state, filterState, updateFilters }) => {
+    const router = useRouter()
     const classes = useStyles()
     const { t } = useTranslation()
-    const [refWidth, { width }] = useDimensions()
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
     const { profile, isSelf } = state
+
+    const { activeTab = 0 } = getParams()
+
+    const onTabChange = (tab) => {
+        const href = router.pathname.replace('[username]', router.query.username)
+        router.push(`${href}?activeTab=${tab}`)
+    }
 
     return (
         <Container>
@@ -390,8 +407,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                     <AdvancedFilters updateFilters={updateFilters} className={classes.filters}/>
                 </Col>
                 <Col sm={12} md={9}>
-                    {/*<div ref={refWidth}>*/}
-                    <Tabs defaultActive={0} className={classes.tabs}>
+                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
                         <Tabs.Item id="home-tab" title="Vitrine">
                             <section className={filtersOpened && 'filter-is-visible'}>
                                 <Row className="my-2 d-flex justify-content-center">
@@ -402,9 +418,9 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                             md={6}
                                             lg={6}
                                             xl={6}
-                                            className="my-2"
+                                            Roboto        className="my-2"
                                         >
-                                            <AnnounceCard announceRaw={announce.getRaw}/>
+                                            <AnnounceCard announceRaw={announce.getRaw} />
                                         </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
@@ -482,7 +498,6 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                             </Tabs.Item>
                         )}
                     </Tabs>
-                    {/*</div>*/}
                 </Col>
             </Row>
         </Container>

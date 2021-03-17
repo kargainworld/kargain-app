@@ -26,7 +26,14 @@ const useStyles = makeStyles(() => ({
     filtersTop: {
         display: 'flex',
         alignItems: 'center',
-        borderBottom: '1px solid gainsboro'
+        borderBottom: '1px solid gainsboro',
+
+        '& h4': {
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          cursor: 'pointer'
+        }
     },
 
     filtersHidden: {
@@ -35,7 +42,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
-    const [_vehicleType, _setVehicleType] = useState()
+    const [_vehicleType, _setVehicleType] = useState(vehicleTypes.car)
 
     const vehicleType = typeof setVehicleType === "function" ? vehicleTypeProp : _vehicleType
 
@@ -287,15 +294,15 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
     return (
         <div className={clsx(classes.filtersContainer, className)}>
-            <div className={classes.filtersTop} onClick={() => toggleFilters()}>
-                <Typography variant="h4">
-                    {t('filters:select-filters')}
-                    <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                </Typography>
-            </div>
-
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <ControlButtons/>
+
+              <div className={classes.filtersTop} onClick={() => toggleFilters()}>
+                <Typography variant="h4">
+                  {t('filters:select-filters')}
+                  <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                </Typography>
+              </div>
 
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <FieldWrapper label={t('vehicles:vehicle-type')}>

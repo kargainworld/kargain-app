@@ -70,9 +70,11 @@ export const CreationDate = styled.span`
   }
 `
 
-export const ShareIcon = styled(Share)`
-  color: ${({ theme: { palette } }) => palette.primary.light} !important;
+export const ShareIcon = styled.img`
   cursor: pointer;
+  width: 24px;
+  height: auto;
+  margin-top: 8px;
 `
 
 export const SubHeader = styled.div`
@@ -85,7 +87,7 @@ export const Action = styled.div`
   align-items: center;
   margin-right: ${({ theme }) => theme.spacing(1)}px;
   cursor: pointer;
-  color: ${({ theme: { palette } }) => palette.primary.main}
+  color: ${({ theme: { palette } }) => palette.secondary.main}
 `
 
 export const Price = styled.span`

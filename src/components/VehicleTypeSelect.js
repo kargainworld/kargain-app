@@ -22,11 +22,12 @@ const VehicleTypeContainer = styled.div`
 
 export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
     <VehicleTypesWrapper style={style}>
-        {items.map(({ label, value: itemValue, img, imgSelected }) => {
+        {items.map(({ label, value: itemValue, img, imgSelected, IconComponent }) => {
             const isActive = itemValue === value
 
             return (
                 <VehicleTypeContainer selected={isActive} onClick={() => onChange(itemValue)}>
+                    {/*<IconComponent />*/}
                     <img
                         src={isActive ? `/images/${imgSelected}` : `/images/${img}`}
                         alt={label}
