@@ -159,27 +159,6 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                 </SubHeader>
 
                 <Body>
-                    {/*{announce.getFeaturedImg && (*/}
-                    {/*    <ImageWrapper>*/}
-                    {/*        <Link href={announce.getAnnounceLink} prefetch={false}>*/}
-                    {/*            <a>*/}
-                    {/*                <Image*/}
-                    {/*                    effect="blur"*/}
-                    {/*                    src={announce.getFeaturedImg.getLocation}*/}
-                    {/*                    alt={announce.getFeaturedImg.getName}*/}
-                    {/*                    height={featuredImgHeight}*/}
-                    {/*                    width="100%"*/}
-                    {/*                />*/}
-                    {/*            </a>*/}
-                    {/*        </Link>*/}
-
-                    {/*        <ImageCounter>*/}
-                    {/*            <i.CameraAlt />*/}
-                    {/*            {announce.getCountImages}*/}
-                    {/*        </ImageCounter>*/}
-                    {/*    </ImageWrapper>*/}
-                    {/*)}*/}
-
                     <ImageWrapper>
                         <Link href={announce.getAnnounceLink} prefetch={false}>
                             <a>

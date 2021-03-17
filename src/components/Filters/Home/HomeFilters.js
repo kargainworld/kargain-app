@@ -103,10 +103,6 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                       title={<span style={{color: 'white'}}>GO</span>}
                     />
                 </div>
-
-                {/*<div className="submit mx-2" style={{ marginTop: 0 }}>*/}
-                {/*    <CTAButton submit title={t('vehicles:show_results_({count})', { count : totalResult })}/>*/}
-                {/*</div>*/}
             </div>
         </form>
     )
