@@ -7,6 +7,8 @@ import MuiTableHead from './MuiTableHead'
 import MuiTableRow from './MuiTableRow'
 import MuiTooltipPopper from './MuiTooltipPopper'
 import MuiTypography from './MuiTypography'
+import MuiSlider from "./MuiSlider";
+import MuiInput from "./MuiInput"
 
 export default {
     MuiDrawer,
@@ -17,5 +19,7 @@ export default {
     MuiPaper,
     MuiButton,
     MuiIconButton,
-    MuiTableHead
+    MuiTableHead,
+    MuiSlider,
+    MuiInput
 }

@@ -6,7 +6,7 @@ import NavbarClient from './NavbarClient'
 const Layout = ({ children }) => {
     return (
         <>
-            <NavbarClient/>
+            <NavbarClient />
             <MainBody>
                 {children}
             </MainBody>

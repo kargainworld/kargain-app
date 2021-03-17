@@ -6,9 +6,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 const useStyles = makeStyles(() => ({
     label: {
         width : '100%',
-        padding : '.5rem 0',
-        marginBottom : '.5rem',
-        borderBottom : '1px solid gainsboro'
+        padding : 0,
+        marginBottom : 4,
+        marginTop: 12,
+        fontSize: 12,
+        color: '#999999'
     }
 }))
 

@@ -34,6 +34,8 @@ function TablePaginationActions({ count, page, rowsPerPage, onChangePage }) {
         onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
     }
 
+    return null
+
     return (
         <div className={classes.root}>
             <IconButton

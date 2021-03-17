@@ -2,11 +2,12 @@
 @import "variables";
 
 button, input, textarea {
-    padding: .5rem 1rem;
+    padding: 7.5px 10px;
     border: none;
-    border-radius: 0;
+    border-radius: 5px;
     box-shadow: unset;
-    border-bottom: 1px solid;
+    border: 1px solid #EAEAEA;
+    background-color: #fff;
 
     &:focus, &:active {
         outline: 0;
@@ -101,6 +102,11 @@ p.error {
 .select-field {
     display: block;
     position: relative;
+
+    & > div > div:focus-within {
+        border-color: #000 !important;
+        box-shadow: none;
+    }
 }
 
 .input-field {
@@ -114,7 +120,6 @@ p.error {
     & > input {
         width: 100%;
         border-radius: 5px;
-        background-color: rgb(232, 240, 254) !important;
     }
 }
 
@@ -321,12 +326,12 @@ select[type=radio] {
 
 .nice-select .current {
     color: #3d4248;
-    font: 500 15px Quicksand;
+    font: 500 15px Roboto;
 }
 
 .nice-select .option {
     color: #3d4248;
-    font: 500 15px Quicksand;
+    font: 500 15px Roboto;
     line-height: 40px;
 }
 
@@ -362,7 +367,7 @@ select[type=radio] {
 
 .inputfile + label {
     text-align: center;
-    font: 400 110px Quicksand;
+    font: 400 110px Roboto;
     color: #3d4248;
     display: flex;
     align-items: center;
@@ -388,7 +393,7 @@ select[type=radio] {
 .inputfile2 + label {
     color: #569ffc;
     border-radius: 20px;
-    font: 700 13px Quicksand;
+    font: 700 13px Roboto;
     padding: 7px 20px;
     display: block;
     cursor: pointer;
@@ -412,7 +417,7 @@ select[type=radio] {
     color: #3d4248;
     border-color: #3d4248;
     border-radius: 20px;
-    font: 700 13px Quicksand;
+    font: 700 13px Roboto;
     padding: 7px 20px;
 
     &:hover {
@@ -425,7 +430,7 @@ select[type=radio] {
     color: #8b8b8b;
     border-color: #8b8b8b;
     border-radius: 20px;
-    font: 700 13px Quicksand;
+    font: 700 13px Roboto;
     padding: 7px 20px;
 
     &:hover {
@@ -443,7 +448,7 @@ select[type=radio] {
     width: 202px;
     padding: 15px 0;
     border-radius: 50px;
-    font: 700 16px Quicksand;
+    font: 700 16px Roboto;
 }
 
 .btn-publier {
@@ -451,7 +456,7 @@ select[type=radio] {
     width: 202px;
     padding: 15px 0;
     border-radius: 50px;
-    font: 700 16px Quicksand;
+    font: 700 16px Roboto;
     background-color: #569ffc;
     border: 1px solid #569ffc;
     margin-left: 21px;
@@ -464,7 +469,7 @@ select[type=radio] {
 .subscribe-btn {
     border-color: #569ffc;
     border-radius: 20px;
-    font: 700 13px Quicksand;
+    font: 700 13px Roboto;
     padding: 7px 20px;
     background-color: #569ffc;
     margin-left: 10px;

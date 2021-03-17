@@ -38,13 +38,13 @@ const useStyles = makeStyles(() => ({
             flex: 1
         }
     },
-    
+
     cardTopInfos: {
         display : 'flex',
         justifyContent : 'space-between',
         margin: '1rem 0'
     },
-    
+
     priceStarsWrapper: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -79,9 +79,9 @@ const Announce = () => {
         announce : new AnnounceModel(),
         likesCounter : 0
     })
-    
+
     const { announce } = state
-    
+
     const handleCLickImg = (index) => {
         if (refImg.current) {
             refImg.current.slideToIndex(index)
@@ -100,7 +100,7 @@ const Announce = () => {
     const handleClickLikeButton = async () => {
         if (!isAuthenticated) return setForceLoginModal(true)
         let counter = state.likesCounter
-        
+
         try {
             if (alreadyLikeCurrentUser) {
                 await AnnounceService.removeLikeLoggedInUser(announce.getID)
@@ -125,7 +125,7 @@ const Announce = () => {
             const result = await AnnounceService.getAnnounceBySlug(slug)
             const { announce, isAdmin, isSelf } = result
             console.log(result)
-            
+
             setState(state => ({
                 ...state,
                 stateReady : true,
@@ -151,12 +151,12 @@ const Announce = () => {
 
     return (
         <Container>
-    
+
             <NextSeo
                 title={`${announce.getTitle} - Kargain`}
                 description={announce.getTheExcerpt()}
             />
-            
+
             {state.isAdmin && (
                 <Alert severity="info" className="mb-2">
                     Connected as Admin
@@ -182,7 +182,7 @@ const Announce = () => {
                             <Typography as="h2" variant="h2">
                                 {announce.getAnnounceTitle}
                             </Typography>
-    
+
                             <div className={classes.cardTopInfos}>
                                 <div className="price-announce">
                                     {(isAuthenticated && authenticatedUser.getIsPro) ? (
@@ -196,13 +196,13 @@ const Announce = () => {
                                             <span className="mx-1">
                                                 <small>{announce.getPrice}€</small>
                                             </span>
-            
+
                                         </>
                                     ) : (
                                         <span>{announce.getPrice} €</span>
                                     )}
                                 </div>
-    
+
                                 <div className="icons-star-prof"
                                     onClick={() => dispatchModalState({
                                         openModalShare : true,
@@ -275,7 +275,7 @@ const Announce = () => {
                                     </span>
                                     <div className="mx-1">
                                         <span>
-                                            {announce.getCountLikes} {t('vehicles:like', { count : state.likesCounter})}
+                                            {announce.getCountLikes} {t('vehicles:like', { count : state.likesCounter })}
                                         </span>
                                     </div>
                                 </div>
@@ -288,7 +288,7 @@ const Announce = () => {
                                         </span>
                                     </div>
                                 </div>
-    
+
                                 {(state.isAdmin || state.isSelf) ? (
                                     <div className="mx-2">
                                         <CTALink

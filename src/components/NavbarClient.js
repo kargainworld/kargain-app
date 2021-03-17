@@ -1,4 +1,7 @@
 import React, { useContext, useState } from 'react'
+import styled from 'styled-components'
+import { Input } from '@material-ui/core'
+import { Search } from '@material-ui/icons'
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
 import Link from 'next-translate/Link'
@@ -6,13 +9,14 @@ import useTranslation from 'next-translate/useTranslation'
 import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ChatIcon from '@material-ui/icons/Chat'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
 import CloseIcon from '@material-ui/icons/Close'
+import StarIcon from '@material-ui/icons/Star'
 import SettingsIcon from '@material-ui/icons/Settings'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import FaceIcon from '@material-ui/icons/Face'
@@ -24,23 +28,36 @@ import NotificationsNav from '../components/Notifications/NotificationsNav'
 import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
-import {ClickAwayListener} from "@material-ui/core"
+import { ClickAwayListener } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
-    navBarClient: {
-        display: 'flex',
-        flex: 1,
-        width: 'min-content'
-    },
+const Root = styled.header`
+  
+`
 
-    inputSearch: {
-        maxWidth: '300px',
+const SearchInput = styled(Input)(({ theme }) => `
+  width: 100% !important;
+  max-width: 250px;
+  
+  input {
+    padding-right: 30px;
+  }
+  
+  ${theme.breakpoints?.down('md')} {
+    width: 200px
+  }
+`)
 
-        [theme.breakpoints.down('md')]: {
-            width: '200px'
-        }
-    }
-}))
+const SearchInputContainer = styled.div`
+    position: relative;
+    
+  svg {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.3;
+  }
+`
 
 const NavbarClient = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -49,48 +66,50 @@ const NavbarClient = () => {
     const isMobile = useMediaQuery('(max-width:768px)')
 
     return (
-        <>
-            <header className="header">
-                <Container>
-                    <Navbar light expand="md" className="navbar position-relative">
-                        <NavbarBrand href="/">
-                            <img src={getLogo()} width="150" alt="logo"/>
-                        </NavbarBrand>
-                        <NavbarToggler
-                            className="m-2"
-                            onClick={toggleNavbar}
-                        />
-                        <Collapse isOpen={isOpen} navbar>
-                            {(!isMobile || isOpen) && (
-                                <>
-                                    {isMobile ? (
-                                        <div className={clsx("sidebar", isOpen && 'open')}>
-                                            <div className="sidebar_controls">
-                                                <Button
-                                                    startIcon={<CloseIcon/>}
-                                                    onClick={toggleNavbar}
-                                                />
-                                            </div>
-                                            {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
-                                            <NavbarAction vertical={true}/>
+        <Root className="header">
+            <Container>
+                <Navbar light expand="md" className="navbar position-relative">
+                    <NavbarBrand href="/">
+                        <img src={getLogo()} width="150" alt="logo"/>
+                    </NavbarBrand>
+                    <NavbarToggler
+                        className="m-2"
+                        onClick={toggleNavbar}
+                    />
+                    <Collapse isOpen={isOpen} navbar>
+                        {(!isMobile || isOpen) && (
+                            <>
+                                {isMobile ? (
+                                    <div className={clsx("sidebar", isOpen && 'open')}>
+                                        <div className="sidebar_controls">
+                                            <Button
+                                                startIcon={<CloseIcon/>}
+                                                onClick={toggleNavbar}
+                                            />
                                         </div>
-                                    ) : (
-                                        <div className={clsx("d-flex", "navbar-menu")}>
-                                            <NavbarAction/>
-                                            {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </Collapse>
-                    </Navbar>
-                </Container>
-            </header>
-        </>
+                                        {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
+                                        <NavbarAction vertical={true}/>
+                                    </div>
+                                ) : (
+                                    <div className={clsx("d-flex", "navbar-menu")}>
+                                        <NavbarAction/>
+                                        {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </Collapse>
+
+                    <NavItem className="p-2" style={{ listStyle: 'none' }}>
+                        <NewAdButtonCTAStyled isDesktop={!isMobile}/>
+                    </NavItem>
+                </Navbar>
+            </Container>
+        </Root>
     )
 }
 
-const NewAdButtonCTA = ({isDesktop}) => {
+const NewAdButtonCTA = ({ isDesktop, className }) => {
     const { t } = useTranslation()
 
     return (
@@ -98,15 +117,28 @@ const NewAdButtonCTA = ({isDesktop}) => {
             title={isDesktop && t('layout:create-announce')}
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
-            className="cta_nav_link"
+            className={className}
+            variant="contained"
+            color="primary"
         />
     )
 }
 
+const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
+  border-radius: 5px;
+  border: 1px solid #000 !important;
+  background-color: #000;
+  color: #fff;
+
+  .header &:hover {
+    background-color: #fff;
+    color: #000 !important;
+  }
+`
+
 const NavbarAction = ({ vertical }) => {
     const { t } = useTranslation()
-    const classes = useStyles()
-    const {register, handleSubmit } = useForm()
+    const { register, handleSubmit } = useForm()
     const { dispatchSearchQuery } = useContext(SearchContext)
 
     const onSubmitSearch = (form) => {
@@ -118,18 +150,18 @@ const NavbarAction = ({ vertical }) => {
     return (
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
-                <NewAdButtonCTA isDesktop={true}/>
-            </NavItem>
-
-            <NavItem className="p-2">
                 <form className="search-form" onSubmit={handleSubmit(onSubmitSearch)}>
-                    <input
-                        ref={register}
-                        name="query"
-                        type="search"
-                        placeholder={t('layout:search')}
-                        className={clsx('form-control', classes.inputSearch, "search-input")}
-                    />
+                    <SearchInputContainer>
+                        <SearchInput
+                          ref={register}
+                          name="query"
+                          type="search"
+                          placeholder={t('layout:search')}
+                          iconRight={<Search />}
+
+                        />
+                        <SearchIcon />
+                    </SearchInputContainer>
 
                     <button
                         type="submit"
@@ -164,6 +196,15 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                         </Link>
                     </li>
                 )}
+                <li className="px-0 dropdown-item">
+                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
+                        <a className="nav-link text-left"><StarIcon/>
+                            <span className="m-1">
+                                {t('layout:favorites')}
+                            </span>
+                        </a>
+                    </Link>
+                </li>
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
                         <a className="nav-link text-left"><FaceIcon/>
@@ -206,7 +247,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
     )
 }
 
-const LoggedInUserNav = ({vertical}) => {
+const LoggedInUserNav = ({ vertical }) => {
     const [state, setState] = useState({
         isOpen1: false,
         isOpen2: false
@@ -250,7 +291,7 @@ const LoggedInUserNav = ({vertical}) => {
     )
 }
 
-const VisitorNav = ({vertical}) => {
+const VisitorNav = ({ vertical }) => {
     const { t } = useTranslation()
 
     return (

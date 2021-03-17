@@ -102,7 +102,8 @@ export default class UserModel {
     }
 
     get getHiddenGarage () {
-        return this.getGarage.filter(announce => !announce.getIsVisible)
+        const garage = this.raw?.garage ?? []
+        return garage.filter(announce => !announce.visible)
     }
 
     get getFavorites () {

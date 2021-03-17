@@ -26,7 +26,14 @@ const useStyles = makeStyles(() => ({
     filtersTop: {
         display: 'flex',
         alignItems: 'center',
-        borderBottom: '1px solid gainsboro'
+        borderBottom: '1px solid gainsboro',
+
+        '& h4': {
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          cursor: 'pointer'
+        }
     },
 
     filtersHidden: {
@@ -34,7 +41,19 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicleType }) => {
+const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
+    const [_vehicleType, _setVehicleType] = useState(vehicleTypes.car)
+
+    const vehicleType = typeof setVehicleType === "function" ? vehicleTypeProp : _vehicleType
+
+    const onVehicleTypeChange = (...args) => {
+        if (typeof setVehicleType === 'function') {
+            return setVehicleType(...args)
+        }
+
+        return _setVehicleType(...args)
+    }
+
     const cache = useRef({})
     const classes = useStyles()
     const { t } = useTranslation()
@@ -46,7 +65,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
     const { dispatchModalError } = useContext(MessageContext)
     const [hiddenForm, hideForm] = useState(true)
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
-    const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes)
+    const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const defaultValues = {
         ...defaultFilters,
         vehicleType : vehicleTypesDefault[0],
@@ -274,16 +293,16 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
     }, [selectedModel, fetchModelsYears])
 
     return (
-        <div className={classes.filtersContainer}>
-            <div className={classes.filtersTop} onClick={() => toggleFilters()}>
-                <Typography variant="h4">
-                    {t('filters:select-filters')}
-                    <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                </Typography>
-            </div>
-
+        <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <ControlButtons/>
+
+              <div className={classes.filtersTop} onClick={() => toggleFilters()}>
+                <Typography variant="h4">
+                  {t('filters:select-filters')}
+                  <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                </Typography>
+              </div>
 
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <FieldWrapper label={t('vehicles:vehicle-type')}>
@@ -291,9 +310,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             name="vehicleType"
                             control={control}
                             errors={errors}
-                            options={vehicleTypesDefault}
+                            options={vehicleTypesDefault()}
                             onChange={selected =>{
-                                setVehicleType(selected.value)
+                                onVehicleTypeChange(selected.value)
                                 return selected
                             }}
                         />
@@ -306,7 +325,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType, setVehicl
                             errors={errors}
                             options={announceTypesFiltered}
                             onChange={selected =>{
-                                setVehicleType(selected.value)
+                                // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
                                 return selected
                             }}
                         />

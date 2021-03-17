@@ -5,6 +5,7 @@ import withGA from 'next-ga'
 import PropTypes from 'prop-types'
 import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import { ThemeProvider as StyledThemeProvider } from "styled-components"
 import { SearchContext, SearchContextProvider } from '../context/SearchContext'
 import { ModalContext, ModalContextProvider } from '../context/ModalContext'
 import { MessageContextProvider } from '../context/MessageContext'
@@ -37,7 +38,7 @@ const MyApp = ({ Component, pageProps }) => {
     }, [])
 
     return (
-        <>
+        <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
                 <MessageContextProvider>
                     <AuthProvider>
@@ -55,7 +56,7 @@ const MyApp = ({ Component, pageProps }) => {
                     </AuthProvider>
                 </MessageContextProvider>
             </ThemeProvider>
-        </>
+        </StyledThemeProvider>
     )
 }
 

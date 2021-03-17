@@ -1,7 +1,7 @@
 import {colors} from '@material-ui/core'
 
 const white = '#FFFFFF'
-const black = "#111111"
+const black = "#00000"
 const grey = "#AAAAAA"
 const green = "#2ECC40"
 const blue = "#2C6BFC"
@@ -14,15 +14,15 @@ export default {
     white,
     primary: {
         contrastText: white,
-        light: "#4685FC",
-        main: "#2C6BFC",
-        dark: "#2650D9"
+        light: "#999999",
+        main: "#111111",
+        dark: "#000000"
     },
     secondary: {
         contrastText: white,
-        dark: colors.blue[900],
-        main: colors.blue['A400'],
-        light: colors.blue['A400']
+        dark: colors.grey[900],
+        main: '#444444',
+        light: colors.grey['A400']
     },
     success: {
         contrastText: white,
@@ -49,8 +49,8 @@ export default {
         light: colors.red[400]
     },
     text: {
-        primary: colors.blueGrey[900],
-        secondary: colors.blueGrey[600],
+        primary: colors.grey[900],
+        secondary: colors.grey[600],
         link: colors.blue[600]
     },
     background: {

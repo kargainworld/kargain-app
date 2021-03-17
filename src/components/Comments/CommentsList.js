@@ -8,14 +8,15 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import AlertTriangle from '@geist-ui/react-icons/alertTriangle'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 
 import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
+import clsx from "clsx"
 
-const CommentsList = ({ comments, moreLink }) => {
+const CommentsList = ({ comments, moreLink, className }) => {
     const [deletedComments, setDeletedComments] = useState([])
     const { authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
@@ -55,7 +56,7 @@ const CommentsList = ({ comments, moreLink }) => {
     const filterComments = (CommentModel) => !deletedComments.includes(CommentModel.getID)
 
     return (
-        <div className="comments">
+        <div className={clsx(comments, className)}>
             <ModalConfirmRemoveComment
                 openDialogRemove={openDialogRemove}
                 handleCloseDialogRemove={handleCloseDialogRemove}
@@ -75,7 +76,7 @@ const CommentsList = ({ comments, moreLink }) => {
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
                             {!isOwn && (
-                                <AlertTriangle onClick={() => complain(comment.getID)} />
+                                <ErrorOutlineIcon onClick={() => complain(comment.getID)} />
                             )}
 
                             {isOwn && (
@@ -127,7 +128,7 @@ const CommentsList = ({ comments, moreLink }) => {
     )
 }
 
-const ModalConfirmRemoveComment = ({openDialogRemove, handleCloseDialogRemove, handleCallback}) => {
+const ModalConfirmRemoveComment = ({ openDialogRemove, handleCloseDialogRemove, handleCallback }) => {
     const { t } = useTranslation()
 
     return(

@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'reactstrap'
-import clsx from 'clsx'
-import useDimensions from 'react-use-dimensions'
+import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
@@ -25,8 +24,54 @@ import AdvancedFilters from '../../../components/Filters/Advanced/AdvancedFilter
 import { ReactComponent as StarSVGYellow } from '../../../../public/images/svg/star-yellow.svg'
 import { ReactComponent as StarSVG } from '../../../../public/images/svg/star.svg'
 import Error from '../../_error'
+import {makeStyles} from "@material-ui/styles";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) => ({
+    subscriptionWrapper: {
+      display: 'flex'
+    },
+    userName: {
+        color: theme.palette.primary.light
+    },
+    tabs: {
+        '& > .nav': {
+            display: 'flex',
+            flexWrap: 'nowrap'
+        },
+    },
+    followContainer: {
+        marginTop: theme.spacing(2),
+
+        '& > div': {
+            display: 'flex',
+            alignItems: 'center'
+        },
+
+        '&:not(:last-child)': {
+            marginRight: theme.spacing(3)
+        }
+    },
+    followItem: {
+        display: "block",
+        lineHeight: 1,
+
+        '& svg': {
+            width: 16
+        }
+    },
+    filters: {
+        padding: '0 !important',
+
+        '& .FieldWrapper': {
+            marginRight: '0 !important',
+            marginLeft: '0 !important'
+        }
+    }
+}))
 
 const Profile = () => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const router = useRouter()
     const { username } = router.query
@@ -42,7 +87,7 @@ const Profile = () => {
         isAdmin: false,
         profile: new UserModel()
     })
-    
+
     const [filterState, setFilterState] = useState({
         loading: false,
         sorter: {},
@@ -50,9 +95,9 @@ const Profile = () => {
         page: 1,
         total: 0
     })
-    
+
     const profile = state.profile
-    
+
     const handleFollowProfile = async () => {
         if (!isAuthenticated) return setForceLoginModal(true)
         try {
@@ -161,12 +206,12 @@ const Profile = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
 
     return (
-        <Container>
-    
+        <Container style={{ marginTop: 25 }}>
+
             <NextSeo
                 title={`${profile.getFullName} - Kargain`}
             />
-            
+
             {state.isAdmin && (
                 <Alert severity="info" className="mb-2">
                     Connected as Admin
@@ -179,17 +224,17 @@ const Profile = () => {
                 </Col>
                 <Col md={10}>
                     <div className="top-profile-name-btn">
-                        <h2>
+                        <h1>
                             {profile.getFullName}
                             {(profile.getIsPro && profile.getIsActivated) && <img className="mx-2" src="/images/star.png" alt=""/>}
-                        </h2>
+                        </h1>
 
                         {state.isSelf ? (
                             <div className="mx-2">
                                 <Link href={profile.getProfileEditLink}>
-                                    <a className="btn btn-outline-dark">
+                                    <Button component="a" variant="outlined">
                                         {t('vehicles:edit-my-profile')}
-                                    </a>
+                                    </Button>
                                 </Link>
                             </div>
                         ) : (
@@ -208,114 +253,104 @@ const Profile = () => {
                         )}
                     </div>
 
-                    <p className="top-profile-login">
+                    <p className={classes.userName}>
                         @{profile.getUsername}
                     </p>
 
-                    <Row>
-                        {profile.getAddressParts.fullAddress && (
-                            <Col xs={12} sm={4} md={4}>
-                                <a href={profile.buildAddressGoogleMapLink()}
-                                    target="_blank"
-                                    rel="noreferrer">
-                                    <span className="top-profile-location">
-                                        <img className="mx-1" src="/images/location.png" alt=""/>
-                                        {profile.buildAddressString()}
+                    {profile.getAddressParts.fullAddress && (
+                        <a href={profile.buildAddressGoogleMapLink()}
+                           target="_blank"
+                           rel="noreferrer">
+                                <span className="top-profile-location">
+                                    <LocationOnOutlinedIcon />
+                                    {profile.buildAddressString()}
+                                </span>
+                        </a>
+                    )}
+
+                    <div className={classes.subscriptionWrapper}>
+                        <div className={classes.followContainer}
+                             onClick={() => dispatchModalState({
+                                 openModalFollowers : true,
+                                 modalFollowersProfiles : profile.getFollowers,
+                                 modalFollowersTitle : t('vehicles:followers')
+
+                             })}>
+                            <div>
+                                {state.isSelf ? (
+                                    <span>
+                                        {followerCounter} {t('vehicles:followers', { count : followerCounter })}
                                     </span>
-                                </a>
-                            </Col>
-                        )}
-
-                        <Col xs={12} sm={4} md={4}>
-                            <div className="follow_container"
-                                onClick={() => dispatchModalState({
-                                    openModalFollowers : true,
-                                    modalFollowersProfiles : profile.getFollowers,
-                                    modalFollowersTitle : t('vehicles:followers')
-                                    
-                                })}>
-                                <div className="top-profile-followers">
-                                    {state.isSelf ? (
-                                        <>
-                                            <span className="mx-1">
-                                                {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
-                                            </span>
-                                            <span>
-                                                {followerCounter} {t('vehicles:followers', {count : followerCounter})}
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="mx-1" onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleFollowProfile()
-                                            }}>
-                                                {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
-                                            </span>
-                                            <span>
-                                                {followerCounter} {t('vehicles:followers', {count : followerCounter})}
-                                            </span>
-                                        </>
-                                    )}
-                                </div>
-
-                                {profile.getCountFollowers !== 0 && (
-                                    <div className="my-2">
-                                        <ul className="d-flex align-items-center list-style-none">
-                                            {profile.getFollowers.slice(0, 3)
-                                                .map((user, index) => {
-                                                    return (
-                                                        <li key={index} className="nav-item navbar-dropdown p-1">
-                                                            <img className="dropdown-toggler rounded-circle"
-                                                                width="30"
-                                                                height="30"
-                                                                src={user.getAvatar}
-                                                                title={user.getFullName}
-                                                                alt={user.getUsername}
-                                                            />
-                                                        </li>
-                                                    )
-                                                })}
-                                        </ul>
-                                    </div>
+                                ) : (
+                                    <>
+                                        <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleFollowProfile()
+                                        }}>
+                                            {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
+                                        </span>
+                                        <span>
+                                            {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                        </span>
+                                    </>
                                 )}
                             </div>
-                        </Col>
 
-                        <Col xs={12} sm={4} md={4}>
-                            <div className="follow_container"
-                                onClick={() => dispatchModalState({
-                                    openModalFollowers : true,
-                                    modalFollowersProfiles : profile.getFollowings,
-                                    modalFollowersTitle : t('vehicles:subscriptions')
-                                })}>
-                                
-                                <span className="top-profile-followers">
-                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings})}
-                                </span>
-
-                                {profile.getCountFollowings !== 0 && (
-                                    <div className="my-2">
-                                        <ul className="d-flex align-items-center list-style-none">
-                                            {profile.getFollowings.slice(0, 3).map((user, index) => {
+                            {profile.getCountFollowers !== 0 && (
+                                <div className="my-2">
+                                    <ul className="d-flex align-items-center list-style-none">
+                                        {profile.getFollowers.slice(0, 3)
+                                            .map((user, index) => {
                                                 return (
                                                     <li key={index} className="nav-item navbar-dropdown p-1">
                                                         <img className="dropdown-toggler rounded-circle"
-                                                            width="30"
-                                                            height="30"
-                                                            src={user.getAvatar}
-                                                            title={user.getFullName}
-                                                            alt={user.getUsername}
+                                                             width="30"
+                                                             height="30"
+                                                             src={user.getAvatar}
+                                                             title={user.getFullName}
+                                                             alt={user.getUsername}
                                                         />
                                                     </li>
                                                 )
                                             })}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </Col>
-                    </Row>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
+
+                        <div className={classes.followContainer}
+                             onClick={() => dispatchModalState({
+                                 openModalFollowers : true,
+                                 modalFollowersProfiles : profile.getFollowings,
+                                 modalFollowersTitle : t('vehicles:subscriptions')
+                             })}>
+
+                                <span>
+                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
+                                </span>
+
+                            {/*{profile.getCountFollowings !== 0 && (*/}
+                            {/*    <div className="my-2">*/}
+                            {/*        <ul className="d-flex align-items-center list-style-none">*/}
+                            {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
+                            {/*                return (*/}
+                            {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
+                            {/*                        <img className="dropdown-toggler rounded-circle"*/}
+                            {/*                             width="30"*/}
+                            {/*                             height="30"*/}
+                            {/*                             src={user.getAvatar}*/}
+                            {/*                             title={user.getFullName}*/}
+                            {/*                             alt={user.getUsername}*/}
+                            {/*                        />*/}
+                            {/*                    </li>*/}
+                            {/*                )*/}
+                            {/*            })}*/}
+                            {/*        </ul>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
+                        </div>
+                    </div>
 
                     <p className="top-profile-desc">
                         {profile.getDescription}
@@ -332,109 +367,137 @@ const Profile = () => {
     )
 }
 
+const getParams = () => {
+    if (typeof window === 'undefined') {
+        return {}
+    }
+
+    return window.location.search.substring(1).split('&').reduce((acc, param) => {
+        const [key, value] = param.split('=')
+
+        return {
+            ...acc,
+            [key]: value
+        }
+    }, {})
+}
+
 const TabsContainer = ({ state, filterState, updateFilters }) => {
+    const router = useRouter()
+    const classes = useStyles()
     const { t } = useTranslation()
-    const [refWidth, { width }] = useDimensions()
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
     const { profile, isSelf } = state
 
+    const { activeTab = 0 } = getParams()
+
+    const onTabChange = (tab) => {
+        const href = router.pathname.replace('[username]', router.query.username)
+        router.push(`${href}?activeTab=${tab}`)
+    }
+
     return (
         <Container>
             <Row>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={3}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count : filterState.total})}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters}/>
+                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters}/>
                 </Col>
-                <Col sm={12} md={8}>
-                    <div ref={refWidth}>
-                        <Tabs defaultActive={0} className="nav-tabs-profile">
-                            <Tabs.Item id="home-tab" title="Vitrine">
-                                <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                            <Col key={index} sm={12} md={12} lg={width < 1200 ? 12 : 6} xl={width < 1200 ? 12 : 6} className="my-2">
-                                                <AnnounceCard announceRaw={announce.getRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-found-announces')}</p>
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
+                <Col sm={12} md={9}>
+                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
+                        <Tabs.Item id="home-tab" title="Vitrine">
+                            <section className={filtersOpened && 'filter-is-visible'}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
+                                        <Col
+                                            key={index}
+                                            sm={12}
+                                            md={6}
+                                            lg={6}
+                                            xl={6}
+                                            Roboto        className="my-2"
+                                        >
+                                            <AnnounceCard announceRaw={announce.getRaw} />
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{t('vehicles:no-found-announces')}</p>
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
 
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </section>
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
+                            </section>
+                        </Tabs.Item>
+
+                        {isSelf && (
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
+                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                            <AnnounceCard announceRaw={announceRaw}/>
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{t('vehicles:no-hidden-announces')}</p>
+
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
+
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
                             </Tabs.Item>
+                        )}
 
-                            {isSelf && (
-                                <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                            <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                                <AnnounceCard announceRaw={announceRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-hidden-announces')}</p>
+                        {isSelf && (
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                                <Row className="my-2 d-flex justify-content-center">
+                                    {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
+                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                            <AnnounceCard announceRaw={announceRaw}/>
+                                        </Col>
+                                    )) : (
+                                        <div className="d-flex flex-column align-items-center smy-2">
+                                            <p>{(t('vehicles:no-favorite-announces'))}</p>
 
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
+                                            <CTALink
+                                                title={t('vehicles:create-my-first-ad')}
+                                                href="/deposer-une-annonce"
+                                                className="cta_nav_link my-2"
+                                            />
 
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </Tabs.Item>
-                            )}
-
-                            {isSelf && (
-                                <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                            <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                                <AnnounceCard announceRaw={announceRaw}/>
-                                            </Col>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{(t('vehicles:no-favorite-announces'))}</p>
-
-                                                <CTALink
-                                                    title={t('vehicles:create-my-first-ad')}
-                                                    href="/deposer-une-annonce"
-                                                    className="cta_nav_link my-2"
-                                                />
-
-                                                <CTALink
-                                                    title={t('vehicles:explore-ads')}
-                                                    href={isAuthenticated ? '/feed' : '/'}
-                                                    className="cta_nav_link my-2"
-                                                />
-                                            </div>
-                                        )}
-                                    </Row>
-                                </Tabs.Item>
-                            )}
-                        </Tabs>
-                    </div>
+                                            <CTALink
+                                                title={t('vehicles:explore-ads')}
+                                                href={isAuthenticated ? '/feed' : '/'}
+                                                className="cta_nav_link my-2"
+                                            />
+                                        </div>
+                                    )}
+                                </Row>
+                            </Tabs.Item>
+                        )}
+                    </Tabs>
                 </Col>
             </Row>
         </Container>

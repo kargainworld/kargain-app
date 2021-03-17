@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import TableMUI from '../TableMUI'
 import AnnounceService from '../../../services/AnnounceService'
@@ -15,10 +16,10 @@ import ActivatedBullet from './components/ActivatedBullet'
 import CommentsListAdmin from '../../Comments/CommentsListAdmin'
 
 const columnsData = [
-    {
-        title: 'ID',
-        render: rowData => rowData.tableData.id + 1
-    },
+    // {
+    //     title: 'ID',
+    //     render: rowData => rowData.tableData?.id + 1
+    // },
     {
         title: 'Avatar',
         filtering: false,
@@ -221,6 +222,22 @@ const AdsTable = () => {
         fetchData()
     }, [fetchData])
 
+    const onRemove = async (AnnounceModel) => {
+        try {
+            const slug = AnnounceModel.getSlug
+            await AnnounceService.removeAnnounce(slug)
+
+            const rows = resultFetch.rows.filter((Model) => Model.getSlug !== slug)
+
+            setResultsFetch({
+                rows,
+                total: resultFetch.total - 1
+            })
+        } catch (err) {
+            dispatchModalError({ err })
+        }
+    }
+
     return (
         <>
             <TableMUI
@@ -245,6 +262,11 @@ const AdsTable = () => {
                         icon: EditIcon,
                         tooltip: 'Modifier',
                         onClick: (e, AnnounceModel) => handleItemClick(e, AnnounceModel)
+                    },
+                    {
+                        icon: HighlightOffIcon,
+                        tooltip: 'Remove',
+                        onClick: (e, AnnounceModel) => onRemove(AnnounceModel)
                     }
                 ]}
             />

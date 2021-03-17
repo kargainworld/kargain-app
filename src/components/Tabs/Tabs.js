@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 
@@ -13,9 +13,13 @@ const TabsItem = ({ activeTab, index, ...props }) => {
     )
 }
 
-const Tabs = ({ defaultActive, children, id, handleClickTab}) => {
+const Tabs = ({ defaultActive, active, children, id, handleClickTab, className }) => {
     const [activeTab, setActiveTab] = useState(defaultActive || 0)
     const tabs = !Array.isArray(children) ? [children] : children
+
+    useEffect(() => {
+      setActiveTab(+active)
+    }, [active])
 
     const onClickTabItem = (index) => {
         setActiveTab(index)
@@ -23,7 +27,7 @@ const Tabs = ({ defaultActive, children, id, handleClickTab}) => {
     }
 
     return (
-        <section className="tabs">
+        <section className={clsx("tabs", className)}>
             <ul className="nav nav-tabs m-2 justify-content-center" id={id}>
                 {tabs && tabs.map((item, index) => {
                     if (!item) return null

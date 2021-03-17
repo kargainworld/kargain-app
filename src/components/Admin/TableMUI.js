@@ -1,79 +1,56 @@
-import React, { forwardRef} from 'react'
-import PropTypes from 'prop-types'
-import SearchIcon from '@material-ui/icons/Search'
-import FilterList from '@material-ui/icons/FilterList'
-import MaterialTable from 'material-table';
+import * as React from 'react';
+import { DataGrid } from '@material-ui/data-grid';
+import {Tooltip, Typography} from '@material-ui/core';
 
-const TableMUI = ({ columns, data, title, ...props }) => (
-    <MaterialTable
-        style={{
-            margin: '5px',
-            marginBottom: '10rem'
-        }}
-        localization={{
-            pagination: {
-                labelRowsSelect: 'lignes',
-                labelDisplayedRows: '{from}-{to} de {count}'
-            },
-            toolbar: {
-                searchPlaceholder: 'Rechercher',
-                nRowsSelected: '{0} ligne(s) selectionnée(s)'
-            },
-            header: {
-                actions: 'Actions'
-            },
-            body: {
-                emptyDataSourceMessage: 'Aucune donnée à afficher',
-                filterRow: {
-                    filterTooltip: 'Filtres'
-                }
-            }
-        }}
-        icons={{
-            // eslint-disable-next-line react/display-name
-            Filter: forwardRef((props, ref) => <FilterList ref={ref}/>),
-            // eslint-disable-next-line react/display-name
-            Search: forwardRef((props, ref) => <SearchIcon ref={ref}/>)
-        }}
-        isLoading={props.loading}
-        title={title}
-        columns={columns}
-        data={data}
-        actions={props.actions}
-        detailPanel={props.detailPanel}
-        options={{
-            search: props.search,
-            // selection: props.selection,
-            filtering: props.filtering,
-            grouping: props.grouping,
-            pageSize: props.tableLength,
-            pageSizeOptions: [10, 20, 50, 100],
-            exportButton: props.exportButton,
-            exportFileName: props.exportFileName
-            // actionsColumnIndex: -1
-        }}
-    />
+
+
+const Actions = ({ actions, row }) => actions.map(({ icon: Icon, onClick, isFreeAction, tooltip }) =>
+  isFreeAction
+    ? null
+    : (
+      <Tooltip title={tooltip} placement="top">
+        <div style={{ marginRight: 10, cursor: 'pointer' }}>
+          <Icon onClick={(event) => onClick(event, row.model)} />
+        </div>
+      </Tooltip>
+    )
 )
 
-TableMUI.propTypes = {
-    columns: PropTypes.array.isRequired,
-    data: PropTypes.array.isRequired,
-    title: PropTypes.string,
-    search: PropTypes.bool,
-    filtering: PropTypes.bool,
-    grouping: PropTypes.bool,
-    exportButton: PropTypes.bool,
-    tableLength: PropTypes.number
+const convertToDataGrid = (_columns, _rows, actions) => {
+    const columns = _columns.map(({ title, render, width }) => ({
+      ...(width ? { width } : {}),
+      title,
+      field: title,
+      renderCell: ({ row }) => render(row.model)
+    }))
+
+    const rows = _rows.map(row => ({
+      model: row,
+      id: parseInt(Math.random().toString().substring(2))
+    }))
+
+    const actionsColumn = {
+        title: 'Actions',
+        field: 'Actions',
+        width: 120,
+        renderCell: ({ row }) =>  <Actions actions={actions} row={row} />
+    }
+
+    return {
+        columns: [actionsColumn, ...columns],
+        rows
+    }
 }
 
-TableMUI.defaultProps = {
-    search: true,
-    selection: true,
-    filtering: true,
-    grouping: true,
-    exportButton: true,
-    tableLength: 15,
-    exportFileName: 'export_data_sci'
-}
+export default function DataTable({ columns: cols, data, title, actions, ...props }) {
+  const { rows, columns } = convertToDataGrid(cols, data, actions)
 
-export default TableMUI
+    return (
+      <div>
+        {title && <Typography variant="h2">{title}</Typography>}
+        <div style={{ height: 'calc(100vh - 130px)', width: '100%' }}>
+          <DataGrid rows={rows} columns={columns} pageSize={5} autoPageSize />
+        </div>
+      </div>
+    );
+}
