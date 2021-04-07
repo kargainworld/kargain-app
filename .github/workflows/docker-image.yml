@@ -1,27 +1,25 @@
-name: Docker Image CI
+name: CI/CD
 
 on:
   push:
-    branches: [ ci-cd ]
-  pull_request:
-    branches: [ ci-cd ]
+    branches: [ main ]
 
 jobs:
-#  build:
-#    name: Build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Build the Docker image
-#        run: |
-#          docker build . --file Dockerfile --tag ghcr.io/kargainworld/kargain-app:latest
-#          echo ${GITHUB_TOKEN} | docker login -u kargainworld --password-stdin ghcr.io
-#          docker push ghcr.io/kargainworld/kargain-app:latest
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: |
+          docker build . --file Dockerfile --tag ghcr.io/kargainworld/kargain-app:latest
+          echo ${GITHUB_TOKEN} | docker login -u kargainworld --password-stdin ghcr.io
+          docker push ghcr.io/kargainworld/kargain-app:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-#    needs: build
+    needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
