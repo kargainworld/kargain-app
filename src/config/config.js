@@ -1,4 +1,4 @@
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || true // TODO: remove || true
 const devApi = 'http://localhost:8080/v1'
 const api = isProd ? process.env.NEXT_PUBLIC_API_ROUTE ? process.env.NEXT_PUBLIC_API_ROUTE : 'https://api.kargain.com/v1' : devApi
 

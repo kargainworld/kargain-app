@@ -12,6 +12,7 @@ import { MessageContext } from '../../../context/MessageContext'
 import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
+import TextInput from "../../Form/Inputs/TextInput";
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -49,7 +50,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             <Header text={t('vehicles:vehicle-state')}/>
 
             <FieldWrapper label={t('vehicles:chassis_number')}>
-                <NumberInput
+                <TextInput
                     name="chassisNumber"
                     placeholder='VIN'
                     control={control}
