@@ -104,9 +104,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
 
     return (
         <li
-            className={clsx('nav-item', 'navbar_icon', {
-                ['navbar-icon-notifications']: notifications.some(({ opened }) => !opened)
-            })}
+            className={clsx('nav-item', 'navbar_icon')}
         >
             <div className="dropdown show">
                 <IconButton color="inherit"
@@ -115,9 +113,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
                     aria-expanded="true"
                     id="dropdownMenu2"
                     onClick={() => toggle(keyName)}>
-                    <Badge className={classes.badge} badgeContent={notifications.length} color="secondary">
-                        <NotificationsIcon/>
-                    </Badge>
+                    <NotificationsIcon/>
                 </IconButton>
 
                 <div id="dropdown-notifications"

@@ -52,11 +52,11 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     }, [getData])
 
     const onPowerKwChange = ({ target: { value } }) => {
-        setValue('powerCh', (Math.round(+value / 0.735499 * 10) / 10).toString())
+        setValue('powerCh', (Math.round(+value / 0.735499)).toString())
     }
 
     const onPowerChChange = ({ target: { value } }) => {
-        setValue('powerKw', (Math.round(+value * 0.735499 * 10) / 10).toString())
+        setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
     }
     
     return (

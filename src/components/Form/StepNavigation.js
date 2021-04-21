@@ -10,7 +10,7 @@ const StepNavigation = ({ prev, prevLabel, next, nextLabel, submit, submitLabel,
     const { t } = useTranslation()
 
     return (
-        <Row className="form_navigation justify-content-around">
+        <Row className="form_navigation justify-content-around" style={{ marginTop: 30 }}>
 
             {prev && (
                 <Button variant="outlined" type="button" onClick={() => prev()}>
