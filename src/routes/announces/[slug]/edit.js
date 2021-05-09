@@ -617,7 +617,7 @@ const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => 
                     <FieldWrapper label={t('vehicles:owners_quantity')}>
                         <SelectInput
                             name="ownersCount"
-                            options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([1,2,3,4,5,6,7,8,9])}
                             placeholder="Select number of owners"
                             control={control}
                             errors={errors}

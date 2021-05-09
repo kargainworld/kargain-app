@@ -55,7 +55,17 @@ const DropdownSwitchLang = ({dropdownStyle}) => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            文A <span className={classes.arrowDown}>&#8964;</span>
+            文A {' '}
+              <span className={classes.arrowDown}>
+                <ExpandMoreIcon
+                    style={{
+                        position: "relative",
+                        top: 3,
+                        fontSize: "20px",
+                        color: '#9e6ffa'
+                    }}
+                />
+              </span>
           </Button>
           <Menu
             id="simple-menu"

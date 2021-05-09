@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Input } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
 import clsx from 'clsx'
-import { useForm } from 'react-hook-form'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
@@ -138,27 +137,29 @@ const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
 
 const NavbarAction = ({ vertical }) => {
     const { t } = useTranslation()
-    const { register, handleSubmit } = useForm()
     const { dispatchSearchQuery } = useContext(SearchContext)
 
-    const onSubmitSearch = (form) => {
-        if (form.query) {
-            dispatchSearchQuery(form.query)
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const onSubmitSearch = (event) => {
+        event.preventDefault();
+        if (searchQuery) {
+            dispatchSearchQuery(searchQuery)
         }
     }
 
     return (
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
-                <form className="search-form" onSubmit={handleSubmit(onSubmitSearch)}>
+                <form className="search-form" onSubmit={onSubmitSearch}>
                     <SearchInputContainer>
                         <SearchInput
-                          ref={register}
+                          value={searchQuery}
+                          onChange={({ target }) => setSearchQuery(target.value)}
                           name="query"
                           type="search"
                           placeholder={t('layout:search')}
                           iconRight={<Search />}
-
                         />
                         <SearchIcon />
                     </SearchInputContainer>

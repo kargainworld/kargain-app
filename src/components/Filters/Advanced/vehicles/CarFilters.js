@@ -27,7 +27,7 @@ const CarFilters = ({ control, watch, errors }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
@@ -36,11 +36,11 @@ const CarFilters = ({ control, watch, errors }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
-    
+
     return (
         <>
             <FieldWrapper label={t('vehicles:price')}>
@@ -85,18 +85,6 @@ const CarFilters = ({ control, watch, errors }) => {
                     defaultValue={[1, 1000]}
                     errors={errors}
                     control={control}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:mileage')}>
-                <SliderInput
-                    name="mileage"
-                    min={0}
-                    max={200000}
-                    step={1000}
-                    errors={errors}
-                    control={control}
-                    suffix="km"
                 />
             </FieldWrapper>
 

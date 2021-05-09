@@ -14,9 +14,8 @@ const MotoFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
     const { dispatchModalError } = useContext(MessageContext)
-    
+
     const [formData, setFormData] = useState({
-        RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
         RadioChoicesGas: [],
         RadioFunctionVehicle: [],
@@ -28,7 +27,7 @@ const MotoFilters = ({ control, watch, errors }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.moto, lang)
@@ -37,7 +36,7 @@ const MotoFilters = ({ control, watch, errors }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -70,19 +69,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
-            <FieldWrapper label={t('vehicles:mileage')}>
-                <SliderInput
-                    name="mileage"
-                    min={0}
-                    max={200000}
-                    step={1000}
-                    errors={errors}
-                    control={control}
-                    suffix="km"
-                />
-            </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:power')}>
                 <SliderInput
                     name="powerKw"
@@ -94,7 +81,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     suffix="kw"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
                     name="countrySelect"
@@ -102,7 +89,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:address')}>
                 <SearchLocationInput
                     name="address"
@@ -111,7 +98,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     errors={errors}>
                 </SearchLocationInput>
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:radius')}>
                 <SliderInput
                     name="radius"
@@ -123,7 +110,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     suffix="km"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:equipments')}>
                 <SelectInput
                     name="equipments"
@@ -134,7 +121,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-            
+
             <FieldWrapper label={t('vehicles:paint')}>
                 <SelectInput
                     name="paint"
@@ -144,7 +131,7 @@ const MotoFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:external_color')}>
                 <SelectInput
                     name="externalColor"
@@ -153,16 +140,6 @@ const MotoFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
-            <FieldWrapper label={t('vehicles:vehicle-state')}>
-                <SelectInput
-                    name="vehicleGeneralState"
-                    options={formData.RadioVehicleGeneralState}
-                    control={control}
-                    errors={errors}
-                />
-            </FieldWrapper>
-            
         </>
     )
 }

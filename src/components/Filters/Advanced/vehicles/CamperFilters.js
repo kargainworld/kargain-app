@@ -28,7 +28,7 @@ const CamperFilters = ({control, watch, errors }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
@@ -37,7 +37,7 @@ const CamperFilters = ({control, watch, errors }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -56,7 +56,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     suffix="€"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:gear-box')}>
                 <SelectInput
                     name="vehicleEngineType"
@@ -65,7 +65,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:gas')}>
                 <SelectInput
                     name="vehicleEngineGas"
@@ -75,7 +75,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:cylinder')}>
                 <SliderInput
                     name="vehicleEngineCylinder"
@@ -88,19 +88,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
-            <FieldWrapper label={t('vehicles:mileage')}>
-                <SliderInput
-                    name="mileage"
-                    min={0}
-                    max={200000}
-                    step={1000}
-                    errors={errors}
-                    control={control}
-                    suffix="km"
-                />
-            </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:power')}>
                 <SliderInput
                     name="powerKw"
@@ -112,7 +100,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     suffix="kw"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
                     name="countrySelect"
@@ -120,7 +108,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:address')}>
                 <SearchLocationInput
                     name="address"
@@ -129,7 +117,7 @@ const CamperFilters = ({control, watch, errors }) => {
                     errors={errors}>
                 </SearchLocationInput>
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:radius')}>
                 <SliderInput
                     name="radius"

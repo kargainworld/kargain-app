@@ -108,7 +108,6 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                             {getTimeAgo(announce.getCreationDate.raw, lang)}
                         </CreationDate>
 
-                        <img />
                         <ShareIcon
                           // onClick={TODO}
                           src="/images/share.png"
@@ -120,7 +119,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                 <SubHeader>
                     {isOwn && (
                       <Action onClick={toggleVisibility}>
-                          <i.RemoveRedEyeOutlined/>
+                          <i.RemoveRedEyeOutlined />
                       </Action>
                     )}
 
@@ -141,7 +140,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                         style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
                     >
                         <i.ChatBubbleOutline
-                          style={{ marginRight: 4 }}
+                          style={{ width: 23, marginRight: 4 }}
                         />
                         <span>{announce.getCountComments}</span>
                     </Action>
@@ -152,7 +151,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                             modalMessagingProfile : announce.getAuthor
                         })}
                     >
-                        <i.MailOutline />
+                        <i.MailOutline style={{ position: "relative", top: -1 }} />
                     </Action>
 
                     <Price>€ {announce.getPrice}</Price>

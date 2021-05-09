@@ -10,13 +10,13 @@ import { SelectOptionsUtils } from '../../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
 import { MessageContext } from '../../../../context/MessageContext'
+import NumberInput from "../../../Form/Inputs/NumberInput";
 
 const UtilityFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
     const { dispatchModalError } = useContext(MessageContext)
     const [formData, setFormData] = useState({
-        RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
         RadioChoicesGas: [],
         RadioFunctionVehicle: [],
@@ -28,7 +28,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
@@ -37,11 +37,11 @@ const UtilityFilters = ({ control, watch, errors }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
-    
+
     return (
         <>
             <FieldWrapper label={t('vehicles:price')}>
@@ -56,7 +56,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     suffix="€"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:gear-box')}>
                 <SelectInput
                     name="vehicleEngineType"
@@ -65,7 +65,25 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
+            <FieldWrapper label={t('vehicles:axles')}>
+                <SelectInput
+                    name="vehicleEngineType"
+                    className="mb-2"
+                    options={SelectOptionsUtils([2, 3, 4, 5])}
+                    control={control}
+                    errors={errors}
+                />
+            </FieldWrapper>
+
+            <FieldWrapper label={t('vehicles:function_hour')}>
+                <NumberInput
+                    name="functionHour"
+                    control={control}
+                    errors={errors}
+                />
+            </FieldWrapper>
+
             <FieldWrapper label={t('vehicles:gas')}>
                 <SelectInput
                     name="vehicleEngineGas"
@@ -75,7 +93,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:cylinder')}>
                 <SliderInput
                     name="vehicleEngineCylinder"
@@ -88,19 +106,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-            
-            <FieldWrapper label={t('vehicles:mileage')}>
-                <SliderInput
-                    name="mileage"
-                    min={0}
-                    max={200000}
-                    step={1000}
-                    errors={errors}
-                    control={control}
-                    suffix="km"
-                />
-            </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:power')}>
                 <SliderInput
                     name="powerKw"
@@ -112,7 +118,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     suffix="kw"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
                     name="countrySelect"
@@ -120,7 +126,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:address')}>
                 <SearchLocationInput
                     name="address"
@@ -129,7 +135,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}>
                 </SearchLocationInput>
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:radius')}>
                 <SliderInput
                     name="radius"
@@ -141,7 +147,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     suffix="km"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:equipments')}>
                 <SelectInput
                     name="equipments"
@@ -152,7 +158,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:class_emission')}>
                 <SelectInput
                     name="emission"
@@ -161,7 +167,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:co2-consumption')}>
                 <SliderInput
                     name="consumptionGkm"
@@ -173,7 +179,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     suffix="kw"
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:doors_quantity')}>
                 <SliderInput
                     name="doors"
@@ -184,7 +190,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     control={control}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:driver-cabins')}>
                 <SelectInput
                     name="driverCabins"
@@ -193,7 +199,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:doors_quantity')}>
                 <SelectInput
                     name="doors"
@@ -203,7 +209,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:seats_quantity')}>
                 <SelectInput
                     name="seats"
@@ -213,7 +219,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:paint')}>
                 <SelectInput
                     name="paint"
@@ -223,7 +229,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-            
+
             <FieldWrapper label={t('vehicles:external_color')}>
                 <SelectInput
                     name="externalColor"
@@ -232,7 +238,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <FieldWrapper label={t('vehicles:internal_color')}>
                 <SelectInput
                     name="internalColor"
