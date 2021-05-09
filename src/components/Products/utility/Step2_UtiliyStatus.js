@@ -13,6 +13,7 @@ import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import TextInput from "../../Form/Inputs/TextInput";
+import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -23,7 +24,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
-    
+
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -31,7 +32,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
     })
 
     dispatchFormUpdate(watch(), { compare: true })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
@@ -70,30 +71,68 @@ const Step = ({ onSubmitStep, prevStep }) => {
             <FieldWrapper label={t('vehicles:owners_quantity')}>
                 <SelectInput
                     name="ownersCount"
-                    options={SelectOptionsUtils([2, 3, 4, 5])}
+                    options={SelectOptionsUtils([1, 2, 3, 4, 5])}
                     placeholder="Select number of owners"
                     control={control}
                     errors={errors}
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:accident_vehicle')}>
-                <SelectInput
+            <FieldWrapper>
+                <CheckBoxInput
                     name="accidentVehicle"
-                    options={SelectOptionsUtils([2,3,4,5,6,7,8,9])} 
-                    placeholder="Select"
                     control={control}
                     errors={errors}
+                    label={t('vehicles:accident_vehicle')}
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:defective_vehicle')}>
-                <SelectInput
-                    name="defectiveVehicle"
-                    options={formData?.RadioChoicesDefective}
-                    placeholder="Select"
+
+
+
+            <FieldWrapper>
+                <CheckBoxInput
+                    name="serviceBook"
                     control={control}
                     errors={errors}
+                    label={t('vehicles:service_book')}
+                />
+            </FieldWrapper>
+
+            <FieldWrapper>
+                <CheckBoxInput
+                    name="warranty"
+                    control={control}
+                    errors={errors}
+                    label={t('vehicles:warranty')}
+                />
+            </FieldWrapper>
+
+            <FieldWrapper>
+                <CheckBoxInput
+                    name="nonSmoker"
+                    control={control}
+                    errors={errors}
+                    label={t('vehicles:non_smoker')}
+                />
+            </FieldWrapper>
+
+            <FieldWrapper>
+                <CheckBoxInput
+                    name="cabinFilter"
+                    control={control}
+                    errors={errors}
+                    label={t('vehicles:cabin_filter')}
+                />
+            </FieldWrapper>
+
+
+            <FieldWrapper>
+                <CheckBoxInput
+                    name="defectiveVehicle"
+                    control={control}
+                    errors={errors}
+                    label={t('vehicles:defective_vehicle')}
                 />
             </FieldWrapper>
 

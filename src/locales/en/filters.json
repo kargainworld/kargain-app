@@ -12,6 +12,8 @@
     "vehicleFunctionUse": "Vehicle function",
     "vehicleGeneralState": "State",
     "mileage": "Mileage",
+    "is_professional__private": "is_professional__private",
+    "is_professional__professional": "is_professional__professional",
     "powerKw": "Power",
     "countrySelect": "Country",
     "address.city": "City",

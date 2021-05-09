@@ -149,7 +149,6 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                 <FieldWrapper label={t('vehicles:function_hour')}>
                     <NumberInput
                         name="functionHour"
-                        placeholder="km"
                         control={control}
                         errors={errors}
                     />

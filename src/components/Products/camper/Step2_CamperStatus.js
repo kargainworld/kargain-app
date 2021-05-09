@@ -13,6 +13,7 @@ import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
 import TextInput from "../../Form/Inputs/TextInput";
+import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -25,13 +26,13 @@ const Step = ({ onSubmitStep, prevStep }) => {
     })
 
     dispatchFormUpdate(watch(), { compare: true })
-    
+
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
         RadioChoicesDefective: []
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
@@ -40,7 +41,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             dispatchModalError({ err, persist : true})
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -70,30 +71,28 @@ const Step = ({ onSubmitStep, prevStep }) => {
             <FieldWrapper label={t('vehicles:owners_quantity')}>
                 <SelectInput
                     name="ownersCount"
-                    options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                    options={SelectOptionsUtils([1,2,3,4,5,6,7,8,9])}
                     placeholder="Select number of owners"
                     control={control}
                     errors={errors}
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:accident_vehicle')}>
-                <SelectInput
+            <FieldWrapper>
+                <CheckBoxInput
                     name="accidentVehicle"
-                    options={SelectOptionsUtils([2,3,4,5,6,7,8,9])} 
-                    placeholder="Select"
                     control={control}
                     errors={errors}
+                    label={t('vehicles:accident_vehicle')}
                 />
             </FieldWrapper>
-            
-            <FieldWrapper label={t('vehicles:defective_vehicle')}>
-                <SelectInput
+
+            <FieldWrapper>
+                <CheckBoxInput
                     name="defectiveVehicle"
-                    options={formData?.RadioChoicesDefective}
-                    placeholder="Select"
                     control={control}
                     errors={errors}
+                    label={t('vehicles:defective_vehicle')}
                 />
             </FieldWrapper>
 
@@ -107,7 +106,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
                     errors={errors}
                 />
             </FieldWrapper>
-    
+
             <StepNavigation prev={prevStep} submit/>
         </form>
     )

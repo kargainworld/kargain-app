@@ -15,6 +15,8 @@ import { FormContext } from '../../context/FormContext'
 import SearchLocationInput from '../Form/Inputs/SearchLocationInput'
 import TagsControlled from '../Tags/TagsControlled'
 import Header from '../Header'
+import SelectInput from "../Form/Inputs/SelectInput";
+import {SelectOptionsUtils} from "../../libs/formFieldsUtils";
 
 const Step = ({ handleSubmitForm, prevStep }) => {
     const { t } = useTranslation()
@@ -121,6 +123,27 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                         </FieldWrapper>
                     </Col>
                 </Row>}
+
+
+
+            <FieldWrapper label={t('vehicles:is_professional')}>
+                <SelectInput
+                    name="isProfessional"
+                    options={SelectOptionsUtils([
+                        {
+                            value: true,
+                            label: t('vehicles:is_professional__professional')
+                        },
+                        {
+                            value: false,
+                            label: t('vehicles:is_professional__private')
+                        },
+                    ])}
+                    control={control}
+                    errors={errors}
+                />
+            </FieldWrapper>
+
             <FieldWrapper label={t('vehicles:description')}>
                 <TextareaInput
                     name="description"
