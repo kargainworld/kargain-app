@@ -35,7 +35,6 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                 const addressObject = autoComplete.getPlace()
                 let address_components = addressObject?.address_components
                 const formatted_address = addressObject?.formatted_address
-
                 if (Array.isArray(address_components)) {
 
                     const types = {

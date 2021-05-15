@@ -13,7 +13,7 @@ import { MessageContext } from '../../context/MessageContext'
 import VehiclesService from '../../services/VehiclesService'
 import { vehicleTypes, vehicleTypeRefModels } from '../../business/vehicleTypes'
 
-const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
+const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const cache = useRef({})
     const formRef = useRef(null)
@@ -21,10 +21,12 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
     const { dispatchModalError } = useContext(MessageContext)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+
     const { watch, control, errors, handleSubmit, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
-        defaultValues: formDataContext
+        defaultValues: formDataContext,
+
     })
 
     const [manufacturersData, setManufacturersData] = useState({
@@ -36,7 +38,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
-    const selectedVersion = watch('manufacturer.version');
+    // const selectedVersion = watch('manufacturer.version');
     const selectedYear = watch('manufacturer.year')
 
     dispatchFormUpdate(watch(), { compare: true })
@@ -251,7 +253,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
 
         return value
     }
-
+debugger
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -264,6 +266,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                             errors={errors}
                             options={manufacturersData.makes}
                             onChange={onMakeChange}
+                            rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -278,6 +281,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                             control={control}
                             errors={errors}
                             onChange={onModelChange}
+                            rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -315,6 +319,7 @@ const Step0_Manufacturer = ({vehicleType, triggerSkipStep, onSubmitStep, prevSte
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.model') || !isCar}
+                            rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>

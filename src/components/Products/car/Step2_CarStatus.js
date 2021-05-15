@@ -56,6 +56,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
                     placeholder='VIN'
                     control={control}
                     errors={errors}
+                    rules={{ required:t('form_validations:required') }}
                 />
             </FieldWrapper>
 
@@ -65,6 +66,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
                     options={formData?.RadioVehicleGeneralState}
                     control={control}
                     errors={errors}
+                    rules={{ required:t('form_validations:required') }}
                 />
             </FieldWrapper>
 
