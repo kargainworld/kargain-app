@@ -14,7 +14,7 @@ const BreadcrumbSteps = ({ steps, activeStepIndex, maxActiveStep, setStep }) => 
                             className={clsx(index <= activeStepIndex && 'valid')}
                             onClick={(e) => {
                                 if (index === activeStepIndex) e.preventDefault()
-                                if (index <= maxActiveStep) setStep(index)
+                                // if (index <= maxActiveStep) setStep(index)
                             }}>
                             <a href="#" className={clsx('bread-link text', index <= activeStepIndex && 'active')}>
                                 {step.props.title}
