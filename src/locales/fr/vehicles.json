@@ -28,6 +28,7 @@
   "followers" : "Abonné",
   "followers_plural" : "Abonnés",
   "subscriptions" : "Abonnement",
+  "un-subscriptions" : "Désabonner",
   "subscriptions_plural" : "Abonnements",
   "publish-my-ad-now" : "Publier votre annonce maintenant",
   "create-my-first-ad" : "Créer ma première annonce",

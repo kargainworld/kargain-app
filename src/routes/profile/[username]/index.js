@@ -21,15 +21,15 @@ import CTALink from '../../../components/CTALink'
 import Tabs from '../../../components/Tabs/Tabs'
 import Loading from '../../../components/Loading'
 import AdvancedFilters from '../../../components/Filters/Advanced/AdvancedFilters'
-import { ReactComponent as StarSVGYellow } from '../../../../public/images/svg/star-yellow.svg'
-import { ReactComponent as StarSVG } from '../../../../public/images/svg/star.svg'
+
+
 import Error from '../../_error'
-import {makeStyles} from "@material-ui/styles";
-import clsx from "clsx";
+import { makeStyles } from "@material-ui/styles"
+import clsx from "clsx"
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
-      display: 'flex'
+        display: 'flex'
     },
     userName: {
         color: theme.palette.primary.light
@@ -38,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
         '& > .nav': {
             display: 'flex',
             flexWrap: 'nowrap'
-        },
+        }
     },
     followContainer: {
         marginTop: theme.spacing(2),
-
+        display: 'flex',
+        alignItems: 'center',
         '& > div': {
             display: 'flex',
             alignItems: 'center'
@@ -67,7 +68,12 @@ const useStyles = makeStyles((theme) => ({
             marginRight: '0 !important',
             marginLeft: '0 !important'
         }
-    }
+    },
+    btnFollow: {
+        padding: '3px 8px',
+        fontSize:'12px',
+        marginRight : '15px'
+    },
 }))
 
 const Profile = () => {
@@ -259,23 +265,23 @@ const Profile = () => {
 
                     {profile.getAddressParts.fullAddress && (
                         <a href={profile.buildAddressGoogleMapLink()}
-                           target="_blank"
-                           rel="noreferrer">
-                                <span className="top-profile-location">
-                                    <LocationOnOutlinedIcon />
-                                    {profile.buildAddressString()}
-                                </span>
+                            target="_blank"
+                            rel="noreferrer">
+                            <span className="top-profile-location">
+                                <LocationOnOutlinedIcon />
+                                {profile.buildAddressString()}
+                            </span>
                         </a>
                     )}
 
                     <div className={classes.subscriptionWrapper}>
                         <div className={classes.followContainer}
-                             onClick={() => dispatchModalState({
-                                 openModalFollowers : true,
-                                 modalFollowersProfiles : profile.getFollowers,
-                                 modalFollowersTitle : t('vehicles:followers')
+                            onClick={() => dispatchModalState({
+                                openModalFollowers : true,
+                                modalFollowersProfiles : profile.getFollowers,
+                                modalFollowersTitle : t('vehicles:followers')
 
-                             })}>
+                            })}>
                             <div>
                                 {state.isSelf ? (
                                     <span>
@@ -287,7 +293,26 @@ const Profile = () => {
                                             e.stopPropagation()
                                             handleFollowProfile()
                                         }}>
-                                            {alreadyFollowProfile ? <StarSVGYellow/> : <StarSVG/>}
+                                            {
+                                                alreadyFollowProfile ?
+                                                // <StarSVGYellow/>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={ () => handleFollowProfile() }>
+                                                        {t('vehicles:un-subscriptions')}
+                                                        className={classes.btnFollow}
+                                                    </Button>
+                                                    :
+                                                    <Button
+                                                        variant="outlined"
+                                                        color="primary"
+                                                        className={classes.btnFollow}
+                                                        onClick={ () => handleFollowProfile() }>
+                                                        {t('vehicles:subscriptions')}
+                                                    </Button>
+                                                // <StarSVG/>
+                                            }
                                         </span>
                                         <span>
                                             {followerCounter} {t('vehicles:followers', { count : followerCounter })}
@@ -304,11 +329,11 @@ const Profile = () => {
                                                 return (
                                                     <li key={index} className="nav-item navbar-dropdown p-1">
                                                         <img className="dropdown-toggler rounded-circle"
-                                                             width="30"
-                                                             height="30"
-                                                             src={user.getAvatar}
-                                                             title={user.getFullName}
-                                                             alt={user.getUsername}
+                                                            width="30"
+                                                            height="30"
+                                                            src={user.getAvatar}
+                                                            title={user.getFullName}
+                                                            alt={user.getUsername}
                                                         />
                                                     </li>
                                                 )
@@ -320,15 +345,15 @@ const Profile = () => {
 
 
                         <div className={classes.followContainer}
-                             onClick={() => dispatchModalState({
-                                 openModalFollowers : true,
-                                 modalFollowersProfiles : profile.getFollowings,
-                                 modalFollowersTitle : t('vehicles:subscriptions')
-                             })}>
+                            onClick={() => dispatchModalState({
+                                openModalFollowers : true,
+                                modalFollowersProfiles : profile.getFollowings,
+                                modalFollowersTitle : t('vehicles:subscriptions')
+                            })}>
 
-                                <span>
-                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
-                                </span>
+                            <span>
+                                {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
+                            </span>
 
                             {/*{profile.getCountFollowings !== 0 && (*/}
                             {/*    <div className="my-2">*/}
@@ -402,7 +427,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
             <Row>
                 <Col sm={12} md={3}>
                     <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count : filterState.total})}
+                        {t('vehicles:{count}_results_search', { count : filterState.total })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} className={classes.filters}/>
                 </Col>
