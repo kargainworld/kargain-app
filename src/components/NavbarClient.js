@@ -15,7 +15,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
 import CloseIcon from '@material-ui/icons/Close'
-import FlagIcon from '@material-ui/icons/Flag';
+import BookmarkIcon from '@material-ui/icons/Bookmark'
 import SettingsIcon from '@material-ui/icons/Settings'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import FaceIcon from '@material-ui/icons/Face'
@@ -199,7 +199,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 )}
                 <li className="px-0 dropdown-item">
                     <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                        <a className="nav-link text-left"><FlagIcon/>
+                        <a className="nav-link text-left"><BookmarkIcon/>
                             <span className="m-1">
                                 {t('layout:favorites')}
                             </span>
