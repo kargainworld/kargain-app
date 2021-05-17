@@ -97,7 +97,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
-                            placeholder="150"
+                            placeholder="sm&sup3;"
                             rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
@@ -140,7 +140,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={0}
                             onChange={onPowerKwChange}
-                            rules={{ required:t('form_validations:required') }}
+                            // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -152,7 +152,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={0}
                             onChange={onPowerChChange}
-                            rules={{ required:t('form_validations:required') }}
+                            // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
