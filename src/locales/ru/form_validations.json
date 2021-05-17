@@ -3,5 +3,6 @@
     "min_price_{min}{currency}" : "Минимум {{min}}{{currency}}",
     "max_price_{max}{currency}" : "Максимум {{max}}{{currency}}",
     "min_length_{min}" : "Минимальная длина: {{min}} символов",
+    "max_length_{max}" : "Максимальная длина: {{max}} символов",
     "regexPwd{min}{max}" : "От 4 до 16 символов. Минимум 1 цифра"
 }

@@ -56,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
     followItem: {
         display: "block",
         lineHeight: 1,
-
-        '& svg': {
-            width: 16
-        }
+        //
+        // '& svg': {
+        //     width: 16
+        // }
     },
     filters: {
         padding: '0 !important',
@@ -299,9 +299,9 @@ const Profile = () => {
                                                     <Button
                                                         variant="contained"
                                                         color="primary"
+                                                        className={classes.btnFollow}
                                                         onClick={ () => handleFollowProfile() }>
                                                         {t('vehicles:un-subscriptions')}
-                                                        className={classes.btnFollow}
                                                     </Button>
                                                     :
                                                     <Button
