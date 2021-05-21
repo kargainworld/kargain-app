@@ -97,7 +97,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
-                            placeholder="sm&sup3;"
+                            placeholder="cm&sup3;"
                             rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>

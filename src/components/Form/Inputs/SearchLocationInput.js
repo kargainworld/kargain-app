@@ -39,7 +39,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
 
                     const types = {
                         'street_number' : { type : 'number', key : 'housenumber'},
-                        'route' : {key : 'street' },
+                        'route' : { key : 'street' },
                         'locality' : { key : 'city' },
                         'postal_code' : { key : 'postCode' },
                         // 'administrative_area_level_1' : '',
@@ -86,7 +86,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
 }
 
 SearchLocationInput.propTypes = {
-    country: PropTypes.string,
+    country: PropTypes.string || PropTypes.object,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     types: PropTypes.arrayOf(PropTypes.string)

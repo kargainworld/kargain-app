@@ -19,7 +19,7 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
         control.register(name, rules)
         control.setValue(name, {
             label: defaultValue?.label,
-            value: defaultValue.value
+            value: defaultValue?.value
         })
     }, [])
 
@@ -51,7 +51,7 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
                     isClearable={props.isClearable}
                     placeholder={props.placeholder}
                     defaultValue={defaultValue}
-                    onChange={({ value, label }) => {
+                    onChange={(value= '', label='' ) => {
                         control.setValue(name, {
                             value,
                             label
@@ -76,7 +76,7 @@ SelectCountryFlags.propTypes = {
 
 SelectCountryFlags.defaultProps = {
     rules: {},
-    defaultValue: 'FR',
+    defaultValue: 'fr',
     isClearable: true
 }
 
