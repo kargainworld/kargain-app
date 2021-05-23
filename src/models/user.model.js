@@ -28,7 +28,7 @@ export default class UserModel {
     get getIsActivated () {
         return this.raw?.activated ?? false
     }
-    
+
     get getIsEmailValidated () {
         return this.raw?.email_validated ?? false
     }
@@ -81,7 +81,7 @@ export default class UserModel {
     get getEmail () {
         return this.raw?.email
     }
-    
+
     get getEmailIsGmail () {
         return this.getEmail.includes('gmail')
     }
@@ -92,11 +92,12 @@ export default class UserModel {
 
     get getGarage () {
         const garage = this.raw?.garage ?? []
-        return garage
-            .filter(announce => announce.visible)
-            .map(announce => new AnnounceModel(announce))
+        // return garage
+        //     .filter(announce => announce.visible)
+        //     .map(announce => new AnnounceModel(announce))
+        return garage?.length
     }
-    
+
     get getCountGarage () {
         return this.getGarage.length
     }
