@@ -160,22 +160,22 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:country')}>
-                <SelectCountryFlags
-                    name="countrySelect"
-                    errors={errors}
-                    control={control}
-                />
-            </FieldWrapper>
+            {/*<FieldWrapper label={t('vehicles:country')}>*/}
+            {/*    <SelectCountryFlags*/}
+            {/*        name="countrySelect"*/}
+            {/*        errors={errors}*/}
+            {/*        control={control}*/}
+            {/*    />*/}
+            {/*</FieldWrapper>*/}
 
             <FieldWrapper label={t('vehicles:address')}>
-                <SearchLocationInput
-                    name="address"
-                    country={countrySelect?.value}
-                    control={control}
-                    errors={errors}
-                    rules={{ required: t('form_validations:required') }}>
-                </SearchLocationInput>
+                {/*<SearchLocationInput*/}
+                {/*    name="address"*/}
+                {/*    country={countrySelect?.value}*/}
+                {/*    control={control}*/}
+                {/*    errors={errors}*/}
+                {/*    rules={{ required: t('form_validations:required') }}>*/}
+                {/*</SearchLocationInput>*/}
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:phone')}>
