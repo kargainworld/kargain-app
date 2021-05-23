@@ -160,13 +160,13 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
 
-            {/*<FieldWrapper label={t('vehicles:country')}>*/}
-            {/*    <SelectCountryFlags*/}
-            {/*        name="countrySelect"*/}
-            {/*        errors={errors}*/}
-            {/*        control={control}*/}
-            {/*    />*/}
-            {/*</FieldWrapper>*/}
+            <FieldWrapper label={t('vehicles:country')}>
+                <SelectCountryFlags
+                    name="countrySelect"
+                    errors={errors}
+                    control={control}
+                />
+            </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:address')}>
                 <SearchLocationInput
