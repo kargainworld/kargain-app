@@ -449,7 +449,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                         </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
-                                            {profile?.getCountGarage() || (<p>{t('vehicles:no-found-announces')}</p>)}
+                                            {profile.getCountGarage !== 0? profile?.getCountGarage : (<p>{t('vehicles:no-found-announces')}</p>)}
                                             <CTALink
                                                 title={t('vehicles:create-my-first-ad')}
                                                 href="/deposer-une-annonce"
