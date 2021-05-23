@@ -92,10 +92,9 @@ export default class UserModel {
 
     get getGarage () {
         const garage = this.raw?.garage ?? []
-        // return garage
-        //     .filter(announce => announce.visible)
-        //     .map(announce => new AnnounceModel(announce))
-        return garage?.length
+        return garage
+            .filter(announce => announce.visible)
+            .map(announce => new AnnounceModel(announce))
     }
 
     get getCountGarage () {
