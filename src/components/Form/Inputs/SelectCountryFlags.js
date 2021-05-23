@@ -76,7 +76,7 @@ SelectCountryFlags.propTypes = {
 
 SelectCountryFlags.defaultProps = {
     rules: {},
-    defaultValue: 'fr',
+    defaultValue: 'FR',
     isClearable: true
 }
 

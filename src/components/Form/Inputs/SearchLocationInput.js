@@ -21,8 +21,8 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
             componentRestrictions: {}
         }
 
-        if (country) options.componentRestrictions.country = country.toLowerCase()
-
+        if (country && !(typeof(country)=== "object")) options.componentRestrictions.country = country.toLowerCase()
+        if(typeof(country)=== "object") options.componentRestrictions.country = country?.value.toLowerCase()
         if (!window?.google?.maps?.places?.Autocomplete) {
             console.error('ERR PLACES AUTOCOMPLETE')
         } else {
