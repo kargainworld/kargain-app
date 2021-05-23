@@ -20,9 +20,9 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
             types: ['address'], //(cities), (regions), address
             componentRestrictions: {}
         }
-
-        if (country && !(typeof(country)=== "object")) options.componentRestrictions.country = country.toLowerCase()
-        if(typeof(country)=== "object") options.componentRestrictions.country = country?.value.toLowerCase()
+        // if (country) options.componentRestrictions.country = country?.toLowerCase()
+        // if (typeof(country)=== "string") options.componentRestrictions.country = country.toLowerCase()
+        // if(typeof(country)=== "object") options.componentRestrictions.country = country?.value.toLowerCase()
         if (!window?.google?.maps?.places?.Autocomplete) {
             console.error('ERR PLACES AUTOCOMPLETE')
         } else {
@@ -86,7 +86,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
 }
 
 SearchLocationInput.propTypes = {
-    country: PropTypes.string || PropTypes.object,
+    country: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     types: PropTypes.arrayOf(PropTypes.string)
