@@ -26,7 +26,7 @@ const NumberInput = ({ name, rules, control, errors, onChange, ...props }) => {
         }
 
         if (onChange) {
-            onChange(e)
+            onChange(+e)
         }
     }
 
