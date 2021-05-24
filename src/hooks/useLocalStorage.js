@@ -16,7 +16,16 @@ function useLocalStorage (key, initialValue = {}) {
     const set = value => {
         const valueToStore = value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
-        window.localStorage.setItem(key, JSON.stringify(value))
+
+        const test = {
+            ...value,
+            countrySelect: {
+                value: value?.countrySelect?.value?.value || 'FR',
+                label: value?.countrySelect?.value?.label || 'France'
+            },
+        }
+        window.localStorage.setItem(key, JSON.stringify(test))
+        // window.localStorage.setItem(key, 'hui')
     }
 
     const clear = () => {

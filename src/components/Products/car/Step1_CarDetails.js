@@ -138,7 +138,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             name="powerKw"
                             control={control}
                             errors={errors}
-                            placeholder={0}
+                            placeholder={"KW"}
                             onChange={onPowerKwChange}
                             // rules={{ required:t('form_validations:required') }}
                         />
