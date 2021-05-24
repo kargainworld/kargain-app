@@ -17,14 +17,12 @@ function useLocalStorage (key, initialValue = {}) {
         const valueToStore = value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
 
-        const test = {
-            ...value,
-            countrySelect: {
-                value: value?.countrySelect?.value?.value || 'FR',
-                label: value?.countrySelect?.value?.label || 'France'
-            },
+        const newValue = { ...value }
+        newValue.countrySelect ={
+            value: value?.countrySelect?.value?.value || 'FR',
+            label: value?.countrySelect?.value?.label || 'France'
         }
-        window.localStorage.setItem(key, JSON.stringify(test))
+        window.localStorage.setItem(key, JSON.stringify(newValue))
         // window.localStorage.setItem(key, 'hui')
     }
 
