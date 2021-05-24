@@ -72,7 +72,8 @@ const SSOProviders = ({ col }) => {
 	    {isLoading && <Loading fullscreen/>}
 
 	    <GoogleLogin
-		clientId={config.google.sso.CLIENT_ID}
+		// clientId={config.google.sso.CLIENT_ID}
+				clientId="349331262972-8gc6jfcrr3sdamdda9n8cmpshmvltvj3.apps.googleusercontent.com"
 		onSuccess={responseGoogle}
 		onFailure={badResponseGoogle}
 		cookiePolicy={'single_host_origin'}
