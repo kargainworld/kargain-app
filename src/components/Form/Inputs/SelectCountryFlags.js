@@ -51,10 +51,10 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
                     isClearable={props.isClearable}
                     placeholder={props.placeholder}
                     defaultValue={defaultValue}
-                    onChange={(value= '', label='' ) => {
+                    onChange={(e={} ) => {
                         control.setValue(name, {
-                            value,
-                            label
+                            value: e.value,
+                            label: e.label,
                         })
                     }}
                     components={{
