@@ -57,8 +57,8 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                         ...addressMapper,
                         fullAddress: formatted_address
                     }
-                    // control.setValue(name, values)
-                    control.setValue(name, formatted_address)
+                    control.setValue(name, values)
+                    // control.setValue(name, formatted_address)
                 }
             })
         }
