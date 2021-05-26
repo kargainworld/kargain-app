@@ -7,6 +7,7 @@ import CommentModel from '../../../models/comment.model'
 import { MessageContext } from '../../../context/MessageContext'
 import TablePaginationActions from '../TablePaginationActions'
 import { getTimeAgo } from '../../../libs/utils'
+import { makeStyles } from "@material-ui/styles"
 
 const columnsData = [
     {
@@ -45,9 +46,14 @@ const columnsData = [
         }
     }
 ]
-
+const useStyles = makeStyles(()=>({
+    table:{
+        overflow:'auto!important'
+    }
+}), { name:'MUITable' })
 
 const AdsTable = () => {
+    const classes = useStyles()
     const rowsLength = 60
     const router = useRouter()
     const { dispatchModalError, dispatchModal } = useContext(MessageContext)
@@ -99,6 +105,7 @@ const AdsTable = () => {
     return (
         <>
             <TableMUI
+                className={classes.table}
                 loading={loading}
                 data={resultFetch.rows}
                 columns={columns}
