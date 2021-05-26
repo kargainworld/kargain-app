@@ -10,13 +10,21 @@ import TablePaginationActions from '../TablePaginationActions'
 import { MessageContext } from '../../../context/MessageContext'
 import ActivatedBullet from './components/ActivatedBullet'
 import IsProBullet from './components/IsProBullet'
+import { makeStyles } from "@material-ui/styles"
 
 const BooleanBullet = (value) => {
     if (value) return <BulletPoint tooltipHelper="Payé" color="green"/>
     return <BulletPoint tooltipHelper="Refusé" color="red"/>
 }
+const useStyles = makeStyles(()=>({
+    table:{
+        overflow:'auto!important'
+    }
+}), { name:'MUITable' })
+
 
 const UsersTable = () => {
+    const classes = useStyles()
     const rowsLength = 60
     const router = useRouter()
     const { dispatchModalError } = useContext(MessageContext)
@@ -158,6 +166,7 @@ const UsersTable = () => {
     return (
         <>
             <TableMUI
+                className={classes.table}
                 loading={loading}
                 data={resultFetch.rows}
                 columns={columns}
