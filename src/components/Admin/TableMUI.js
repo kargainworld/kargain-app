@@ -49,7 +49,7 @@ export default function DataTable({ columns: cols, data, title, actions, ...prop
       <div>
         {title && <Typography variant="h2">{title}</Typography>}
         <div style={{ height: 'calc(100vh - 130px)', width: '100%' }}>
-          <DataGrid rows={rows} columns={columns} pageSize={5} autoPageSize />
+          <DataGrid rows={rows} columns={columns} pageSize={5} autoPageSize {...props}/>
         </div>
       </div>
     );
