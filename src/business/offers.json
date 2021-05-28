@@ -3,18 +3,18 @@
         "maxAnnounces": 10,
         "price": 49.9,
         "nicePrice" : "49,9O€/month",
-        "title": "annonces-10"
+        "title": "announces-10"
     },
     {
         "maxAnnounces": 20,
         "price": 99.9,
         "nicePrice" : "99,9O€/month",
-        "title": "annonces-20"
+        "title": "announces-20"
     },
     {
         "maxAnnounces": 50,
         "price": 199.9,
         "nicePrice" : "199,9O€/month",
-        "title": "annonces-100"
+        "title": "announces-100"
     }
 ]
