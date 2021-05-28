@@ -41,7 +41,7 @@ const OffersPurchaseForm = ({ offer: defaultOffer }) => {
                             <h3 className="step-title">Souscrire à une offre</h3>
                             <p className="concept-name">Vous ne disposez d'aucune offre.</p>
                             <p>Vous n'avez le droit d'avoir que 2 annonces publiées en simultanée.</p>
-                            <p>Vous pouvez souscrire à une des offres ci dessous : </p>
+                            <p>Vous pouvez souscrire à une des offres ci dessous (Prix/mois) : </p>
 
                             <OffersSelect {...{
                                 defaultOffer,
