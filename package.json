@@ -15,7 +15,7 @@
 						"start": "cross-env NODE_ENV=production next start",
 						"build": "yarn clean && next-translate && next build",
 						"analyze": "cross-env ANALYZE=true next build",
-						"deploy": "yarn build",
+						"deploy": "yarn build && vercel --prod",
 						"lint": "eslint --fix src"
 			},
 			"dependencies": {
