@@ -89,8 +89,10 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
     const fetch = () => {
         setIsLoading(true)
         fetchNotifications()
-            .then(({ pings }) => {
-                setNotification(pings)
+            .then(res => {
+                if(res && res.pings) {
+                    setNotification(res.pings)
+                }
                 setIsLoaded(true)
             })
             .finally(() => setIsLoading(false))
@@ -98,7 +100,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
 
     useEffect(() => {
         if (isOpen || !isLoaded) {
-            // fetch()
+            fetch()
         }
     }, [isOpen])
 

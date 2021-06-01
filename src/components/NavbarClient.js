@@ -30,7 +30,7 @@ import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
 
 const Root = styled.header`
-  
+  position: sticky;
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
