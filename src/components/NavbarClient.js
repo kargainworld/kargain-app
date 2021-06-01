@@ -30,7 +30,7 @@ import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
 
 const Root = styled.header`
-  
+  position: sticky;
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
@@ -159,7 +159,7 @@ const NavbarAction = ({ vertical }) => {
                           name="query"
                           type="search"
                           placeholder={t('layout:search')}
-                          iconRight={<Search />}
+                          iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>

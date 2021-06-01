@@ -132,6 +132,7 @@ const Profile = () => {
                 isAdmin,
                 isSelf
             }))
+            if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
         } catch (err) {
             setState(state => ({
                 ...state,
@@ -208,7 +209,7 @@ const Profile = () => {
     }, [fetchAnnounces])
 
     if (!state.stateReady) return null
-    if(filterState.loading) return <Loading/>
+    if (filterState.loading) return <Loading/>
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
 
     return (
@@ -414,7 +415,6 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
     const { profile, isSelf } = state
-    console.log(profile)
     const { activeTab = 0 } = getParams()
 
     const onTabChange = (tab) => {
@@ -434,7 +434,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                 <Col sm={12} md={9}>
                     <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
                         <Tabs.Item id="home-tab" title="Vitrine">
-                            <section className={filtersOpened && 'filter-is-visible'}>
+                            <section className={filtersOpened ? 'filter-is-visible': ''}>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
                                         <Col
@@ -455,7 +455,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                             <p>{t('vehicles:no-found-announces')}</p>
                                             {/*     )*/}
                                             {/* }*/}
-                                            <CTALink
+                                            {/* <CTALink
                                                 title={t('vehicles:create-my-first-ad')}
                                                 href="/deposer-une-annonce"
                                                 className="cta_nav_link my-2"
@@ -465,7 +465,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                                 title={t('vehicles:explore-ads')}
                                                 href={isAuthenticated ? '/feed' : '/'}
                                                 className="cta_nav_link my-2"
-                                            />
+                                            /> */}
                                         </div>
                                     )}
                                 </Row>
