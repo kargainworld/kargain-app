@@ -159,7 +159,7 @@ const NavbarAction = ({ vertical }) => {
                           name="query"
                           type="search"
                           placeholder={t('layout:search')}
-                          iconRight={<Search />}
+                          iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>
