@@ -175,7 +175,7 @@ const Edit = () => {
     },[username])
 
     useEffect(()=>{
-        if (offer) setActiveTab(2)
+        if (offer) setActiveTab(1)
         if(isAuthReady) fetchProfile()
     },[isAuthReady, fetchProfile])
 

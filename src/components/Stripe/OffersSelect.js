@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import NiceSelect from 'react-select'
 import offers from '../../business/offers.json'
 
 const OffersSelect = ({ defaultOffer, setSelectedOffer, setIsSelectedOffer }) => {
-
+    const [defaultValue, setDefaultValue] = useState(null);
     useEffect(() => {
         if (defaultOffer) {
             const offer = offers.find(offer => offer.title === defaultOffer)
             if (offer) {
                 setIsSelectedOffer(true)
-                setSelectedOffer({
+                setDefaultValue({
                     value: offer.title,
                     label: `${offer.maxAnnounces} annonces | ${offer.nicePrice}`
                 })
+                setSelectedOffer(offer)
             }
         }
     }, [])
-
+    
     return (
         <div className="offers">
             <div className="subrcribe">
@@ -26,10 +27,12 @@ const OffersSelect = ({ defaultOffer, setSelectedOffer, setIsSelectedOffer }) =>
                         value: offer.title,
                         label: `${offer.maxAnnounces} announces | ${offer.nicePrice}`
                     }))}
-                    onChange={({ value }) => {
-                        setSelectedOffer(offers.find(offer => offer.title === value))
+                    onChange={item => {console.log(item)
                         setIsSelectedOffer(true)
+                        setDefaultValue(item)
+                        setSelectedOffer(offers.find(offer => offer.title === item.value))
                     }}
+                    value={defaultValue}
                 />
             </div>
         </div>

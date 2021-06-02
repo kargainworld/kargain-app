@@ -60,6 +60,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                     })
                     .map((tab, index) => (
                         <AnnounceTypeRadioButton
+                            key={index}
                             id={`ad_type${index}`}
                             register={register}
                             name="adType"

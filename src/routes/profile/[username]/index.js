@@ -132,7 +132,6 @@ const Profile = () => {
                 isAdmin,
                 isSelf
             }))
-            if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
         } catch (err) {
             setState(state => ({
                 ...state,
@@ -211,7 +210,7 @@ const Profile = () => {
     if (!state.stateReady) return null
     if (filterState.loading) return <Loading/>
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
-
+    // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
         <Container style={{ marginTop: 25 }}>
 
