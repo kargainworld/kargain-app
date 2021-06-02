@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { Input } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
@@ -176,6 +177,7 @@ const NavbarAction = ({ vertical }) => {
 }
 
 const DropdownUser = ({ isOpen, keyName, toggle }) => {
+    const router = useRouter()
     const { authenticatedUser, logout } = useAuth()
     const { t } = useTranslation()
 
@@ -235,7 +237,10 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href="" prefetch={false}>
-                        <a className="nav-link text-left" onClick={() => logout()}>
+                        <a className="nav-link text-left" onClick={() => {
+                            router.push('/')
+                            logout();
+                        }}>
                             <ExitToAppIcon/>
                             <span className="m-1">
                                 {t('layout:logout')}

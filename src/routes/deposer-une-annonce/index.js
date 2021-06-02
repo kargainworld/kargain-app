@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
 import clsx from 'clsx'
 import { Col, Container, Row } from 'reactstrap'
 import { useRouter, withRouter } from 'next/router'
@@ -11,6 +11,11 @@ import { useAuth } from '../../context/AuthProvider'
 import vehicleTypes from '../../business/vehicleTypes.js'
 import announceTypes from '../../business/announceTypes.js'
 import ValidationErrors from '../../components/Form/Validations/ValidationErrors'
+
+import AnnounceService from '../../services/AnnounceService'
+import UserModel from '../../models/user.model'
+import Loading from '../../components/Loading'
+import Error from '../_error'
 
 const path = require('path')
 
@@ -26,13 +31,20 @@ const Page = () => {
     const classes = useStyles()
     const formRef = useRef()
     const { t } = useTranslation()
-    const { authenticatedUser } = useAuth()
+    const { authenticatedUser, isAuthenticated } = useAuth()
     const [vehicleType, setVehicleType ] = useState()
     const { errors, register, handleSubmit, formState } = useForm({
         mode: "onChange"
     })
 
+    const [state, setState] = useState({
+        err: null,
+        loading: false,
+        profile: new UserModel()
+    })
+
     const { dispatchFormUpdate } = useContext(FormContext)
+    const profile = state.profile
 
     const handleSelectVehicleType = (index) => {
         const type = vehicleTypes[index]
@@ -44,6 +56,35 @@ const Page = () => {
         const route = `${vehicleType.toLowerCase()}`
         dispatchFormUpdate({ adType, vehicleType })
         router.push(path.resolve(router.route, route))
+    }
+
+    const fetchAnnounces = useCallback(async () => {
+        try{
+            const result = await AnnounceService.getProfileAnnounces()
+            setState(state => ({
+                ...state,
+                loading: false,
+                profile: new UserModel({
+                    ...profile.getRaw,
+                    garage : result.rows
+                })
+            }))
+        } catch (err) {
+            setState(state => ({ ...state, err}))
+        }
+    },[])
+
+    useEffect(() => {
+        setState(state => ({...state, loading: true}))
+        console.log('fetch announces')
+        fetchAnnounces()
+    }, [fetchAnnounces])
+
+    if (state.loading) return <Loading/>
+    if (state.err) return <Error statusCode={state.err?.statusCode}/>
+    if (state.profile.getCountGarage >= 2 && isAuthenticated) {
+        const userName = authenticatedUser.getUsername
+        router.push(`/profile/${userName}/edit?offer=true`)
     }
 
     return (
