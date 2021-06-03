@@ -76,8 +76,7 @@ function updateAdminUser (username, updates) {
 function removeUser (username) {
     const requestOptions = {
         method: 'DELETE',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' }
+        credentials: 'include'
     }
 
     const url = `${config.api}/users/${username}`
