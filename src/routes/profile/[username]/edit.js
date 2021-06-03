@@ -96,7 +96,7 @@ const Edit = () => {
     const theme = useTheme()
     const router = useRouter()
     const { username } = router.query
-    const { isAuthReady } = useAuth()
+    const { isAuthReady, logout } = useAuth()
     const { offer } = router.query
     const { t } = useTranslation()
     const classes = useStyles()
@@ -148,6 +148,8 @@ const Edit = () => {
         UsersService.removeUser(state.profile.getUsername)
             .then(() => {
                 dispatchModal({ msg: 'User successfully removed (disabled)' })
+                router.push('/');
+                logout();
             }).catch(err => {
                 dispatchModalError({ err })
             }
@@ -203,7 +205,7 @@ const Edit = () => {
                         color="warning"
                         className={classes.button}
                         startIcon={<DeleteIcon/>}
-                        onClick={() => handleRemove}
+                        onClick={() => handleRemove()}
                         // TODO: think it possibly not working. check this.
                         // looks like you need to call handleRemove() here
                     >
