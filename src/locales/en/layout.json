@@ -45,5 +45,7 @@
   "copy_link" : "Copy link",
   "copy_link_copied" : "Copy link (copied)",
   "announces" : "Announces",
-  "members" : "Members"
+  "members" : "Members",
+  "no_result": "The feed is empty, your followings don’t have published ads.",
+  "news_feed": "News feed"
 }

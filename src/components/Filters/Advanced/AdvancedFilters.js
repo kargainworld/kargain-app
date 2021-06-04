@@ -4,6 +4,8 @@ import clsx from 'clsx'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import FilterListIcon from '@material-ui/icons/FilterList'
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
@@ -17,6 +19,7 @@ import AnnounceTypes from '../../../business/announceTypes.js'
 import VehiclesService from '../../../services/VehiclesService'
 import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from '../../../hooks/useAddress'
+import CTALink from '../../CTALink'
 
 const useStyles = makeStyles(() => ({
     filtersContainer: {
@@ -295,8 +298,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
+                <CTALink
+                    className="w-100"
+                    icon={StorefrontIcon}
+                    title={t('layout:news_feed')}
+                    href="/advanced-search">
+                </CTALink>
                 <ControlButtons/>
-
               <div className={classes.filtersTop} onClick={() => toggleFilters()}>
                 <Typography variant="h4">
                   {t('filters:select-filters')}
