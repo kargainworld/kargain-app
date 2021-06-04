@@ -217,7 +217,7 @@ const Announce = () => {
                         <div className="pics">
                             {announce.getCountImages > 0 && (
                                 <>
-                                    <GalleryViewer images={announce.getImages} ref={refImg}/>
+                                    <GalleryViewer images={announce.getImages} ref={refImg} />
                                     {/* {isDesktop && (
                                         <GalleryImgsLazy
                                             images={announce.getImages}
