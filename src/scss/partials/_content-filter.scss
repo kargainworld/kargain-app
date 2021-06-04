@@ -8,11 +8,13 @@ $tab-filter-height: 50px;
 
 .sorter {
     margin: 1rem;
+    width: 250px;
 }
 
 @media (max-width: 768px) {
     .sorter {
         margin: 1rem 5px;
+        width: 80%;
     }
 }
 
