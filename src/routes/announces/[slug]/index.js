@@ -166,7 +166,7 @@ const Announce = () => {
             <div className="objava-wrapper">
                 {!announce.getIsActivated && (
                     <Alert severity="warning">
-                        Your announce is hidden from public & waiting for moderator activation
+                        {`Your announce is hidden from public & waiting for moderator activation`}
                     </Alert>
                 )}
 
@@ -218,12 +218,12 @@ const Announce = () => {
                             {announce.getCountImages > 0 && (
                                 <>
                                     <GalleryViewer images={announce.getImages} ref={refImg}/>
-                                    {isDesktop && (
+                                    {/* {isDesktop && (
                                         <GalleryImgsLazy
                                             images={announce.getImages}
                                             handleCLickImg={handleCLickImg}
                                         />
-                                    )}
+                                    )} */}
                                 </>
                             )}
                         </div>
