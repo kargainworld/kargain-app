@@ -94,7 +94,7 @@ const Sorters = ({ updateSorter }) => {
             justifyContent: 'flex-end'
         }}>
             <span>{t('vehicles:sort-by')}:</span>
-            <div className="sorter" style={{width: 200}}>
+            <div className="sorter">
                 <NiceSelect
                     name="sort"
                     value={sorter}
