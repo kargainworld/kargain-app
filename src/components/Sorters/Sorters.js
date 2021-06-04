@@ -24,7 +24,7 @@ const Sorters = ({ updateSorter }) => {
             }
         },
         {
-            label: t('vehicles:most-recent'),
+            label: t('vehicles:most-expensive'),
             icon: ArrowUpwardIcon,
             value: {
                 key: 'PRICE',
@@ -32,7 +32,7 @@ const Sorters = ({ updateSorter }) => {
             }
         },
         {
-            label: t('vehicles:less-recent'),
+            label: t('vehicles:less-expensive'),
             icon: ArrowDownwardIcon,
             value: {
                 key: 'PRICE',
@@ -55,22 +55,22 @@ const Sorters = ({ updateSorter }) => {
                 asc: true
             }
         },
-        {
-            label: t('vehicles:closest'),
-            icon: ArrowUpwardIcon,
-            value: {
-                key: 'RADIUS',
-                asc: true
-            }
-        },
-        {
-            label: t('vehicles:farthest'),
-            icon: ArrowDownwardIcon,
-            value: {
-                key: 'RADIUS',
-                asc: false
-            }
-        }
+        // {
+        //     label: t('vehicles:closest'),
+        //     icon: ArrowUpwardIcon,
+        //     value: {
+        //         key: 'RADIUS',
+        //         asc: true
+        //     }
+        // },
+        // {
+        //     label: t('vehicles:farthest'),
+        //     icon: ArrowDownwardIcon,
+        //     value: {
+        //         key: 'RADIUS',
+        //         asc: false
+        //     }
+        // }
     ]
     const [sorter, setSorter] = useState(options[0])
 
@@ -94,14 +94,12 @@ const Sorters = ({ updateSorter }) => {
             justifyContent: 'flex-end'
         }}>
             <span>{t('vehicles:sort-by')}:</span>
-            <div className="sorter">
+            <div className="sorter" style={{width: 200}}>
                 <NiceSelect
                     name="sort"
                     value={sorter}
-                    autosize={true}
                     onChange={onHandleChange}
                     components={{ SingleValue: customSingleValue }}
-                    classNames='w-100'
                     options={options}
                 />
             </div>

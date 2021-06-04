@@ -32,7 +32,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const fetchAnnounces = useCallback(async() => {
         const { sorter, filters, page } = state
         const { size } = props
-
+        console.log(sorter)
         const params = {
             ...filters,
             sort_by: sorter.key,

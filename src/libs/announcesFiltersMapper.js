@@ -18,6 +18,7 @@ export default {
     'vehicleEngineGas.value': 'ENGINE_GAS',
     'vehicleEngineCylinder': 'CYLINDER',
     'vehicleGeneralState.value': 'GENERAL_STATE',
+    'countrySelect.value': 'COUNTRY_SELECT',
     'address.city.postcode': 'ADDRESS_CITY_POSTCODE',
     'price': 'AD_PRICE',
     'mileage': 'MILEAGE',
