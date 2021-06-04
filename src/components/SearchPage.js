@@ -32,7 +32,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const fetchAnnounces = useCallback(async() => {
         const { sorter, filters, page } = state
         const { size } = props
-        console.log(sorter)
+
         const params = {
             ...filters,
             sort_by: sorter.key,
@@ -140,15 +140,20 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                 href="/auth/login">
                                             </CTALink>
                                         ) : (
-                                            <div className="d-flex flex-column my-2 mx-auto">
-                                                <FindInPageIcon fontSize="large"/>
-                                                <Typography variant="h3">
-                                                    No result found
-                                                </Typography>
-                                                <p>
-                                                    Try to change filters
-                                                </p>
-                                            </div>
+                                            <>
+                                                <div className="d-flex align-items-center my-3">
+                                                    <FindInPageIcon fontSize="medium"/>
+                                                    <Typography variant="h3">
+                                                        {t('layout:no_result')}
+                                                    </Typography>
+                                                </div>
+                                                <div className="text-center">
+                                                    <CTALink
+                                                        title={t('layout:news_feed')}
+                                                        href="/advanced-search">
+                                                    </CTALink>
+                                                </div>
+                                            </>
                                         )}
                                     </>
                                 )}

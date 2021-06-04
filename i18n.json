@@ -16,7 +16,10 @@
     "pages": {
         "*": [
             "vehicles",
-            "filters"
+            "filters",
+            "messages_api",
+            "layout",
+            "form_validations"
         ],
         "/static/pricing" : [
             "pricing"

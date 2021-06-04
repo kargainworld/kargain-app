@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import * as i from '@material-ui/icons'
 import PropTypes from 'prop-types'
 import Link from 'next-translate/Link'
 import useDimensions from 'react-use-dimensions'
 import useTranslation from 'next-translate/useTranslation'
-
+import { useRouter } from 'next/router'
 import { MessageContext } from '../../context/MessageContext'
 import AnnounceService from '../../services/AnnounceService'
 import { useAuth } from '../../context/AuthProvider'
@@ -36,9 +36,11 @@ import {
 } from './components'
 import {CardActions, CardContent} from "@material-ui/core";
 import announceService from '../../services/AnnounceService'
-
+import GalleryViewer from '../Gallery/GalleryViewer'
 
 const Index = ({ announceRaw, featuredImgHeight }) => {
+    const refImg = useRef()
+    const router = useRouter()
     const { t, lang } = useTranslation()
     const announce = new AnnounceModel(announceRaw)
     const [refWidth, { width }] = useDimensions()
@@ -76,6 +78,9 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
     const toggleVisibility = () => {
         announceService.updateAnnounce(announce.getSlug, {visible: !announceRaw.visible})
           .then(() => window.location.reload())
+    }
+    const handleImageClick = () => {
+        router.push(announce.getAnnounceLink);
     }
 
     return (
@@ -159,25 +164,14 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
                 <Body>
                     <ImageWrapper>
-                        <Link href={announce.getAnnounceLink} prefetch={false}>
-                            <a>
-                                {announce.getFeaturedImg && (
-                                    <Image
-                                        effect="blur"
-                                        src={announce.getFeaturedImg.getLocation}
-                                        alt={announce.getFeaturedImg.getName}
-                                        height={featuredImgHeight}
-                                        width="100%"
-                                    />
-                                )}
 
-                                {!announce.getFeaturedImg && (
-                                    <ImagePlaceholder>
-                                        <i.CameraAlt fontSize="large" />
-                                    </ImagePlaceholder>
-                                )}
-                            </a>
-                        </Link>
+                        {announce.getImages.length > 0 && <GalleryViewer images={announce.getImages} ref={refImg} handleClick={handleImageClick} />}
+
+                        {!announce.getFeaturedImg && (
+                            <ImagePlaceholder>
+                                <i.CameraAlt fontSize="large" />
+                            </ImagePlaceholder>
+                        )}
 
                         {announce.getFeaturedImg && (
                             <ImageCounter>

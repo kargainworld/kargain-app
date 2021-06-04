@@ -25,15 +25,20 @@ const SearchResults = ({ results }) => {
                     })}
                 </div>
             ) : (
-                <div className="d-flex flex-column my-2 align-items-center">
-                    <FindInPageIcon fontSize="large"/>
-                    <Typography variant="h3">
-                        No result found
-                    </Typography>
-                    <p>
-                        Try to change filters
-                    </p>
-                </div>
+                <>
+                    <div className="d-flex align-items-center my-3">
+                        <FindInPageIcon fontSize="medium"/>
+                        <Typography variant="h3">
+                            {t('layout:no_result')}
+                        </Typography>
+                    </div>
+                    <div className="text-center">
+                        <CTALink
+                            title={t('layout:news_feed')}
+                            href="/advanced-search">
+                        </CTALink>
+                    </div>
+                </>
             )}
 
             {announces.length !== 0 && (

@@ -45,5 +45,7 @@
   "copy_link" : "Copier le lien",
   "copy_link_copied" : "Copier le lien (copié)",
   "announces" : "Annonces",
-  "members" : "Membres"
+  "members" : "Membres",
+  "no_result": "Le fil d’actualité est vide, les abonnés n'ont pas d’annonces publiées.",
+  "news_feed": "Fil d’actualité"
 }

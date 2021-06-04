@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import ImageGallery from 'react-image-gallery'
 
-const GalleryViewer = forwardRef(({ images }, ref) => {
+const GalleryViewer = forwardRef(({ images, handleClick }, ref) => {
     if (!images || images.length === 0) return null
 
     const items = images.map(image => ({
@@ -16,7 +16,11 @@ const GalleryViewer = forwardRef(({ images }, ref) => {
         autoPlay
         showIndex
         showBullets
+        showThumbnails={false}
+        showPlayButton={false}
+        showIndex={false}
         items={items}
+        onClick={handleClick}
     />
 })
 
