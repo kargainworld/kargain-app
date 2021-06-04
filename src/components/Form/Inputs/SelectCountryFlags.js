@@ -13,14 +13,14 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
         }
     })
 
-    const defaultValue = props.defaultValue && options.find(option => option.value === props.defaultValue)
+    // const defaultValue = props.defaultValue && options.find(option => option.value === props.defaultValue)
 
     useEffect(() => {
         control.register(name, rules)
-        control.setValue(name, {
-            label: defaultValue?.label,
-            value: defaultValue?.value
-        })
+        // control.setValue(name, {
+        //     label: defaultValue?.label,
+        //     value: defaultValue?.value
+        // })
     }, [])
 
     const SingleValue = (props) => (
@@ -50,12 +50,18 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
                     options={options}
                     isClearable={props.isClearable}
                     placeholder={props.placeholder}
-                    defaultValue={defaultValue}
+                    // defaultValue={defaultValue}
                     onChange={(e={} ) => {
-                        control.setValue(name, {
-                            value: e.value,
-                            label: e.label,
-                        })
+                        if(e)
+                            control.setValue(name, {
+                                value: e.value,
+                                label: e.label,
+                            })
+                        else
+                            control.setValue(name, {
+                                value: null,
+                                label: '',
+                            })
                     }}
                     components={{
                         SingleValue,
