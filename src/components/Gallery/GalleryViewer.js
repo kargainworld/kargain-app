@@ -13,7 +13,7 @@ const GalleryViewer = forwardRef(({ images, handleClick }, ref) => {
     return <ImageGallery
         ref={ref}
         lazyLoad
-        autoPlay
+        // autoPlay
         showIndex
         showBullets
         showThumbnails={false}
