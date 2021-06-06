@@ -1,27 +1,26 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import ImageGallery from 'react-image-gallery'
 
-const GalleryViewer = forwardRef(({ images, handleClick, isAnnounceCard }, ref) => {
-
+const GalleryViewer = forwardRef(({ images, handleClick }, ref) => {
     if (!images || images.length === 0) return null
 
     const items = images.map(image => ({
         original: image.getLocation,
         thumbnail: image.getLocation
     }))
-    const handleSelfClick = () => {
-        if(ref.current) ref.current.toggleFullScreen();
-    }
 
     return <ImageGallery
         ref={ref}
         lazyLoad
-        showThumbnails={!isAnnounceCard}
+        autoPlay
+        showIndex
+        showBullets
+        showThumbnails={false}
         showPlayButton={false}
-        showFullscreenButton={false}
+        showIndex={false}
         items={items}
-        onClick={isAnnounceCard ?  handleClick : handleSelfClick}
+        onClick={handleClick}
     />
 })
 
@@ -30,9 +29,7 @@ GalleryViewer.propTypes = {
         PropTypes.shape({
             original: PropTypes.string,
             thumbnail: PropTypes.string
-        })),
-        handleClick: PropTypes.func,
-        isAnnounceCard: PropTypes.bool
+        }))
 }
 
 GalleryViewer.defaultProps = {

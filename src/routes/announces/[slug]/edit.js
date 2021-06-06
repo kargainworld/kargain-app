@@ -421,12 +421,12 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
                                     images={announce.getImages}
                                     ref={refImg}
                                 />
-                                {/* {isDesktop && (
+                                {isDesktop && (
                                     <GalleryImgsLazy
                                         images={announce.getImages}
                                         handleCLickImg={handleCLickImg}
                                     />
-                                )} */}
+                                )}
                             </>
                         )}
                     </div>
