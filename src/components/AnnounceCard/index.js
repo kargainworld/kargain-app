@@ -168,7 +168,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                 <Body>
                     <ImageWrapper>
 
-                        {announce.getImages.length > 0 && <GalleryViewer images={announce.getImages} ref={refImg} handleClick={handleImageClick} isAnnounceCard={true} />}
+                        {announce.getImages.length > 0 && <GalleryViewer images={announce.getImages} ref={refImg} handleClick={handleImageClick} />}
 
                         {!announce.getFeaturedImg && (
                             <ImagePlaceholder>
