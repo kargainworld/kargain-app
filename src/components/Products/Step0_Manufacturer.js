@@ -318,7 +318,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.model') || !isCar}
-                            rules={{ required:t('form_validations:required') }}
+                            // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>

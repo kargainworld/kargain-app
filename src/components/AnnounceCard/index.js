@@ -49,7 +49,6 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
     const [likesCounter, setLikesCounter] = useState(announce.getCountLikes)
     const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const isAuthor = isAuthenticated && authenticatedUser.getID === announce.getAuthor?.getID
-
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find(favorite => favorite.getID === announce.getID)
         const matchAnnounceLike = announce.getLikes.find(like => like.getAuthor.getID === authenticatedUser.getID)
@@ -114,9 +113,12 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                         </CreationDate>
 
                         <ShareIcon
-                          // onClick={TODO}
-                          src="/images/share.png"
-                          alt=""
+                            onClick={() => dispatchModalState({
+                                openModalShare : true,
+                                modalShareAnnounce : announce
+                            })}
+                            src="/images/share.png"
+                            alt=""
                         />
                     </Meta>
                 </User>
@@ -143,6 +145,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
                     <Action
                         title={t('vehicles:comment_plural')}
                         style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                        onClick={() => handleImageClick()}
                     >
                         <i.ChatBubbleOutline
                           style={{ width: 23, marginRight: 4 }}

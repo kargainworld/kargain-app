@@ -40,7 +40,7 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     }, [])
 
     const prevStep = useCallback(() => {
-        setActiveStep(activeStep => activeStep - 1)
+        setActiveStep(activeStep => activeStep? activeStep - 1 : 0)
     }, [])
 
     const nextStep = useCallback(() => {

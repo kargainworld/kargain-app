@@ -12,10 +12,8 @@ import Typography from '@material-ui/core/Typography'
 import useTheme from '@material-ui/core/styles/useTheme'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-import { ReactComponent as StarSVG } from '../../../../public/images/svg/star.svg'
-import { ReactComponent as StarSVGYellow } from '../../../../public/images/svg/star-yellow.svg'
+import BookmarkIcon from '@material-ui/icons/Bookmark'
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
-import GalleryImgsLazy from '../../../components/Gallery/GalleryImgsLazy'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
 import Comments from '../../../components/Comments/Comments'
@@ -271,7 +269,8 @@ const Announce = () => {
                             <div className="icons-profile-wrapper">
                                 <div className="icons-star-prof svgStarYellow">
                                     <span onClick={()=>handleClickLikeButton()}>
-                                        {alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}
+                                        {/*{alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}*/}
+                                        {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
                                     </span>
                                     <div className="mx-1">
                                         <span>
