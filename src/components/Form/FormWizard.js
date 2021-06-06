@@ -17,7 +17,7 @@ const calculatePourcent = (current, length) => {
 }
 
 const Root = styled.main`
-  max-width: 1140px;    
+  max-width: 1140px;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -36,89 +36,89 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     const [endForm, setEndForm] = useState(false)
 
     const setStep = useCallback((index) => {
-        setActiveStep(index)
+	setActiveStep(index)
     }, [])
 
     const prevStep = useCallback(() => {
-        setActiveStep(activeStep => activeStep? activeStep - 1 : 0)
+	setActiveStep(activeStep => activeStep - 1)
     }, [])
 
     const nextStep = useCallback(() => {
-        setActiveStep(activeStep => activeStep + 1)
+	setActiveStep(activeStep => activeStep + 1)
     }, [])
 
     const triggerDispatchFormData = (data) => {
-        dispatchFormUpdate(data)
+	dispatchFormUpdate(data)
     }
 
     const onSubmitStep = useCallback((data) => {
-        triggerDispatchFormData(data)
-        nextStep()
+	triggerDispatchFormData(data)
+	nextStep()
     }, [])
 
     const handleSubmitForm = (data) => {
-        triggerDispatchFormData(data)
-        setEndForm(true)
+	triggerDispatchFormData(data)
+	setEndForm(true)
     }
 
     useEffect(() => {
-        dispatchFormUpdate({
-            vehicleType : formKey.toLowerCase()
-        })
+	dispatchFormUpdate({
+	    vehicleType : formKey.toLowerCase()
+	})
     },[])
 
     useEffect(() => {
-        window.scrollTo(0, 0)
-        if (isMounted) {
-            setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
-            dispatchFormUpdate({ currentStep: activeStep })
-            setPourcent(calculatePourcent(activeStep, steps.length))
-        }
+	window.scrollTo(0, 0)
+	if (isMounted) {
+	    setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
+	    dispatchFormUpdate({ currentStep: activeStep })
+	    setPourcent(calculatePourcent(activeStep, steps.length))
+	}
     }, [activeStep])
 
     useEffect(() => {
-        if (isMounted && endForm) {
-            console.log('end form reached')
-            onFinalSubmit(formDataContext)
-            setEndForm(false)
-        }
+	if (isMounted && endForm) {
+	    console.log('end form reached')
+	    onFinalSubmit(formDataContext)
+	    setEndForm(false)
+	}
     }, [endForm])
 
     return (
-        <Root>
-            <div className="formWizardContainer">
-                <BreadcrumbSteps activeStepIndex={activeStep}
-                                 steps={steps}
-                                 setStep={setStep}
-                                 maxActiveStep={maxActiveStep}
-                />
-                <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
-                <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
+	<Root>
+	    <div className="formWizardContainer">
+		<BreadcrumbSteps activeStepIndex={activeStep}
+				 steps={steps}
+				 setStep={setStep}
+				 maxActiveStep={maxActiveStep}
+		/>
+		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
+		<Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
 
-                <ControlledStep
-                    step={steps[activeStep]}
-                    onSubmitStep={onSubmitStep}
-                    prevStep={prevStep}
-                    nextStep={nextStep}
-                    handleSubmitForm={handleSubmitForm}
-                />
+		<ControlledStep
+		    step={steps[activeStep]}
+		    onSubmitStep={onSubmitStep}
+		    prevStep={prevStep}
+		    nextStep={nextStep}
+		    handleSubmitForm={handleSubmitForm}
+		/>
 
-                {debug && (
-                    <Row>
-                        <Col>
-                            <div>
-                                <h2> formContext </h2>
-                                <pre>{JSON.stringify(formDataContext, null, 2)}</pre>
-                            </div>
-                        </Col>
-                        <Col>
-                            <DebugLocalStorage value="formData"/>
-                        </Col>
-                    </Row>
-                )}
+		{debug && (
+		    <Row>
+			<Col>
+			    <div>
+				<h2> formContext </h2>
+				<pre>{JSON.stringify(formDataContext, null, 2)}</pre>
+			    </div>
+			</Col>
+			<Col>
+			    <DebugLocalStorage value="formData"/>
+			</Col>
+		    </Row>
+		)}
 
-            </div>
-        </Root>
+	    </div>
+	</Root>
     )
 }
 

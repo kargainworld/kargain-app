@@ -23,17 +23,17 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
 
     const { watch, control, errors, handleSubmit, setValue } = useForm({
-        mode: 'onChange',
-        validateCriteriaMode: 'all',
-        defaultValues: formDataContext,
+	mode: 'onChange',
+	validateCriteriaMode: 'all',
+	defaultValues: formDataContext,
 
     })
 
     const [manufacturersData, setManufacturersData] = useState({
-        makes: [],
-        models: [],
-        generations: [],
-        years: []
+	makes: [],
+	models: [],
+	generations: [],
+	years: []
     })
 
     const selectedMake = watch('manufacturer.make')
@@ -44,288 +44,288 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
     dispatchFormUpdate(watch(), { compare: true })
 
     const getMonths = () => moment.localeData(lang)
-        .months()
-        .map(month => ({value: month, label: month}))
+	.months()
+	.map(month => ({value: month, label: month}))
 
 
     useEffect(() => {
-        setValue('manufacturer.model', null)
-        setValue('manufacturer.year', null)
+	setValue('manufacturer.model', null)
+	setValue('manufacturer.year', null)
     }, [selectedMake, setValue])
 
     useEffect(() => {
-        setValue('manufacturer.version', null)
-        setValue('manufacturer.year', null)
+	setValue('manufacturer.version', null)
+	setValue('manufacturer.year', null)
     }, [selectedModel, setValue])
 
     const triggerSubmit = () => {
-        formRef.current.dispatchEvent(new Event('submit'))
+	formRef.current.dispatchEvent(new Event('submit'))
     }
 
     const fetchMakes = useCallback(async () => {
-        const cacheKey = `${vehicleType}_makes`
+	const cacheKey = `${vehicleType}_makes`
 
-        if(!cache.current[cacheKey]) {
-            console.log('fetch makes')
-            await VehiclesService.getMakes(vehicleTypeModel)
-                .then(makes => {
-                    if(!Array.isArray(makes)) makes = [makes]
-                    const makesOptions = makes.map(make => ({
-                        value: make._id,
-                        label: make.make
-                    }))
+	if(!cache.current[cacheKey]) {
+	    console.log('fetch makes')
+	    await VehiclesService.getMakes(vehicleTypeModel)
+		.then(makes => {
+		    if(!Array.isArray(makes)) makes = [makes]
+		    const makesOptions = makes.map(make => ({
+			value: make._id,
+			label: make.make
+		    }))
 
-                    const defaultOption = {
-                        value: 'other',
-                        label: t(`vehicles:i_dont_know_other`)
-                    }
+		    const defaultOption = {
+			value: 'other',
+			label: t(`vehicles:i_dont_know_other`)
+		    }
 
-                    const data = [...makesOptions, defaultOption]
-                    cache.current[cacheKey] = data
+		    const data = [...makesOptions, defaultOption]
+		    cache.current[cacheKey] = data
 
-                    setManufacturersData(manufacturersData => (
-                        {
-                            ...manufacturersData,
-                            makes: data
-                        })
-                    )
-                })
-                .catch(err => {
-                    dispatchModalError({ err })
-                })
-        } else{
-            setManufacturersData(manufacturersData => (
-                {
-                    ...manufacturersData,
-                    makes: cache.current[cacheKey]
-                })
-            )
-        }
+		    setManufacturersData(manufacturersData => (
+			{
+			    ...manufacturersData,
+			    makes: data
+			})
+		    )
+		})
+		.catch(err => {
+		    dispatchModalError({ err })
+		})
+	} else{
+	    setManufacturersData(manufacturersData => (
+		{
+		    ...manufacturersData,
+		    makes: cache.current[cacheKey]
+		})
+	    )
+	}
 
     },[vehicleType])
 
     const fetchModels = useCallback(async ()=> {
-        const make = selectedMake?.label
-        const cacheKey = `${vehicleType}_makes_${make}_models`
+	const make = selectedMake?.label
+	const cacheKey = `${vehicleType}_makes_${make}_models`
 
-        if (!make) return
-        if(!cache.current[cacheKey]) {
-            console.log('fetch models')
-            const modelsService = isCar ? VehiclesService.getCarsDistinctModels
-                : VehiclesService.getMakeModels
+	if (!make) return
+	if(!cache.current[cacheKey]) {
+	    console.log('fetch models')
+	    const modelsService = isCar ? VehiclesService.getCarsDistinctModels
+		: VehiclesService.getMakeModels
 
-            await modelsService(vehicleTypeModel, make)
-                .then(models => {
-                    if(!Array.isArray(models)) models = [models]
-                    let modelsOptions = []
+	    await modelsService(vehicleTypeModel, make)
+		.then(models => {
+		    if(!Array.isArray(models)) models = [models]
+		    let modelsOptions = []
 
-                    if(isCar){
-                        modelsOptions = models.map(model => ({
-                            value: model,
-                            label: model
-                        }))
-                    }
-                    else {
-                        modelsOptions = models.map(model => ({
-                            value: model._id,
-                            label: model.model
-                        }))
-                    }
+		    if(isCar){
+			modelsOptions = models.map(model => ({
+			    value: model,
+			    label: model
+			}))
+		    }
+		    else {
+			modelsOptions = models.map(model => ({
+			    value: model._id,
+			    label: model.model
+			}))
+		    }
 
-                    const defaultOption = {
-                        value: 'other',
-                        label: t(`vehicles:i_dont_know_other`)
-                    }
+		    const defaultOption = {
+			value: 'other',
+			label: t(`vehicles:i_dont_know_other`)
+		    }
 
-                    const data = [...modelsOptions, defaultOption]
-                    cache.current[cacheKey] = data
+		    const data = [...modelsOptions, defaultOption]
+		    cache.current[cacheKey] = data
 
-                    setManufacturersData(manufacturersData => (
-                        {
-                            ...manufacturersData,
-                            models: data
-                        })
-                    )
-                })
-                .catch(err => {
-                    dispatchModalError({
-                        err,
-                        persist: true
-                    })
-                })
-        } else {
-            setManufacturersData(manufacturersData => (
-                {
-                    ...manufacturersData,
-                    models: cache.current[cacheKey]
-                })
-            )
-        }
+		    setManufacturersData(manufacturersData => (
+			{
+			    ...manufacturersData,
+			    models: data
+			})
+		    )
+		})
+		.catch(err => {
+		    dispatchModalError({
+			err,
+			persist: true
+		    })
+		})
+	} else {
+	    setManufacturersData(manufacturersData => (
+		{
+		    ...manufacturersData,
+		    models: cache.current[cacheKey]
+		})
+	    )
+	}
     },[vehicleType, isCar, selectedMake])
 
     const fetchModelsYears = useCallback(async() => {
-        const make = selectedMake?.label
-        const model = selectedModel?.label
-        const cacheKey = `${vehicleType}_makes_${make}_models_${model}`
+	const make = selectedMake?.label
+	const model = selectedModel?.label
+	const cacheKey = `${vehicleType}_makes_${make}_models_${model}`
 
-        if (!isCar || !make || !model) return
-        if(!cache.current[cacheKey]) {
-            console.log('fetch cars models years')
-            await VehiclesService.getCarsMakeModelTrimYears(make, model)
-                .then(years => {
-                    if(!Array.isArray(years)) years = [years]
+	if (!isCar || !make || !model) return
+	if(!cache.current[cacheKey]) {
+	    console.log('fetch cars models years')
+	    await VehiclesService.getCarsMakeModelTrimYears(make, model)
+		.then(years => {
+		    if(!Array.isArray(years)) years = [years]
 
-                    const yearsOptions = years.map(year => ({
-                        value: year._id,
-                        label: year.year
-                    }))
+		    const yearsOptions = years.map(year => ({
+			value: year._id,
+			label: year.year
+		    }))
 
-                    const defaultOption = {
-                        value: 'other',
-                        label: t(`vehicles:i_dont_know_other`)
-                    }
+		    const defaultOption = {
+			value: 'other',
+			label: t(`vehicles:i_dont_know_other`)
+		    }
 
-                    const data = [...yearsOptions, defaultOption]
-                    cache.current[cacheKey] = data
+		    const data = [...yearsOptions, defaultOption]
+		    cache.current[cacheKey] = data
 
-                    setManufacturersData(manufacturersData => (
-                        {
-                            ...manufacturersData,
-                            years: data
-                        })
-                    )
-                })
-                .catch(err => {
-                    dispatchModalError({ err })
-                })
-        } else {
-            setManufacturersData(manufacturersData => (
-                {
-                    ...manufacturersData,
-                    years: cache.current[cacheKey]
-                })
-            )
-        }
+		    setManufacturersData(manufacturersData => (
+			{
+			    ...manufacturersData,
+			    years: data
+			})
+		    )
+		})
+		.catch(err => {
+		    dispatchModalError({ err })
+		})
+	} else {
+	    setManufacturersData(manufacturersData => (
+		{
+		    ...manufacturersData,
+		    years: cache.current[cacheKey]
+		})
+	    )
+	}
     },[vehicleType, isCar, selectedMake, selectedModel])
 
     useEffect(() => {
-        fetchMakes()
+	fetchMakes()
     }, [fetchMakes])
 
     useEffect(() => {
-        const make = selectedMake?.label
-        if (!make) return
-        fetchModels()
+	const make = selectedMake?.label
+	if (!make) return
+	fetchModels()
     }, [selectedMake, fetchModels])
 
     useEffect(() => {
-        const model = selectedModel?.label
-        if (!model) return
-        if (!isCar) return
-        fetchModelsYears()
+	const model = selectedModel?.label
+	if (!model) return
+	if (!isCar) return
+	fetchModelsYears()
     }, [selectedModel, fetchModelsYears])
 
     useEffect(() => {
-        const make = selectedMake?.label
-        const model = selectedModel?.label
-        const year = selectedYear?.label
+	const make = selectedMake?.label
+	const model = selectedModel?.label
+	const year = selectedYear?.label
 
-        if (!make) return
-        if (!model) return
+	if (!make) return
+	if (!model) return
 
-        if (!isCar){
-            triggerSubmit()
-            return
-        }
+	if (!isCar){
+	    triggerSubmit()
+	    return
+	}
 
-        if(year) triggerSubmit()
+	if(year) triggerSubmit()
     }, [selectedMake, selectedModel, selectedYear])
 
     const onMakeChange = value => {
-        setValue('manufacturer.model', null)
-        setValue('manufacturer.year', null)
+	setValue('manufacturer.model', null)
+	setValue('manufacturer.year', null)
 
-        return value
+	return value
     }
 
     const onModelChange = value => {
-        setValue('manufacturer.year', null)
+	setValue('manufacturer.year', null)
 
-        return value
+	return value
     }
     return (
-        <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
-            <Row>
-                <Col md={4}>
-                    <FieldWrapper label={t(`vehicles:make`)} labelTop>
-                        <SelectInput
-                            name="manufacturer.make"
-                            placeholder={t('vehicles:select')}
-                            control={control}
-                            errors={errors}
-                            options={manufacturersData.makes}
-                            onChange={onMakeChange}
-                            rules={{ required:t('form_validations:required') }}
-                        />
-                    </FieldWrapper>
-                </Col>
+	<form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
+	    <Row>
+		<Col md={4}>
+		    <FieldWrapper label={t(`vehicles:make`)} labelTop>
+			<SelectInput
+			    name="manufacturer.make"
+			    placeholder={t('vehicles:select')}
+			    control={control}
+			    errors={errors}
+			    options={manufacturersData.makes}
+			    onChange={onMakeChange}
+			    rules={{ required:t('form_validations:required') }}
+			/>
+		    </FieldWrapper>
+		</Col>
 
-                <Col md={4}>
-                    <FieldWrapper label={t(`vehicles:model`)} labelTop>
-                        <SelectInput
-                            name="manufacturer.model"
-                            placeholder={t('vehicles:select')}
-                            options={manufacturersData.models}
-                            disabled={!watch('manufacturer.make')}
-                            control={control}
-                            errors={errors}
-                            onChange={onModelChange}
-                            rules={{ required:t('form_validations:required') }}
-                        />
-                    </FieldWrapper>
-                </Col>
+		<Col md={4}>
+		    <FieldWrapper label={t(`vehicles:model`)} labelTop>
+			<SelectInput
+			    name="manufacturer.model"
+			    placeholder={t('vehicles:select')}
+			    options={manufacturersData.models}
+			    disabled={!watch('manufacturer.make')}
+			    control={control}
+			    errors={errors}
+			    onChange={onModelChange}
+			    rules={{ required:t('form_validations:required') }}
+			/>
+		    </FieldWrapper>
+		</Col>
 
-                <Col md={4}>
-                    <FieldWrapper label={t('vehicles:version')} labelTop>
-                        <TextInput
-                            disabled={!watch('manufacturer.model')}
-                            name="manufacturer.version"
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
-                </Col>
+		<Col md={4}>
+		    <FieldWrapper label={t('vehicles:version')} labelTop>
+			<TextInput
+			    disabled={!watch('manufacturer.model')}
+			    name="manufacturer.version"
+			    control={control}
+			    errors={errors}
+			/>
+		    </FieldWrapper>
+		</Col>
 
-                <Col md={4}>
-                    <FieldWrapper label={t('vehicles:month')} labelTop>
-                        <SelectInput
-                            name="manufacturer.month"
-                            placeholder={t('vehicles:select')}
-                            options={getMonths()}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.model') || !isCar}
-                        />
-                    </FieldWrapper>
-                </Col>
+		<Col md={4}>
+		    <FieldWrapper label={t('vehicles:month')} labelTop>
+			<SelectInput
+			    name="manufacturer.month"
+			    placeholder={t('vehicles:select')}
+			    options={getMonths()}
+			    control={control}
+			    errors={errors}
+			    disabled={!watch('manufacturer.model') || !isCar}
+			/>
+		    </FieldWrapper>
+		</Col>
 
-                <Col md={4}>
-                    <FieldWrapper label={t('vehicles:year')}>
-                        <SelectInput
-                            name="manufacturer.year"
-                            placeholder={t('vehicles:select')}
-                            options={manufacturersData.years}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.model') || !isCar}
-                            // rules={{ required:t('form_validations:required') }}
-                        />
-                    </FieldWrapper>
-                </Col>
-            </Row>
-            <button className="btn" onClick={triggerSkipStep}>{t(`vehicles:skip-step`)}</button>
-            <StepNavigation prev={prevStep} submit/>
-        </form>
+		<Col md={4}>
+		    <FieldWrapper label={t('vehicles:year')}>
+			<SelectInput
+			    name="manufacturer.year"
+			    placeholder={t('vehicles:select')}
+			    options={manufacturersData.years}
+			    control={control}
+			    errors={errors}
+			    disabled={!watch('manufacturer.model') || !isCar}
+			    rules={{ required:t('form_validations:required') }}
+			/>
+		    </FieldWrapper>
+		</Col>
+	    </Row>
+	    <button className="btn" onClick={triggerSkipStep}>{t(`vehicles:skip-step`)}</button>
+	    <StepNavigation prev={prevStep} submit/>
+	</form>
     )
 }
 
