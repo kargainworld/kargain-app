@@ -10,7 +10,7 @@ const GalleryViewer = forwardRef(({ images, handleClick, isAnnounceCard }, ref) 
 	original: image.getLocation,
 	thumbnail: image.getLocation
     }))
-  const handleSslfClick = () => {
+  const handleSelfClick = () => {
     if(ref.current) ref.current.toggleFullScreen();
   }
 
