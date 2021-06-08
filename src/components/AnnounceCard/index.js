@@ -50,174 +50,174 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
     const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const isAuthor = isAuthenticated && authenticatedUser.getID === announce.getAuthor?.getID
     const checkIfAlreadyLike = () => {
-        const matchUserFavorite = authenticatedUser.getFavorites.find(favorite => favorite.getID === announce.getID)
-        const matchAnnounceLike = announce.getLikes.find(like => like.getAuthor.getID === authenticatedUser.getID)
-        return !!matchUserFavorite || !!matchAnnounceLike
+	const matchUserFavorite = authenticatedUser.getFavorites.find(favorite => favorite.getID === announce.getID)
+	const matchAnnounceLike = announce.getLikes.find(like => like.getAuthor.getID === authenticatedUser.getID)
+	return !!matchUserFavorite || !!matchAnnounceLike
     }
 
     const alreadyLikeCurrentUser = checkIfAlreadyLike()
 
     const handleClickLikeButton = async () => {
-        if (!isAuthenticated) return setForceLoginModal(true)
-        try {
-            if (alreadyLikeCurrentUser) {
-                await AnnounceService.addLikeLoggedInUser(announce.getID)
-                setLikesCounter(likesCount => likesCount + 1)
-            } else {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID)
-                setLikesCounter(likesCount => Math.max(likesCount - 1))
-            }
-        } catch (err) {
-            dispatchModalError({ err })
-        }
+	if (!isAuthenticated) return setForceLoginModal(true)
+	try {
+	    if (alreadyLikeCurrentUser) {
+		await AnnounceService.addLikeLoggedInUser(announce.getID)
+		setLikesCounter(likesCount => likesCount + 1)
+	    } else {
+		await AnnounceService.removeLikeLoggedInUser(announce.getID)
+		setLikesCounter(likesCount => Math.max(likesCount - 1))
+	    }
+	} catch (err) {
+	    dispatchModalError({ err })
+	}
     }
 
     const isOwn = authenticatedUser?.raw?.id === announceRaw?.user?.id
 
     const toggleVisibility = () => {
-        announceService.updateAnnounce(announce.getSlug, {visible: !announceRaw.visible})
-          .then(() => window.location.reload())
+	announceService.updateAnnounce(announce.getSlug, {visible: !announceRaw.visible})
+	  .then(() => window.location.reload())
     }
     const handleImageClick = () => {
-        router.push(announce.getAnnounceLink);
+	router.push(announce.getAnnounceLink);
     }
 
     return (
-        <Root>
-            <CardContent>
-                <User>
-                    <Avatar src={announce.getAuthor.getAvatar} size="medium" />
+	<Root>
+	    <CardContent>
+		<User>
+		    <Avatar src={announce.getAuthor.getAvatar} size="medium" />
 
-                    <Info>
-                        <AuthorName href={announce.getAuthor.getProfileLink}>
-                            {announce.getAuthor.getFullName}
-                        </AuthorName>
+		    <Info>
+			<AuthorName href={announce.getAuthor.getProfileLink}>
+			    {announce.getAuthor.getFullName}
+			</AuthorName>
 
-                        {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                            <Location
-                                href={announce.buildAddressGoogleMapLink()}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <i.Room size={18} />
-                                {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
-                            </Location>
-                        )}
-                    </Info>
+			{announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+			    <Location
+				href={announce.buildAddressGoogleMapLink()}
+				target="_blank"
+				rel="noreferrer"
+			    >
+				<i.Room size={18} />
+				{announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+			    </Location>
+			)}
+		    </Info>
 
-                    <Meta>
-                        <CreationDate>
-                            <i.AccessTime />
+		    <Meta>
+			<CreationDate>
+			    <i.AccessTime />
 
-                            {getTimeAgo(announce.getCreationDate.raw, lang)}
-                        </CreationDate>
+			    {getTimeAgo(announce.getCreationDate.raw, lang)}
+			</CreationDate>
 
-                        <ShareIcon
-                            onClick={() => dispatchModalState({
-                                openModalShare : true,
-                                modalShareAnnounce : announce
-                            })}
-                            src="/images/share.png"
-                            alt=""
-                        />
-                    </Meta>
-                </User>
+			<ShareIcon
+			    onClick={() => dispatchModalState({
+				openModalShare : true,
+				modalShareAnnounce : announce
+			    })}
+			    src="/images/share.png"
+			    alt=""
+			/>
+		    </Meta>
+		</User>
 
-                <SubHeader>
-                    {isOwn && (
-                      <Action onClick={toggleVisibility}>
-                          <i.RemoveRedEyeOutlined />
-                      </Action>
-                    )}
+		<SubHeader>
+		    {isOwn && (
+		      <Action onClick={toggleVisibility}>
+			  <i.RemoveRedEyeOutlined />
+		      </Action>
+		    )}
 
-                    <Action
-                        title={t('vehicles:i-like')}
-                        onClick={() => handleClickLikeButton()}
-                    >
-                        <i.BookmarkBorder
-                            style={{
-                                color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
-                            }}
-                        />
-                        <span>{likesCounter}</span>
-                    </Action>
+		    <Action
+			title={t('vehicles:i-like')}
+			onClick={() => handleClickLikeButton()}
+		    >
+			<i.BookmarkBorder
+			    style={{
+				color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
+			    }}
+			/>
+			<span>{likesCounter}</span>
+		    </Action>
 
-                    <Action
-                        title={t('vehicles:comment_plural')}
-                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
-                        onClick={() => handleImageClick()}
-                    >
-                        <i.ChatBubbleOutline
-                          style={{ width: 23, marginRight: 4 }}
-                        />
-                        <span>{announce.getCountComments}</span>
-                    </Action>
+		    <Action
+			title={t('vehicles:comment_plural')}
+			style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+			onClick={() => handleImageClick()}
+		    >
+			<i.ChatBubbleOutline
+			  style={{ width: 23, marginRight: 4 }}
+			/>
+			<span>{announce.getCountComments}</span>
+		    </Action>
 
-                    <Action
-                        onClick={() => dispatchModalState({
-                            openModalMessaging : true,
-                            modalMessagingProfile : announce.getAuthor
-                        })}
-                    >
-                        <i.MailOutline style={{ position: "relative", top: -1 }} />
-                    </Action>
+		    <Action
+			onClick={() => dispatchModalState({
+			    openModalMessaging : true,
+			    modalMessagingProfile : announce.getAuthor
+			})}
+		    >
+			<i.MailOutline style={{ position: "relative", top: -1 }} />
+		    </Action>
 
-                    <Price>€ {announce.getPrice}</Price>
-                </SubHeader>
+		    <Price>€ {announce.getPrice}</Price>
+		</SubHeader>
 
-                <Body>
-                    <ImageWrapper>
+		<Body>
+		    <ImageWrapper>
 
-                        {announce.getImages.length > 0 && <GalleryViewer images={announce.getImages} ref={refImg} handleClick={handleImageClick} />}
+			{announce.getImages.length > 0 && <GalleryViewer images={announce.getImages} ref={refImg} handleClick={handleImageClick} isAnnounceCard={true} />}
 
-                        {!announce.getFeaturedImg && (
-                            <ImagePlaceholder>
-                                <i.CameraAlt fontSize="large" />
-                            </ImagePlaceholder>
-                        )}
+			{!announce.getFeaturedImg && (
+			    <ImagePlaceholder>
+				<i.CameraAlt fontSize="large" />
+			    </ImagePlaceholder>
+			)}
 
-                        {announce.getFeaturedImg && (
-                            <ImageCounter>
-                                <i.CameraAlt />
-                                {announce.getCountImages}
-                            </ImageCounter>
-                        )}
-                    </ImageWrapper>
+			{announce.getFeaturedImg && (
+			    <ImageCounter>
+				<i.CameraAlt />
+				{announce.getCountImages}
+			    </ImageCounter>
+			)}
+		    </ImageWrapper>
 
-                    <Link href={announce.getAnnounceLink}>
-                        <a>
-                            <Title>{announce.getAnnounceTitle}</Title>
-                        </a>
-                    </Link>
+		    <Link href={announce.getAnnounceLink}>
+			<a>
+			    <Title>{announce.getAnnounceTitle}</Title>
+			</a>
+		    </Link>
 
-                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags}/>}
+		    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags}/>}
 
-                    {announce.getCountComments > 0 && (
-                        <CommentListStyled
-                            comments={announce.getComments.reverse().slice(0, 1)}
-                            moreLink={announce.getCountComments > 1
-                                ? <Link href={announce.getAnnounceLink}>more</Link>
-                                : null
-                            }
-                        />
-                    )}
-                </Body>
-            </CardContent>
+		    {announce.getCountComments > 0 && (
+			<CommentListStyled
+			    comments={announce.getComments.reverse().slice(0, 1)}
+			    moreLink={announce.getCountComments > 1
+				? <Link href={announce.getAnnounceLink}>more</Link>
+				: null
+			    }
+			/>
+		    )}
+		</Body>
+	    </CardContent>
 
-            <Footer>
-                <CTALink
-                    title={t('vehicles:see-announce')}
-                    href={announce.getAnnounceLink}
-                />
+	    <Footer>
+		<CTALink
+		    title={t('vehicles:see-announce')}
+		    href={announce.getAnnounceLink}
+		/>
 
-                {isAuthor && (
-                    <CTALink
-                        title={t('vehicles:edit-announce')}
-                        href={announce.getAnnounceEditLink}
-                    />
-                )}
-            </Footer>
-        </Root>
+		{isAuthor && (
+		    <CTALink
+			title={t('vehicles:edit-announce')}
+			href={announce.getAnnounceEditLink}
+		    />
+		)}
+	    </Footer>
+	</Root>
     )
 }
 
