@@ -45,44 +45,10 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-// TODO: remove it
-const n = [
-    {
-        "opened":false,
-        "_id":"603e9b4b87153f591f3a801e",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9b5387153f591f3a801f",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9b9f87153f591f3a8020",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9bd41cd27963751cb2f2",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9c0dc5930763a08930c9",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-]
-
 const NotificationsNav = ({ isOpen, keyName, toggle }) => {
     const classes = useStyles()
 
-    const [notifications, setNotification] = useState(n || [])
+    const [notifications, setNotification] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false || true)
 

@@ -142,7 +142,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                         ) : (
                                             <>
                                                 <div className="d-flex align-items-center my-3">
-                                                    <FindInPageIcon fontSize="medium"/>
+                                                    <FindInPageIcon fontSize="default"/>
                                                     <Typography variant="h3">
                                                         {t('layout:no_result')}
                                                     </Typography>
