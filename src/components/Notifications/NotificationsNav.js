@@ -3,17 +3,32 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import IconButton from '@material-ui/core/IconButton'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import Badge from '@material-ui/core/Badge'
-import {fetchNotifications} from "../../services/NotificationsService";
 import {CircularProgress} from "@material-ui/core";
+import {fetchNotifications, removeNotification} from "../../services/NotificationsService";
 import {makeStyles} from "@material-ui/styles";
+import useSocket from '../../hooks/useSocket';
+import { useAuth } from '../../context/AuthProvider';
 
 const useStyles = makeStyles(() => ({
+    '@global': {
+        '*::-webkit-scrollbar': {
+          width: '0.4em'
+        },
+        '*::-webkit-scrollbar-track': {
+            background: '#fff',
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(0,0,0,.6)',
+        }
+    },
     wrapper: {
         border: 'none !important',
         boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1) !important',
         borderRadius: '5px !important',
-        padding: '16px !important'
+        paddingLeft: '16px !important',
+        maxHeight: 300,
+        overflowY: "scroll"
     },
     notification: {
         display: 'flex',
@@ -25,84 +40,75 @@ const useStyles = makeStyles(() => ({
         }
     },
     readIndicator: {
-        width: 8,
-        height: 8,
-        maxWidth: 8,
-        maxHeight: 8,
-        minWidth: 8,
-        minHeight: 8,
+        width: 10,
+        height: 10,
         background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%)',
         borderRadius: '50%',
-        opacity: 1
+        opacity: 1,
+        margin: 5
     },
     opened: {
         opacity: 0.3
     },
     badge: {
+        position: "absolute",
+        top: "10%",
+        right: "20%",
+        width: 10,
+        height: 10,
+        borderRadius: "50%",
+        background: "red",
         '& .MuiBadge-badge': {
             background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important'
         }
     }
 }))
 
-// TODO: remove it
-const n = [
-    {
-        "opened":false,
-        "_id":"603e9b4b87153f591f3a801e",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9b5387153f591f3a801f",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9b9f87153f591f3a8020",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9bd41cd27963751cb2f2",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-    {
-        "opened":false,
-        "_id":"603e9c0dc5930763a08930c9",
-        "message":"Announce updated",
-        "action":"http://localhost:3000/announces/aro-24-1979-rbjid8kxs"
-    },
-]
-
 const NotificationsNav = ({ isOpen, keyName, toggle }) => {
     const classes = useStyles()
-
-    const [notifications, setNotification] = useState(n || [])
+    const socket = useSocket()
+    const { authenticatedUser } = useAuth()
+    const [notifications, setNotifications] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [isLoaded, setIsLoaded] = useState(false || true)
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [isChecked, setIsChecked] = useState(false)
 
-    const fetch = () => {
+    useEffect(() => {
         setIsLoading(true)
         fetchNotifications()
             .then(res => {
                 if(res && res.pings) {
-                    setNotification(res.pings)
+                    const newNotifications = res.pings.filter(item => !item.opened)
+                    
+                    if(newNotifications.length > 0) {
+                        setNotifications(newNotifications)
+                        if(!isOpen) setIsChecked(false)
+                    } else setIsChecked(true)
                 }
                 setIsLoaded(true)
             })
             .finally(() => setIsLoading(false))
-    }
+    }, [isOpen])
 
     useEffect(() => {
-        if (isOpen || !isLoaded) {
-            fetch()
+        if (socket){
+            if(isOpen) {
+                socket.emit('OPENED_NOTIFICATION', { user: authenticatedUser.getID })
+                setIsChecked(true)
+            }
+            socket.on('GET_NOTIFICATION', (data) => {console.log("HERE!!!!!!!!!")
+                setIsChecked(false)
+            })
         }
-    }, [isOpen])
+
+    }, [socket, isOpen])
+
+    const handleRemovePing = (pingId) => {
+        setIsLoading(true)
+        removeNotification(pingId).then(res => {
+            if(res) setNotifications(notifications.filter((item) => item._id !== pingId))
+        }).finally(() => setIsLoading(false))
+    }
 
     return (
         <li
@@ -114,15 +120,18 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
                     aria-haspopup="true"
                     aria-expanded="true"
                     id="dropdownMenu2"
-                    onClick={() => toggle(keyName)}>
+                    onClick={() => {
+                        toggle(keyName)
+                        setIsChecked(true)
+                    }}>
                     <NotificationsIcon/>
+                    {!isChecked && !isOpen && <span className={classes.badge} />}
                 </IconButton>
 
                 <div id="dropdown-notifications"
                     className={clsx('dropdown-menu', isOpen && 'show', classes.wrapper)}>
                     <div>
-                        {isLoading && <CircularProgress />}
-
+                        {isLoading && <div className="d-flex justify-content-center align-items-center"><CircularProgress /></div> }
                         {
                             !notifications.length && !isLoading && isLoaded && (
                                 <div className="text-podpiska">
@@ -137,7 +146,9 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
                                     {notifications.map(({ message, action, opened, _id }) => (
                                         <li key={_id} className={classes.notification}>
                                             <Link href={action || ''}>{message}</Link>
-                                            <span className={clsx(classes.readIndicator, opened && classes.opened)} />
+                                            <IconButton onClick={() => handleRemovePing(_id)}>
+                                                <span className={clsx(classes.readIndicator, opened && classes.opened)} />
+                                            </IconButton>
                                         </li>
                                     ))}
                                 </ul>

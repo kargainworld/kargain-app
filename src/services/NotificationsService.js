@@ -17,6 +17,20 @@ export function fetchNotifications() {
         })
 }
 
+export function removeNotification (pingId) {
+    const requestOptions = {
+        method: 'DELETE',
+        credentials: 'include',
+    }
+
+    return fetch(`${config.api}/notifications/${pingId}`, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 //admin
 function sendTokenToDb (token) {
     const requestOptions = {
@@ -51,5 +65,6 @@ function deleteTokenFromDb () {
 
 export default {
     sendTokenToDb,
-    deleteTokenFromDb
+    deleteTokenFromDb,
+    removeNotification
 }

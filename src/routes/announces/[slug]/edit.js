@@ -210,8 +210,6 @@ const AnnounceEdit = () => {
 	    const result = await AnnounceService.getAnnounceBySlug(slug)
 	    const { announce, isAdmin, isSelf } = result
 
-	    console.log(result)
-
 	    setState(state => ({
 		...state,
 		stateReady : true,
