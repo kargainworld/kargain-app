@@ -56,7 +56,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
     const filterComments = (CommentModel) => !deletedComments.includes(CommentModel.getID)
 
     return (
-        <div className={clsx(comments, className)}>
+        <div>
             <ModalConfirmRemoveComment
                 openDialogRemove={openDialogRemove}
                 handleCloseDialogRemove={handleCloseDialogRemove}

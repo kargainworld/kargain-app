@@ -5,7 +5,6 @@ import Budget from '../../components/Admin/temp/Budget'
 import TotalUsers from '../../components/Admin/temp/TotalUsers'
 import TasksProgress from '../../components/Admin/temp/TasksProgress/TasksProgress'
 import TotalProfit from '../../components/Admin/temp/TotalProfit'
-import useSocket from '../../hooks/useSocket'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,14 +14,6 @@ const useStyles = makeStyles(theme => ({
 
 const DashboardAdmin = () => {
     const classes = useStyles()
-    console.log('adsfasdf')
-    const socket = useSocket()
-    useEffect(() => {
-        if (socket)
-            socket.on('GET_NOTIFICATION', data => {
-                console.log(data)
-            })
-    }, [socket])
 
     return (
         <div className={classes.root}>
