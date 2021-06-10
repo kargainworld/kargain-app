@@ -21,7 +21,7 @@ export default ({ forceLogout }) => {
 	const { logout } = useAuth()
 	const { t } = useTranslation()
 	const { initializeAuth } = useAuth()
-	const socket = useSocket()
+	useSocket()
 	const { redirect } = router.query
 	const { dispatchModalError } = useContext(MessageContext)
 	const { control, errors, handleSubmit } = useForm({
@@ -41,9 +41,8 @@ export default ({ forceLogout }) => {
 				password
 			})
 			await initializeAuth()
+
 			const User = new UserModel(user)
-			// set user Id
-			socket.emit('SET_USER_ID', { id: User.getID })
 
 			if (redirect) {
 				router.push(`/auth/callback?redirect=${redirect}`)

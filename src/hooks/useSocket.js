@@ -3,27 +3,27 @@ import { api } from '../config/config'
 import io from 'socket.io-client'
 import { useAuth } from '../context/AuthProvider'
 const server = api.slice(0, -3)
-const socketIo = io(server)
+const socketIo = io(server, { autoConnect: false })
 
 function useSocket(cb) {
     const [socket, setSocket] = useState(null)
     const { isAuthenticated, authenticatedUser } = useAuth()
+
     useEffect(() => {
 
-        if (socket || !socketIo) return;
-
-        if (isAuthenticated) {
-            socketIo.emit('SET_USER_ID', { id: authenticatedUser.getID })
-        }
+        if ((socket && socket.connected) || !socketIo || !isAuthenticated) return;
+        socketIo.auth = { userId: authenticatedUser.getID }
+        socketIo.connect()
 
         cb && cb(socket)
         setSocket(socketIo)
 
-        return () => {
-            socketIo.off('Offline', cb)
+        return function cleanup() {
+            console.log('CleanUP')
+            socketIo.off("connect_error");
         }
 
-    }, [socket])
+    }, [socket, isAuthenticated])
 
     return socket
 }

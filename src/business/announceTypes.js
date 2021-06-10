@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-export default () => {
+const Named = () => {
     const { t } = useTranslation();
 
     return [
@@ -18,3 +18,5 @@ export default () => {
         }
     ]
 }
+
+export default Named

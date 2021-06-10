@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import Budget from '../../components/Admin/temp/Budget'
 import TotalUsers from '../../components/Admin/temp/TotalUsers'
 import TasksProgress from '../../components/Admin/temp/TasksProgress/TasksProgress'
 import TotalProfit from '../../components/Admin/temp/TotalProfit'
-
+import useSocket from '../../hooks/useSocket'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,6 +15,14 @@ const useStyles = makeStyles(theme => ({
 
 const DashboardAdmin = () => {
     const classes = useStyles()
+    console.log('adsfasdf')
+    const socket = useSocket()
+    useEffect(() => {
+        if (socket)
+            socket.on('GET_NOTIFICATION', data => {
+                console.log(data)
+            })
+    }, [socket])
 
     return (
         <div className={classes.root}>
@@ -27,7 +35,7 @@ const DashboardAdmin = () => {
                     sm={6}
                     xl={3}
                     xs={12}>
-                    <Budget/>
+                    <Budget />
                 </Grid>
                 <Grid
                     item
@@ -35,7 +43,7 @@ const DashboardAdmin = () => {
                     sm={6}
                     xl={3}
                     xs={12}>
-                    <TotalUsers/>
+                    <TotalUsers />
                 </Grid>
                 <Grid
                     item
@@ -43,7 +51,7 @@ const DashboardAdmin = () => {
                     sm={6}
                     xl={3}
                     xs={12}>
-                    <TasksProgress/>
+                    <TasksProgress />
                 </Grid>
                 <Grid
                     item
@@ -51,7 +59,7 @@ const DashboardAdmin = () => {
                     sm={6}
                     xl={3}
                     xs={12}>
-                    <TotalProfit/>
+                    <TotalProfit />
                 </Grid>
                 <Grid
                     item
