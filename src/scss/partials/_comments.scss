@@ -1,14 +1,16 @@
 @import 'variables';
 
+.commentsCardList {
+    list-style-type: none;
+    margin: 1rem 0;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
 .comments {
     padding: .5rem;
     overflow-y: auto;
     max-height: 25rem;
-
-    .commentsCardList {
-        list-style-type: none;
-        margin: 1rem;
-    }
 
     .profile-small {
         display: flex;

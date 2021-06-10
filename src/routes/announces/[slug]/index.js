@@ -147,13 +147,13 @@ const Announce = () => {
 		fetchAnnounce()
 	}, [fetchAnnounce])
 
-	useEffect(() => {
-		if(socket) {
-			socket.on('GET_NOTIFICATION', data => {
-				console.log(data)
-			})
-		}
-	}, [socket])
+	// useEffect(() => {
+	// 	if(socket) {
+	// 		socket.on('GET_NOTIFICATION', data => {
+	// 			// console.log(data)
+	// 		})
+	// 	}
+	// }, [socket])
 
 
 	if (!state.stateReady) return null
