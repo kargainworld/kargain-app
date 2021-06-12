@@ -58,9 +58,7 @@ const useStyles = makeStyles(() => ({
         height: 10,
         borderRadius: "50%",
         background: "red",
-        '& .MuiBadge-badge': {
-            background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important'
-        }
+        background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important'
     }
 }))
 
@@ -78,10 +76,9 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
         fetchNotifications()
             .then(res => {
                 if(res && res.pings) {
+                    setNotifications(res.pings)
                     const newNotifications = res.pings.filter(item => !item.opened)
-                    
                     if(newNotifications.length > 0) {
-                        setNotifications(newNotifications)
                         if(!isOpen) setIsChecked(false)
                     } else setIsChecked(true)
                 }
@@ -96,7 +93,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
                 socket.emit('OPENED_NOTIFICATION', { user: authenticatedUser.getID })
                 setIsChecked(true)
             }
-            socket.on('GET_NOTIFICATION', (data) => {console.log("HERE!!!!!!!!!")
+            socket.on('GET_NOTIFICATION', (data) => {
                 setIsChecked(false)
             })
         }
