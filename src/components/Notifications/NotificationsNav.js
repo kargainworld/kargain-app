@@ -86,6 +86,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
     fetchNotifications()
       .then((res) => {
         if (res && res.pings) {
+          console.log(res.pings);
           setNotifications(res.pings);
           const newNotifications = res.pings.filter((item) => !item.opened);
           if (newNotifications.length > 0) {

@@ -42,17 +42,17 @@ export const SocketProvider = ({ children }) => {
       socket.on('PING', (data) => console.log(data));
       socket.on('GET_NOTIFICATION', (notifications) => {
         setNotifications(notifications.data);
-        setNotificationCounts(notifications.counts);
+        if (notifications.counts > 0) setNotificationCounts(notifications.counts);
       });
     }
   }, [socketState.socket]);
 
   const setNotifications = (data) => {
-    setSocketState({ ...notifications, data });
+    setSocketState({ ...socketState, notifications: data });
   };
 
   const setNotificationCounts = (counts) => {
-    setSocketState({ ...notificationCounts, counts });
+    setSocketState({ ...socketState, notificationCounts: counts });
   };
 
   const notificationsChecked = () => {
@@ -63,7 +63,11 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  return <socketContext.Provider value={{ ...socketState, notificationsChecked }}>{children}</socketContext.Provider>;
+  return (
+    <socketContext.Provider value={{ ...socketState, setNotifications, setNotificationCounts, notificationsChecked }}>
+      {children}
+    </socketContext.Provider>
+  );
 };
 
 export const useSocket = () => {
