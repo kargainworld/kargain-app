@@ -6,65 +6,57 @@ import { useAuth } from './AuthProvider';
 const server = api.slice(0, -3);
 const socketIo = io(server, { autoConnect: false });
 
-const defaultContext = {
-  socket: null,
-  isConnected: false,
-  isNotificationChecked: false,
-  notifications: [],
-  notificationCounts: 0,
-  messages: [],
-  notificationsChecked: () => {},
-  setNotifications: () => {},
-  setNotificationCounts: () => {},
-};
-
-const socketContext = createContext(defaultContext);
+const socketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const { isAuthenticated, authenticatedUser } = useAuth();
-  const [socketState, setSocketState] = useState(defaultContext);
+
+  const [socket, setSocket] = useState(null);
+  const [isConnected, setConnected] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCounts, setNotificationCounts] = useState(0);
+  const [isNotificationChecked, setIsNotificationChecked] = useState(false);
 
   useEffect(() => {
-    const { socket } = socketState;
     if ((socket && socket.connected) || !socketIo || !isAuthenticated) return;
     socketIo.auth = { userId: authenticatedUser.getID };
     socketIo.connect();
-    setSocketState({ ...socketState, socket: socketIo, isConnected: true });
+    setConnected(true);
+    setSocket(socketIo);
 
     return function cleanup() {
       socketIo.disconnect();
     };
-  }, [socketState.socket, isAuthenticated]);
+  }, [socket, isAuthenticated]);
 
   useEffect(() => {
-    const { isConnected, socket } = socketState;
     if (isConnected) {
       socket.on('PING', (data) => console.log(data));
       socket.on('GET_NOTIFICATION', (notifications) => {
         setNotifications(notifications.data);
-        if (notifications.counts > 0) setNotificationCounts(notifications.counts);
+        if (notifications.count > 0) setNotificationCounts(notifications.count);
       });
     }
-  }, [socketState.socket]);
-
-  const setNotifications = (data) => {
-    setSocketState({ ...socketState, notifications: data });
-  };
-
-  const setNotificationCounts = (counts) => {
-    setSocketState({ ...socketState, notificationCounts: counts });
-  };
+  }, [socket, isConnected]);
 
   const notificationsChecked = () => {
-    const { socket } = socketState;
-    if (socket) {
+    if (socket && isConnected) {
       socket.emit('OPENED_NOTIFICATION', { user: authenticatedUser.getID });
-      setSocketState({ ...socketState, isNotificationChecked: true });
+      setIsNotificationChecked(true);
     }
   };
 
   return (
-    <socketContext.Provider value={{ ...socketState, setNotifications, setNotificationCounts, notificationsChecked }}>
+    <socketContext.Provider
+      value={{
+        notifications,
+        isNotificationChecked,
+        notificationCounts,
+        setNotifications,
+        setNotificationCounts,
+        notificationsChecked,
+      }}
+    >
       {children}
     </socketContext.Provider>
   );
