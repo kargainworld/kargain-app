@@ -14,6 +14,7 @@ import ConversationsService from '../../services/ConversationsService'
 import useStyles from '../../components/Conversations/conversation.styles'
 import { MessageContext } from '../../context/MessageContext'
 import ValidationError from '../../components/Form/Validations/ValidationError'
+import { useSocket } from '../../context/SocketContext'
 
 const Messages = () => {
     const theme = useTheme()
@@ -30,11 +31,13 @@ const Messages = () => {
         mode: 'onChange',
         validateCriteriaMode: 'all'
     })
-    
+
+    const { socket, privateMessage } = useSocket()
+
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'), {
         defaultMatches: true
     })
-    
+
     const loadConversations = async () => {
         try {
             const conversations = await ConversationsService.getCurrentUserConversations()
@@ -48,10 +51,17 @@ const Messages = () => {
         console.log(form)
         const { message } = form
         try {
-            const conversation = await ConversationsService.postConversationMessage(message, selectedRecipient.getID)
-            setSelectedConversation(conversation)
+            // const conversation = await ConversationsService.postConversationMessage(message, selectedRecipient.getID)
+            // setSelectedConversation(conversation)
+            socket.emit('PRIVATE_MESSAGE', { message, to: selectedRecipient.getID })
+
+            selectedConversation.messages.push({
+                from: authenticatedUser.getID,
+                content: message
+            })
+
             dispatchModal({ msg: 'Message posted' })
-            if(contentRef.current){
+            if (contentRef.current) {
                 contentRef.current.scrollTop = contentRef.current?.scrollHeight
             }
             reset()
@@ -76,16 +86,27 @@ const Messages = () => {
     const closeConversation = () => {
         setOpenedConversation(false)
     }
-    
+
     useEffect(() => {
-        if(isAuthenticated) loadConversations()
+        if (isAuthenticated) loadConversations()
     }, [isAuthenticated])
 
     useEffect(() => {
-        if (conversations.length){
+        if (conversations.length) {
             handleSelectConversation(0)
         }
     }, [])
+
+    useEffect(() => {
+        if (privateMessage) {
+            const messages = selectedConversation ? selectedConversation.messages : []
+            messages.push(privateMessage)
+            setSelectedConversation({
+                ...selectedConversation,
+                messages
+            })
+        }
+    }, [privateMessage])
 
     return (
         <>
@@ -99,12 +120,12 @@ const Messages = () => {
                                     const to = new UserModel(conversation.to)
                                     const from = new UserModel(conversation.from)
                                     const recipient = from.getID === authenticatedUser.getID ? to : from
-                            
+
                                     return (
                                         <div key={index}
                                             className={classes.conversationListItem}
                                             onClick={() => handleSelectConversation(index)}>
-                                    
+
                                             <img className="dropdown-toggler rounded-circle mx-2"
                                                 width="30"
                                                 height="30"
@@ -112,7 +133,7 @@ const Messages = () => {
                                                 title={recipient.getFullName}
                                                 alt={recipient.getUsername}
                                             />
-                                    
+
                                             <div className={classes.itemDetails}>
                                                 <p className="mt-0">
                                                     {recipient.getFullName}
@@ -133,7 +154,7 @@ const Messages = () => {
                         </div>
                     </div>
                 </div>
-        
+
                 {selectedConversation && (
                     <div className={clsx(
                         classes.conversation,
@@ -156,7 +177,7 @@ const Messages = () => {
                                 </div>
                                 {isMobile && (
                                     <div className={classes.pointerClose} onClick={() => closeConversation()}>
-                                        <CloseIcon/>
+                                        <CloseIcon />
                                     </div>
                                 )}
                             </div>
@@ -183,7 +204,7 @@ const Messages = () => {
                                             </div>
                                         )
                                     }
-                                    
+
                                     else {
                                         return (
                                             <div key={index} className={classes.textJustifiedStart}>
@@ -217,7 +238,7 @@ const Messages = () => {
                                     maxLength={30000}
                                     rows={2}
                                 />
-                                {errors && <ValidationError errors={errors} name={name}/>}
+                                {errors && <ValidationError errors={errors} name={name} />}
                                 <button className={classes.conversationInputButton} type="submit">
                                     {t('vehicles:send')}
                                 </button>

@@ -16,6 +16,8 @@ export const SocketProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [notificationCounts, setNotificationCounts] = useState(0);
   const [isNotificationChecked, setIsNotificationChecked] = useState(false);
+  const [privateMessage, setPrivateMessage] = useState(null)
+  const [onlineStatus, setOnlineStatus] = useState([])
 
   useEffect(() => {
     if ((socket && socket.connected) || !socketIo || !isAuthenticated) return;
@@ -36,6 +38,21 @@ export const SocketProvider = ({ children }) => {
         setNotifications(notifications.data);
         if (notifications.count > 0) setNotificationCounts(notifications.count);
       });
+
+      socket.on('PRIVATE_MESSAGE', data => {
+        setPrivateMessage(data)
+      })
+
+      socket.on('SET_ONLINE_STATUS', userId => {
+        setOnlineStatus([
+          ...onlineStatus,
+          userId
+        ])
+      })
+
+      socket.on('SET_OFFLINE_STATUS', userId => {
+        setOnlineStatus(onlineStatus.filter(id => id !== userId))
+      })
     }
   }, [socket, isConnected]);
 
@@ -55,6 +72,8 @@ export const SocketProvider = ({ children }) => {
         setNotifications,
         setNotificationCounts,
         notificationsChecked,
+        privateMessage,
+        socket
       }}
     >
       {children}
