@@ -93,9 +93,11 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
             }
           }
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+          notificationsChecked(isOpen);
+        });
     }
-    notificationsChecked(isOpen);
   }, [isOpen]);
 
   const handleRemovePing = (pingId) => {
@@ -106,7 +108,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
       })
       .finally(() => setIsLoading(false));
   };
-  console.log(notificationCounts);
+
   return (
     <li className={clsx('nav-item', 'navbar_icon')}>
       <div className="dropdown show">

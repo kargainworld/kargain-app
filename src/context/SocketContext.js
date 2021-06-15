@@ -43,6 +43,10 @@ export const SocketProvider = ({ children }) => {
         setPrivateMessage(data);
       });
 
+      socket.on('GET_ONLINE_USERS', userIds => {
+        setOnlineStatus(userIds)
+      })
+
       socket.on('SET_ONLINE_STATUS', (userId) => {
         setOnlineStatus([...onlineStatus, userId]);
       });
