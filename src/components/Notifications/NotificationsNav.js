@@ -79,22 +79,23 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
   } = useSocket();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchNotifications()
-      .then((res) => {
-        if (res && res.pings) {
-          setNotifications(res.pings);
-          const newNotifications = res.pings.filter((item) => !item.opened);
-          if (newNotifications.length > 0) {
-            setNotificationCounts(newNotifications.length);
+    if (isOpen || !isNotificationChecked) {
+      setIsLoading(true);
+      fetchNotifications()
+        .then((res) => {
+          if (res && res.pings) {
+            setNotifications(res.pings);
+            const newNotifications = res.pings.filter((item) => !item.opened);
+            if (newNotifications.length > 0) {
+              setNotificationCounts(newNotifications.length);
+            }
           }
-        }
-        setIsLoaded(true);
-      })
-      .finally(() => setIsLoading(false));
+        })
+        .finally(() => setIsLoading(false));
+    }
+    notificationsChecked(isOpen);
   }, [isOpen]);
 
   const handleRemovePing = (pingId) => {
@@ -105,7 +106,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
       })
       .finally(() => setIsLoading(false));
   };
-
+  console.log(notificationCounts);
   return (
     <li className={clsx('nav-item', 'navbar_icon')}>
       <div className="dropdown show">
@@ -115,10 +116,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
           aria-haspopup="true"
           aria-expanded="true"
           id="dropdownMenu2"
-          onClick={() => {
-            toggle(keyName);
-            notificationsChecked(true);
-          }}
+          onClick={() => toggle(keyName)}
         >
           <NotificationsIcon />
           {!isNotificationChecked && !isOpen && notificationCounts > 0 && (
@@ -130,27 +128,28 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
 
         <div id="dropdown-notifications" className={clsx('dropdown-menu', isOpen && 'show', classes.wrapper)}>
           <div>
-            {isLoading && (
-              <div className="d-flex justify-content-center align-items-center">
-                <CircularProgress />
-              </div>
-            )}
-            {!notifications.length && !isLoading && isLoaded && (
+            {!notifications.length && isOpen && (
               <div className="text-podpiska">
                 <span>You are welcome on Kargain</span>
               </div>
             )}
 
-            {!!notifications.length && !isLoading && isLoaded && (
+            {!!notifications.length && isOpen && (
               <ul style={{ listStyle: 'none' }}>
-                {notifications.map(({ message, action, opened, _id }) => (
-                  <li key={_id} className={classes.notification}>
-                    <Link href={action || ''}>{message}</Link>
-                    <IconButton onClick={() => handleRemovePing(_id)}>
-                      <span className={clsx(classes.readIndicator, opened && classes.opened)} />
-                    </IconButton>
-                  </li>
-                ))}
+                {isLoading ? (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <CircularProgress />
+                  </div>
+                ) : (
+                  notifications.map(({ message, action, opened, _id }) => (
+                    <li key={_id} className={classes.notification}>
+                      <Link href={action || ''}>{message}</Link>
+                      <IconButton onClick={() => handleRemovePing(_id)}>
+                        <span className={clsx(classes.readIndicator, opened && classes.opened)} />
+                      </IconButton>
+                    </li>
+                  ))
+                )}
               </ul>
             )}
           </div>

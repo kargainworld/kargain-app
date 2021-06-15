@@ -1,26 +1,124 @@
-import styled from "styled-components"
-import { Share } from '@material-ui/icons'
-import {Avatar as MuiAvatar, Link, Card, CardActions, lighten} from '@material-ui/core'
-import { LazyLoadImage } from "react-lazy-load-image-component"
-import CommentsList from "../Comments/CommentsList"
+import React from 'react';
+import styled from 'styled-components';
+import { Share } from '@material-ui/icons';
+import { Avatar as MuiAvatar, Link, Card, CardActions, lighten, Badge } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import CommentsList from '../Comments/CommentsList';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledOnlineBadge = withStyles((theme) => ({
+  badge: {
+    right: '25%',
+    bottom: '20%',
+    width: 12,
+    height: 12,
+    borderRadius: '50%',
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
+
+const StyledOfflineBadge = withStyles((theme) => ({
+  badge: {
+    right: '25%',
+    bottom: '20%',
+    width: 12,
+    height: 12,
+    borderRadius: '50%',
+    backgroundColor: 'red',
+    color: 'red',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
+
+const NewAvatar = (props) => {
+  const { isonline } = props;
+
+  return isonline === 'true' ? (
+    <StyledOnlineBadge
+      overlap="circle"
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      variant="dot"
+    >
+      <MuiAvatar {...props} />
+    </StyledOnlineBadge>
+  ) : (
+    <StyledOfflineBadge
+      overlap="circle"
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      variant="dot"
+    >
+      <MuiAvatar {...props} />
+    </StyledOfflineBadge>
+  );
+};
 
 export const Root = styled(Card)`
   display: flex;
   flex-direction: column;
   height: 100%;
-`
+`;
 
 export const User = styled.div`
   display: flex;
-`
+`;
 
-export const Avatar = styled(MuiAvatar)`
+export const Avatar = styled(NewAvatar)`
   body & {
     margin-right: ${({ theme }) => theme.spacing(1)}px !important;
-    width: 52px;
-    height: 52px;
+    width: ${props => props.width ? props.width : "52px"};
+    height: ${props => props.height ? props.height : "52px"};
   }
-`
+`;
 
 export const Info = styled.div`
   display: flex;
@@ -28,14 +126,14 @@ export const Info = styled.div`
   justify-content: center;
   max-width: 100%;
   overflow: hidden;
-`
+`;
 
 export const AuthorName = styled(Link)`
   font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 
 export const Location = styled(Link)`
   margin-top: 4px !important;
@@ -46,68 +144,66 @@ export const Location = styled(Link)`
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  
+
   svg {
     margin-right: ${({ theme }) => theme.spacing(0.5)}px;
     margin-left: -${({ theme }) => theme.spacing(0.5)}px;
   }
-`
+`;
 
 export const Meta = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-`
+`;
 
 export const CreationDate = styled.span`
   color: ${({ theme: { palette } }) => palette.primary.light};
   font-weight: 400;
   white-space: nowrap;
-  
+
   svg {
     margin-right: ${({ theme }) => theme.spacing(1)}px;
   }
-`
+`;
 
 export const ShareIcon = styled.img`
   cursor: pointer;
   width: 24px;
   height: auto;
   margin-top: 8px;
-`
+`;
 
 export const SubHeader = styled.div`
   margin-top: ${({ theme }) => theme.spacing(3.5)}px;
   display: flex;
-`
+`;
 
 export const Action = styled.div`
   display: flex;
   align-items: center;
   margin-right: ${({ theme }) => theme.spacing(1)}px;
   cursor: pointer;
-  color: ${({ theme: { palette } }) => palette.secondary.main}
-`
+  color: ${({ theme: { palette } }) => palette.secondary.main};
+`;
 
 export const Price = styled.span`
   margin-left: auto;
-  color: ${({ theme: { palette } }) => palette.primary.main}
-`
+  color: ${({ theme: { palette } }) => palette.primary.main};
+`;
 
-export const Body = styled.div`
-  
-`
+export const Body = styled.div``;
 
 export const ImageWrapper = styled.div`
   margin-top: ${({ theme }) => theme.spacing(3.5)}px;
   position: relative;
-`
+`;
 
 export const Image = styled(LazyLoadImage)`
   height: 240px;
   object-fit: cover;
-`
+`;
 
 export const ImagePlaceholder = styled.span`
   display: flex;
@@ -117,7 +213,7 @@ export const ImagePlaceholder = styled.span`
   background-color: ${({ theme }) => lighten(theme.palette.primary.light, 0.9)};
   height: 240px;
   width: 100%;
-`
+`;
 
 export const ImageCounter = styled.span`
   position: absolute;
@@ -125,27 +221,27 @@ export const ImageCounter = styled.span`
   right: ${({ theme }) => theme.spacing(2)}px;
   display: flex;
   align-items: center;
-  
+
   svg {
     margin-right: ${({ theme }) => theme.spacing(1)}px;
   }
-`
+`;
 
 export const Title = styled.h3`
   margin-top: ${({ theme }) => theme.spacing(3)}px;
   font-size: 20px;
   font-weight: 500;
-  color: ${({ theme: { palette } }) => palette.primary.main}
-`
+  color: ${({ theme: { palette } }) => palette.primary.main};
+`;
 
 export const CommentListStyled = styled(CommentsList)`
   padding: 0;
   margin-top: ${({ theme }) => theme.spacing(3)}px;
-  
+
   li:first-child {
     margin-top: 0 !important;
   }
-`
+`;
 
 export const Footer = styled(CardActions)`
   margin-top: auto;
@@ -154,8 +250,8 @@ export const Footer = styled(CardActions)`
   justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing(2.5)}px !important;
   padding-top: 0 !important;
-  
+
   & > * {
     margin: ${({ theme }) => theme.spacing(0.5)}px !important;
   }
-`
+`;

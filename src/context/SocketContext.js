@@ -16,8 +16,8 @@ export const SocketProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [notificationCounts, setNotificationCounts] = useState(0);
   const [isNotificationChecked, setIsNotificationChecked] = useState(false);
-  const [privateMessage, setPrivateMessage] = useState(null)
-  const [onlineStatus, setOnlineStatus] = useState([])
+  const [privateMessage, setPrivateMessage] = useState(null);
+  const [onlineStatus, setOnlineStatus] = useState([]);
 
   useEffect(() => {
     if ((socket && socket.connected) || !socketIo || !isAuthenticated) return;
@@ -39,28 +39,34 @@ export const SocketProvider = ({ children }) => {
         if (notifications.count > 0) setNotificationCounts(notifications.count);
       });
 
-      socket.on('PRIVATE_MESSAGE', data => {
-        setPrivateMessage(data)
-      })
+      socket.on('PRIVATE_MESSAGE', (data) => {
+        setPrivateMessage(data);
+      });
 
-      socket.on('SET_ONLINE_STATUS', userId => {
-        setOnlineStatus([
-          ...onlineStatus,
-          userId
-        ])
-      })
+      socket.on('SET_ONLINE_STATUS', (userId) => {
+        setOnlineStatus([...onlineStatus, userId]);
+      });
 
-      socket.on('SET_OFFLINE_STATUS', userId => {
-        setOnlineStatus(onlineStatus.filter(id => id !== userId))
-      })
+      socket.on('SET_OFFLINE_STATUS', (userId) => {
+        setOnlineStatus(onlineStatus.filter((id) => id !== userId));
+      });
     }
   }, [socket, isConnected]);
 
-  const notificationsChecked = () => {
+  const notificationsChecked = (status) => {
     if (socket && isConnected) {
-      socket.emit('OPENED_NOTIFICATION', { user: authenticatedUser.getID });
-      setIsNotificationChecked(true);
+      if (status) {
+        socket.emit('OPENED_NOTIFICATION', { user: authenticatedUser.getID });
+        setNotificationCounts(0);
+      }
+      setIsNotificationChecked(status);
     }
+  };
+
+  const getOnlineStatusByUserId = (userId) => {
+    if (authenticatedUser.getID === userId) return 'true';
+    if (onlineStatus.includes(userId)) return 'true';
+    else return 'false';
   };
 
   return (
@@ -73,7 +79,9 @@ export const SocketProvider = ({ children }) => {
         setNotificationCounts,
         notificationsChecked,
         privateMessage,
-        socket
+        socket,
+        getOnlineStatusByUserId,
+        onlineStatus
       }}
     >
       {children}
