@@ -144,7 +144,7 @@ export default makeStyles(theme => ({
         alignItems: 'center',
         alignSelf: 'center',
         width: '100%',
-        padding: '0 2.4rem',
+        padding: '0 1.2rem',
         justifyContent: 'space-between',
 
         '& a': {
@@ -187,8 +187,10 @@ export default makeStyles(theme => ({
         whiteSpace: 'pre-line',
         padding: '.5rem',
         margin: '.5rem',
-        backgroundColor: '#d9e6f7',
-        color: '#369',
+        // backgroundColor: '#d9e6f7',
+        backgroundColor: '#0070F3',
+        // color: '#369',
+        color: '#fff',
         fontWeight: 400
     },
 
@@ -198,7 +200,9 @@ export default makeStyles(theme => ({
         whiteSpace: 'pre-line',
         padding: '.5rem',
         margin: '.5rem',
-        fontWeight: 400
+        fontWeight: 400,
+        background: '#1BB747',
+        color: '#fff'
     },
 
     conversationFooter: {

@@ -13,6 +13,8 @@ import useStyles from './Conversations/conversation.styles';
 import ValidationError from './Form/Validations/ValidationError';
 import ConversationsService from '../services/ConversationsService';
 import { ModalContext } from '../context/ModalContext';
+import { useSocket } from '../context/SocketContext';
+import { Avatar } from '../components/AnnounceCard/components';
 
 export default function ModalMessaging() {
   const contentRef = useRef();
@@ -30,10 +32,13 @@ export default function ModalMessaging() {
   const recipient = modalStateContext.modalMessagingProfile;
   const recipientID = recipient.getID;
 
-  const handleClose = () =>
+  const { socket, privateMessage, getOnlineStatusByUserId } = useSocket();
+
+  const handleClose = () => {
     dispatchModalState({
       openModalMessaging: false,
     });
+  };
 
   const loadConversation = async () => {
     try {
@@ -47,8 +52,15 @@ export default function ModalMessaging() {
   const onSubmitMessage = async (form) => {
     const { message } = form;
     try {
-      const conversation = await ConversationsService.postConversationMessage(message, recipient.getID);
-      setConversation(conversation);
+      // const conversation = await ConversationsService.postConversationMessage(message, recipient.getID);
+      // setConversation(conversation);
+      socket.emit('PRIVATE_MESSAGE', { message, to: recipientID });
+
+      conversation.messages.push({
+        from: authenticatedUser.getID,
+        content: message,
+      });
+
       dispatchModal({ msg: 'Message posted' });
       if (contentRef.current) {
         contentRef.current.scrollTop = contentRef.current?.scrollHeight;
@@ -68,6 +80,23 @@ export default function ModalMessaging() {
     }
   }, [recipientID, isAuthenticated]);
 
+  useEffect(() => {
+    if (privateMessage) {
+      const messages = conversation ? conversation.messages : [];
+      messages.push(privateMessage);
+      setConversation({
+        ...conversation,
+        messages,
+      });
+    }
+  }, [privateMessage]);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current?.scrollHeight;
+    }
+  }, [contentRef.current?.scrollHeight]);
+
   if (!isAuthenticated) {
     setForceLoginModal(true);
     return null;
@@ -84,12 +113,11 @@ export default function ModalMessaging() {
                   <div style={{ maxWidth: '70%' }}>
                     <Link href={recipient.getProfileLink} prefetch={false}>
                       <a>
-                        <img
+                        <Avatar
                           className="rounded-circle"
                           src={recipient.getAvatar}
                           alt={recipient.getUsername}
-                          width={50}
-                          height={50}
+                          isonline={getOnlineStatusByUserId(recipient.getID)}
                         />
                         <span className="mx-2">{recipient.getFullName}</span>
                       </a>

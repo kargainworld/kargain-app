@@ -11,7 +11,7 @@
 			},
 			"scripts": {
 						"clean": "rimraf .next dist src/pages",
-						"dev": "yarn clean && yarn next-translate && next dev",
+						"dev": "yarn clean && yarn next-translate && cross-env NODE_ENV=development next dev",
 						"start": "cross-env NODE_ENV=production next start",
 						"build": "yarn clean && next-translate && next build",
 						"analyze": "cross-env ANALYZE=true next build",

@@ -11,6 +11,7 @@ import { ModalContext, ModalContextProvider } from '../context/ModalContext'
 import { MessageContextProvider } from '../context/MessageContext'
 import { AuthProvider, useAuth } from '../context/AuthProvider'
 import { FormContextProvider } from '../context/FormContext'
+import { SocketProvider } from '../context/SocketContext'
 import ModalSearchResults from '../components/Search/ModalSearchResults'
 import AdminLayout from '../components/Admin/Layout/AdminLayout'
 import appWithI18n from '../components/Locales/appWithI18n'
@@ -40,21 +41,25 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
+
                 <MessageContextProvider>
                     <AuthProvider>
-                        <FormContextProvider formKey={formKey}>
-                            <SearchContextProvider>
-                                <ModalContextProvider>
-                                    <NextProgress/>
-                                    <DefaultSeo {...SEO} />
-                                    <ProtectedRouter pageProps={pageProps}>
-                                        <Component {...pageProps}/>
-                                    </ProtectedRouter>
-                                </ModalContextProvider>
-                            </SearchContextProvider>
-                        </FormContextProvider>
+                        <SocketProvider>
+                            <FormContextProvider formKey={formKey}>
+                                <SearchContextProvider>
+                                    <ModalContextProvider>
+                                        <NextProgress />
+                                        <DefaultSeo {...SEO} />
+                                        <ProtectedRouter pageProps={pageProps}>
+                                            <Component {...pageProps} />
+                                        </ProtectedRouter>
+                                    </ModalContextProvider>
+                                </SearchContextProvider>
+                            </FormContextProvider>
+                        </SocketProvider>
                     </AuthProvider>
                 </MessageContextProvider>
+
             </ThemeProvider>
         </StyledThemeProvider>
     )
@@ -72,13 +77,13 @@ const ProtectedRouter = ({ children, pageProps }) => {
     if (isAdminRoute) {
         if (isAuthReady) {
             if (!isAuthenticatedUserAdmin) {
-                return <Forbidden403Page/>
+                return <Forbidden403Page />
             }
         }
 
         return (
             <AdminLayout>
-                <PopupAlert/>
+                <PopupAlert />
                 {children}
             </AdminLayout>
         )
@@ -93,14 +98,14 @@ const ProtectedRouter = ({ children, pageProps }) => {
                 'form_validations'
             ]}
         >
-            {(isAuthReady && showLoginModal) && <PopupLogin/>}
-            {searchStateContext?.openModalSearch && <ModalSearchResults/>}
-            {modalStateContext.openModalMessaging && <ModalMessaging/>}
-            {modalStateContext.openModalFollowers && <ModalFollowers/>}
-            {modalStateContext.openModalShare && <ModalShare/>}
+            {(isAuthReady && showLoginModal) && <PopupLogin />}
+            {searchStateContext?.openModalSearch && <ModalSearchResults />}
+            {modalStateContext.openModalMessaging && <ModalMessaging />}
+            {modalStateContext.openModalFollowers && <ModalFollowers />}
+            {modalStateContext.openModalShare && <ModalShare />}
 
             <Layout>
-                <PopupAlert/>
+                <PopupAlert />
                 {children}
             </Layout>
         </DynamicNamespaces>
