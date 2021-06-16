@@ -52,15 +52,13 @@ export default function ModalMessaging() {
   const onSubmitMessage = async (form) => {
     const { message } = form;
     try {
-      // const conversation = await ConversationsService.postConversationMessage(message, recipient.getID);
-      // setConversation(conversation);
       socket.emit('PRIVATE_MESSAGE', { message, to: recipientID });
-
-      conversation.messages.push({
-        from: authenticatedUser.getID,
-        content: message,
-      });
-
+      if (conversation) conversation.messages.push({ from: authenticatedUser.getID, content: message });
+      else {
+        let conversation = {};
+        conversation.messages = [{ from: authenticatedUser.getID, content: message }];
+        setConversation(conversation);
+      }
       dispatchModal({ msg: 'Message posted' });
       if (contentRef.current) {
         contentRef.current.scrollTop = contentRef.current?.scrollHeight;
