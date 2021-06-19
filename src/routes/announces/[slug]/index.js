@@ -229,8 +229,7 @@ const Announce = () => {
                   src={announce.getAuthor.getAvatar}
                   isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
                   alt={announce.getTitle}
-                  width="80px"
-                  height="80px"
+                  style={{width: 80, height: 80}}
                 />
               </div>
 

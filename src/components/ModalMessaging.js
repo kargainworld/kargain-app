@@ -116,6 +116,7 @@ export default function ModalMessaging() {
                           src={recipient.getAvatar}
                           alt={recipient.getUsername}
                           isonline={getOnlineStatusByUserId(recipient.getID)}
+                          style={{width: 52, height: 52}}
                         />
                         <span className="mx-2">{recipient.getFullName}</span>
                       </a>

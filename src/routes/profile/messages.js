@@ -141,6 +141,7 @@ const Messages = () => {
                             src={recipient.getAvatar}
                             alt={recipient.getUsername}
                             isonline={getOnlineStatusByUserId(recipient.getID)}
+                            style={{width: 52, height: 52}}
                           />
                         </div>
                         <div className={classes.itemDetails}>
@@ -176,6 +177,7 @@ const Messages = () => {
                         src={selectedRecipient.getAvatar}
                         alt={selectedRecipient.getUsername}
                         isonline={getOnlineStatusByUserId(selectedRecipient.getID)}
+                        style={{width: 52, height: 52}}
                       />
                       <span className="mx-2">{selectedRecipient.getFullName}</span>
                     </a>
