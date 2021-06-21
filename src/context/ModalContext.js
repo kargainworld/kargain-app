@@ -6,6 +6,7 @@ const defaultValues = {
     openModalFollowers : false,
     modalFollowersProfiles : [],
     modalFollowersTitle : null,
+    isFollowing: false,
     
     //ShareAnnounceModal
     openModalShare : false,

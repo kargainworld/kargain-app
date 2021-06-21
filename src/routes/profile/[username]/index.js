@@ -109,11 +109,11 @@ const Profile = () => {
         try {
             if (alreadyFollowProfile) {
                 await UsersService.unFollowUser(profile.getID)
-                setFollowersCounter(followerCounter => followerCounter - 1)
+                setFollowersCounter(followerCounter - 1)
                 setAlreadyFollowProfile(false)
             } else {
                 await UsersService.followUser(profile.getID)
-                setFollowersCounter(followerCounter => followerCounter + 1)
+                setFollowersCounter(followerCounter + 1)
                 setAlreadyFollowProfile(true)
             }
         } catch (err) {
@@ -279,7 +279,8 @@ const Profile = () => {
                             onClick={() => dispatchModalState({
                                 openModalFollowers : true,
                                 modalFollowersProfiles : profile.getFollowers,
-                                modalFollowersTitle : t('vehicles:followers')
+                                modalFollowersTitle : t('vehicles:followers'),
+                                isFollowing: false
 
                             })}>
                             <div>
@@ -348,7 +349,8 @@ const Profile = () => {
                             onClick={() => dispatchModalState({
                                 openModalFollowers : true,
                                 modalFollowersProfiles : profile.getFollowings,
-                                modalFollowersTitle : t('vehicles:subscriptions')
+                                modalFollowersTitle : t('vehicles:subscriptions'),
+                                isFollowing: true
                             })}>
 
                             <span>
@@ -442,7 +444,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                             md={6}
                                             lg={6}
                                             xl={6}
-                                            Roboto        className="my-2"
+                                            className="my-2"
                                         >
                                             <AnnounceCard announceRaw={announce.getRaw} />
                                         </Col>
