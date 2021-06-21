@@ -103,7 +103,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
             {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
               <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                <i.Room size={18} />
+                <i.RoomOutlined size={18} />
                 {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
               </Location>
             )}
