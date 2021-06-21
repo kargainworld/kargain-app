@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
     },
     btnFollow: {
         padding: '3px 8px',
-        fontSize:'12px',
-        marginRight : '15px'
+        fontSize: '12px',
+        marginRight: '15px'
     },
 }))
 
@@ -117,18 +117,18 @@ const Profile = () => {
                 setAlreadyFollowProfile(true)
             }
         } catch (err) {
-            dispatchModalError({ err, persist : true })
+            dispatchModalError({ err, persist: true })
         }
     }
 
     const fetchProfile = useCallback(async () => {
-        try{
+        try {
             const result = await UsersService.getUserByUsername(username)
             const { user, isAdmin, isSelf } = result
             setState(state => ({
                 ...state,
-                stateReady : true,
-                profile : new UserModel(user),
+                stateReady: true,
+                profile: new UserModel(user),
                 isAdmin,
                 isSelf
             }))
@@ -139,10 +139,10 @@ const Profile = () => {
                 err
             }))
         }
-    },[username])
+    }, [username])
 
     const fetchAnnounces = useCallback(async () => {
-        try{
+        try {
             const { sorter, filters, page } = filterState
             setFilterState(filterState => ({
                 ...filterState,
@@ -154,7 +154,7 @@ const Profile = () => {
                 sort_by: sorter.key,
                 sort_ord: sorter.asc ? 'ASC' : null,
                 ...filters,
-                user : profile.getID
+                user: profile.getID
             }
 
             const result = await AnnounceService.getProfileAnnounces(params)
@@ -163,7 +163,7 @@ const Profile = () => {
                 ...state,
                 profile: new UserModel({
                     ...profile.getRaw,
-                    garage : result.rows
+                    garage: result.rows
                 })
             }))
 
@@ -179,7 +179,7 @@ const Profile = () => {
                 err
             }))
         }
-    },[filterState.sorter, filterState.filters, filterState.page])
+    }, [filterState.sorter, filterState.filters, filterState.page])
 
     const updateFilters = (filters) => {
         setFilterState(filterState => ({
@@ -201,15 +201,15 @@ const Profile = () => {
     }, [fetchProfile])
 
     useEffect(() => {
-        if(state.stateReady){
+        if (state.stateReady) {
             console.log('fetch announces')
             fetchAnnounces()
         }
     }, [fetchAnnounces])
 
     if (!state.stateReady) return null
-    if (filterState.loading) return <Loading/>
-    if (state.err) return <Error statusCode={state.err?.statusCode}/>
+    if (filterState.loading) return <Loading />
+    if (state.err) return <Error statusCode={state.err?.statusCode} />
     // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
         <Container style={{ marginTop: 25 }}>
@@ -226,13 +226,13 @@ const Profile = () => {
 
             <Row className="mx-auto">
                 <Col md={2}>
-                    <AvatarPreview src={profile.getAvatar}/>
+                    <AvatarPreview src={profile.getAvatar} />
                 </Col>
                 <Col md={10}>
                     <div className="top-profile-name-btn">
                         <h1>
                             {profile.getFullName}
-                            {(profile.getIsPro && profile.getIsActivated) && <img className="mx-2" src="/images/star.png" alt=""/>}
+                            {(profile.getIsPro && profile.getIsActivated) && <img className="mx-2" src="/images/star.png" alt="" />}
                         </h1>
 
                         {state.isSelf ? (
@@ -248,10 +248,10 @@ const Profile = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    startIcon={<ChatIcon/>}
+                                    startIcon={<ChatIcon />}
                                     onClick={() => dispatchModalState({
-                                        openModalMessaging : true,
-                                        modalMessagingProfile : profile
+                                        openModalMessaging: true,
+                                        modalMessagingProfile: profile
                                     })}>
                                     {t('vehicles:contact')}
                                 </Button>
@@ -277,31 +277,31 @@ const Profile = () => {
                     <div className={classes.subscriptionWrapper}>
                         <div className={classes.followContainer}
                             onClick={() => dispatchModalState({
-                                openModalFollowers : true,
-                                modalFollowersProfiles : profile.getFollowers,
-                                modalFollowersTitle : t('vehicles:followers'),
+                                openModalFollowers: true,
+                                modalFollowersProfiles: profile.getFollowers,
+                                modalFollowersTitle: t('vehicles:followers'),
                                 isFollowing: false
 
                             })}>
                             <div>
                                 {state.isSelf ? (
                                     <span>
-                                        {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                        {followerCounter} {t('vehicles:followers', { count: followerCounter })}
                                     </span>
                                 ) : (
                                     <>
                                         <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
                                             e.stopPropagation()
-                                            handleFollowProfile()
+                                            // handleFollowProfile()
                                         }}>
                                             {
                                                 alreadyFollowProfile ?
-                                                // <StarSVGYellow/>
+                                                    // <StarSVGYellow/>
                                                     <Button
                                                         variant="contained"
                                                         color="primary"
                                                         className={classes.btnFollow}
-                                                        onClick={ () => handleFollowProfile() }>
+                                                        onClick={() => handleFollowProfile()}>
                                                         {t('vehicles:un-subscriptions')}
                                                     </Button>
                                                     :
@@ -309,14 +309,14 @@ const Profile = () => {
                                                         variant="outlined"
                                                         color="primary"
                                                         className={classes.btnFollow}
-                                                        onClick={ () => handleFollowProfile() }>
+                                                        onClick={() => handleFollowProfile()}>
                                                         {t('vehicles:subscriptions')}
                                                     </Button>
                                                 // <StarSVG/>
                                             }
                                         </span>
                                         <span>
-                                            {followerCounter} {t('vehicles:followers', { count : followerCounter })}
+                                            {followerCounter} {t('vehicles:followers', { count: followerCounter })}
                                         </span>
                                     </>
                                 )}
@@ -347,14 +347,14 @@ const Profile = () => {
 
                         <div className={classes.followContainer}
                             onClick={() => dispatchModalState({
-                                openModalFollowers : true,
-                                modalFollowersProfiles : profile.getFollowings,
-                                modalFollowersTitle : t('vehicles:subscriptions'),
+                                openModalFollowers: true,
+                                modalFollowersProfiles: profile.getFollowings,
+                                modalFollowersTitle: t('vehicles:subscriptions'),
                                 isFollowing: true
                             })}>
 
                             <span>
-                                {profile.getCountFollowings} {t('vehicles:subscriptions', { count : profile.getCountFollowings })}
+                                {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
                             </span>
 
                             {/*{profile.getCountFollowings !== 0 && (*/}
@@ -389,7 +389,7 @@ const Profile = () => {
                 state,
                 filterState,
                 updateFilters
-            }}/>
+            }} />
         </Container>
     )
 }
@@ -428,14 +428,14 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
             <Row>
                 <Col sm={12} md={3}>
                     <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count : filterState.total })}
+                        {t('vehicles:{count}_results_search', { count: filterState.total })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters}/>
+                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
                 </Col>
                 <Col sm={12} md={9}>
                     <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
                         <Tabs.Item id="home-tab" title="Vitrine">
-                            <section className={filtersOpened ? 'filter-is-visible': ''}>
+                            <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
                                         <Col
@@ -478,7 +478,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
                                         <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                            <AnnounceCard announceRaw={announceRaw}/>
+                                            <AnnounceCard announceRaw={announceRaw} />
                                         </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
@@ -506,7 +506,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
                                         <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                            <AnnounceCard announceRaw={announceRaw}/>
+                                            <AnnounceCard announceRaw={announceRaw} />
                                         </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
