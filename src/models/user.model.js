@@ -55,7 +55,11 @@ export default class UserModel {
     }
 
     get getAvatar () {
-        return this.raw?.avatar?.location ?? this.raw?.avatarUrl ?? '/images/profile.png'
+        return this.raw?.avatar?.location ?? null
+    }
+
+    get getAvatarUrl () {
+        return this.raw?.avatarUrl ?? '/images/profile.png'
     }
 
     get getProfileLink () {
