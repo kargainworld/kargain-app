@@ -55,7 +55,7 @@ const AvatarPreviewUpload = () => {
     setAvatarLocation(authenticatedUser.getAvatar);
     setAvatarUrl(authenticatedUser.getAvatarUrl);
   }, [authenticatedUser]);
-  
+
   return (
     <div className="avatar-upload">
       {isAuthenticated && (
@@ -73,7 +73,7 @@ const AvatarPreviewUpload = () => {
         </div>
       )}
       <div className="avatar-preview" style={{ height: 160, width: 160 }}>
-        <div id="imagePreview" style={{ backgroundImage: `url(${avatarLocation ? avatarLocation : avatarUrl})` }} />
+        <div id="imagePreview" style={{ backgroundImage: `url(${avatarLocation || avatarUrl})` }} />
       </div>
     </div>
   );

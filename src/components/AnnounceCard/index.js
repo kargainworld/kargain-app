@@ -59,7 +59,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
   const alreadyLikeCurrentUser = checkIfAlreadyLike();
 
   const { getOnlineStatusByUserId } = useSocket();
-  
+
   const handleClickLikeButton = async () => {
     if (!isAuthenticated) return setForceLoginModal(true);
     try {
@@ -78,9 +78,9 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
   const isOwn = authenticatedUser?.raw?.id === announceRaw?.user?.id;
 
   const toggleVisibility = () => {
-    AnnounceService
-      .updateAnnounce(announce.getSlug, { visible: !announceRaw.visible })
-      .then(() => window.location.reload());
+    AnnounceService.updateAnnounce(announce.getSlug, { visible: !announceRaw.visible }).then(() =>
+      window.location.reload()
+    );
   };
 
   const handleImageClick = () => {
@@ -92,10 +92,10 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
       <CardContent>
         <User>
           <Avatar
-            src={announce.getAuthor.getAvatar}
+            src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
             size="medium"
             isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-            style={{width: 52, height: 52, marginRight: 10}}
+            style={{ width: 52, height: 52, marginRight: 10 }}
           />
 
           <Info>

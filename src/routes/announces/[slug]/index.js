@@ -227,7 +227,7 @@ const Announce = () => {
               <div className="pic" style={{ flex: 1 }}>
                 <Avatar
                   className="img-profile-wrapper avatar-preview"
-                  src={announce.getAuthor.getAvatar}
+                  src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                   isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
                   alt={announce.getTitle}
                   style={{ width: 80, height: 80 }}

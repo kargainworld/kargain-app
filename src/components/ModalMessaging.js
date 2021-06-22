@@ -113,7 +113,7 @@ export default function ModalMessaging() {
                       <a>
                         <Avatar
                           className="rounded-circle"
-                          src={recipient.getAvatar}
+                          src={recipient.getAvatar || recipient.getAvatarUrl}
                           alt={recipient.getUsername}
                           isonline={getOnlineStatusByUserId(recipient.getID)}
                           style={{width: 52, height: 52}}

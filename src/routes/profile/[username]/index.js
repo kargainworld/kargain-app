@@ -226,7 +226,7 @@ const Profile = () => {
 
             <Row className="mx-auto">
                 <Col md={2}>
-                    <AvatarPreview src={profile.getAvatar} />
+                    <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
                 </Col>
                 <Col md={10}>
                     <div className="top-profile-name-btn">

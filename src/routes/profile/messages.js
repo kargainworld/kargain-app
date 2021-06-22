@@ -138,7 +138,7 @@ const Messages = () => {
                         <div>
                           <Avatar
                             className="rounded-circle mx-2"
-                            src={recipient.getAvatar}
+                            src={recipient.getAvatar || recipient.getAvatarUrl}
                             alt={recipient.getUsername}
                             isonline={getOnlineStatusByUserId(recipient.getID)}
                             style={{width: 52, height: 52}}
@@ -174,7 +174,7 @@ const Messages = () => {
                     <a>
                       <Avatar
                         className="rounded-circle mx-2"
-                        src={selectedRecipient.getAvatar}
+                        src={selectedRecipient.getAvatar || recipient.getAvatarUrl}
                         alt={selectedRecipient.getUsername}
                         isonline={getOnlineStatusByUserId(selectedRecipient.getID)}
                         style={{width: 52, height: 52}}
