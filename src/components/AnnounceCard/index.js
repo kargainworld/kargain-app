@@ -58,17 +58,21 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
   const alreadyLikeCurrentUser = checkIfAlreadyLike();
 
+  const [liked, setLiked] = useState(alreadyLikeCurrentUser);
+
   const { getOnlineStatusByUserId } = useSocket();
 
   const handleClickLikeButton = async () => {
     if (!isAuthenticated) return setForceLoginModal(true);
     try {
-      if (alreadyLikeCurrentUser) {
+      if (!liked) {
         await AnnounceService.addLikeLoggedInUser(announce.getID);
         setLikesCounter((likesCount) => likesCount + 1);
+        setLiked(true)
       } else {
         await AnnounceService.removeLikeLoggedInUser(announce.getID);
         setLikesCounter((likesCount) => Math.max(likesCount - 1));
+        setLiked(false)
       }
     } catch (err) {
       dispatchModalError({ err });
@@ -136,14 +140,16 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
             </Action>
           )}
 
-          <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-            <i.BookmarkBorder
-              style={{
-                color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
-              }}
-            />
-            <span>{likesCounter}</span>
-          </Action>
+          {!isAuthor && (
+            <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+              <i.BookmarkBorder
+                style={{
+                  color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                }}
+              />
+              <span>{likesCounter}</span>
+            </Action>
+          )}
 
           <Action
             title={t('vehicles:comment_plural')}
