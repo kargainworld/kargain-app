@@ -121,6 +121,18 @@ const Profile = () => {
         }
     }
 
+    const handleUnSubscription = async (userId) => {
+        await UsersService.unFollowUser(userId);
+        fetchProfile();
+        //remove current user in following to show in modal
+
+        dispatchModalState({
+            modalFollowersProfiles: profile.getFollowings.filter(following => following.getID !== userId)
+        })
+        
+        return true;
+    }
+
     const fetchProfile = useCallback(async () => {
         try {
             const result = await UsersService.getUserByUsername(username)
@@ -280,8 +292,7 @@ const Profile = () => {
                                 openModalFollowers: true,
                                 modalFollowersProfiles: profile.getFollowers,
                                 modalFollowersTitle: t('vehicles:followers'),
-                                isFollowing: false
-
+                                isFollowing: false,                                
                             })}>
                             <div>
                                 {state.isSelf ? (
@@ -350,7 +361,9 @@ const Profile = () => {
                                 openModalFollowers: true,
                                 modalFollowersProfiles: profile.getFollowings,
                                 modalFollowersTitle: t('vehicles:subscriptions'),
-                                isFollowing: true
+                                isFollowing: true,
+                                isOwner: profile.getID === authenticatedUser.getID,
+                                handleUnSubscription: handleUnSubscription
                             })}>
 
                             <span>

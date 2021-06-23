@@ -14,7 +14,9 @@ const defaultValues = {
     
     //MessagingModal
     openModalMessaging : false,
-    modalMessagingProfile : new UserModel()
+    modalMessagingProfile : new UserModel(),
+    isOwner: false,
+    handleUnSubscription: () => {}
 }
 
 const ModalContext = createContext(defaultValues)

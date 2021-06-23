@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next-translate/Link';
 import Modal from '@material-ui/core/Modal';
@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import UsersService from '../services/UsersService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { ModalContext } from '../context/ModalContext';
 import { MessageContext } from '../context/MessageContext';
@@ -55,6 +55,7 @@ export default function ModalFollowers() {
   const classes = useStyles();
   const { modalStateContext, dispatchModalState } = useContext(ModalContext);
   const { dispatchModalError } = useContext(MessageContext);
+  const [isFetching, setFetching] = useState(false);
 
   const handleClose = () =>
     dispatchModalState({
@@ -62,8 +63,11 @@ export default function ModalFollowers() {
     });
 
   const handleRemove = async (userId) => {
-    console.log(userId);
     //TODO remove follow/following users
+    if (isFetching) return;
+    setFetching(true);
+    await modalStateContext.handleUnSubscription(userId);
+    setFetching(false);
   };
 
   return (
@@ -99,7 +103,12 @@ export default function ModalFollowers() {
                         <Typography variant="body1">{user.getFullName}</Typography>
                       </a>
                     </Link>
-                    <RemoveCircleIcon onClick={() => handleRemove(user.getID)} />
+                    {isFetching && <CircularProgress fontSize="small" />}
+                    {!isFetching && modalStateContext.isOwner && modalStateContext.isFollowing && (
+                      <IconButton>
+                        <RemoveCircleIcon onClick={() => handleRemove(user.getID)} />
+                      </IconButton>
+                    )}
                   </li>
                 );
               })}
