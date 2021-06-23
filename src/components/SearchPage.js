@@ -29,7 +29,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         total: 0
     })
 
-    const fetchAnnounces = useCallback(async() => {
+    const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
 
@@ -65,7 +65,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             }))
             dispatchModalError({ err })
         }
-    },[state.page, state.filters, state.sorter])
+    }, [state.page, state.filters, state.sorter])
 
     const handlePageChange = (page) => {
         setState(state => ({
@@ -89,11 +89,9 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }
 
     useEffect(() => {
-        if(isAuthenticated){
-            fetchAnnounces()
-            window.scrollTo(0, 0)
-        }
-    }, [isAuthenticated, fetchAnnounces])
+        fetchAnnounces()
+        window.scrollTo(0, 0)
+    }, [fetchAnnounces])
 
     return (
         <Container>
@@ -107,30 +105,31 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: state.announces.length })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters}/>
+                    <AdvancedFilters updateFilters={updateFilters} />
                 </Col>
 
                 <Col sm={12} md={8}>
                     <section className="cd-tab-filter-wrapper">
                         <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')}>
-                            <Sorters updateSorter={updateSorter}/>
+                            <Sorters updateSorter={updateSorter} />
                         </div>
                     </section>
 
                     <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
-                        {state.loading ? <Loading/> : (
+                        {state.loading ? <Loading /> : (
                             <>
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            return(
+                                            return (
                                                 <Col key={index} sm={12} md={12} className="my-2">
                                                     <AnnounceCard
                                                         announceRaw={announceRaw}
                                                         detailsFontSize={'13px'}
                                                     />
                                                 </Col>
-                                            )})}
+                                            )
+                                        })}
                                     </Row>
                                 ) : (
                                     <>
@@ -142,7 +141,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                         ) : (
                                             <>
                                                 <div className="d-flex align-items-center my-3">
-                                                    <FindInPageIcon fontSize="default"/>
+                                                    <FindInPageIcon fontSize="default" />
                                                     <Typography variant="h3">
                                                         {t('layout:no_result')}
                                                     </Typography>
@@ -175,7 +174,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 }
 
 SearchPage.defaultProps = {
-    fetchFeed : false,
+    fetchFeed: false,
     paginate: 3,
     size: 5
 }
