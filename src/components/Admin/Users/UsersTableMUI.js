@@ -44,7 +44,7 @@ const UsersTable = () => {
             searchable: false,
             render: function renderField(userModel){
                 return (
-                    <img src={userModel.getAvatar} style={{
+                    <img src={userModel.getAvatar || userModel.getAvatarUrl} style={{
                         width: 40,
                         borderRadius: '50%'
                     }} alt=""/>

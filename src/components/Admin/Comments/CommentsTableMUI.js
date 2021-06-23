@@ -20,7 +20,7 @@ const columnsData = [
             return <img
                 alt=""
                 title={CommentModel.getAuthor.getFullName}
-                src={CommentModel.getAuthor.getAvatar}
+                src={CommentModel.getAuthor.getAvatar || CommentModel.getAuthor.getAvatarUrl}
                 style={{
                     width: 40,
                     borderRadius: '50%'

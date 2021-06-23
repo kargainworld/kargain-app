@@ -174,7 +174,7 @@ const Messages = () => {
                     <a>
                       <Avatar
                         className="rounded-circle mx-2"
-                        src={selectedRecipient.getAvatar || recipient.getAvatarUrl}
+                        src={selectedRecipient.getAvatar || selectedRecipient.getAvatarUrl}
                         alt={selectedRecipient.getUsername}
                         isonline={getOnlineStatusByUserId(selectedRecipient.getID)}
                         style={{width: 52, height: 52}}
@@ -203,7 +203,7 @@ const Messages = () => {
                             className="dropdown-toggler rounded-circle mx-2"
                             width="30"
                             height="30"
-                            src={authenticatedUser.getAvatar}
+                            src={authenticatedUser.getAvatar || authenticatedUser.getAvatarUrl}
                             title={authenticatedUser.getFullName}
                             alt={authenticatedUser.getUsername}
                           />
@@ -218,7 +218,7 @@ const Messages = () => {
                             className="dropdown-toggler rounded-circle mx-2"
                             width="30"
                             height="30"
-                            src={selectedRecipient.getAvatar}
+                            src={selectedRecipient.getAvatar || selectedRecipient.getAvatarUrl}
                             title={selectedRecipient.getFullName}
                             alt={selectedRecipient.getUsername}
                           />

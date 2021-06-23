@@ -332,7 +332,7 @@ const Profile = () => {
                                                         <img className="dropdown-toggler rounded-circle"
                                                             width="30"
                                                             height="30"
-                                                            src={user.getAvatar}
+                                                            src={user.getAvatar || user.getAvatarUrl}
                                                             title={user.getFullName}
                                                             alt={user.getUsername}
                                                         />

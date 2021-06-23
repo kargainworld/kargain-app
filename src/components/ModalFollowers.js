@@ -92,7 +92,7 @@ export default function ModalFollowers() {
                           className="dropdown-toggler rounded-circle mx-2"
                           width="50"
                           height="50"
-                          src={user.getAvatar}
+                          src={user.getAvatar || user.getAvatarUrl}
                           title={user.getFullName}
                           alt={user.getUsername}
                         />
