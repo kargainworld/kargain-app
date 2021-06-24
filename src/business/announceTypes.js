@@ -15,6 +15,10 @@ const Named = () => {
         {
             "value": "rent",
             "label": t('vehicles:rental')
+        },
+        {
+            "value": "room",
+            "label": t('vehicles:salle')
         }
     ]
 }

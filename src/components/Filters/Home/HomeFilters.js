@@ -20,8 +20,8 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     const methods = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
-        defaultValues : {
-            adType : "sale"
+        defaultValues: {
+            adType: "sale"
         }
     })
 
@@ -42,7 +42,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
         updateFilters(data)
     }
 
-    return(
+    return (
         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
             <div
                 style={{
@@ -54,10 +54,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 }}
             >
                 {announceTypes() && announceTypes()
-                    .filter(type => {
-                        if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
-                        return true
-                    })
+                    .filter(type => type.value !== "sale-pro")
                     .map((tab, index) => (
                         <AnnounceTypeRadioButton
                             key={index}
@@ -97,11 +94,11 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             >
                 <div className="submit mx-2" style={{ marginTop: 0 }}>
                     <CTALink
-                      href="/advanced-search"
-                      color="primary"
-                      variant="contained"
-                      style={{ paddingLeft: 40, paddingRight: 40 }}
-                      title={<span style={{color: 'white'}}>GO</span>}
+                        href="/advanced-search"
+                        color="primary"
+                        variant="contained"
+                        style={{ paddingLeft: 40, paddingRight: 40 }}
+                        title={<span style={{ color: 'white' }}>GO</span>}
                     />
                 </div>
             </div>
