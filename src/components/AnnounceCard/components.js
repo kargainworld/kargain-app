@@ -74,7 +74,7 @@ const StyledOfflineBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const NewAvatar = (props) => {
+export const Avatar = (props) => {
   const { isonline } = props;
 
   return isonline === 'true' ? (
@@ -110,14 +110,6 @@ export const Root = styled(Card)`
 
 export const User = styled.div`
   display: flex;
-`;
-
-export const Avatar = styled(NewAvatar)`
-  body & {
-    margin-right: ${({ theme }) => theme.spacing(1)}px !important;
-    width: ${props => props.width ? props.width : "52px"};
-    height: ${props => props.height ? props.height : "52px"};
-  }
 `;
 
 export const Info = styled.div`

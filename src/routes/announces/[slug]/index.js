@@ -28,6 +28,7 @@ import { getTimeAgo } from '../../../libs/utils';
 import Error from '../../_error';
 import { Avatar } from '../../../components/AnnounceCard/components';
 import { useSocket } from '../../../context/SocketContext';
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 
 const useStyles = makeStyles(() => ({
   formRow: {
@@ -226,11 +227,10 @@ const Announce = () => {
               <div className="pic" style={{ flex: 1 }}>
                 <Avatar
                   className="img-profile-wrapper avatar-preview"
-                  src={announce.getAuthor.getAvatar}
+                  src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                   isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
                   alt={announce.getTitle}
-                  width="80px"
-                  height="80px"
+                  style={{ width: 80, height: 80 }}
                 />
               </div>
 
@@ -247,7 +247,7 @@ const Announce = () => {
                   <div className="top-profile-location">
                     <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
                       <span className="top-profile-location">
-                        <img className="mx-1" src="/images/location.png" alt="" />
+                        <RoomOutlinedIcon />
                         {announce.getAdOrAuthorCustomAddress()}
                       </span>
                     </a>

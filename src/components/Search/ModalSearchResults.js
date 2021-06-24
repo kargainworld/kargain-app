@@ -93,7 +93,7 @@ const ModalSearchResults = () => {
                                                 <Link href={user.getProfileLink} prefetch={false}>
                                                     <a className="d-flex decoration-none">
                                                         <img className="img-profile-wrapper rounded-circle"
-                                                            src={user.getAvatar}
+                                                            src={user.getAvatar || user.getAvatarUrl}
                                                             alt={user.getUsername}
                                                             width={40}
                                                         />

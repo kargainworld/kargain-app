@@ -113,9 +113,10 @@ export default function ModalMessaging() {
                       <a>
                         <Avatar
                           className="rounded-circle"
-                          src={recipient.getAvatar}
+                          src={recipient.getAvatar || recipient.getAvatarUrl}
                           alt={recipient.getUsername}
                           isonline={getOnlineStatusByUserId(recipient.getID)}
+                          style={{width: 52, height: 52}}
                         />
                         <span className="mx-2">{recipient.getFullName}</span>
                       </a>
@@ -139,7 +140,7 @@ export default function ModalMessaging() {
                                   className="dropdown-toggler rounded-circle mx-2"
                                   width="30"
                                   height="30"
-                                  src={authenticatedUser.getAvatar}
+                                  src={authenticatedUser.getAvatar || authenticatedUser.getAvatarUrl}
                                   title={authenticatedUser.getFullName}
                                   alt={authenticatedUser.getUsername}
                                 />
@@ -154,7 +155,7 @@ export default function ModalMessaging() {
                                   className="dropdown-toggler rounded-circle mx-2"
                                   width="30"
                                   height="30"
-                                  src={recipient.getAvatar}
+                                  src={recipient.getAvatar || recipient.getAvatarUrl}
                                   title={recipient.getFullName}
                                   alt={recipient.getUsername}
                                 />
