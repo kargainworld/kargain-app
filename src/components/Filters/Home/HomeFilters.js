@@ -54,7 +54,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 }}
             >
                 {announceTypes() && announceTypes()
-                    .filter(type => type.value !== "sale-pro")
+                    .filter(type => type.value !== "sale-pro" && type.value !== 'deal')
                     .map((tab, index) => (
                         <AnnounceTypeRadioButton
                             key={index}
