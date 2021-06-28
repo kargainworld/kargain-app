@@ -29,6 +29,7 @@ import Error from '../../_error';
 import { Avatar } from '../../../components/AnnounceCard/components';
 import { useSocket } from '../../../context/SocketContext';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
 
 const useStyles = makeStyles(() => ({
   formRow: {
@@ -237,7 +238,7 @@ const Announce = () => {
               <div style={{ flex: 4 }}>
                 <Link href={`/profile/${announce.getAuthor.getUsername}`}>
                   <a>
-                    <Typography variant="h3" component="h2">
+                    <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
                       {announce.getAuthor.getFullName}
                     </Typography>
                   </a>
@@ -253,7 +254,7 @@ const Announce = () => {
                     </a>
                   </div>
                 )}
-                {announce.showCellPhone && <p> {announce.getAuthor.getPhone} </p>}
+                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
               </div>
             </div>
 
@@ -263,41 +264,41 @@ const Announce = () => {
               <div className="icons-profile-wrapper">
                 <div className="icons-star-prof svgStarYellow">
                   <span onClick={() => handleClickLikeButton()}>
-                    {/*{alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}*/}
                     {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
                   </span>
                   <div className="mx-1">
                     <span>
-                      {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })}
+                      {/* {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })} */}
                     </span>
                   </div>
                 </div>
 
                 <div className="icons-star-prof">
-                  <CommentIcon />
+                  {/* <CommentIcon /> */}
+                  <ChatBubbleOutlineOutlinedIcon />
                   <div className="mx-1">
                     <span>
-                      {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })}
+                      {/* {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })} */}
                     </span>
                   </div>
                 </div>
-
+                <div
+                  className="icons-star-prof mx-2"
+                  onClick={() =>
+                    dispatchModalState({
+                      openModalMessaging: true,
+                      modalMessagingProfile: announce.getAuthor,
+                    })
+                  }
+                >
+                  <MailOutlineIcon />
+                </div>
                 {state.isAdmin || state.isSelf ? (
                   <div className="mx-2">
                     <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                   </div>
                 ) : (
-                  <div
-                    className="icons-star-prof mx-2"
-                    onClick={() =>
-                      dispatchModalState({
-                        openModalMessaging: true,
-                        modalMessagingProfile: announce.getAuthor,
-                      })
-                    }
-                  >
-                    <MailOutlineIcon />
-                  </div>
+                  <></>
                 )}
               </div>
             </div>
