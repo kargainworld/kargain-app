@@ -43,7 +43,7 @@ const Page = () => {
         profile: new UserModel()
     })
 
-    const { dispatchFormUpdate } = useContext(FormContext)
+    const { dispatchFormUpdate, dispatchFormClear } = useContext(FormContext)
     const profile = state.profile
 
     const handleSelectVehicleType = (index) => {
@@ -52,6 +52,7 @@ const Page = () => {
     }
 
     const onSubmit = (data) => {
+        dispatchFormClear();
         const { adType, vehicleType} = data
         const route = `${vehicleType.toLowerCase()}`
         dispatchFormUpdate({ adType, vehicleType })
