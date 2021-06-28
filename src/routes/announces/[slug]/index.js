@@ -28,11 +28,9 @@ import { getTimeAgo } from '../../../libs/utils';
 import Error from '../../_error';
 import { Avatar } from '../../../components/AnnounceCard/components';
 import { useSocket } from '../../../context/SocketContext';
-import { TerminalHttpProvider, Web3Versions } from '@terminal-packages/sdk';
-import { Web3ReactProvider } from '@web3-react/core';
-import Web3 from 'web3';
-import { setSource } from '../../../constants';
 import Blockchain from "../../../components/Blockchain/blockchain";
+import {Web3ReactProvider} from "@web3-react/core";
+import {Web3Provider} from "@ethersproject/providers";
 
 const useStyles = makeStyles(() => ({
   formRow: {
@@ -63,24 +61,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Announce = () => {
-  const getLibrary = provider => {
-    let library;
-    if (provider._metamask) {
-      library = new Web3(window.terminal.ethereum);
-    } else {
-      library = new Web3(
-          new TerminalHttpProvider({
-            customHttpProvider: provider,
-            apiKey: values.apiKey,
-            projectId: values.projectId,
-            source: setSource(provider),
-            web3Version: Web3Versions.one
-          })
-      );
-    }
-    library.pollingInterval = 8000;
-    return library;
-  };
   const refImg = useRef();
   const theme = useTheme();
   const classes = useStyles();
@@ -166,6 +146,12 @@ const Announce = () => {
     }
   }, [slug]);
 
+  function getLibrary(provider) {
+    const library = new Web3Provider(provider);
+    library.pollingInterval = 8000;
+    return library;
+  }
+
   useEffect(() => {
     fetchAnnounce();
   }, [fetchAnnounce]);
@@ -174,204 +160,203 @@ const Announce = () => {
   if (state.err) return <Error statusCode={state.err?.statusCode} />;
 
   return (
-        <Container>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
+      <Container>
+        <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
 
-            {state.isAdmin && (
-              <Alert severity="info" className="mb-2">
-                Connected as Admin
-              </Alert>
-            )}
+        {state.isAdmin && (
+            <Alert severity="info" className="mb-2">
+              Connected as Admin
+            </Alert>
+        )}
 
-            <div className="objava-wrapper">
-            {!announce.getIsActivated && (
+        <div className="objava-wrapper">
+          {!announce.getIsActivated && (
               <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
-            )}
+          )}
 
-            {!announce.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
+          {!announce.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
 
-            <Row>
-              <Col sm={12} md={6}>
-                <div className="top">
-                  <Typography as="h2" variant="h2">
-                    {announce.getAnnounceTitle}
-                  </Typography>
+          <Row>
+            <Col sm={12} md={6}>
+              <div className="top">
+                <Typography as="h2" variant="h2">
+                  {announce.getAnnounceTitle}
+                </Typography>
 
-                  <div className={classes.cardTopInfos}>
-                    <div className="price-announce">
-                      {isAuthenticated && authenticatedUser.getIsPro ? (
+                <div className={classes.cardTopInfos}>
+                  <div className="price-announce">
+                    {isAuthenticated && authenticatedUser.getIsPro ? (
                         <>
-                          <span className="mx-1">
-                            <strong>{announce.getPriceHT}€ HT</strong>
-                          </span>
+                      <span className="mx-1">
+                        <strong>{announce.getPriceHT}€ HT</strong>
+                      </span>
                           <span> - </span>
                           <span className="mx-1">
-                            <small>{announce.getPrice}€</small>
-                          </span>
+                        <small>{announce.getPrice}€</small>
+                      </span>
                         </>
-                      ) : (
+                    ) : (
                         <span>{announce.getPrice} €</span>
-                      )}
-                    </div>
+                    )}
+                  </div>
 
-                    <div
+                  <div
                       className="icons-star-prof"
                       onClick={() =>
-                        dispatchModalState({
-                          openModalShare: true,
-                          modalShareAnnounce: announce,
-                        })
+                          dispatchModalState({
+                            openModalShare: true,
+                            modalShareAnnounce: announce,
+                          })
                       }
-                    >
-                      <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
-                      <img src="/images/share.png" alt="" />
-                    </div>
+                  >
+                    <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                    <img src="/images/share.png" alt="" />
                   </div>
                 </div>
+              </div>
 
-                <div className="pics">
-                  {announce.getCountImages > 0 && (
+              <div className="pics">
+                {announce.getCountImages > 0 && (
                     <>
                       <GalleryViewer images={announce.getImages} ref={refImg} />
                       {/* {isDesktop && (
-                        <GalleryImgsLazy
-                            images={announce.getImages}
-                            handleCLickImg={handleCLickImg}
-                        />
-                      )} */}
+                    <GalleryImgsLazy
+                        images={announce.getImages}
+                        handleCLickImg={handleCLickImg}
+                    />
+                  )} */}
                     </>
-                  )}
-                </div>
-              </Col>
+                )}
+              </div>
+            </Col>
 
-              <Col sm={12} md={6}>
-                <div className={classes.formRow}>
-                  <div className="pic" style={{ flex: 1 }}>
-                    <Avatar
+            <Col sm={12} md={6}>
+              <div className={classes.formRow}>
+                <div className="pic" style={{ flex: 1 }}>
+                  <Avatar
                       className="img-profile-wrapper avatar-preview"
                       src={announce.getAuthor.getAvatar}
                       isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
                       alt={announce.getTitle}
                       width="80px"
                       height="80px"
-                    />
-                  </div>
-
-                  <div style={{ flex: 4 }}>
-                    <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                      <a>
-                        <Typography variant="h3" component="h2">
-                          {announce.getAuthor.getFullName}
-                        </Typography>
-                      </a>
-                    </Link>
-
-                    {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                      <div className="top-profile-location">
-                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                          <span className="top-profile-location">
-                            <img className="mx-1" src="/images/location.png" alt="" />
-                            {announce.getAdOrAuthorCustomAddress()}
-                          </span>
-                        </a>
-                      </div>
-                    )}
-                    {announce.showCellPhone && <p> {announce.getAuthor.getPhone} </p>}
-                  </div>
+                  />
                 </div>
 
-                <TagsList tags={announce.getTags} />
-                <Blockchain />
+                <div style={{ flex: 4 }}>
+                  <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                    <a>
+                      <Typography variant="h3" component="h2">
+                        {announce.getAuthor.getFullName}
+                      </Typography>
+                    </a>
+                  </Link>
 
-                <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
-                  <div className="icons-profile-wrapper">
-                    <div className="icons-star-prof svgStarYellow">
-                      <span onClick={() => handleClickLikeButton()}>
-                        {/*{alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}*/}
-                        {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
+                  {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                      <div className="top-profile-location">
+                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                      <span className="top-profile-location">
+                        <img className="mx-1" src="/images/location.png" alt="" />
+                        {announce.getAdOrAuthorCustomAddress()}
                       </span>
-                      <div className="mx-1">
-                        <span>
-                          {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })}
-                        </span>
+                        </a>
                       </div>
-                    </div>
+                  )}
+                  {announce.showCellPhone && <p> {announce.getAuthor.getPhone} </p>}
+                </div>
+              </div>
 
-                    <div className="icons-star-prof">
-                      <CommentIcon />
-                      <div className="mx-1">
-                        <span>
-                          {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })}
-                        </span>
-                      </div>
+              <TagsList tags={announce.getTags} />
+              <Web3ReactProvider getLibrary={getLibrary}>
+                <Blockchain />
+              </Web3ReactProvider>
+              <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                <div className="icons-profile-wrapper">
+                  <div className="icons-star-prof svgStarYellow">
+                  <span onClick={() => handleClickLikeButton()}>
+                    {/*{alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}*/}
+                    {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
+                  </span>
+                    <div className="mx-1">
+                    <span>
+                      {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })}
+                    </span>
                     </div>
+                  </div>
 
-                    {state.isAdmin || state.isSelf ? (
+                  <div className="icons-star-prof">
+                    <CommentIcon />
+                    <div className="mx-1">
+                    <span>
+                      {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })}
+                    </span>
+                    </div>
+                  </div>
+
+                  {state.isAdmin || state.isSelf ? (
                       <div className="mx-2">
                         <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                       </div>
-                    ) : (
+                  ) : (
                       <div
-                        className="icons-star-prof mx-2"
-                        onClick={() =>
-                          dispatchModalState({
-                            openModalMessaging: true,
-                            modalMessagingProfile: announce.getAuthor,
-                          })
-                        }
+                          className="icons-star-prof mx-2"
+                          onClick={() =>
+                              dispatchModalState({
+                                openModalMessaging: true,
+                                modalMessagingProfile: announce.getAuthor,
+                              })
+                          }
                       >
                         <MailOutlineIcon />
                       </div>
-                    )}
-                  </div>
+                  )}
                 </div>
-                <Comments announceRaw={announce.getRaw} />
-              </Col>
-            </Row>
+              </div>
+              <Comments announceRaw={announce.getRaw} />
+            </Col>
+          </Row>
 
-            <section className="my-2">
-              <Typography component="h3" variant="h3">
-                {t('vehicles:vehicle-data')}
-              </Typography>
-              <CarInfos announce={announce} enableThirdColumn />
-            </section>
+          <section className="my-2">
+            <Typography component="h3" variant="h3">
+              {t('vehicles:vehicle-data')}
+            </Typography>
+            <CarInfos announce={announce} enableThirdColumn />
+          </section>
 
-            <section className="my-2">
-              <Typography component="h3" variant="h3">
-                {t('vehicles:equipments')}
-              </Typography>
-              <Row>
-                {announce.getVehicleEquipments.map((equipment, index) => {
-                  return (
+          <section className="my-2">
+            <Typography component="h3" variant="h3">
+              {t('vehicles:equipments')}
+            </Typography>
+            <Row>
+              {announce.getVehicleEquipments.map((equipment, index) => {
+                return (
                     <Col sm={6} md={3} key={index}>
                       <div className="equipment m-3">
                         <Typography>{equipment.label}</Typography>
                       </div>
                     </Col>
-                  );
-                })}
-              </Row>
-            </section>
+                );
+              })}
+            </Row>
+          </section>
 
-            <section className="my-2">
-              <Typography component="h3" variant="h3">
-                {t('vehicles:description')}
-              </Typography>
-              <div className={classes.wysiwyg}>
-                <Typography>{announce.getDescription}</Typography>
-              </div>
-            </section>
+          <section className="my-2">
+            <Typography component="h3" variant="h3">
+              {t('vehicles:description')}
+            </Typography>
+            <div className={classes.wysiwyg}>
+              <Typography>{announce.getDescription}</Typography>
+            </div>
+          </section>
 
-            <section className="my-2">
-              <Typography component="h3" variant="h3">
-                {t('vehicles:data-sheet')}
-              </Typography>
-              <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
-            </section>
-          </div>
-          </Web3ReactProvider>
-        </Container>
+          <section className="my-2">
+            <Typography component="h3" variant="h3">
+              {t('vehicles:data-sheet')}
+            </Typography>
+            <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
+          </section>
+        </div>
+      </Container>
   );
 };
 
