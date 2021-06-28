@@ -29,8 +29,7 @@ import Error from '../../_error';
 import { Avatar } from '../../../components/AnnounceCard/components';
 import { useSocket } from '../../../context/SocketContext';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
-import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import * as i from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   formRow: {
@@ -271,7 +270,13 @@ const Announce = () => {
               <div className="icons-profile-wrapper">
                 <div className="icons-star-prof svgStarYellow" disabled={true}>
                   <span onClick={() => handleClickLikeButton()} >
-                    {like ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
+                    {/* {like ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
+                     */}
+                    <i.BookmarkBorder
+                      style={{
+                        color: like ? '#DB00FF' : '#444444',
+                      }}
+                    />
                   </span>
                   <div className="mx-1">
                     <span>
@@ -282,7 +287,7 @@ const Announce = () => {
 
                 <div className="icons-star-prof">
                   {/* <CommentIcon /> */}
-                  <ChatBubbleOutlineOutlinedIcon />
+                  <i.ChatBubbleOutline style={{ width: 23, marginRight: 4, color: '#444444' }} />
                   <div className="mx-1">
                     <span>
                       {/* {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })} */}
@@ -298,7 +303,7 @@ const Announce = () => {
                     })
                   }
                 >
-                  <MailOutlineIcon />
+                  <i.MailOutline style={{ position: 'relative', top: -1, color: '#444444' }} />
                 </div>
                 {state.isAdmin || state.isSelf ? (
                   <div className="">
