@@ -41,13 +41,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     })
 
     const getData = useCallback(async () => {
-        try{
+        try {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
             setFormData(data)
-        }catch (err){
-            dispatchModalError({ err, persist : true})
+        } catch (err) {
+            dispatchModalError({ err, persist: true })
         }
-    },[lang])
+    }, [lang])
 
     useEffect(() => {
         getData()
@@ -58,7 +58,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     }
 
     const onPowerChChange = ({ target: { value } }) => {
-        setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
+        setValue('powerKw', (Math.round(+value * 0.735499)).toString())
     }
 
     return (
@@ -72,7 +72,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -87,7 +87,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             placeholder="20000 km"
                             control={control}
                             errors={errors}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -98,7 +98,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="cm&sup3;"
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -113,7 +113,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -125,7 +125,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -140,7 +140,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={"KW"}
                             onChange={onPowerKwChange}
-                            // rules={{ required:t('form_validations:required') }}
+                        // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -152,13 +152,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={0}
                             onChange={onPowerChChange}
-                            // rules={{ required:t('form_validations:required') }}
+                        // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
             </Row>
 
-            <Header strong text={t('vehicles:consumption')}/>
+            <Header strong text={t('vehicles:consumption')} />
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={`${t('vehicles:consumption')} mixt`}>
@@ -216,13 +216,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header text={t('vehicles:vehicle-informations')}/>
+            <Header text={t('vehicles:vehicle-informations')} />
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:doors_quantity')}>
                         <SelectInput
                             name="doors"
-                            options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
@@ -233,7 +233,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                     <FieldWrapper label={t('vehicles:seats_quantity')}>
                         <SelectInput
                             name="seats"
-                            options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                             // placeholder={t('vehicles:select_seats_quantity')}
                             control={control}
                             errors={errors}
@@ -290,7 +290,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                     </FieldWrapper>
                 </Col>
             </Row>
-            <StepNavigation prev={prevStep} submit/>
+            <StepNavigation prev={prevStep} submit />
         </form>
     )
 }

@@ -26,7 +26,7 @@ const NumberInput = ({ name, rules, control, errors, onChange, ...props }) => {
         }
 
         if (onChange) {
-            onChange(+e)
+            onChange(e)
         }
     }
 
@@ -44,14 +44,14 @@ const NumberInput = ({ name, rules, control, errors, onChange, ...props }) => {
                     onPaste={onValidate}
                 />
             </div>
-            {errors && <ValidationError errors={errors} name={name}/>}
+            {errors && <ValidationError errors={errors} name={name} />}
         </>
     )
 }
 
 NumberInput.propTypes = {
     name: PropTypes.string.isRequired,
-    control : PropTypes.any.isRequired
+    control: PropTypes.any.isRequired
 }
 
 NumberInput.defaultProps = {
