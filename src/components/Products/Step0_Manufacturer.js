@@ -39,7 +39,6 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 
 	const selectedMake = watch('manufacturer.make')
 	const selectedModel = watch('manufacturer.model')
-	const selectedVersion = watch('manufacturer.version');
 	const selectedYear = watch('manufacturer.year')
 
 	dispatchFormUpdate(watch(), { compare: true })
