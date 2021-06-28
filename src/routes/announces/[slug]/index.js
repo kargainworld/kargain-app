@@ -19,6 +19,7 @@ import CarInfos from '../../../components/Products/car/CarInfos';
 import Comments from '../../../components/Comments/Comments';
 import TagsList from '../../../components/Tags/TagsList';
 import CTALink from '../../../components/CTALink';
+import {Action} from '../../../components/AnnounceCard/components';
 import AnnounceService from '../../../services/AnnounceService';
 import AnnounceModel from '../../../models/announce.model';
 import { MessageContext } from '../../../context/MessageContext';
@@ -268,34 +269,25 @@ const Announce = () => {
 
             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
               <div className="icons-profile-wrapper">
-                <div className="icons-star-prof svgStarYellow" disabled={true}>
-                  <span onClick={() => handleClickLikeButton()} >
-                    {/* {like ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
-                     */}
-                    <i.BookmarkBorder
-                      style={{
-                        color: like ? '#DB00FF' : '#444444',
-                      }}
-                    />
-                  </span>
-                  <div className="mx-1">
-                    <span>
-                      {/* {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })} */}
-                    </span>
-                  </div>
-                </div>
+                
+                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                  <i.BookmarkBorder
+                    style={{
+                      color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                    }}
+                  />
+                  <span>{announce.getCountLikes}</span>
+                </Action>
 
-                <div className="icons-star-prof">
-                  {/* <CommentIcon /> */}
-                  <i.ChatBubbleOutline style={{ width: 23, marginRight: 4, color: '#444444' }} />
-                  <div className="mx-1">
-                    <span>
-                      {/* {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })} */}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="icons-star-prof"
+                <Action
+                  title={t('vehicles:comment_plural')}
+                  style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                >
+                  <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                  <span>{announce.getCountComments}</span>
+                </Action>
+
+                <Action
                   onClick={() =>
                     dispatchModalState({
                       openModalMessaging: true,
@@ -303,8 +295,9 @@ const Announce = () => {
                     })
                   }
                 >
-                  <i.MailOutline style={{ position: 'relative', top: -1, color: '#444444' }} />
-                </div>
+                  <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                </Action>
+
                 {state.isAdmin || state.isSelf ? (
                   <div className="">
                     <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
