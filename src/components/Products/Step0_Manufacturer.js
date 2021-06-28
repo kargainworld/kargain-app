@@ -47,17 +47,6 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		.months()
 		.map(month => ({ value: month, label: month }))
 
-
-	useEffect(() => {
-		// setValue('manufacturer.model', null)
-		// setValue('manufacturer.year', null)
-	}, [selectedMake, setValue])
-
-	useEffect(() => {
-		// setValue('manufacturer.version', null)
-		// setValue('manufacturer.year', null)
-	}, [selectedModel, setValue])
-
 	const triggerSubmit = () => {
 		formRef.current.dispatchEvent(new Event('submit'))
 	}
@@ -109,12 +98,13 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		console.log(cache.current[cacheKey], '>>>>>>>>>>>>')
 		if (!make) return
 		if (!cache.current[cacheKey]) {
-			console.log('fetch models')
+			
 			const modelsService = isCar ? VehiclesService.getCarsDistinctModels
 				: VehiclesService.getMakeModels
 
 			await modelsService(vehicleTypeModel, make)
 				.then(models => {
+					console.log('fetch models', models)
 					if (!Array.isArray(models)) models = [models]
 					let modelsOptions = []
 

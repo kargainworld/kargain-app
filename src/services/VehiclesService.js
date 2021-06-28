@@ -21,6 +21,8 @@ function getCarsDistinctModels (vehicleType, make) {
                         throw err
                     })
             }
+
+            return data;
         })
         .catch(err => {
             throw err

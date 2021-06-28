@@ -30,6 +30,7 @@ import { Avatar } from '../../../components/AnnounceCard/components';
 import { useSocket } from '../../../context/SocketContext';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(() => ({
   formRow: {
@@ -80,8 +81,10 @@ const Announce = () => {
     isSelf: false,
     isAdmin: false,
     announce: new AnnounceModel(),
-    likesCounter: 0,
+    likesCounter: 0
   });
+
+  const [isLiking, setIsLiking] = useState(false);
 
   const { announce } = state;
 
@@ -100,12 +103,15 @@ const Announce = () => {
 
   const alreadyLikeCurrentUser = checkIfAlreadyLike();
 
+  const [like, setLike] = useState(alreadyLikeCurrentUser)
+
   const handleClickLikeButton = async () => {
     if (!isAuthenticated) return setForceLoginModal(true);
     let counter = state.likesCounter;
-
+    if(isLiking) return;
+    setIsLiking(true)
     try {
-      if (alreadyLikeCurrentUser) {
+      if (like) {
         await AnnounceService.removeLikeLoggedInUser(announce.getID);
         setState((state) => ({
           ...state,
@@ -116,8 +122,10 @@ const Announce = () => {
         setState((state) => ({
           ...state,
           likesCounter: counter + 1,
-        }));
+        }));        
       }
+      setLike(!like)
+      setIsLiking(false)
     } catch (err) {
       dispatchModalError({ err });
     }
@@ -127,7 +135,6 @@ const Announce = () => {
     try {
       const result = await AnnounceService.getAnnounceBySlug(slug);
       const { announce, isAdmin, isSelf } = result;
-      console.log(result);
 
       setState((state) => ({
         ...state,
@@ -262,9 +269,9 @@ const Announce = () => {
 
             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
               <div className="icons-profile-wrapper">
-                <div className="icons-star-prof svgStarYellow">
-                  <span onClick={() => handleClickLikeButton()}>
-                    {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
+                <div className="icons-star-prof svgStarYellow" disabled={true}>
+                  <span onClick={() => handleClickLikeButton()} >
+                    {like ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
                   </span>
                   <div className="mx-1">
                     <span>
@@ -283,7 +290,7 @@ const Announce = () => {
                   </div>
                 </div>
                 <div
-                  className="icons-star-prof mx-2"
+                  className="icons-star-prof"
                   onClick={() =>
                     dispatchModalState({
                       openModalMessaging: true,
@@ -294,7 +301,7 @@ const Announce = () => {
                   <MailOutlineIcon />
                 </div>
                 {state.isAdmin || state.isSelf ? (
-                  <div className="mx-2">
+                  <div className="">
                     <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                   </div>
                 ) : (
