@@ -15,6 +15,7 @@ import ChatIcon from '@material-ui/icons/Chat'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
+import WalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import CloseIcon from '@material-ui/icons/Close'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import SettingsIcon from '@material-ui/icons/Settings'
@@ -29,6 +30,8 @@ import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
+import Badge from '@material-ui/core/Badge'
+import useWallet from "../hooks/useWallet"
 
 const Root = styled.header`
   position: sticky;
@@ -143,7 +146,7 @@ const NavbarAction = ({ vertical }) => {
     const [searchQuery, setSearchQuery] = useState('')
 
     const onSubmitSearch = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         if (searchQuery) {
             dispatchSearchQuery(searchQuery)
         }
@@ -155,12 +158,12 @@ const NavbarAction = ({ vertical }) => {
                 <form className="search-form" onSubmit={onSubmitSearch}>
                     <SearchInputContainer>
                         <SearchInput
-                          value={searchQuery}
-                          onChange={({ target }) => setSearchQuery(target.value)}
-                          name="query"
-                          type="search"
-                          placeholder={t('layout:search')}
-                          iconright={<Search />}
+                            value={searchQuery}
+                            onChange={({ target }) => setSearchQuery(target.value)}
+                            name="query"
+                            type="search"
+                            placeholder={t('layout:search')}
+                            iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>
@@ -239,7 +242,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href="" prefetch={false}>
                         <a className="nav-link text-left" onClick={() => {
                             router.push('/')
-                            logout();
+                            logout()
                         }}>
                             <ExitToAppIcon/>
                             <span className="m-1">
@@ -290,10 +293,30 @@ const LoggedInUserNav = ({ vertical }) => {
                         </Link>
                     </NavItem>
                     <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
+                    <WalletButton />
                     <DropdownUser isOpen={state.isOpen2} keyName="isOpen2" toggle={toggle}/>
                 </Nav>
             </div>
         </ClickAwayListener>
+    )
+}
+
+const WalletButton = () => {
+    const [provider, account, connect] = useWallet()
+
+    const color = provider && account ? "primary" : "error"
+
+    console.log({
+        provider,
+        account
+    })
+
+    return (
+        <IconButton color="inherit" onClick={() => connect()}>
+            <Badge color={color} variant="dot">
+                <WalletIcon />
+            </Badge>
+        </IconButton>
     )
 }
 
