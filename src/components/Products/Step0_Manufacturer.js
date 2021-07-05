@@ -222,10 +222,10 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		if (!make) return
 		if (!model) return
 
-		if (!isCar) {
-			triggerSubmit()
-			return
-		}
+		// if (!isCar) {
+		// 	triggerSubmit()
+		// 	return
+		// }
 
 		// if (year) triggerSubmit()
 	}, [selectedMake, selectedModel, selectedYear])
@@ -293,14 +293,14 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 							options={getMonths()}
 							control={control}
 							errors={errors}
-							disabled={!watch('manufacturer.model') || !isCar}
+							disabled={!watch('manufacturer.model')}
 						/>
 					</FieldWrapper>
 				</Col>
 
 				<Col md={4}>
 					<FieldWrapper label={t('vehicles:year')}>
-						<SelectInput
+						{isCar ? (<SelectInput
 							name="manufacturer.year"
 							placeholder={t('vehicles:select')}
 							options={manufacturersData.years}
@@ -308,7 +308,14 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 							errors={errors}
 							disabled={!watch('manufacturer.model') || !isCar}
 							rules={{ required: t('form_validations:required') }}
-						/>
+						/>) : (
+							<TextInput
+								disabled={!watch('manufacturer.model')}
+								name="manufacturer.year"
+								control={control}
+								errors={errors}
+							/>
+						)}
 					</FieldWrapper>
 				</Col>
 			</Row>

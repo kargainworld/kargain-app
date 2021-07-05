@@ -283,3 +283,14 @@ export const RadioChoicesDefective = [
         label: "Filtre à particules"
     }
 ]
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]
