@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import Budget from '../../components/Admin/temp/Budget'
 import TotalUsers from '../../components/Admin/temp/TotalUsers'
 import TasksProgress from '../../components/Admin/temp/TasksProgress/TasksProgress'
 import TotalProfit from '../../components/Admin/temp/TotalProfit'
+import EditPlatformCommissionPercent from '../../components/Admin/EditPlatformCommissionPercent'
+import Blockchain from 'components/Blockchain/blockchain'
+import { Web3ReactProvider } from '@web3-react/core'
+import Web3 from 'web3'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,53 +19,62 @@ const useStyles = makeStyles(theme => ({
 const DashboardAdmin = () => {
     const classes = useStyles()
 
+    function getLibrary(provider) {
+        const library = new Web3(provider)
+        return library
+    }
+
     return (
         <div className={classes.root}>
-            <Grid
-                container
-                spacing={4}>
+            <Web3ReactProvider getLibrary={getLibrary}>
+                <Blockchain />
+              
                 <Grid
-                    item
-                    lg={3}
-                    sm={6}
-                    xl={3}
-                    xs={12}>
-                    <Budget />
+                    container
+                    spacing={4}>
+                    <Grid
+                        item
+                        lg={3}
+                        sm={6}
+                        xl={3}
+                        xs={12}>
+                        <Budget />
+                    </Grid>
+                    <Grid
+                        item
+                        lg={3}
+                        sm={6}
+                        xl={3}
+                        xs={12}>
+                        <TotalUsers />
+                    </Grid>
+                    <Grid
+                        item
+                        lg={3}
+                        sm={6}
+                        xl={3}
+                        xs={12}>
+                        <TasksProgress />
+                    </Grid>
+                    <Grid
+                        item
+                        lg={3}
+                        sm={6}
+                        xl={3}
+                        xs={12}>
+                        <TotalProfit />
+                    </Grid>
+                    <Grid
+                        item
+                        lg={3}
+                        sm={6}
+                        xl={3}
+                        xs={12}
+                    >
+                        <EditPlatformCommissionPercent />
+                    </Grid>
                 </Grid>
-                <Grid
-                    item
-                    lg={3}
-                    sm={6}
-                    xl={3}
-                    xs={12}>
-                    <TotalUsers />
-                </Grid>
-                <Grid
-                    item
-                    lg={3}
-                    sm={6}
-                    xl={3}
-                    xs={12}>
-                    <TasksProgress />
-                </Grid>
-                <Grid
-                    item
-                    lg={3}
-                    sm={6}
-                    xl={3}
-                    xs={12}>
-                    <TotalProfit />
-                </Grid>
-                <Grid
-                    item
-                    lg={8}
-                    md={12}
-                    xl={9}
-                    xs={12}
-                >
-                    {/*<LatestSales/>*/}
-                </Grid>
-            </Grid>
+            </Web3ReactProvider>
         </div>
     )
 }
