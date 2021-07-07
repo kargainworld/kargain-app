@@ -25,7 +25,7 @@ const CarInfos = ({ announce, enableThirdColumn }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const cols = enableThirdColumn ? 4 : 6
-    
+    const mileageType = announce.getMileageType;
     return (
         <Row className="specs my-2 p-2">
             <Col sm={12} md={cols}>
@@ -55,8 +55,8 @@ const CarInfos = ({ announce, enableThirdColumn }) => {
                 </div>
                 <div className={classes.spec}>
                     <Typography>
-                        <span>{t('vehicles:mileage')}: </span>
-                        {announce.getMileage} km
+                        <span>{t(mileageType ? `vehicles:${mileageType.label}`:'vehicles:mileage')}: </span>
+                        {`${announce.getMileage} ${mileageType ? mileageType.value: 'km'}`} 
                     </Typography>
                 </div>
                 <div className={classes.spec}>

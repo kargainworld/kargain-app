@@ -40,23 +40,20 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     }, [])
 
     const prevStep = useCallback(() => {
-		if(activeStep === 0) {
-			return;
-		}
 		setActiveStep(activeStep => activeStep - 1)
     }, [])
 
     const nextStep = useCallback(() => {
-	setActiveStep(activeStep => activeStep + 1)
+		setActiveStep(activeStep => activeStep + 1)
     }, [])
 
     const triggerDispatchFormData = (data) => {
-	dispatchFormUpdate(data)
+		dispatchFormUpdate(data)
     }
 
     const onSubmitStep = useCallback((data) => {
-	triggerDispatchFormData(data)
-	nextStep()
+		triggerDispatchFormData(data)
+		nextStep()
     }, [])
 
     const handleSubmitForm = (data) => {
