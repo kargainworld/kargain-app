@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import clsx from 'clsx'
 import { makeStyles } from "@material-ui/styles"
 import { Avatar, Card, CardContent, Grid, InputAdornment, Typography } from "@material-ui/core"
@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import { Skeleton } from "@material-ui/lab"
+import { MessageContext } from "context/MessageContext"
 
 
 const useStyles = makeStyles(theme => ({
@@ -52,38 +53,42 @@ const EditPlatformCommissionPercent = props => {
 
     const [platformCommissionPercent, setPlatformCommissionPercent] = useState(null)
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isConfirmed, setIsConfirmed] = useState(true)
     const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
+
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
 
     useEffect(()=> {
         const action = async () => {
-            setIsLoading(true)
-
             try {
                 const value = await fetchPlatformPercent()
-                setPlatformCommissionPercent(value ? value.toString() : "0")
-            } catch (error) {
-                console.error(error)
-                // TODO: handle this error
-            }
+                if (!value)
+                    return
 
-            setIsLoading(false)
+                setPlatformCommissionPercent(value.toString())
+            } catch (err) {
+                console.error(err)
+                dispatchModalError({ err })
+            }
         } 
 
         action()
-    }, [fetchPlatformPercent])
+    }, [dispatchModalError, fetchPlatformPercent])
 
     const handlePlatformPercentSave = async () => {
-        setIsLoading(true)
+        setIsConfirmed(false)
         setError(null)
             
-        try {
-            await updatePlatformPercent(platformCommissionPercent)
-        } catch (error) {
-            setError(error)
-        }
-
-        setIsLoading(false)
+        updatePlatformPercent(platformCommissionPercent)
+            .then(() => {
+                setIsConfirmed(true)
+                dispatchModal({ msg: 'Platform commission confirmed!' })
+            })
+            .catch((error) => {
+                console.error(error)
+                setError(error)
+                setIsConfirmed(true)
+            })
     }
 
     return (
@@ -113,7 +118,7 @@ const EditPlatformCommissionPercent = props => {
                                         <IconButton
                                             onClick={handlePlatformPercentSave}
                                             edge="end"
-                                            disabled={isLoading}
+                                            disabled={!isConfirmed}
                                         >
                                             <SaveIcon />
                                         </IconButton>
@@ -125,8 +130,8 @@ const EditPlatformCommissionPercent = props => {
                             type="number"
                             InputLabelProps={{ shrink: true }}
                             error={!!error}
-                            helperText={error && error.message}
-                            disabled={isLoading}
+                            helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
+                            disabled={!isConfirmed}
                             variant="outlined"
                         />}
                     </Grid>

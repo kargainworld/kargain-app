@@ -5,6 +5,7 @@ import config from "../config/config"
 
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
+import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
 
 const useKargainContract = () => {
     const { library, account } = useWeb3React()
@@ -34,16 +35,25 @@ const useKargainContract = () => {
     }, [contract])
 
     const updatePlatformPercent = useCallback(async (percent) => {
-        if (!contract)
+        if (!contract || !library)
             return
 
         if (percent < 0 || percent > 100) {
             throw new Error("Percent must be between 0 and 100")
         }
 
-        await contract.methods
-            .setPlatformCommissionPercent(percent).send({ from: account })
-    }, [contract, account])
+        const tx = await contract.methods
+            .setPlatformCommissionPercent(percent)
+            .send({ from: account })
+
+        const receipt = await waitTransaction(library, tx.transactionHash)
+
+        console.log("done", receipt)
+
+        if (!isSuccessfulTransaction(receipt)) {
+            throw new Error("Failed to confirm the transaction")
+        }
+    }, [contract, account, library])
 
     return { contract, fetchPlatformPercent, updatePlatformPercent }
 }
