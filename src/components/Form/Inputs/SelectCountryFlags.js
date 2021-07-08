@@ -62,6 +62,8 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
                                 value: null,
                                 label: '',
                             })
+                        if(props.onChange) return props.onChange(e)
+                        return e
                     }}
                     components={{
                         SingleValue,

@@ -1,20 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 
-export const vehicleTypeRefModels = {
-    car : "cars",
-    moto : "motorcycles",
-    utility : "trucks",
-    camper : "campers"
-}
+const vehicleTypesDefault = () => {
 
-export const vehicleTypes = {
-    car : "car",
-    moto : "moto",
-    utility : "utility",
-    camper : "camper"
-}
-
-export default () => {
     const { t } = useTranslation();
 
     return [
@@ -45,5 +32,19 @@ export default () => {
         }
     ]
 }
+export default vehicleTypesDefault;
 
+export const vehicleTypeRefModels = {
+    car : "cars",
+    moto : "motorcycles",
+    utility : "trucks",
+    camper : "campers"
+}
+
+export const vehicleTypes = {
+    car : "car",
+    moto : "moto",
+    utility : "utility",
+    camper : "camper"
+}
 

@@ -58,6 +58,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                         fullAddress: formatted_address
                     }
                     control.setValue(name, values)
+                    if(props.onChange) props.onChange(values)
                     // control.setValue(name, formatted_address)
                 }
             })
@@ -79,6 +80,10 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                             return false
                         }
                     }}
+                    // onChange={(e={} ) => {
+                    //     if(props.onChange) return props.onChange(e)
+                    //     return e
+                    // }}
                 />
             </div>
             {errors && <ValidationError errors={errors} name={name}/>}
@@ -90,13 +95,15 @@ SearchLocationInput.propTypes = {
     country: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
-    types: PropTypes.arrayOf(PropTypes.string)
+    types: PropTypes.arrayOf(PropTypes.string),
+    onChange: PropTypes.func
 }
 
 SearchLocationInput.defaultProps = {
     rules: {},
     country: 'fr',
-    types: ['address']
+    types: ['address'],
+    onChange: {},
 }
 
 export default SearchLocationInput
