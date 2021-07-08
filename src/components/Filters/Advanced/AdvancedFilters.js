@@ -100,7 +100,15 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         setValue('year', null);
     }, [selectedModel]);
 
-    const onSubmit = (form, e) => {
+    const onSubmit = (form, e, name) => {
+        
+        var empty;
+        for(var key in form) {
+            if(form[key] === null) form[key] = empty;
+        }
+
+        if(e !== null)  if(typeof e.type === "submit")   e.preventDefault();
+
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
@@ -111,7 +119,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             data.enableGeocoding = true
         }
 
-        e.preventDefault()
         updateFilters(data)
     }
 
@@ -221,7 +228,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     },[selectedMake])
 
     const fetchModelsYears = useCallback(async() => {
-        const make = selectedMake?.value
+        const make = selectedMake?.label
         const model = selectedModel?.value
         const cacheKey = `${vehicleType}_makes_${make}_models_${model}`
 
@@ -319,8 +326,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={vehicleTypesDefault()}
-                            onChange={selected =>{
-                                onVehicleTypeChange(selected.value)
+                            onChange={(selected, name) =>{
+                                // onVehicleTypeChange(selected.value)
+                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
@@ -332,8 +340,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={announceTypesFiltered}
-                            onChange={selected =>{
+                            onChange={(selected, name) =>{
                                 // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
+                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
@@ -345,6 +354,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={manufacturersData.makes}
+                            onChange={(selected, name) =>{
+                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
                         />
                     </FieldWrapper>
 
@@ -355,6 +368,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.make')}
+                            onChange={(selected, name) =>{
+                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
                         />
                     </FieldWrapper>
 
@@ -366,6 +383,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.model') || !isCar}
+                            onChange={(selected, name) =>{
+                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
                         />
                     </FieldWrapper>
 
@@ -374,6 +395,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             watch={watch}
+                            dynamicOnSubmit={onSubmit}
+                            dynamicHandleSubmit={handleSubmit}
                         />
                     )}
                 </div>

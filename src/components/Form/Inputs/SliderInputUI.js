@@ -32,7 +32,9 @@ const RangeSlider = ({ name, rules, control, errors, ...props }) => {
 
     const handleChange = (e, val) => {
         setValue(val)
-        control.setValue(name, value)
+        control.setValue(name, val)
+        if(props.onChange) return props.onChange(e);
+        return e;
     }
 
     useEffect(()=>{
