@@ -17,10 +17,14 @@ module.exports = {
     },
     google: {
         static:{
-            STATIC_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+            STATIC_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
         },
         sso: {
             CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_SSO_CLIENT_ID
         }
+    },
+    contract: {
+        RPC_URL: process.env.NEXT_PUBLIC_RPC_URL,
+        KARGAIN_ADDRESS: process.env.NEXT_PUBLIC_KARGAIN_ADDRESS
     }
 }
