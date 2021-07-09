@@ -215,7 +215,11 @@ export default class AnnounceModel {
     }
 
     get getMileage () {
-        return this.raw?.mileage
+        return `${this.raw?.mileage}`
+    }
+
+    get getMileageType () {
+        return this.raw?.mileageType
     }
 
     get getLikes () {

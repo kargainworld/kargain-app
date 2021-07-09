@@ -69,7 +69,7 @@ const AnnounceCardLight = ({ announceRaw }) => {
                     <Link href={announce.getAuthor.getProfileLink} prefetch={false}>
                         <a className="decoration-none">
                             <img className="img-profile-wrapper rounded-circle"
-                                src={announce.getAuthor.getAvatar}
+                                src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl }
                                 alt={announce.getAuthor.getUsername}
                                 width={30}
                             />

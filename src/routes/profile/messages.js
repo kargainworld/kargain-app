@@ -138,9 +138,10 @@ const Messages = () => {
                         <div>
                           <Avatar
                             className="rounded-circle mx-2"
-                            src={recipient.getAvatar}
+                            src={recipient.getAvatar || recipient.getAvatarUrl}
                             alt={recipient.getUsername}
                             isonline={getOnlineStatusByUserId(recipient.getID)}
+                            style={{width: 52, height: 52}}
                           />
                         </div>
                         <div className={classes.itemDetails}>
@@ -173,9 +174,10 @@ const Messages = () => {
                     <a>
                       <Avatar
                         className="rounded-circle mx-2"
-                        src={selectedRecipient.getAvatar}
+                        src={selectedRecipient.getAvatar || selectedRecipient.getAvatarUrl}
                         alt={selectedRecipient.getUsername}
                         isonline={getOnlineStatusByUserId(selectedRecipient.getID)}
+                        style={{width: 52, height: 52}}
                       />
                       <span className="mx-2">{selectedRecipient.getFullName}</span>
                     </a>
@@ -201,7 +203,7 @@ const Messages = () => {
                             className="dropdown-toggler rounded-circle mx-2"
                             width="30"
                             height="30"
-                            src={authenticatedUser.getAvatar}
+                            src={authenticatedUser.getAvatar || authenticatedUser.getAvatarUrl}
                             title={authenticatedUser.getFullName}
                             alt={authenticatedUser.getUsername}
                           />
@@ -216,7 +218,7 @@ const Messages = () => {
                             className="dropdown-toggler rounded-circle mx-2"
                             width="30"
                             height="30"
-                            src={selectedRecipient.getAvatar}
+                            src={selectedRecipient.getAvatar || selectedRecipient.getAvatarUrl}
                             title={selectedRecipient.getFullName}
                             alt={selectedRecipient.getUsername}
                           />

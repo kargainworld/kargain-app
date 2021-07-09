@@ -6,6 +6,7 @@ const defaultValues = {
     openModalFollowers : false,
     modalFollowersProfiles : [],
     modalFollowersTitle : null,
+    isFollowing: false,
     
     //ShareAnnounceModal
     openModalShare : false,
@@ -13,7 +14,9 @@ const defaultValues = {
     
     //MessagingModal
     openModalMessaging : false,
-    modalMessagingProfile : new UserModel()
+    modalMessagingProfile : new UserModel(),
+    isOwner: false,
+    handleUnSubscription: () => {}
 }
 
 const ModalContext = createContext(defaultValues)

@@ -18,7 +18,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-
+    
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -27,6 +27,8 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
 
     dispatchFormUpdate(watch(), { compare: true })
 
+    const selectedMileage = watch('mileageType')
+    const [ mileageType, setMileageType ] = useState(null);
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -37,17 +39,27 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesEmission: [],
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
-        RadioChoicesExternalColor: []
+        RadioChoicesExternalColor: [],
+        mileageType: [
+            {
+                label: 'mileage',
+                value: 'mi'
+            },
+            {
+                label: 'kilometer',
+                value: 'km'
+            }
+        ]
     })
 
     const getData = useCallback(async () => {
-        try{
+        try {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
             setFormData(data)
-        }catch (err){
-            dispatchModalError({ err, persist : true})
+        } catch (err) {
+            dispatchModalError({ err, persist: true })
         }
-    },[lang])
+    }, [lang])
 
     useEffect(() => {
         getData()
@@ -58,9 +70,16 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     }
 
     const onPowerChChange = ({ target: { value } }) => {
-        setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
+        setValue('powerKw', (Math.round(+value * 0.735499)).toString())
     }
-
+    
+    useEffect(() => {
+        setMileageType(selectedMileage || {
+            label: 'kilometer',
+            value: 'km'
+        });
+    }, [selectedMileage])
+    
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -72,7 +91,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -81,15 +100,31 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
 
             <Row>
                 <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:mileage')}>
-                        <NumberInput
-                            name="mileage"
-                            placeholder="20000 km"
-                            control={control}
-                            errors={errors}
-                            rules={{ required:t('form_validations:required') }}
-                        />
-                    </FieldWrapper>
+                    <Row>
+                        <Col>
+                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                <NumberInput
+                                    name="mileage"
+                                    placeholder={`20000 ${mileageType?.value}`}
+                                    control={control}
+                                    errors={errors}
+                                    rules={{ required: t('form_validations:required') }}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                        <Col>
+                            <FieldWrapper label={t('vehicles:type')}>
+                                <SelectInput
+                                    name="mileageType"
+                                    options={formData.mileageType}
+                                    control={control}
+                                    errors={errors}
+                                    selected={'km'}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                    </Row>
+                    
                 </Col>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>
@@ -98,7 +133,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="cm&sup3;"
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -113,7 +148,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -125,7 +160,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
-                            rules={{ required:t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -140,7 +175,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={"KW"}
                             onChange={onPowerKwChange}
-                            // rules={{ required:t('form_validations:required') }}
+                        // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -152,13 +187,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             errors={errors}
                             placeholder={0}
                             onChange={onPowerChChange}
-                            // rules={{ required:t('form_validations:required') }}
+                        // rules={{ required:t('form_validations:required') }}
                         />
                     </FieldWrapper>
                 </Col>
             </Row>
 
-            <Header strong text={t('vehicles:consumption')}/>
+            <Header strong text={t('vehicles:consumption')} />
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={`${t('vehicles:consumption')} mixt`}>
@@ -216,13 +251,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header text={t('vehicles:vehicle-informations')}/>
+            <Header text={t('vehicles:vehicle-informations')} />
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:doors_quantity')}>
                         <SelectInput
                             name="doors"
-                            options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                             control={control}
                             errors={errors}
                             placeholder={t('vehicles:select')}
@@ -233,7 +268,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                     <FieldWrapper label={t('vehicles:seats_quantity')}>
                         <SelectInput
                             name="seats"
-                            options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                             // placeholder={t('vehicles:select_seats_quantity')}
                             control={control}
                             errors={errors}
@@ -290,7 +325,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                     </FieldWrapper>
                 </Col>
             </Row>
-            <StepNavigation prev={prevStep} submit/>
+            <StepNavigation prev={prevStep} submit />
         </form>
     )
 }

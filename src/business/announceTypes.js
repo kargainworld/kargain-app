@@ -9,10 +9,6 @@ const Named = () => {
             "label": t('vehicles:sale')
         },
         {
-            "value": "sale-pro",
-            "label": t('vehicles:sale-pro')
-        },
-        {
             "value": "rent",
             "label": t('vehicles:rental')
         }

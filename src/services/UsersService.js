@@ -105,6 +105,22 @@ function uploadAvatar (formData) {
         })
 }
 
+function removeAvatar (userId) {
+    //ToDo remove Avatar
+    const requestOptions = {
+        method: 'GET',
+        credentials: 'include'
+    }
+
+    const url = `${config.api}/users/remove/avatar/${userId}`
+    return fetch(url, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 function followUser (userId) {
     const requestOptions = {
         method: 'POST',
@@ -193,6 +209,7 @@ export default {
     updateAdminUser,
     removeUser,
     uploadAvatar,
+    removeAvatar,
     followUser,
     unFollowUser,
     subscribeNewsletter,

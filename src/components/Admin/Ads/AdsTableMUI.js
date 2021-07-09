@@ -27,7 +27,7 @@ const columnsData = [
             return <img
                 alt=""
                 title={AnnounceModel.getAuthor.getFullName}
-                src={AnnounceModel.getAuthor.getAvatar}
+                src={AnnounceModel.getAuthor.getAvatar || AnnounceModel.getAuthor.getAvatarUrl}
                 style={{
                     width: 40,
                     borderRadius: '50%'

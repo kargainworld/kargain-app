@@ -35,8 +35,7 @@ import {
   ImageCounter,
   ImagePlaceholder,
 } from './components';
-import { CardActions, CardContent } from '@material-ui/core';
-import announceService from '../../services/AnnounceService';
+import { CardContent } from '@material-ui/core';
 import GalleryViewer from '../Gallery/GalleryViewer';
 import { useSocket } from '../../context/SocketContext';
 
@@ -59,17 +58,21 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
   const alreadyLikeCurrentUser = checkIfAlreadyLike();
 
-  const { onlineStatus, getOnlineStatusByUserId } = useSocket();
-  
+  const [liked, setLiked] = useState(alreadyLikeCurrentUser);
+
+  const { getOnlineStatusByUserId } = useSocket();
+
   const handleClickLikeButton = async () => {
     if (!isAuthenticated) return setForceLoginModal(true);
     try {
-      if (alreadyLikeCurrentUser) {
+      if (!liked) {
         await AnnounceService.addLikeLoggedInUser(announce.getID);
         setLikesCounter((likesCount) => likesCount + 1);
+        setLiked(true)
       } else {
         await AnnounceService.removeLikeLoggedInUser(announce.getID);
         setLikesCounter((likesCount) => Math.max(likesCount - 1));
+        setLiked(false)
       }
     } catch (err) {
       dispatchModalError({ err });
@@ -79,10 +82,11 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
   const isOwn = authenticatedUser?.raw?.id === announceRaw?.user?.id;
 
   const toggleVisibility = () => {
-    announceService
-      .updateAnnounce(announce.getSlug, { visible: !announceRaw.visible })
-      .then(() => window.location.reload());
+    AnnounceService.updateAnnounce(announce.getSlug, { visible: !announceRaw.visible }).then(() =>
+      window.location.reload()
+    );
   };
+
   const handleImageClick = () => {
     router.push(announce.getAnnounceLink);
   };
@@ -92,9 +96,10 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
       <CardContent>
         <User>
           <Avatar
-            src={announce.getAuthor.getAvatar}
+            src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
             size="medium"
             isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+            style={{ width: 52, height: 52, marginRight: 10 }}
           />
 
           <Info>
@@ -102,7 +107,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
 
             {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
               <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                <i.Room size={18} />
+                <i.RoomOutlined size={18} />
                 {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
               </Location>
             )}
@@ -131,18 +136,20 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
         <SubHeader>
           {isOwn && (
             <Action onClick={toggleVisibility}>
-              <i.RemoveRedEyeOutlined />
+              {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
             </Action>
           )}
 
-          <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-            <i.BookmarkBorder
-              style={{
-                color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
-              }}
-            />
-            <span>{likesCounter}</span>
-          </Action>
+          {!isAuthor && (
+            <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+              <i.BookmarkBorder
+                style={{
+                  color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                }}
+              />
+              <span>{likesCounter}</span>
+            </Action>
+          )}
 
           <Action
             title={t('vehicles:comment_plural')}

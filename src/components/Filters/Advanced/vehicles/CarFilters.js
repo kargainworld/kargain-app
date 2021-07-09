@@ -10,7 +10,7 @@ import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
 import { MessageContext } from '../../../../context/MessageContext'
 
-const CarFilters = ({ control, watch, errors }) => {
+const CarFilters = ({ control, watch, errors, ...props }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
     const { dispatchModalError } = useContext(MessageContext)
@@ -41,6 +41,9 @@ const CarFilters = ({ control, watch, errors }) => {
         getData()
     }, [getData])
 
+    // const onChange = (form, e) => {
+    //     props.formSubmit(form, e);
+    // }
     return (
         <>
             <FieldWrapper label={t('vehicles:price')}>
@@ -53,6 +56,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     errors={errors}
                     control={control}
                     suffix="€"
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -62,6 +70,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioTypeFunction}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -72,6 +84,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioChoicesGas}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -85,6 +101,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     defaultValue={[1, 1000]}
                     errors={errors}
                     control={control}
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -97,6 +118,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     errors={errors}
                     control={control}
                     suffix="kw"
+                    onChange={e =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -105,6 +130,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     name="countrySelect"
                     errors={errors}
                     control={control}
+                    onChange={(selected) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected.value)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -113,7 +142,12 @@ const CarFilters = ({ control, watch, errors }) => {
                     name="address"
                     country={countrySelect?.value}
                     control={control}
-                    errors={errors}>
+                    errors={errors}
+                    onChange={(selected) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected)), 100)
+                        return selected
+                    }}
+                    >
                 </SearchLocationInput>
             </FieldWrapper>
 
@@ -126,6 +160,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     control={control}
                     errors={errors}
                     suffix="km"
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -137,6 +176,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     defaultChecked={['ABS', 'ESP']}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -146,6 +189,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioChoicesEmission}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -158,6 +205,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     errors={errors}
                     control={control}
                     suffix="kw"
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -169,6 +221,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     step={1}
                     errors={errors}
                     control={control}
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -180,6 +237,11 @@ const CarFilters = ({ control, watch, errors }) => {
                     step={1}
                     errors={errors}
                     control={control}
+                    onChange={e =>{
+                        e.persist()
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
                 />
             </FieldWrapper>
 
@@ -190,6 +252,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioChoicesPaints}
                     citycontrol={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -199,6 +265,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioChoicesMaterials}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -208,6 +278,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioChoicesMaterials}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
 
@@ -217,6 +291,10 @@ const CarFilters = ({ control, watch, errors }) => {
                     options={formData.RadioVehicleGeneralState}
                     control={control}
                     errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
                 />
             </FieldWrapper>
         </>
