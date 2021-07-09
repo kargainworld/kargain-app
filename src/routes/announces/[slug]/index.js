@@ -1,37 +1,36 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import clsx from 'clsx'
-import { NextSeo } from 'next-seo'
-import Link from 'next-translate/Link'
-import { useRouter } from 'next/router'
-import { Col, Container, Row } from 'reactstrap'
-import Alert from '@material-ui/lab/Alert'
-import { useMediaQuery } from '@material-ui/core'
-import CommentIcon from '@material-ui/icons/Comment'
-import MailOutlineIcon from '@material-ui/icons/MailOutline'
-import Typography from '@material-ui/core/Typography'
-import useTheme from '@material-ui/core/styles/useTheme'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import useTranslation from 'next-translate/useTranslation'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
-import GalleryViewer from '../../../components/Gallery/GalleryViewer'
-import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
-import CarInfos from '../../../components/Products/car/CarInfos'
-import Comments from '../../../components/Comments/Comments'
-import TagsList from '../../../components/Tags/TagsList'
-import CTALink from '../../../components/CTALink'
-import AnnounceService from '../../../services/AnnounceService'
-import AnnounceModel from '../../../models/announce.model'
-import { MessageContext } from '../../../context/MessageContext'
-import { ModalContext } from '../../../context/ModalContext'
-import { useAuth } from '../../../context/AuthProvider'
-import { getTimeAgo } from '../../../libs/utils'
-import Error from '../../_error'
-import { Avatar } from '../../../components/AnnounceCard/components'
-import { useSocket } from '../../../context/SocketContext'
-import Blockchain from "../../../components/Blockchain/blockchain"
-import { Web3ReactProvider } from "@web3-react/core"
-import Web3 from 'web3'
-
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { NextSeo } from 'next-seo';
+import Link from 'next-translate/Link';
+import { useRouter } from 'next/router';
+import { Col, Container, Row } from 'reactstrap';
+import Alert from '@material-ui/lab/Alert';
+import { useMediaQuery } from '@material-ui/core';
+import CommentIcon from '@material-ui/icons/Comment';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import Typography from '@material-ui/core/Typography';
+import useTheme from '@material-ui/core/styles/useTheme';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import useTranslation from 'next-translate/useTranslation';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import GalleryViewer from '../../../components/Gallery/GalleryViewer';
+import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs';
+import CarInfos from '../../../components/Products/car/CarInfos';
+import Comments from '../../../components/Comments/Comments';
+import TagsList from '../../../components/Tags/TagsList';
+import CTALink from '../../../components/CTALink';
+import {Action} from '../../../components/AnnounceCard/components';
+import AnnounceService from '../../../services/AnnounceService';
+import AnnounceModel from '../../../models/announce.model';
+import { MessageContext } from '../../../context/MessageContext';
+import { ModalContext } from '../../../context/ModalContext';
+import { useAuth } from '../../../context/AuthProvider';
+import { getTimeAgo } from '../../../libs/utils';
+import Error from '../../_error';
+import { Avatar } from '../../../components/AnnounceCard/components';
+import { useSocket } from '../../../context/SocketContext';
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
+import * as i from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
     formRow: {
@@ -39,14 +38,14 @@ const useStyles = makeStyles(() => ({
 
         '& > div': {
             margin: '1rem',
-            flex: 1
-        }
+            flex: 1,
+        },
     },
 
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
-        margin: '1rem 0'
+        margin: '1rem 0',
     },
 
     priceStarsWrapper: {
@@ -54,27 +53,27 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid'
+        borderBottom: '1px solid',
     },
     wysiwyg: {
-        margin: '1rem'
-    }
-}))
+        margin: '1rem',
+    },
+}));
 
 const Announce = () => {
-    const refImg = useRef()
-    const theme = useTheme()
-    const classes = useStyles()
-    const router = useRouter()
-    const { slug } = router.query
-    const { t, lang } = useTranslation()
-    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
-    const { dispatchModalError } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
+    const refImg = useRef();
+    const theme = useTheme();
+    const classes = useStyles();
+    const router = useRouter();
+    const { slug } = router.query;
+    const { t, lang } = useTranslation();
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
+    const { dispatchModalError } = useContext(MessageContext);
+    const { dispatchModalState } = useContext(ModalContext);
     const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
-        defaultMatches: true
-    })
-    const { getOnlineStatusByUserId } = useSocket()
+        defaultMatches: true,
+    });
+    const { getOnlineStatusByUserId } = useSocket();
 
     const [state, setState] = useState({
         err: null,
@@ -83,81 +82,82 @@ const Announce = () => {
         isAdmin: false,
         announce: new AnnounceModel(),
         likesCounter: 0
-    })
+    });
 
-    const { announce } = state
+    const [isLiking, setIsLiking] = useState(false);
+
+    const { announce } = state;
 
     const handleCLickImg = (index) => {
         if (refImg.current) {
-            refImg.current.slideToIndex(index)
-            refImg.current.fullScreen()
+            refImg.current.slideToIndex(index);
+            refImg.current.fullScreen();
         }
-    }
+    };
 
     const checkIfAlreadyLike = () => {
-        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
-        const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID)
-        return !!matchUserFavorite || !!matchAnnounceLike
-    }
+        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID);
+        const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID);
+        return !!matchUserFavorite || !!matchAnnounceLike;
+    };
 
-    const alreadyLikeCurrentUser = checkIfAlreadyLike()
+    const alreadyLikeCurrentUser = checkIfAlreadyLike();
+
+    const [like, setLike] = useState(alreadyLikeCurrentUser)
 
     const handleClickLikeButton = async () => {
-        if (!isAuthenticated) return setForceLoginModal(true)
-        let counter = state.likesCounter
-
+        if (!isAuthenticated) return setForceLoginModal(true);
+        let counter = state.likesCounter;
+        if(isLiking) return;
+        setIsLiking(true)
         try {
-            if (alreadyLikeCurrentUser) {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID)
+            if (like) {
+                await AnnounceService.removeLikeLoggedInUser(announce.getID);
                 setState((state) => ({
                     ...state,
-                    likesCounter: Math.max(0, counter - 1)
-                }))
+                    likesCounter: Math.max(0, counter - 1),
+                }));
             } else {
-                await AnnounceService.addLikeLoggedInUser(announce.getID)
+                await AnnounceService.addLikeLoggedInUser(announce.getID);
                 setState((state) => ({
                     ...state,
-                    likesCounter: counter + 1
-                }))
+                    likesCounter: counter + 1,
+                }));
             }
+            setLike(!like)
+            setIsLiking(false)
         } catch (err) {
-            dispatchModalError({ err })
+            dispatchModalError({ err });
         }
-    }
+    };
 
     const fetchAnnounce = useCallback(async () => {
         try {
-            const result = await AnnounceService.getAnnounceBySlug(slug)
-            const { announce, isAdmin, isSelf } = result
-            console.log(result)
+            const result = await AnnounceService.getAnnounceBySlug(slug);
+            const { announce, isAdmin, isSelf } = result;
 
             setState((state) => ({
                 ...state,
                 stateReady: true,
                 announce: new AnnounceModel(announce),
                 isAdmin,
-                isSelf
-            }))
+                isSelf,
+            }));
         } catch (err) {
             setState((state) => ({
                 ...state,
                 stateReady: true,
-                err
-            }))
+                err,
+            }));
         }
-    }, [slug])
-
-    function getLibrary(provider) {
-        const library = new Web3(provider)
-        return library
-    }
+    }, [slug]);
 
     useEffect(() => {
-        fetchAnnounce()
-    }, [fetchAnnounce])
+        fetchAnnounce();
+    }, [fetchAnnounce]);
 
-    if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode} />
+    if (!state.stateReady) return null;
+    if (state.err) return <Error statusCode={state.err?.statusCode} />;
 
     return (
         <Container>
@@ -187,13 +187,13 @@ const Announce = () => {
                                 <div className="price-announce">
                                     {isAuthenticated && authenticatedUser.getIsPro ? (
                                         <>
-                                            <span className="mx-1">
-                                                <strong>{announce.getPriceHT}€ HT</strong>
-                                            </span>
+                      <span className="mx-1">
+                        <strong>{announce.getPriceHT}€ HT</strong>
+                      </span>
                                             <span> - </span>
                                             <span className="mx-1">
-                                                <small>{announce.getPrice}€</small>
-                                            </span>
+                        <small>{announce.getPrice}€</small>
+                      </span>
                                         </>
                                     ) : (
                                         <span>{announce.getPrice} €</span>
@@ -205,7 +205,7 @@ const Announce = () => {
                                     onClick={() =>
                                         dispatchModalState({
                                             openModalShare: true,
-                                            modalShareAnnounce: announce
+                                            modalShareAnnounce: announce,
                                         })
                                     }
                                 >
@@ -235,18 +235,17 @@ const Announce = () => {
                             <div className="pic" style={{ flex: 1 }}>
                                 <Avatar
                                     className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar}
+                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                                     isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
                                     alt={announce.getTitle}
-                                    width="80px"
-                                    height="80px"
+                                    style={{ width: 80, height: 80 }}
                                 />
                             </div>
 
                             <div style={{ flex: 4 }}>
                                 <Link href={`/profile/${announce.getAuthor.getUsername}`}>
                                     <a>
-                                        <Typography variant="h3" component="h2">
+                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
                                             {announce.getAuthor.getFullName}
                                         </Typography>
                                     </a>
@@ -255,60 +254,56 @@ const Announce = () => {
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <div className="top-profile-location">
                                         <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                            <span className="top-profile-location">
-                                                <img className="mx-1" src="/images/location.png" alt="" />
-                                                {announce.getAdOrAuthorCustomAddress()}
-                                            </span>
+                      <span className="top-profile-location">
+                        <RoomOutlinedIcon />
+                          {announce.getAdOrAuthorCustomAddress()}
+                      </span>
                                         </a>
                                     </div>
                                 )}
-                                {announce.showCellPhone && <p> {announce.getAuthor.getPhone} </p>}
+                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
                             </div>
                         </div>
 
                         <TagsList tags={announce.getTags} />
-                        <Web3ReactProvider getLibrary={getLibrary}>
-                            <Blockchain />
-                        </Web3ReactProvider>
+
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                             <div className="icons-profile-wrapper">
-                                <div className="icons-star-prof svgStarYellow">
-                                    <span onClick={() => handleClickLikeButton()}>
-                                        {/*{alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}*/}
-                                        {alreadyLikeCurrentUser ? <BookmarkIcon color="primary" /> : <BookmarkIcon />}
-                                    </span>
-                                    <div className="mx-1">
-                                        <span>
-                                            {announce.getCountLikes} {t('vehicles:like', { count: state.likesCounter })}
-                                        </span>
-                                    </div>
-                                </div>
 
-                                <div className="icons-star-prof">
-                                    <CommentIcon />
-                                    <div className="mx-1">
-                                        <span>
-                                            {announce.getCountComments} {t('vehicles:comment', { count: announce.getCountComments })}
-                                        </span>
-                                    </div>
-                                </div>
+                                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                    <i.BookmarkBorder
+                                        style={{
+                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                                        }}
+                                    />
+                                    <span>{announce.getCountLikes}</span>
+                                </Action>
+
+                                <Action
+                                    title={t('vehicles:comment_plural')}
+                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                >
+                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                                    <span>{announce.getCountComments}</span>
+                                </Action>
+
+                                <Action
+                                    onClick={() =>
+                                        dispatchModalState({
+                                            openModalMessaging: true,
+                                            modalMessagingProfile: announce.getAuthor,
+                                        })
+                                    }
+                                >
+                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                </Action>
 
                                 {state.isAdmin || state.isSelf ? (
-                                    <div className="mx-2">
+                                    <div className="">
                                         <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                                     </div>
                                 ) : (
-                                    <div
-                                        className="icons-star-prof mx-2"
-                                        onClick={() =>
-                                            dispatchModalState({
-                                                openModalMessaging: true,
-                                                modalMessagingProfile: announce.getAuthor
-                                            })
-                                        }
-                                    >
-                                        <MailOutlineIcon />
-                                    </div>
+                                    <></>
                                 )}
                             </div>
                         </div>
@@ -335,7 +330,7 @@ const Announce = () => {
                                         <Typography>{equipment.label}</Typography>
                                     </div>
                                 </Col>
-                            )
+                            );
                         })}
                     </Row>
                 </section>
@@ -357,7 +352,7 @@ const Announce = () => {
                 </section>
             </div>
         </Container>
-    )
-}
+    );
+};
 
-export default Announce
+export default Announce;
