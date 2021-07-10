@@ -27,6 +27,8 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
 
     dispatchFormUpdate(watch(), { compare: true })
     
+    const selectedMileage = watch('mileageType')
+    const [ mileageType, setMileageType ] = useState(null);
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -38,7 +40,17 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesBeds: [],
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
-        RadioChoicesExternalColor: []
+        RadioChoicesExternalColor: [],
+        mileageType: [
+            {
+                label: 'mileage',
+                value: 'mi'
+            },
+            {
+                label: 'kilometer',
+                value: 'km'
+            }
+        ]
     })
     
     const getData = useCallback(async () => {
@@ -79,14 +91,30 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
 
             <Row>
                 <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:mileage')}>
-                        <NumberInput
-                            name="mileage"
-                            placeholder="20000 km"
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
+                    <Row>
+                        <Col>
+                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                <NumberInput
+                                    name="mileage"
+                                    placeholder={`20000 ${mileageType?.value}`}
+                                    control={control}
+                                    errors={errors}
+                                    rules={{ required: t('form_validations:required') }}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                        <Col>
+                            <FieldWrapper label={t('vehicles:type')}>
+                                <SelectInput
+                                    name="mileageType"
+                                    options={formData.mileageType}
+                                    control={control}
+                                    errors={errors}
+                                    selected={'km'}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                    </Row>
                 </Col>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>

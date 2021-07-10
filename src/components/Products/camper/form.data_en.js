@@ -260,3 +260,14 @@ export const RadioVehicleGeneralState = [{
     label: 'Véhicule de démonstration'
 }
 ]
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]

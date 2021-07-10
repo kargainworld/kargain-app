@@ -225,3 +225,14 @@ export const RadioChoicesPaints = [
         label: 'Autre'
     }
 ]
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]

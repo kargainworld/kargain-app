@@ -243,3 +243,14 @@ export const RadioChoicesDefective = [
         label: "Garantie"
     }
 ]
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]

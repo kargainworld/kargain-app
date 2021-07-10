@@ -240,3 +240,14 @@ export const RadioChoicesDefective = [
         label: "Non-fumeur"
     }
 ]
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]
