@@ -24,7 +24,6 @@ module.exports = {
         }
     },
     contract: {
-        RPC_URL: process.env.NEXT_PUBLIC_RPC_URL,
         KARGAIN_ADDRESS: process.env.NEXT_PUBLIC_KARGAIN_ADDRESS
     }
 }
