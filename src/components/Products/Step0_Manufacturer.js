@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import FieldWrapper from '../Form/FieldWrapper'
+import NumberInput from '../Form/Inputs/NumberInput'
 import TextInput from '../Form/Inputs/TextInput'
 import StepNavigation from '../Form/StepNavigation'
 import SelectInput from '../Form/Inputs/SelectInput'
@@ -33,7 +34,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		makes: [],
 		models: [],
 		generations: [],
-		years: [],
+		years: '',
 		version: ''
 	})
 
@@ -99,8 +100,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		if (!make) return
 		if (!cache.current[cacheKey]) {
 			
-			const modelsService = isCar ? VehiclesService.getCarsDistinctModels
-				: VehiclesService.getMakeModels
+			const modelsService = VehiclesService.getMakeModels
 
 			await modelsService(vehicleTypeModel, make)
 				.then(models => {
@@ -108,18 +108,10 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 					if (!Array.isArray(models)) models = [models]
 					let modelsOptions = []
 
-					if (isCar) {
-						modelsOptions = models.map(model => ({
-							value: model,
-							label: model
-						}))
-					}
-					else {
-						modelsOptions = models.map(model => ({
-							value: model._id,
-							label: model.model
-						}))
-					}
+					modelsOptions = models.map(model => ({
+						value: model._id,
+						label: model.model
+					}))
 
 					const defaultOption = {
 						value: 'other',
@@ -300,7 +292,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 
 				<Col md={4}>
 					<FieldWrapper label={t('vehicles:year')}>
-						{isCar ? (<SelectInput
+						{/* {isCar ? (<SelectInput
 							name="manufacturer.year"
 							placeholder={t('vehicles:select')}
 							options={manufacturersData.years}
@@ -315,7 +307,22 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 								control={control}
 								errors={errors}
 							/>
-						)}
+						)} */}
+						
+						{/* <TextInput
+							disabled={!watch('manufacturer.model')}
+							name="manufacturer.year"
+							control={control}
+							errors={errors}
+						/> */}
+						
+                        <NumberInput
+							disabled={!watch('manufacturer.model')}
+                            name="manufacturer.year"
+                            control={control}
+                            errors={errors}
+                            placeholder="2021"
+                        />
 					</FieldWrapper>
 				</Col>
 			</Row>

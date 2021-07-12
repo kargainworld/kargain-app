@@ -12,13 +12,13 @@ const vehicleTypesDefault = () => {
             "imgSelected": "tab-car-blue.png"
         },
         {
-            "value": "moto",
+            "value": "motorcycle",
             "label": t('vehicles:moto'),
             "img": "tab-moto.png",
             "imgSelected": "tab-moto-blue.png"
         },
         {
-            "value": "utility",
+            "value": "truck",
             "label": t('vehicles:utility'),
             "img": "tab-gruz.png",
             "imgSelected": "tab-gruz-blue.png"
@@ -36,15 +36,15 @@ export default vehicleTypesDefault;
 
 export const vehicleTypeRefModels = {
     car : "cars",
-    moto : "motorcycles",
-    utility : "trucks",
+    motorcycle : "motorcycles",
+    truck : "trucks",
     camper : "campers"
 }
 
 export const vehicleTypes = {
     car : "car",
-    moto : "moto",
-    utility : "utility",
+    moto : "motorcycle",
+    utility : "truck",
     camper : "camper"
 }
 

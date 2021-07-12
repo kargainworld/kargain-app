@@ -18,6 +18,14 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
+        mode: 'onChange',
+        validateCriteriaMode: 'all',
+        defaultValues: formDataContext
+    })
+
+    dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null);
@@ -43,14 +51,6 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
             }
         ]
     })
-
-    const { control, errors, handleSubmit, watch, setValue } = useForm({
-        mode: 'onChange',
-        validateCriteriaMode: 'all',
-        defaultValues: formDataContext
-    })
-
-    dispatchFormUpdate(watch(), { compare: true })
 
     const getData = useCallback(async () => {
         try{
