@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from "react"
 import clsx from 'clsx'
 import { makeStyles } from "@material-ui/styles"
 import { Avatar, Card, CardContent, Grid, InputAdornment, Typography } from "@material-ui/core"
-import PrimaryIcon from '@material-ui/icons/Store'
+import PrimaryIcon from '@material-ui/icons/Timer'
 import useKargainContract from "hooks/useKargainContract"
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import { Skeleton } from "@material-ui/lab"
 import { MessageContext } from "context/MessageContext"
-
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,26 +45,26 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const EditPlatformCommissionPercent = props => {
+const EditOfferExpirationTime = props => {
     const { className, ...rest } = props
 
     const classes = useStyles()
 
-    const [platformCommissionPercent, setPlatformCommissionPercent] = useState(null)
+    const [offerExpirationTime, setOfferExpirationTime] = useState(null)
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
-    const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
+    const { fetchOfferExpirationTime, updateOfferExpirationTime } = useKargainContract()
 
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
 
     useEffect(()=> {
         const action = async () => {
             try {
-                const value = await fetchPlatformPercent()
+                const value = await fetchOfferExpirationTime()
                 if (!value)
                     return
-
-                setPlatformCommissionPercent(value.toString())
+                
+                setOfferExpirationTime(value.toString())
             } catch (err) {
                 console.error(err)
                 dispatchModalError({ err })
@@ -73,16 +72,16 @@ const EditPlatformCommissionPercent = props => {
         } 
 
         action()
-    }, [dispatchModalError, fetchPlatformPercent])
+    }, [dispatchModalError, fetchOfferExpirationTime])
 
-    const handlePlatformPercentSave = async () => {
+    const handleOfferExpirationSave = async () => {
         setIsConfirmed(false)
         setError(null)
             
-        updatePlatformPercent(+platformCommissionPercent)
+        updateOfferExpirationTime(+offerExpirationTime)
             .then(() => {
                 setIsConfirmed(true)
-                dispatchModal({ msg: 'Platform commission confirmed!' })
+                dispatchModal({ msg: 'Expiration time confirmed!' })
             })
             .catch((error) => {
                 console.error(error)
@@ -105,18 +104,18 @@ const EditPlatformCommissionPercent = props => {
                             color="textSecondary"
                             gutterBottom
                             variant="body2">
-                            PLATFORM COMMISSION
+                            OFFER EXPIRATION
                         </Typography>
                         <br /><br />
-                        {platformCommissionPercent === null && <Skeleton variant="rect" width={210} height={56} />}
-                        {platformCommissionPercent !== null && <TextField
-                            label="Percent"
+                        {offerExpirationTime === null && <Skeleton variant="rect" width={210} height={56} />}
+                        {offerExpirationTime !== null && <TextField
+                            label="Days"
                             fullWidth={true}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
-                                            onClick={handlePlatformPercentSave}
+                                            onClick={handleOfferExpirationSave}
                                             edge="end"
                                             disabled={!isConfirmed}
                                         >
@@ -125,8 +124,8 @@ const EditPlatformCommissionPercent = props => {
                                     </InputAdornment>
                                 )
                             }}
-                            onChange={(event) => setPlatformCommissionPercent(event.target.value)}
-                            value={platformCommissionPercent}
+                            onChange={(event) => setOfferExpirationTime(event.target.value)}
+                            value={offerExpirationTime}
                             type="number"
                             InputLabelProps={{ shrink: true }}
                             error={!!error}
@@ -146,4 +145,4 @@ const EditPlatformCommissionPercent = props => {
     )
 }
 
-export default EditPlatformCommissionPercent
+export default EditOfferExpirationTime
