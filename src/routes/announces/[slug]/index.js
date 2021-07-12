@@ -33,47 +33,47 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import * as i from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
-  formRow: {
-    display: 'flex',
+    formRow: {
+        display: 'flex',
 
-    '& > div': {
-      margin: '1rem',
-      flex: 1,
+        '& > div': {
+            margin: '1rem',
+            flex: 1,
+        },
     },
-  },
 
-  cardTopInfos: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '1rem 0',
-  },
+    cardTopInfos: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: '1rem 0',
+    },
 
-  priceStarsWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    margin: '15px 0',
-    borderBottom: '1px solid',
-  },
-  wysiwyg: {
-    margin: '1rem',
-  },
+    priceStarsWrapper: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        margin: '15px 0',
+        borderBottom: '1px solid',
+    },
+    wysiwyg: {
+        margin: '1rem',
+    },
 }));
 
 const Announce = () => {
-  const refImg = useRef();
-  const theme = useTheme();
-  const classes = useStyles();
-  const router = useRouter();
-  const { slug } = router.query;
-  const { t, lang } = useTranslation();
-  const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
-  const { dispatchModalError } = useContext(MessageContext);
-  const { dispatchModalState } = useContext(ModalContext);
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true,
-  });
-  const { getOnlineStatusByUserId } = useSocket();
+    const refImg = useRef();
+    const theme = useTheme();
+    const classes = useStyles();
+    const router = useRouter();
+    const { slug } = router.query;
+    const { t, lang } = useTranslation();
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
+    const { dispatchModalError } = useContext(MessageContext);
+    const { dispatchModalState } = useContext(ModalContext);
+    const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
+        defaultMatches: true,
+    });
+    const { getOnlineStatusByUserId } = useSocket();
 
   const [state, setState] = useState({
     err: null,
@@ -88,20 +88,20 @@ const Announce = () => {
 
   const { announce } = state;
 
-  const handleCLickImg = (index) => {
-    if (refImg.current) {
-      refImg.current.slideToIndex(index);
-      refImg.current.fullScreen();
-    }
-  };
+    const { announce } = state;
 
-  const checkIfAlreadyLike = () => {
-    const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID);
-    const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID);
-    return !!matchUserFavorite || !!matchAnnounceLike;
-  };
+    const handleCLickImg = (index) => {
+        if (refImg.current) {
+            refImg.current.slideToIndex(index);
+            refImg.current.fullScreen();
+        }
+    };
 
-  const alreadyLikeCurrentUser = checkIfAlreadyLike();
+    const checkIfAlreadyLike = () => {
+        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID);
+        const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID);
+        return !!matchUserFavorite || !!matchAnnounceLike;
+    };
 
   const [like, setLike] = useState(alreadyLikeCurrentUser)
 
@@ -136,99 +136,104 @@ const Announce = () => {
       const result = await AnnounceService.getAnnounceBySlug(slug);
       const { announce, isAdmin, isSelf } = result;
 
-      setState((state) => ({
-        ...state,
-        stateReady: true,
-        announce: new AnnounceModel(announce),
-        isAdmin,
-        isSelf,
-      }));
-    } catch (err) {
-      setState((state) => ({
-        ...state,
-        stateReady: true,
-        err,
-      }));
-    }
-  }, [slug]);
+    const fetchAnnounce = useCallback(async () => {
+        try {
+            const result = await AnnounceService.getAnnounceBySlug(slug);
+            const { announce, isAdmin, isSelf } = result;
 
-  useEffect(() => {
-    fetchAnnounce();
-  }, [fetchAnnounce]);
+            setState((state) => ({
+                ...state,
+                stateReady: true,
+                announce: new AnnounceModel(announce),
+                isAdmin,
+                isSelf,
+            }));
+        } catch (err) {
+            setState((state) => ({
+                ...state,
+                stateReady: true,
+                err,
+            }));
+        }
+    }, [slug]);
 
-  if (!state.stateReady) return null;
-  if (state.err) return <Error statusCode={state.err?.statusCode} />;
+    useEffect(() => {
+        fetchAnnounce();
+    }, [fetchAnnounce]);
 
-  return (
-    <Container>
-      <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
+    if (!state.stateReady) return null;
+    if (state.err) return <Error statusCode={state.err?.statusCode} />;
 
-      {state.isAdmin && (
-        <Alert severity="info" className="mb-2">
-          Connected as Admin
-        </Alert>
-      )}
+    return (
+        <Container>
+            <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
 
-      <div className="objava-wrapper">
-        {!announce.getIsActivated && (
-          <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
-        )}
+            {state.isAdmin && (
+                <Alert severity="info" className="mb-2">
+                    Connected as Admin
+                </Alert>
+            )}
 
-        {!announce.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
+            <div className="objava-wrapper">
+                {!announce.getIsActivated && (
+                    <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
+                )}
 
-        <Row>
-          <Col sm={12} md={6}>
-            <div className="top">
-              <Typography as="h2" variant="h2">
-                {announce.getAnnounceTitle}
-              </Typography>
+                {!announce.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
 
-              <div className={classes.cardTopInfos}>
-                <div className="price-announce">
-                  {isAuthenticated && authenticatedUser.getIsPro ? (
-                    <>
+                <Row>
+                    <Col sm={12} md={6}>
+                        <div className="top">
+                            <Typography as="h2" variant="h2">
+                                {announce.getAnnounceTitle}
+                            </Typography>
+
+                            <div className={classes.cardTopInfos}>
+                                <div className="price-announce">
+                                    {isAuthenticated && authenticatedUser.getIsPro ? (
+                                        <>
                       <span className="mx-1">
                         <strong>{announce.getPriceHT}€ HT</strong>
                       </span>
-                      <span> - </span>
-                      <span className="mx-1">
+                                            <span> - </span>
+                                            <span className="mx-1">
                         <small>{announce.getPrice}€</small>
                       </span>
-                    </>
-                  ) : (
-                    <span>{announce.getPrice} €</span>
-                  )}
-                </div>
+                                        </>
+                                    ) : (
+                                        <span>{announce.getPrice} €</span>
+                                    )}
+                                </div>
 
-                <div
-                  className="icons-star-prof"
-                  onClick={() =>
-                    dispatchModalState({
-                      openModalShare: true,
-                      modalShareAnnounce: announce,
-                    })
-                  }
-                >
-                  <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
-                  <img src="/images/share.png" alt="" />
-                </div>
-              </div>
-            </div>
+                                <div
+                                    className="icons-star-prof"
+                                    onClick={() =>
+                                        dispatchModalState({
+                                            openModalShare: true,
+                                            modalShareAnnounce: announce,
+                                        })
+                                    }
+                                >
+                                    <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                    <img src="/images/share.png" alt="" />
+                                </div>
+                            </div>
+                        </div>
 
-            <div className="pics">
-              {announce.getCountImages > 0 && (
-                <>
-                  <GalleryViewer images={announce.getImages} ref={refImg} />
-                  {/* {isDesktop && (
+                        <div className="pics">
+                            {announce.getCountImages > 0 && (
+                                <>
+                                    <GalleryViewer images={announce.getImages} ref={refImg} />
+                                    {/* {isDesktop && (
                     <GalleryImgsLazy
                         images={announce.getImages}
                         handleCLickImg={handleCLickImg}
                     />
                   )} */}
-                </>
-              )}
-            </div>
-          </Col>
+                                </>
+                            )}
+                        </div>
+                    </Col>
 
           <Col sm={12} md={6}>
             <div className={classes.formRow}>
@@ -251,9 +256,9 @@ const Announce = () => {
                   </a>
                 </Link>
 
-                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                  <div className="top-profile-location">
-                    <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                    <div className="top-profile-location">
+                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
                       <span className="top-profile-location">
                         <RoomOutlinedIcon />
                         {announce.getAdOrAuthorCustomAddress()}
@@ -265,7 +270,7 @@ const Announce = () => {
               </div>
             </div>
 
-            <TagsList tags={announce.getTags} />
+                        <TagsList tags={announce.getTags} />
 
             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
               <div className="icons-profile-wrapper">
@@ -311,48 +316,72 @@ const Announce = () => {
           </Col>
         </Row>
 
-        <section className="my-2">
-          <Typography component="h3" variant="h3">
-            {t('vehicles:vehicle-data')}
-          </Typography>
-          <CarInfos announce={announce} enableThirdColumn />
-        </section>
+                                <Action
+                                    onClick={() =>
+                                        dispatchModalState({
+                                            openModalMessaging: true,
+                                            modalMessagingProfile: announce.getAuthor,
+                                        })
+                                    }
+                                >
+                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                </Action>
 
-        <section className="my-2">
-          <Typography component="h3" variant="h3">
-            {t('vehicles:equipments')}
-          </Typography>
-          <Row>
-            {announce.getVehicleEquipments.map((equipment, index) => {
-              return (
-                <Col sm={6} md={3} key={index}>
-                  <div className="equipment m-3">
-                    <Typography>{equipment.label}</Typography>
-                  </div>
-                </Col>
-              );
-            })}
-          </Row>
-        </section>
+                                {state.isAdmin || state.isSelf ? (
+                                    <div className="">
+                                        <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                        </div>
+                        <Comments announceRaw={announce.getRaw} />
+                    </Col>
+                </Row>
 
-        <section className="my-2">
-          <Typography component="h3" variant="h3">
-            {t('vehicles:description')}
-          </Typography>
-          <div className={classes.wysiwyg}>
-            <Typography>{announce.getDescription}</Typography>
-          </div>
-        </section>
+                <section className="my-2">
+                    <Typography component="h3" variant="h3">
+                        {t('vehicles:vehicle-data')}
+                    </Typography>
+                    <CarInfos announce={announce} enableThirdColumn />
+                </section>
 
-        <section className="my-2">
-          <Typography component="h3" variant="h3">
-            {t('vehicles:data-sheet')}
-          </Typography>
-          <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
-        </section>
-      </div>
-    </Container>
-  );
+                <section className="my-2">
+                    <Typography component="h3" variant="h3">
+                        {t('vehicles:equipments')}
+                    </Typography>
+                    <Row>
+                        {announce.getVehicleEquipments.map((equipment, index) => {
+                            return (
+                                <Col sm={6} md={3} key={index}>
+                                    <div className="equipment m-3">
+                                        <Typography>{equipment.label}</Typography>
+                                    </div>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+                </section>
+
+                <section className="my-2">
+                    <Typography component="h3" variant="h3">
+                        {t('vehicles:description')}
+                    </Typography>
+                    <div className={classes.wysiwyg}>
+                        <Typography>{announce.getDescription}</Typography>
+                    </div>
+                </section>
+
+                <section className="my-2">
+                    <Typography component="h3" variant="h3">
+                        {t('vehicles:data-sheet')}
+                    </Typography>
+                    <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
+                </section>
+            </div>
+        </Container>
+    );
 };
 
 export default Announce;
