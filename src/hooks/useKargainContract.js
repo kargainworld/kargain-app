@@ -6,6 +6,10 @@ import config from "../config/config"
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
 import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
+const ONE_HOUR = 3600 // sec
+const ONE_DAY = ONE_HOUR * 24
+
+const MAX_EXPIRATION_TIME_DAYS = 266
 
 const useKargainContract = () => {
     const { library, account } = useWeb3React()
@@ -48,14 +52,47 @@ const useKargainContract = () => {
 
         const receipt = await waitTransaction(library, tx.transactionHash)
 
-        console.log("done", receipt)
+        if (!isSuccessfulTransaction(receipt)) {
+            throw new Error("Failed to confirm the transaction")
+        }
+    }, [contract, account, library])
+
+    const fetchOfferExpirationTime = useCallback(async () => {
+        if (!contract)
+            return
+        
+        const value = await contract.methods
+            .offerExpirationTime().call()
+
+        return +value.toString() / ONE_DAY // returns days
+    }, [contract])
+
+    const updateOfferExpirationTime = useCallback(async (days) => {
+        if (!contract || !library)
+            return
+
+        if (days <= 0 || days > MAX_EXPIRATION_TIME_DAYS) {
+            throw new Error(`Days must be between 1 and ${MAX_EXPIRATION_TIME_DAYS} days`)
+        }
+
+        const tx = await contract.methods
+            .setOfferExpirationTime(days * ONE_DAY)
+            .send({ from: account })
+
+        const receipt = await waitTransaction(library, tx.transactionHash)
 
         if (!isSuccessfulTransaction(receipt)) {
             throw new Error("Failed to confirm the transaction")
         }
     }, [contract, account, library])
 
-    return { contract, fetchPlatformPercent, updatePlatformPercent }
+    return { 
+        contract, 
+        fetchPlatformPercent, 
+        updatePlatformPercent, 
+        fetchOfferExpirationTime, 
+        updateOfferExpirationTime 
+    }
 }
 
 export default useKargainContract
