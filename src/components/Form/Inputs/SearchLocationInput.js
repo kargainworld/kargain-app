@@ -58,7 +58,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                         fullAddress: formatted_address
                     }
                     control.setValue(name, values)
-                    if(props.onChange) props.onChange(values)
+                    if(props.onChange)  if(typeof props.onChange  === "function") props.onChange(values)
                     // control.setValue(name, formatted_address)
                 }
             })

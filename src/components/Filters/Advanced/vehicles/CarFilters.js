@@ -57,7 +57,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     control={control}
                     suffix="€"
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}
@@ -102,7 +101,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     errors={errors}
                     control={control}
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}
@@ -161,7 +159,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     errors={errors}
                     suffix="km"
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}
@@ -206,7 +203,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     control={control}
                     suffix="kw"
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}
@@ -222,7 +218,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     errors={errors}
                     control={control}
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}
@@ -238,7 +233,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     errors={errors}
                     control={control}
                     onChange={e =>{
-                        e.persist()
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
                     }}

@@ -5,8 +5,8 @@ import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
 import { MessageContext } from '../../context/MessageContext'
 import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
-import Step1MotoDetails from '../../components/Products/moto/Step1_MotoDetails'
-import Step2MotoStatus from '../../components/Products/moto/Step2_MotoStatus'
+import Step1MotoDetails from '../../components/Products/motorcycle/Step1_MotoDetails'
+import Step2MotoStatus from '../../components/Products/motorcycle/Step2_MotoStatus'
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
 import {vehicleTypes} from '../../business/vehicleTypes'
 
@@ -53,7 +53,7 @@ const MotorCyclesForm = (props) => {
 MotorCyclesForm.getInitialProps = () => {
     return {
         requiredAuth: true,
-        formKey: 'moto'
+        formKey: 'motorcycle'
     }
 }
 

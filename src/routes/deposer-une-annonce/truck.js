@@ -5,8 +5,8 @@ import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
 import { MessageContext } from '../../context/MessageContext'
 import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
-import Step1CamperDetails from '../../components/Products/utility/Step1_UtiilityDetails'
-import Step2UtilityStatus from '../../components/Products/utility/Step2_UtiliyStatus'
+import Step1CamperDetails from '../../components/Products/truck/Step1_UtiilityDetails'
+import Step2UtilityStatus from '../../components/Products/truck/Step2_UtiliyStatus'
 import Step3_PublishAnnounce from '../../components/Products/Step3_Publish'
 import {vehicleTypes} from '../../business/vehicleTypes'
 
@@ -52,7 +52,7 @@ const UtilityForm = (props) => {
 
 UtilityForm.getInitialProps = () => {
     return {
-        formKey: 'utility',
+        formKey: 'truck',
         requiredAuth: true
     }
 }

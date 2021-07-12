@@ -18,6 +18,17 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    
+    const { control, errors, handleSubmit, watch, setValue } = useForm({
+        mode: 'onChange',
+        validateCriteriaMode: 'all',
+        defaultValues: formDataContext
+    })
+
+    dispatchFormUpdate(watch(), { compare: true })
+
+    const selectedMileage = watch('mileageType')
+    const [ mileageType, setMileageType ] = useState(null);
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -28,16 +39,18 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesEmission: [],
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
-        RadioChoicesExternalColor: []
+        RadioChoicesExternalColor: [],
+        mileageType: [
+            {
+                label: 'mileage',
+                value: 'mi'
+            },
+            {
+                label: 'kilometer',
+                value: 'km'
+            }
+        ]
     })
-
-    const { control, errors, handleSubmit, watch, setValue } = useForm({
-        mode: 'onChange',
-        validateCriteriaMode: 'all',
-        defaultValues: formDataContext
-    })
-
-    dispatchFormUpdate(watch(), { compare: true })
 
     const getData = useCallback(async () => {
         try{
@@ -60,6 +73,13 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
     }
 
+    useEffect(() => {
+        setMileageType(selectedMileage || {
+            label: 'kilometer',
+            value: 'km'
+        });
+    }, [selectedMileage])
+    
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -77,14 +97,30 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
 
             <Row>
                 <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:mileage')}>
-                        <NumberInput
-                            name="mileage"
-                            placeholder="20000 km"
-                            control={control}
-                            errors={errors}
-                        />
-                    </FieldWrapper>
+                    <Row>
+                        <Col>
+                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                <NumberInput
+                                    name="mileage"
+                                    placeholder={`20000 ${mileageType?.value}`}
+                                    control={control}
+                                    errors={errors}
+                                    rules={{ required: t('form_validations:required') }}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                        <Col>
+                            <FieldWrapper label={t('vehicles:type')}>
+                                <SelectInput
+                                    name="mileageType"
+                                    options={formData.mileageType}
+                                    control={control}
+                                    errors={errors}
+                                    selected={'km'}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                    </Row>
                 </Col>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>

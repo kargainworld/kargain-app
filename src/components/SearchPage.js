@@ -90,7 +90,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
     useEffect(() => {
         fetchAnnounces()
-        window.scrollTo(0, 0)
+        // window.scrollTo(0, 0)
     }, [fetchAnnounces])
 
     return (

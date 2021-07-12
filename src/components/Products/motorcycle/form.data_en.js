@@ -218,3 +218,14 @@ export const RadioVehicleGeneralState = SelectOptionsUtils([
     'Véhicule de démonstration',
     'Pré-enregistré'
 ])
+
+export const mileageType = [
+    {
+        label: 'mileage',
+        value: 'mi'
+    },
+    {
+        label: 'kilometer',
+        value: 'km'
+    }
+]
