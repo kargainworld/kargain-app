@@ -75,16 +75,18 @@ const Announce = () => {
     });
     const { getOnlineStatusByUserId } = useSocket();
 
-    const [state, setState] = useState({
-        err: null,
-        stateReady: false,
-        isSelf: false,
-        isAdmin: false,
-        announce: new AnnounceModel(),
-        likesCounter: 0
-    });
+  const [state, setState] = useState({
+    err: null,
+    stateReady: false,
+    isSelf: false,
+    isAdmin: false,
+    announce: new AnnounceModel(),
+    likesCounter: 0
+  });
 
-    const [isLiking, setIsLiking] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+
+  const { announce } = state;
 
     const { announce } = state;
 
@@ -101,35 +103,38 @@ const Announce = () => {
         return !!matchUserFavorite || !!matchAnnounceLike;
     };
 
-    const alreadyLikeCurrentUser = checkIfAlreadyLike();
+  const [like, setLike] = useState(alreadyLikeCurrentUser)
 
-    const [like, setLike] = useState(alreadyLikeCurrentUser)
+  const handleClickLikeButton = async () => {
+    if (!isAuthenticated) return setForceLoginModal(true);
+    let counter = state.likesCounter;
+    if(isLiking) return;
+    setIsLiking(true)
+    try {
+      if (like) {
+        await AnnounceService.removeLikeLoggedInUser(announce.getID);
+        setState((state) => ({
+          ...state,
+          likesCounter: Math.max(0, counter - 1),
+        }));
+      } else {
+        await AnnounceService.addLikeLoggedInUser(announce.getID);
+        setState((state) => ({
+          ...state,
+          likesCounter: counter + 1,
+        }));        
+      }
+      setLike(!like)
+      setIsLiking(false)
+    } catch (err) {
+      dispatchModalError({ err });
+    }
+  };
 
-    const handleClickLikeButton = async () => {
-        if (!isAuthenticated) return setForceLoginModal(true);
-        let counter = state.likesCounter;
-        if(isLiking) return;
-        setIsLiking(true)
-        try {
-            if (like) {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID);
-                setState((state) => ({
-                    ...state,
-                    likesCounter: Math.max(0, counter - 1),
-                }));
-            } else {
-                await AnnounceService.addLikeLoggedInUser(announce.getID);
-                setState((state) => ({
-                    ...state,
-                    likesCounter: counter + 1,
-                }));
-            }
-            setLike(!like)
-            setIsLiking(false)
-        } catch (err) {
-            dispatchModalError({ err });
-        }
-    };
+  const fetchAnnounce = useCallback(async () => {
+    try {
+      const result = await AnnounceService.getAnnounceBySlug(slug);
+      const { announce, isAdmin, isSelf } = result;
 
     const fetchAnnounce = useCallback(async () => {
         try {
@@ -230,62 +235,86 @@ const Announce = () => {
                         </div>
                     </Col>
 
-                    <Col sm={12} md={6}>
-                        <div className={classes.formRow}>
-                            <div className="pic" style={{ flex: 1 }}>
-                                <Avatar
-                                    className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                                    alt={announce.getTitle}
-                                    style={{ width: 80, height: 80 }}
-                                />
-                            </div>
+          <Col sm={12} md={6}>
+            <div className={classes.formRow}>
+              <div className="pic" style={{ flex: 1 }}>
+                <Avatar
+                  className="img-profile-wrapper avatar-preview"
+                  src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                  isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                  alt={announce.getTitle}
+                  style={{ width: 80, height: 80 }}
+                />
+              </div>
 
-                            <div style={{ flex: 4 }}>
-                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                                    <a>
-                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
-                                            {announce.getAuthor.getFullName}
-                                        </Typography>
-                                    </a>
-                                </Link>
+              <div style={{ flex: 4 }}>
+                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                  <a>
+                    <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
+                      {announce.getAuthor.getFullName}
+                    </Typography>
+                  </a>
+                </Link>
 
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <div className="top-profile-location">
                                         <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
                       <span className="top-profile-location">
                         <RoomOutlinedIcon />
-                          {announce.getAdOrAuthorCustomAddress()}
+                        {announce.getAdOrAuthorCustomAddress()}
                       </span>
-                                        </a>
-                                    </div>
-                                )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
-                            </div>
-                        </div>
+                    </a>
+                  </div>
+                )}
+                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
+              </div>
+            </div>
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
-                            <div className="icons-profile-wrapper">
+            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+              <div className="icons-profile-wrapper">
+                
+                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                  <i.BookmarkBorder
+                    style={{
+                      color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                    }}
+                  />
+                  <span>{announce.getCountLikes}</span>
+                </Action>
 
-                                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                    <i.BookmarkBorder
-                                        style={{
-                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
-                                        }}
-                                    />
-                                    <span>{announce.getCountLikes}</span>
-                                </Action>
+                <Action
+                  title={t('vehicles:comment_plural')}
+                  style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                >
+                  <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                  <span>{announce.getCountComments}</span>
+                </Action>
 
-                                <Action
-                                    title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
-                                >
-                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
-                                    <span>{announce.getCountComments}</span>
-                                </Action>
+                <Action
+                  onClick={() =>
+                    dispatchModalState({
+                      openModalMessaging: true,
+                      modalMessagingProfile: announce.getAuthor,
+                    })
+                  }
+                >
+                  <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                </Action>
+
+                {state.isAdmin || state.isSelf ? (
+                  <div className="">
+                    <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
+            <Comments announceRaw={announce.getRaw} />
+          </Col>
+        </Row>
 
                                 <Action
                                     onClick={() =>
