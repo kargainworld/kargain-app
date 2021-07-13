@@ -22,6 +22,7 @@ export default {
     'address.city.postcode': 'ADDRESS_CITY_POSTCODE',
     'price': 'AD_PRICE',
     'mileage': 'MILEAGE',
+    'mileageType.value': 'MILEAGE_TYPE',
     'powerKw': 'POWER_KW',
     'consumptionGkm': 'CONSUMPTION_GKM',
     'doors': 'DOORS',

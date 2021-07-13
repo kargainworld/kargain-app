@@ -13,8 +13,11 @@ import { MessageContext } from '../../../../context/MessageContext'
 const CarFilters = ({ control, watch, errors, ...props }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
+    const selectedMileage = watch('mileageType')
+    const [ mileageType, setMileageType ] = useState(null);
     const { dispatchModalError } = useContext(MessageContext)
     const [formData, setFormData] = useState({
+        mileageType: [],
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
         RadioChoicesGas: [],
@@ -41,6 +44,13 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
         getData()
     }, [getData])
 
+    useEffect(() => {
+        setMileageType(selectedMileage || {
+            label: 'kilometer',
+            value: 'km'
+        });
+    }, [selectedMileage])
+
     // const onChange = (form, e) => {
     //     props.formSubmit(form, e);
     // }
@@ -56,6 +66,36 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     errors={errors}
                     control={control}
                     suffix="€"
+                    onChange={e =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                        return e
+                    }}
+                />
+            </FieldWrapper>
+
+            <FieldWrapper label={t('vehicles:type')}>
+                <SelectInput
+                    name="mileageType"
+                    options={formData.mileageType}
+                    control={control}
+                    errors={errors}
+                    onChange={(selected, name) =>{
+                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                        return selected
+                    }}
+                />
+            </FieldWrapper>
+            
+            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                <SliderInput
+                    name="mileage"
+                    defaultValue={[1, 50000]}
+                    min={0}
+                    max={200000}
+                    step={100}
+                    errors={errors}
+                    control={control}
+                    suffix={t(`vehicles:${mileageType?.value}`)}
                     onChange={e =>{
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e
