@@ -3,6 +3,7 @@ FROM node:lts-alpine3.10
 WORKDIR /app
 COPY . .
 
+RUN apk update && apk upgrade &&  apk add --no-cache git
 RUN npm install yarn
 RUN yarn install
 RUN yarn build
