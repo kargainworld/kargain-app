@@ -202,7 +202,7 @@ const Edit = () => {
                     </Button>
                     <Button
                         variant="contained"
-                        color="warning"
+                        color="secondary"
                         className={classes.button}
                         startIcon={<DeleteIcon/>}
                         onClick={() => handleRemove()}

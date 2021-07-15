@@ -38,16 +38,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: [],
-        mileageType: [
-            {
-                label: 'mileage',
-                value: 'mi'
-            },
-            {
-                label: 'kilometer',
-                value: 'km'
-            }
-        ]
+        mileageType: []
     })
     
     const getData = useCallback(async () => {
@@ -72,7 +63,6 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     }
     
     useEffect(() => {
-        console.log(selectedMileage);
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
