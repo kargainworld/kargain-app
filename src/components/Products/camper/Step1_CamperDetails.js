@@ -41,16 +41,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: [],
-        mileageType: [
-            {
-                label: 'mileage',
-                value: 'mi'
-            },
-            {
-                label: 'kilometer',
-                value: 'km'
-            }
-        ]
+        mileageType: []
     })
     
     const getData = useCallback(async () => {
@@ -73,6 +64,13 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     const onPowerChChange = ({ target: { value } }) => {
         setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
     }
+    
+    useEffect(() => {
+        setMileageType(selectedMileage || {
+            label: 'kilometer',
+            value: 'km'
+        });
+    }, [selectedMileage])
 
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>

@@ -207,6 +207,36 @@ export const RadioFunctionVehicle = [
     }
 ]
 
+export const RadioChoicesGas = [
+    {
+        label: 'Diesel',
+        value: 'diesel'
+    },
+    {
+        label: 'Gas',
+        value: 'gas'
+    },
+    {
+        label: 'Ethanol',
+        value: 'ethanol'
+    },
+    {
+        label: 'Electric',
+        value: 'eletric'
+    },
+    {
+        label: 'Hybrid / gasoline',
+        value: 'hybrid-gas'
+    },
+    {
+        label: 'Hydrogen',
+        value: 'hydrogen'
+    },
+    {
+        label: 'Liquified petroleum gas (LPG),',
+        value: 'gpl'
+    }
+]
 export const RadioVehicleGeneralState = SelectOptionsUtils([
     'Neuve',
     'Occasion',

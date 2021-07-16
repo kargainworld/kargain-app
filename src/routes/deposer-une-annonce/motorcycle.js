@@ -11,25 +11,47 @@ import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
 import {vehicleTypes} from '../../business/vehicleTypes'
 
 const MotorCyclesForm = (props) => {
+
     const router = useRouter()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { t } = useTranslation()
 
-    const onFinalSubmit = async data => {
+    const onFinalSubmit = form => {
+        const { images, ...body } = form
+        let formData = new FormData()
+
+        if (images && Array.isArray(images)) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i])
+            }
+        }
+
+        startPost(body, formData, images)
+    }
+
+    const startPost = async (body, formData, images) => {
+        dispatchModal({ msg: 'Creating...' })
         try {
-            const announce = await AnnounceService.createAnnounce(data, props.token)
+            const announce = await AnnounceService.createAnnounce(body)
             const link = `/announces/${announce?.slug}`
+
+            if (announce && images) {
+                await AnnounceService.uploadImages(announce.slug, formData)
+            }
 
             dispatchModal({
                 msg: t('vehicles:announce_created_successfully'),
-                persist: true,
+                persist : true,
                 link
             })
 
             router.push(link)
-        }
-        catch(err){
-            dispatchModalError({ err })
+
+        } catch (err) {
+            dispatchModalError({
+                err,
+                persist : true
+            })
         }
     }
 

@@ -150,6 +150,7 @@ const allowedFields = {
     'consumptionRoad': 'consumptionRoad',
     'consumptionGkm': 'consumptionGkm',
     mileage: 'mileage',
+	mileageType: 'mileageType',
     equipments: 'equipments',
     damages: 'damages',
     doors: 'doors',
@@ -305,6 +306,7 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
     })
 
     const [formData, setFormData] = useState({
+	mileageType: [],
 	RadioVehicleGeneralState: [],
 	CheckboxOptionsEquipments: [],
 	RadioChoicesGas: [],
@@ -354,11 +356,11 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
     }
 
     const handleRemove = () => {
-	AnnounceService.removeAnnounce(slug)
-	    .then(() => {
-		dispatchModal({ msg: 'Announce successfully removed' })
-	    }).catch(err => {
-		dispatchModalError({ err })
+		AnnounceService.removeAnnounce(slug)
+			.then(() => {
+				dispatchModal({ msg: 'Announce successfully removed' })
+			}).catch(err => {
+				dispatchModalError({ err })
 	    })
     }
 
@@ -376,6 +378,7 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
 	    <TabContent activeTab={activeTab}>
 		<TabPane tabId={0}>
 		    <VehicleInfosPartialForm {...{
+			watch,
 			vehicleType,
 			formData,
 			control,
@@ -448,8 +451,15 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
     )
 }
 
-const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => {
+const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors }) => {
     const { t } = useTranslation()
+	
+    const selectedMileage = watch('mileageType')
+    const [ mileageType, setMileageType ] = useState(selectedMileage);
+
+    useEffect(() => {
+        setMileageType(selectedMileage);
+    }, [selectedMileage])
 
     return (
 	<div className="form-fields">
@@ -588,16 +598,29 @@ const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => 
 
 	    <Row>
 		<Col>
-		    <FieldWrapper label={t('vehicles:mileage')}>
+		    <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
 			<NumberInput
 			    name="mileage"
-			    placeholder="20000 km"
+			    placeholder={`20000 ${mileageType?.value}`}
 			    control={control}
 			    errors={errors}
 
 			/>
 		    </FieldWrapper>
 		</Col>
+		
+		<Col>
+		    <FieldWrapper label={t('vehicles:type')}>
+			<SelectInput
+			    name="mileageType"
+			    options={formData.mileageType}
+			    control={control}
+			    errors={errors}
+			/>
+		    </FieldWrapper>
+		</Col>
+		</Row>
+		<Row>
 		<Col>
 		    <FieldWrapper label={t('vehicles:vehicle-state')}>
 			<SelectInput
@@ -608,9 +631,7 @@ const VehicleInfosPartialForm = ({ vehicleType, formData, control, errors }) => 
 			/>
 		    </FieldWrapper>
 		</Col>
-	    </Row>
-
-	    <Row>
+		
 		<Col>
 		    <FieldWrapper label={t('vehicles:owners_quantity')}>
 			<SelectInput
@@ -778,7 +799,7 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
     const classes = useStyles()
     const { t } = useTranslation()
     const [openDialogRemove, setOpenDialogRemove] = React.useState(false)
-
+	const router = useRouter()
     const handleOpenDialogRemove = () => {
 	setOpenDialogRemove(true)
     }
@@ -900,10 +921,12 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
 		    </Button>
 		    <Button
 			variant="contained"
-			color="warning"
+			color="secondary"
 			className={classes.button}
 			startIcon={<DeleteIcon/>}
-			onClick={() => handleRemove}>
+			onClick={ () => {
+				handleRemove()
+				setTimeout(router.back, 100)}}>
 			{t('vehicles:remove-announce')}
 		    </Button>
 		</DialogActions>

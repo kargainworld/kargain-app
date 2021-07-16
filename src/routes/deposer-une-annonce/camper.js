@@ -10,31 +10,51 @@ import Step2CamperStatus from '../../components/Products/camper/Step2_CamperStat
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
 import {vehicleTypes} from '../../business/vehicleTypes'
 
-const CarForm = (props) => {
-    const { dispatchModal } = useContext(MessageContext)
+const CamperForm = (props) => {
+
     const router = useRouter()
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { t } = useTranslation()
 
-    const onFinalSubmit = data => {
-        AnnounceService.createAnnounce(data, props.token)
-            .then(doc => {
-                const link = `/announces/${doc?.slug}`
+    const onFinalSubmit = form => {
+        const { images, ...body } = form
+        let formData = new FormData()
 
-                dispatchModal({
-                    msg: t('vehicles:announce_created_successfully'),
-                    persist : true,
-                    link
-                })
+        if (images && Array.isArray(images)) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i])
+            }
+        }
 
-                router.push(link)
-            }).catch(err => {
-                dispatchModal({
-                    type: 'error',
-                    err
-                })
-            })
+        startPost(body, formData, images)
     }
 
+    const startPost = async (body, formData, images) => {
+        dispatchModal({ msg: 'Creating...' })
+        try {
+            const announce = await AnnounceService.createAnnounce(body)
+            const link = `/announces/${announce?.slug}`
+
+            if (announce && images) {
+                await AnnounceService.uploadImages(announce.slug, formData)
+            }
+
+            dispatchModal({
+                msg: t('vehicles:announce_created_successfully'),
+                persist : true,
+                link
+            })
+
+            router.push(link)
+
+        } catch (err) {
+            dispatchModalError({
+                err,
+                persist : true
+            })
+        }
+    }
+    
     return (
         <FormWizard
             formKey={props.formKey}
@@ -52,11 +72,11 @@ const CarForm = (props) => {
     )
 }
 
-CarForm.getInitialProps = () => {
+CamperForm.getInitialProps = () => {
     return {
         formKey: 'camper',
         requiredAuth: true
     }
 }
 
-export default CarForm
+export default CamperForm
