@@ -29,6 +29,7 @@ import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
+import Blockchain from './Blockchain/blockchain'
 
 const Root = styled.header`
   position: sticky;
@@ -72,6 +73,7 @@ const NavbarClient = () => {
                     <NavbarBrand href="/">
                         <img src={getLogo()} width="150" alt="logo"/>
                     </NavbarBrand>
+                    
                     <NavbarToggler
                         className="m-2"
                         onClick={toggleNavbar}
@@ -88,10 +90,12 @@ const NavbarClient = () => {
                                             />
                                         </div>
                                         {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
+                                        {isAuthenticated && <Blockchain />}
                                         <NavbarAction vertical={true}/>
                                     </div>
                                 ) : (
                                     <div className={clsx("d-flex", "navbar-menu")}>
+                                        {isAuthenticated && <Blockchain />}
                                         <NavbarAction/>
                                         {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
                                     </div>
@@ -143,7 +147,7 @@ const NavbarAction = ({ vertical }) => {
     const [searchQuery, setSearchQuery] = useState('')
 
     const onSubmitSearch = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         if (searchQuery) {
             dispatchSearchQuery(searchQuery)
         }
@@ -155,12 +159,12 @@ const NavbarAction = ({ vertical }) => {
                 <form className="search-form" onSubmit={onSubmitSearch}>
                     <SearchInputContainer>
                         <SearchInput
-                          value={searchQuery}
-                          onChange={({ target }) => setSearchQuery(target.value)}
-                          name="query"
-                          type="search"
-                          placeholder={t('layout:search')}
-                          iconright={<Search />}
+                            value={searchQuery}
+                            onChange={({ target }) => setSearchQuery(target.value)}
+                            name="query"
+                            type="search"
+                            placeholder={t('layout:search')}
+                            iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>
@@ -239,7 +243,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href="" prefetch={false}>
                         <a className="nav-link text-left" onClick={() => {
                             router.push('/')
-                            logout();
+                            logout()
                         }}>
                             <ExitToAppIcon/>
                             <span className="m-1">

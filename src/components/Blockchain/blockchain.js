@@ -53,15 +53,15 @@ const Blockchain = () => {
     useInactiveListener(!triedEager || !!activatingConnector)
 
     return (
-        <div style={{ padding: '1rem' }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
             <div
-                style={{
+                style={error ? {
                     display: 'grid',
                     gridGap: '1rem',
                     gridTemplateColumns: '1fr 1fr',
                     maxWidth: '20rem',
                     margin: 'auto'
-                }}
+                } : undefined}
             >
                 {Object.keys(connectorsByName).map((name) => {
                     const currentConnector = connectorsByName[name]
@@ -71,7 +71,7 @@ const Blockchain = () => {
 
                     return (
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             key={name}
                             onClick={() => {
                                 if (!connected) {

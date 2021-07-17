@@ -217,5 +217,6 @@
     "informations_request" : "Information request",
     "partnership_request" : "Partnership request",
     "back_to_profile" : "Back to profile",
-    "i_dont_know_other" : "I don't know/Other"
+    "i_dont_know_other" : "I don't know/Other",
+    "mint" : "MINT"
 }
