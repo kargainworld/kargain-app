@@ -227,7 +227,7 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
                             className="decoration-none"
                             variant="h3"
                             noWrap
-                            style={{ color : theme.palette.white, marginTop: 0 }}>
+                            style={{ color : theme.palette.white, marginTop: 0, marginRight: "1rem" }}>
                             Kargain Admin
                         </Typography>
                     </Link>

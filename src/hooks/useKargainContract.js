@@ -25,7 +25,7 @@ const useKargainContract = () => {
 
         const kargainContract = new library.eth.Contract(KargainContractData.abi, config.contract.KARGAIN_ADDRESS)
 
-        setContract(kargainContract)
+        setContract(kargainContract)        
     }, [account, library])
 
     const fetchPlatformPercent = useCallback(async () => {
@@ -178,12 +178,14 @@ const useKargainContract = () => {
 export default useKargainContract
 
 function parseBlockchainError(error) {
-    let message = error.message
-    if (message.includes("VM Exception while processing transaction:")) {
+    let result = error
+    if (error.message.includes("VM Exception while processing transaction:")) {
         const regex = /"message":"VM Exception while processing transaction: (.*?)"/
                                                         
-        return new Error(regex.exec(message)[1].replace("revert Kargain:", "").trim())
+        result = new Error(regex.exec(error.message)[1].replace("revert Kargain:", "").trim())
     }
 
-    return error
+    console.log("error", error, result)
+
+    return result
 }
