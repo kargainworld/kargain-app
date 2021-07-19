@@ -167,7 +167,7 @@ const Announce = () => {
             .then((price) => { 
                 setTokenPrice(price) 
                 setIsLoading(false) 
-                setIsMinted(true)
+                setIsMinted(price ? true : false)
             })
             .catch(() => {
                 setIsLoading(false) 
