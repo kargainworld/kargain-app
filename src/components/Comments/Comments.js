@@ -32,7 +32,7 @@ const Comments = ({ announceRaw }) => {
     setDoneSubmitting(false);
     await checkAuthRedirection();
     const textarea = textareaCommentRef.current;
-    const message = textarea.value;
+    const message = textarea?.value;
     textarea.value = '';
     try {
       const comment = await commentsService.createComment({

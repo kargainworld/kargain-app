@@ -63,6 +63,7 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
   const { getOnlineStatusByUserId } = useSocket();
 
   const handleClickLikeButton = async () => {
+    if(isOwn) return;
     if (!isAuthenticated) return setForceLoginModal(true);
     try {
       if (!liked) {
