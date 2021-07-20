@@ -493,23 +493,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                         <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
                                             <AnnounceCard announceRaw={announceRaw} />
                                         </Col>
-                                    )) : (
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            <p>{t('vehicles:no-hidden-announces')}</p>
-
-                                            <CTALink
-                                                title={t('vehicles:create-my-first-ad')}
-                                                href="/deposer-une-annonce"
-                                                className="cta_nav_link my-2"
-                                            />
-
-                                            <CTALink
-                                                title={t('vehicles:explore-ads')}
-                                                href={isAuthenticated ? '/feed' : '/'}
-                                                className="cta_nav_link my-2"
-                                            />
-                                        </div>
-                                    )}
+                                    )) : ''}
                                 </Row>
                             </Tabs.Item>
                         )}
