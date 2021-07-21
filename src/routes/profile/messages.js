@@ -48,8 +48,15 @@ const Messages = () => {
     }
   };
 
+  const onEnterPress = (e) => {
+    e.persist()
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      onSubmitMessage({ message: e.target.value})
+    }
+  }
+
   const onSubmitMessage = async (form) => {
-    console.log(form);
     const { message } = form;
     try {
       // const conversation = await ConversationsService.postConversationMessage(message, selectedRecipient.getID)
@@ -239,6 +246,7 @@ const Messages = () => {
                   placeholder={t('vehicles:write_your_message')}
                   maxLength={30000}
                   rows={2}
+                  onKeyDown={onEnterPress} 
                 />
                 {errors && <ValidationError errors={errors} name={name} />}
                 <button className={classes.conversationInputButton} type="submit">
