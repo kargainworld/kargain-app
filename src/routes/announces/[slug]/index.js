@@ -82,6 +82,8 @@ const Announce = () => {
     const [isMinted, setIsMinted] = useState(false)
     const { getPriceTracker } = usePriceTracker()
     const { fetchTokenPrice, mintToken, updateTokenPrince } = useKargainContract()
+    const [priceEther, setPrice] = useState(0)
+
 
     const [state, setState] = useState({
         err: null,
@@ -164,6 +166,7 @@ const Announce = () => {
 
         const tokenId = state.announce.getTokenId
         getPriceTracker().then((price) => {
+            setPrice(price.quotes.USD.price)
             console.log(price.quotes.USD.price)
         })
 
@@ -218,7 +221,7 @@ const Announce = () => {
                                             </span>
                                         </>
                                     ) : (
-                                        <span>{announce.getPrice} €</span>
+                                        <span>{(tokenPrice * priceEther).toFixed(2)} USD</span>
                                     )}
                                 </div>
 
