@@ -30,6 +30,7 @@ import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
+import PriceTracker from "../../../components/Blockchain/PriceTracker"
 
 
 const useStyles = makeStyles(() => ({
