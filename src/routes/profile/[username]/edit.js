@@ -19,6 +19,7 @@ import TextInput from '../../../components/Form/Inputs/TextInput'
 import EmailInput from '../../../components/Form/Inputs/EmailInput'
 import TelInput from  '../../../components/Form/Inputs/TelInput'
 import TextareaInput from '../../../components/Form/Inputs/TextareaInput'
+import NumberInput from '../../../components/Form/Inputs/NumberInput'
 import SelectCountryFlags from '../../../components/Form/Inputs/SelectCountryFlags'
 import SearchLocationInput from '../../../components/Form/Inputs/SearchLocationInput'
 import ValidationErrors from '../../../components/Form/Validations/ValidationErrors'
@@ -254,7 +255,8 @@ const Edit = () => {
                             defaultValues : {
                                 ...state.profile.getRaw,
                                 address :  state.profile.getAddressParts
-                            }
+                            },
+                            isAdmin: state.isAdmin
                         }}/>
                 </Col>
             </Row>
@@ -262,7 +264,7 @@ const Edit = () => {
     )
 }
 
-const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink }) => {
+const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink, isAdmin }) => {
     const theme = useTheme()
     const classes = useStyles()
     const { t } = useTranslation()
@@ -275,7 +277,6 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
         validateCriteriaMode: 'all',
         defaultValues
     })
-
     const onSubmit = (form) => {
         UsersService.updateUser(form)
             .then(() => {
@@ -297,6 +298,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                         {...{
                             control,
                             watch,
+                            isAdmin, 
                             errors
                         }}
                     />
@@ -333,7 +335,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
     )
 }
 
-const ProfilePartialForm = ({ control, watch, errors }) => {
+const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const countrySelect = watch('countrySelect')
@@ -418,6 +420,17 @@ const ProfilePartialForm = ({ control, watch, errors }) => {
                     errors={errors}
                 />
             </FieldWrapper>
+            {isAdmin && (
+                <FieldWrapper label={t('vehicles:announce_approve')}>
+                    <NumberInput
+                        name="subscriptionOfferMaxAnnounces"
+                        placeholder={t('vehicles:announce_count')}
+                        control={control}
+                        errors={errors}
+                        rules={{ required: t('form_validations:required') }}
+                    />
+                </FieldWrapper>
+            )}
         </>
     )
 }

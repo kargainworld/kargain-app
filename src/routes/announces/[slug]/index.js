@@ -104,8 +104,17 @@ const Announce = () => {
     const alreadyLikeCurrentUser = checkIfAlreadyLike();
 
     const [like, setLike] = useState(alreadyLikeCurrentUser)
-
+    
+    const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id;
+    
+    const toggleVisibility = () => {
+        AnnounceService.updateAnnounce(announce.getSlug, { visible: !announce?.raw?.visible }).then(() =>
+            window.location.reload()
+        );
+    };
+    
     const handleClickLikeButton = async () => {
+        if(isOwn) return;
         if (!isAuthenticated) return setForceLoginModal(true);
         let counter = state.likesCounter;
         if(isLiking) return;
@@ -270,13 +279,18 @@ const Announce = () => {
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                             <div className="icons-profile-wrapper">
 
+                            {isOwn && (
+                                <Action onClick={toggleVisibility}>
+                                {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                </Action>
+                            )}
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
                                             color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
                                         }}
                                     />
-                                    <span>{announce.getCountLikes}</span>
+                                    <span>{state.likesCounter}</span>
                                 </Action>
 
                                 <Action

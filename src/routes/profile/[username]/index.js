@@ -496,18 +496,6 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{t('vehicles:no-hidden-announces')}</p>
-
-                                            <CTALink
-                                                title={t('vehicles:create-my-first-ad')}
-                                                href="/deposer-une-annonce"
-                                                className="cta_nav_link my-2"
-                                            />
-
-                                            <CTALink
-                                                title={t('vehicles:explore-ads')}
-                                                href={isAuthenticated ? '/feed' : '/'}
-                                                className="cta_nav_link my-2"
-                                            />
                                         </div>
                                     )}
                                 </Row>
@@ -524,18 +512,6 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{(t('vehicles:no-favorite-announces'))}</p>
-
-                                            <CTALink
-                                                title={t('vehicles:create-my-first-ad')}
-                                                href="/deposer-une-annonce"
-                                                className="cta_nav_link my-2"
-                                            />
-
-                                            <CTALink
-                                                title={t('vehicles:explore-ads')}
-                                                href={isAuthenticated ? '/feed' : '/'}
-                                                className="cta_nav_link my-2"
-                                            />
                                         </div>
                                     )}
                                 </Row>

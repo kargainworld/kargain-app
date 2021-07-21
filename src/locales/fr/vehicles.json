@@ -216,5 +216,7 @@
   "informations_request" : "Demande d'informations",
   "partnership_request" : "Demande de partnenariat",
   "back_to_profile" : "Retour sur le profil",
-  "i_dont_know_other" : "Je ne sais pas/Autre"
+  "i_dont_know_other" : "Je ne sais pas/Autre",
+  "announce_approve" : "Announce Approve as Free",
+  "announce_count" : "Announces Count"
 }
