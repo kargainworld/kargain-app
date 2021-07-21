@@ -32,6 +32,7 @@ import { useSocket } from '../../../context/SocketContext'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
+import usePriceTracker from 'hooks/usePriceTracker'
 import TextField from '@material-ui/core/TextField'
 
 
@@ -79,7 +80,7 @@ const Announce = () => {
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
-
+    const { getPriceTracker } = usePriceTracker()
     const { fetchTokenPrice, mintToken, updateTokenPrince } = useKargainContract()
 
     const [state, setState] = useState({
@@ -159,18 +160,21 @@ const Announce = () => {
     useEffect(() => {
         if (!state.stateReady) return
 
-        setIsLoading(true) 
+        setIsLoading(true)
 
         const tokenId = state.announce.getTokenId
+        getPriceTracker().then((price) => {
+            console.log(price)
+        })
 
         fetchTokenPrice(tokenId)
-            .then((price) => { 
-                setTokenPrice(price) 
-                setIsLoading(false) 
+            .then((price) => {
+                setTokenPrice(price)
+                setIsLoading(false)
                 setIsMinted(price ? true : false)
             })
             .catch(() => {
-                setIsLoading(false) 
+                setIsLoading(false)
             })
     }, [state, fetchTokenPrice])
 
@@ -326,7 +330,7 @@ const Announce = () => {
                         {(state.isAdmin || state.isSelf) && (
                             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                                 <div className="icons-profile-wrapper">
-                                    
+
                                     {!isLoading && (
                                         <div style={{ display: "flex", gap: 5 }}>
                                             <TextField
@@ -346,10 +350,10 @@ const Announce = () => {
                                                 setIsConfirmed(false)
                                                 setError(null)
 
-                                                const task = !isMinted ? 
-                                                    mintToken(tokenId, +tokenPrice) : 
+                                                const task = !isMinted ?
+                                                    mintToken(tokenId, +tokenPrice) :
                                                     updateTokenPrince(tokenId, +tokenPrice)
-            
+
                                                 task.then(() => {
                                                     setIsConfirmed(true)
                                                     setIsMinted(true)
@@ -364,7 +368,7 @@ const Announce = () => {
                                             </button>
                                         </div>
                                     )}
-                                    
+
                                 </div>
                             </div>
                         )}

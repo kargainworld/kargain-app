@@ -1,22 +1,31 @@
-import { useState, useEffect } from 'react'
-import PriceTracker from "../components/Blockchain/PriceTracker";
+import { useState, useCallback } from 'react'
 
-export function usePriceTracker() {
+const usePriceTracker = () => {
     const [hasError, setErrors] = useState(false)
     const [coin, setCoin] = useState([])
 
-    async function fetchData() {
-        const res = await fetch("https://api.coinpaprika.com/v1/tickers/eth-ethereum?quotes=usd")
-        res
-            .json()
-            .then(res => setCoin(res))
-            .catch(err => setErrors(err))
-    }
+    const getPriceTracker = useCallback(async () => {
+        try {
+            const price = await fetch("https://api.coinpaprika.com/v1/tickers/eth-ethereum?quotes=usd")
+            price
+                .json()
+                .then(price => {
+                    return price
+                })
+                .catch(err => setErrors(err))
 
-    useEffect(() => {
-        fetchData()
+            return price
+        } catch (hasError) {
+            return null
+        }
+
     })
+
+
+    return {
+        getPriceTracker
+    }
 
 }
 
-export default PriceTracker
+export default usePriceTracker
