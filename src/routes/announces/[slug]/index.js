@@ -5,14 +5,10 @@ import Link from 'next-translate/Link'
 import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import Alert from '@material-ui/lab/Alert'
-
-
-
+import { useWeb3React } from "@web3-react/core"
 import Typography from '@material-ui/core/Typography'
-
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
@@ -33,6 +29,7 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
+import { injected } from "../../../connectors"
 
 
 const useStyles = makeStyles(() => ({
@@ -64,6 +61,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Announce = () => {
+    const { library, chainId, account, activate, active } = useWeb3React()
     const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
@@ -90,6 +88,37 @@ const Announce = () => {
         announce: new AnnounceModel(),
         likesCounter: 0
     })
+
+    const [tried, setTried] = useState(false)
+
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                    fetchTokenPrice(state.announce.getTokenId)
+                        .then((price) => {
+                            setTokenPrice(price)
+                            setIsLoading(false)
+                            setIsMinted(price ? true : false)
+                        })
+                        .catch(() => {
+                            setIsLoading(false)
+                        })
+                }).catch(() => {
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if (!tried && active) {
+            setTried(true)
+        }
+
+    }, [tried, active])
 
     const [isLiking, setIsLiking] = useState(false)
 
@@ -159,18 +188,18 @@ const Announce = () => {
     useEffect(() => {
         if (!state.stateReady) return
 
-        setIsLoading(true) 
+        setIsLoading(true)
 
         const tokenId = state.announce.getTokenId
 
         fetchTokenPrice(tokenId)
-            .then((price) => { 
-                setTokenPrice(price) 
-                setIsLoading(false) 
+            .then((price) => {
+                setTokenPrice(price)
+                setIsLoading(false)
                 setIsMinted(price ? true : false)
             })
             .catch(() => {
-                setIsLoading(false) 
+                setIsLoading(false)
             })
     }, [state, fetchTokenPrice])
 
@@ -326,7 +355,7 @@ const Announce = () => {
                         {(state.isAdmin || state.isSelf) && (
                             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                                 <div className="icons-profile-wrapper">
-                                    
+
                                     {!isLoading && (
                                         <div style={{ display: "flex", gap: 5 }}>
                                             <TextField
@@ -337,19 +366,19 @@ const Announce = () => {
                                                 InputLabelProps={{ shrink: true }}
                                                 error={!!error}
                                                 helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
-                                                disabled={!isConfirmed}
+                                                disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button disabled={!isConfirmed || !tokenPrice} onClick={() => {
+                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
                                                 const tokenId = state.announce.getTokenId
 
                                                 setIsConfirmed(false)
                                                 setError(null)
 
-                                                const task = !isMinted ? 
-                                                    mintToken(tokenId, +tokenPrice) : 
+                                                const task = !isMinted ?
+                                                    mintToken(tokenId, +tokenPrice) :
                                                     updateTokenPrince(tokenId, +tokenPrice)
-            
+
                                                 task.then(() => {
                                                     setIsConfirmed(true)
                                                     setIsMinted(true)
@@ -364,7 +393,7 @@ const Announce = () => {
                                             </button>
                                         </div>
                                     )}
-                                    
+
                                 </div>
                             </div>
                         )}
