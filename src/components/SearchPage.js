@@ -160,14 +160,31 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            return (
-                                                <Col key={index} sm={12} md={12} className="my-2">
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw}
-                                                        detailsFontSize={'13px'}
-                                                    />
-                                                </Col>
-                                            )
+                                            let exist = false
+                                            const BreakException = {}
+                                            try {
+                                                (state.announcesMinted).forEach(function (token) {
+                                                    console.log("Element : ", announceRaw.id)
+                                                    if (token.id == announceRaw.id) {
+                                                        exist = true
+                                                        console.log(true)
+                                                        throw BreakException
+                                                    }
+                                                })
+                                            } catch (e) {
+                                                if (e !== BreakException) throw e
+                                            }
+                                            console.log(exist)
+                                            if (exist) {
+                                                return (
+                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw}
+                                                            detailsFontSize={'13px'}
+                                                        />
+                                                    </Col>
+                                                )
+                                            }
                                         })}
                                     </Row>
                                 ) : (
