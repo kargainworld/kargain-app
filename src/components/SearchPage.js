@@ -14,8 +14,18 @@ import { useAuth } from '../context/AuthProvider'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from '../components/Loading'
 import CTALink from './CTALink'
+import useKargainContract from 'hooks/useKargainContract'
+import usePriceTracker from 'hooks/usePriceTracker'
+import Web3 from 'web3'
+import ObjectID from 'bson-objectid'
+
+
+const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
+    const { getPriceTracker } = usePriceTracker()
+    const { fetchTokenPrice } = useKargainContract()
+
     const { t } = useTranslation()
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
@@ -26,6 +36,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         filters: {},
         page: 1,
         announces: [],
+        announcesMinted: [],
         total: 0
     })
 
@@ -55,8 +66,36 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 announces: result.rows || [],
                 total: result.total || 0,
+            }))
+            let tokensMinted = []
+
+            try {
+                let token = {}
+                for (const announce of result.rows) {
+                    let tokenId = toBN(ObjectID(announce.id).toHexString())
+                    fetchTokenPrice(tokenId)
+                        .then((price) => {
+                            token = {
+                                isMinted: !!price,
+                                tokenPrice: price,
+                                id: announce.id
+                            }
+                            if (token.isMinted) {
+                                tokensMinted.push(token)
+                            }
+                        })
+                        .catch((error) => {
+                        })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted || [],
                 loading: false
             }))
+            console.log(state.announcesMinted)
 
         } catch (err) {
             setState(state => ({

@@ -25,14 +25,14 @@ const useKargainContract = () => {
 
         const kargainContract = new library.eth.Contract(KargainContractData.abi, config.contract.KARGAIN_ADDRESS)
 
-        setContract(kargainContract)        
+        setContract(kargainContract)
     }, [account, library])
 
     const fetchPlatformPercent = useCallback(async () => {
         try {
             if (!contract)
                 return
-        
+
             const value = await contract.methods
                 .platformCommissionPercent().call()
 
@@ -69,7 +69,7 @@ const useKargainContract = () => {
         try {
             if (!contract)
                 return
-        
+
             const value = await contract.methods
                 .offerExpirationTime().call()
 
@@ -105,14 +105,14 @@ const useKargainContract = () => {
     const fetchTokenPrice = useCallback(async (tokenId) => {
         if (!contract)
             return
-        
+
         try {
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
-
+            console.log(value)
             return value.toString()
         } catch (error) {
-            // tokenId does not exist
+            console.log(error)
             return null
         }
     }, [contract])
@@ -163,11 +163,11 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    return { 
-        contract, 
-        fetchPlatformPercent, 
-        updatePlatformPercent, 
-        fetchOfferExpirationTime, 
+    return {
+        contract,
+        fetchPlatformPercent,
+        updatePlatformPercent,
+        fetchOfferExpirationTime,
         updateOfferExpirationTime,
         fetchTokenPrice,
         mintToken,
@@ -181,7 +181,7 @@ function parseBlockchainError(error) {
     let result = error
     if (error.message.includes("VM Exception while processing transaction:")) {
         const regex = /"message":"VM Exception while processing transaction: (.*?)"/
-                                                        
+
         result = new Error(regex.exec(error.message)[1].replace("revert Kargain:", "").trim())
     }
 
