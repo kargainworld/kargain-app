@@ -5,14 +5,9 @@ import Link from 'next-translate/Link'
 import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import Alert from '@material-ui/lab/Alert'
-
-
-
 import Typography from '@material-ui/core/Typography'
-
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
@@ -167,7 +162,6 @@ const Announce = () => {
         const tokenId = state.announce.getTokenId
         getPriceTracker().then((price) => {
             setPrice(price.quotes.USD.price)
-            console.log(price.quotes.USD.price)
         })
 
         fetchTokenPrice(tokenId)
