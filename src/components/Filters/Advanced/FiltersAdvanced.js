@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import clsx from 'clsx'
-import Typography from '@material-ui/core/Typography'
+
 import Button from '@material-ui/core/Button'
 import FilterListIcon from '@material-ui/icons/FilterList'
-import FirstPageIcon from '@material-ui/icons/FirstPage'
-import StorefrontIcon from '@material-ui/icons/Storefront'
+
+
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
@@ -19,8 +19,8 @@ import AnnounceTypes from '../../../business/announceTypes.js'
 import VehiclesService from '../../../services/VehiclesService'
 import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from '../../../hooks/useAddress'
-import CTALink from '../../CTALink'
-import {Col, Row} from "reactstrap";
+
+import { Col, Row } from "reactstrap"
 
 const useStyles = makeStyles(() => ({
     filtersContainer: {
@@ -77,7 +77,7 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         adType : AnnounceTypes[0]
     }
 
-    const {watch, register, control, setValue, errors, handleSubmit } = useForm({
+    const { watch, register, control, setValue, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues
@@ -307,9 +307,9 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return(
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <Row>
-                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                        <Col xs="6" sm="4">
+                <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    <Row>
+                        <Col sm="2">
                             <FieldWrapper label={t('vehicles:vehicle-type')}>
                                 <SelectInput
                                     name="vehicleType"
@@ -324,38 +324,69 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 />
                             </FieldWrapper>
                         </Col>
-                        <Col xs="6" sm="4">
-                            <FieldWrapper label={t('vehicles:vehicle-type')}>
+                        <Col sm="2">
+                            <FieldWrapper label={t('vehicles:announce-type')}>
                                 <SelectInput
-                                    name="vehicleType"
+                                    name="adType"
                                     control={control}
                                     errors={errors}
-                                    options={vehicleTypesDefault()}
+                                    options={announceTypesFiltered}
                                     onChange={(selected, name) =>{
-                                        // onVehicleTypeChange(selected.value)
+                                        // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
                                         setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                         return selected
                                     }}
                                 />
                             </FieldWrapper>
                         </Col>
-                        <Col sm="4">
-                            <FieldWrapper label={t('vehicles:vehicle-type')}>
+                        <Col sm="2">
+                            <FieldWrapper label={t('vehicles:make')}>
                                 <SelectInput
-                                    name="vehicleType"
+                                    name="manufacturer.make"
                                     control={control}
                                     errors={errors}
-                                    options={vehicleTypesDefault()}
+                                    options={manufacturersData.makes}
                                     onChange={(selected, name) =>{
-                                        // onVehicleTypeChange(selected.value)
                                         setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                         return selected
                                     }}
                                 />
                             </FieldWrapper>
                         </Col>
-                    </div>
-                </Row>
+                        <Col sm={2}>
+                            <FieldWrapper label={t('vehicles:model')}>
+                                <SelectInput
+                                    name="manufacturer.model"
+                                    options={manufacturersData.models}
+                                    control={control}
+                                    errors={errors}
+                                    disabled={!watch('manufacturer.make')}
+                                    onChange={(selected, name) =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                        return selected
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                        <Col sm={2}>
+                            <FieldWrapper label={t('vehicles:year')}>
+                                <SelectInput
+                                    name="year"
+                                    placeholder="Select year"
+                                    options={manufacturersData.years}
+                                    control={control}
+                                    errors={errors}
+                                    disabled={!watch('manufacturer.model') || !isCar}
+                                    onChange={(selected, name) =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                        return selected
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </Col>
+                    </Row>
+
+                </div>
             </form>
         </div>
 
