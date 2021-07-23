@@ -18,6 +18,7 @@ import useKargainContract from 'hooks/useKargainContract'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
+import FiltersAdvanced from "./Filters/Advanced/FiltersAdvanced";
 
 
 const toBN = Web3.utils.toBN
@@ -138,16 +139,15 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 title="Kargain"
                 description="Vos meilleurs annonces automobiles"
             />
-
             <Row>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={12}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: state.announces.length })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} />
                 </Col>
 
-                <Col sm={12} md={8}>
+                <Col sm={12}  md={12}>
                     <section className="cd-tab-filter-wrapper">
                         <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')}>
                             <Sorters updateSorter={updateSorter} />
@@ -175,9 +175,9 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                 if (e !== BreakException) throw e
                                             }
                                             console.log(exist)
-                                            if (exist) {
+                                            if (!exist) {
                                                 return (
-                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                    <Col key={index} sm={12} md={4} className="my-2">
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
                                                             detailsFontSize={'13px'}
