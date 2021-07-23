@@ -29,7 +29,7 @@ import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
-
+import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
 const Root = styled.header`
   position: sticky;
 `
@@ -88,11 +88,11 @@ const NavbarClient = () => {
                                             />
                                         </div>
                                         {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
-                                        <NavbarAction vertical={true}/>
+                                        <AutocompleteDropdown />
                                     </div>
                                 ) : (
                                     <div className={clsx("d-flex", "navbar-menu")}>
-                                        <NavbarAction/>
+                                        <AutocompleteDropdown />
                                         {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
                                     </div>
                                 )}
@@ -149,6 +149,13 @@ const NavbarAction = ({ vertical }) => {
         }
     }
 
+    const setSearchQueryByKeyUp = (value) => {
+        setSearchQuery(value)
+        if (searchQuery) {
+            dispatchSearchQuery(searchQuery)
+        }
+    }
+
     return (
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
@@ -157,6 +164,7 @@ const NavbarAction = ({ vertical }) => {
                         <SearchInput
                           value={searchQuery}
                           onChange={({ target }) => setSearchQuery(target.value)}
+                          onKeyUp={({ target }) => setSearchQueryByKeyUp(target.value)}
                           name="query"
                           type="search"
                           placeholder={t('layout:search')}

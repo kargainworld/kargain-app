@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from "next/router";
 import clsx from 'clsx'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
@@ -45,7 +46,13 @@ const useStyles = makeStyles(() => ({
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
-    const [_vehicleType, _setVehicleType] = useState(vehicleTypes.car)
+
+    const cache = useRef({})
+    const classes = useStyles()
+    const { t } = useTranslation()
+    const { query } = useRouter();
+    
+    const [_vehicleType, _setVehicleType] = useState(query? query.vehicleType: vehicleTypes.car)
 
     const vehicleType = typeof setVehicleType === "function" ? vehicleTypeProp : _vehicleType
 
@@ -57,9 +64,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         return _setVehicleType(...args)
     }
 
-    const cache = useRef({})
-    const classes = useStyles()
-    const { t } = useTranslation()
     const isCar = vehicleType === vehicleTypes.car
     const [, , coordinates] = useAddress()
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
@@ -71,8 +75,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const defaultValues = {
         ...defaultFilters,
-        vehicleType : vehicleTypesDefault[0],
-        adType : AnnounceTypes[0]
+        vehicleType : query? query.vehicleType:vehicleTypesDefault[0],
+        adType : query? query.adType: AnnounceTypes[0]
     }
 
     const {watch, register, control, setValue, errors, handleSubmit } = useForm({
@@ -99,7 +103,11 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     useEffect(() => {
         setValue('year', null);
     }, [selectedModel]);
-
+    
+    useEffect(() => {
+        setValue('year', null);
+    }, [selectedModel]);
+    
     const onSubmit = (form, e, name) => {
         
         var empty;
@@ -326,11 +334,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={vehicleTypesDefault()}
-                            onChange={(selected, name) =>{
+                            selected={query.vehicleType}
+                            onChange={(e, name) =>{
                                 // onVehicleTypeChange(selected.value)
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
+                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
+                                return e
                             }}
+
                         />
                     </FieldWrapper>
 
@@ -340,6 +350,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={announceTypesFiltered}
+                            selected={query.adType}
                             onChange={(selected, name) =>{
                                 // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
