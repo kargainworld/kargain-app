@@ -11,7 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
 import filterProps from '../../../libs/filterProps'
 import SelectInput from '../../Form/Inputs/SelectInput'
-import FieldWrapper from '../../Form/FieldWrapper'
+import FieldWrapperMarket from '../../Form/FieldWrapperMarket'
 import { useAuth } from '../../../context/AuthProvider'
 import { MessageContext } from '../../../context/MessageContext'
 import vehicleTypesDefault, { vehicleTypes, vehicleTypeRefModels } from '../../../business/vehicleTypes.js'
@@ -21,6 +21,9 @@ import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from '../../../hooks/useAddress'
 
 import { Col, Row } from "reactstrap"
+import CTALink from "../../CTALink";
+import StorefrontIcon from "@material-ui/icons/Storefront";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
     filtersContainer: {
@@ -307,10 +310,23 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return(
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
+                <CTALink
+                    className="w-100"
+                    icon={StorefrontIcon}
+                    title={t('layout:news_feed')}
+                    href="/advanced-search">
+                </CTALink>
+                <ControlButtons/>
+                <div className={classes.filtersTop} onClick={() => toggleFilters()}>
+                    <Typography variant="h4">
+                        {t('filters:select-filters')}
+                        <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                    </Typography>
+                </div>
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <Row>
                         <Col sm="2">
-                            <FieldWrapper label={t('vehicles:vehicle-type')}>
+                            <FieldWrapperMarket label={t('vehicles:vehicle-type')}>
                                 <SelectInput
                                     name="vehicleType"
                                     control={control}
@@ -322,10 +338,10 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         return selected
                                     }}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapperMarket>
                         </Col>
                         <Col sm="2">
-                            <FieldWrapper label={t('vehicles:announce-type')}>
+                            <FieldWrapperMarket label={t('vehicles:announce-type')}>
                                 <SelectInput
                                     name="adType"
                                     control={control}
@@ -337,10 +353,10 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         return selected
                                     }}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapperMarket>
                         </Col>
                         <Col sm="2">
-                            <FieldWrapper label={t('vehicles:make')}>
+                            <FieldWrapperMarket label={t('vehicles:make')}>
                                 <SelectInput
                                     name="manufacturer.make"
                                     control={control}
@@ -351,10 +367,10 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         return selected
                                     }}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapperMarket>
                         </Col>
                         <Col sm={2}>
-                            <FieldWrapper label={t('vehicles:model')}>
+                            <FieldWrapperMarket label={t('vehicles:model')}>
                                 <SelectInput
                                     name="manufacturer.model"
                                     options={manufacturersData.models}
@@ -366,10 +382,10 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         return selected
                                     }}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapperMarket>
                         </Col>
                         <Col sm={2}>
-                            <FieldWrapper label={t('vehicles:year')}>
+                            <FieldWrapperMarket label={t('vehicles:year')}>
                                 <SelectInput
                                     name="year"
                                     placeholder="Select year"
@@ -382,10 +398,18 @@ const FiltersAdvanced = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         return selected
                                     }}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapperMarket>
                         </Col>
                     </Row>
-
+                    {DynamicFiltersComponent && (
+                        <DynamicFiltersComponent
+                            control={control}
+                            errors={errors}
+                            watch={watch}
+                            dynamicOnSubmit={onSubmit}
+                            dynamicHandleSubmit={handleSubmit}
+                        />
+                    )}
                 </div>
             </form>
         </div>

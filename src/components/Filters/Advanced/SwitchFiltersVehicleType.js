@@ -1,14 +1,14 @@
-import CarFilters from './vehicles/CarFilters'
-import MotoFilters from './vehicles/MotoFilters'
-import CamperFilters from './vehicles/CamperFilters'
-import UtilityFilters from './vehicles/UtilityFilters'
+import CarFilters from './vehiclesNewFilters/CarFilters'
+import MotoFilters from './vehiclesNewFilters/MotoFilters'
+import CamperFiltersNFT from './vehiclesNewFilters/CamperFiltersNFT'
+import UtilityFilters from './vehiclesNewFilters/UtilityFilters'
 
 export default function SwitchFiltersVehicleType (type) {
     switch (type) {
     case 'car' :
         return CarFilters
     case 'camper' :
-        return CamperFilters
+        return CamperFiltersNFT
     case 'utility' :
         return UtilityFilters
     case 'moto':
