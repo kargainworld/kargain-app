@@ -12,6 +12,7 @@
   "filter-by": "Filtrer par",
   "filtered-by": "Filtré par",
   "apply-filters": "Appliquer les filtres",
+  "clear-filters": "Effacer",
   "edit_filters": "Modifier les filtres",
   "reset-filters": "Reinitialiser les filtres",
   "{count}_results_search" : "{{count}} résultats",

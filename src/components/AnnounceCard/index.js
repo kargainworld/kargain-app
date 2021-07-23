@@ -13,6 +13,8 @@ import CTALink from '../CTALink';
 import { ModalContext } from '../../context/ModalContext';
 import AnnounceModel from '../../models/announce.model';
 import { getTimeAgo } from '../../libs/utils';
+import { makeStyles } from '@material-ui/core/styles'
+import { themeColors } from '../../theme/palette'
 import {
   Root,
   User,
@@ -35,11 +37,24 @@ import {
   ImageCounter,
   ImagePlaceholder,
 } from './components';
+import Button from '@material-ui/core/Button'
 import { CardContent } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete'
 import GalleryViewer from '../Gallery/GalleryViewer';
 import { useSocket } from '../../context/SocketContext';
 
-const Index = ({ announceRaw, featuredImgHeight }) => {
+const useStyles = makeStyles(() => ({
+  buttonRemove: {
+    backgroundColor : themeColors.red,
+
+    "&:hover" : {
+        backgroundColor : themeColors.red
+    }
+  }
+}))
+
+const Index = ({ announceRaw, featuredImgHeight, onhandleOpenDialogRemove, onSelectSlug }) => {
+  const classes = useStyles()
   const refImg = useRef();
   const router = useRouter();
   const { t, lang } = useTranslation();
@@ -218,8 +233,18 @@ const Index = ({ announceRaw, featuredImgHeight }) => {
       </CardContent>
 
       <Footer>
-        <CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />
-
+        {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.buttonRemove}
+          startIcon={<DeleteIcon/>}
+          onClick={e => {
+            onSelectSlug(announce.getSlug)
+            onhandleOpenDialogRemove()
+          }}>
+          {t('vehicles:remove-announce')}
+        </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
         {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
       </Footer>
     </Root>

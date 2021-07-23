@@ -50,9 +50,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const cache = useRef({})
     const classes = useStyles()
     const { t } = useTranslation()
-    const { query } = useRouter();
+    const router = useRouter();
     
-    const [_vehicleType, _setVehicleType] = useState(query? query.vehicleType: vehicleTypes.car)
+    const [_vehicleType, _setVehicleType] = useState(router.query? router.query.vehicleType: vehicleTypes.car)
 
     const vehicleType = typeof setVehicleType === "function" ? vehicleTypeProp : _vehicleType
 
@@ -64,9 +64,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         return _setVehicleType(...args)
     }
 
-    const isCar = vehicleType === vehicleTypes.car
+    const isCar = (vehicleType? vehicleType: vehicleTypes.car) === vehicleTypes.car
     const [, , coordinates] = useAddress()
-    const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
+    const vehicleTypeModel = vehicleTypeRefModels[(vehicleType? vehicleType: vehicleTypes.car)]
     const { isAuthReady, authenticatedUser } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { dispatchModalError } = useContext(MessageContext)
@@ -74,12 +74,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const defaultValues = {
-        ...defaultFilters,
-        vehicleType : query? query.vehicleType:vehicleTypesDefault[0],
-        adType : query? query.adType: AnnounceTypes[0]
+        ...defaultFilters
     }
-
-    const {watch, register, control, setValue, errors, handleSubmit } = useForm({
+    const {watch, register, control, setValue, getValues, errors, handleSubmit, reset } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues
@@ -96,14 +93,22 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const selectedModel = watch('manufacturer.model')
 
     useEffect(() => {
+        reset(defaultValues);
+    }, [reset])
+
+    useEffect(() => {
+        register(defaultValues);
+    }, [register])
+
+    useEffect(() => {
+        _setVehicleType(vehicleType || vehicleTypes.car);
+    }, [_vehicleType])
+
+    useEffect(() => {
         setValue('manufacturer.model', null);
         setValue('year', null);
     }, [selectedMake]);
 
-    useEffect(() => {
-        setValue('year', null);
-    }, [selectedModel]);
-    
     useEffect(() => {
         setValue('year', null);
     }, [selectedModel]);
@@ -130,6 +135,16 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         updateFilters(data)
     }
 
+    const onResetFilter = (form, e) => {
+        const filters = getValues();
+        for(let key in filters){
+            setValue(key, "")
+        }
+        router.push({
+            pathname: router.pathname
+        })
+    }
+
     const toggleFilters = () => {
         hideForm((hiddenForm) => !hiddenForm);
     };
@@ -138,7 +153,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         const cacheKey = `${vehicleType}_makes`
 
         if(!cache.current[cacheKey]) {
-            console.log('fetch makes')
             await VehiclesService.getMakes(vehicleTypeModel)
                 .then(makes => {
                     if(!Array.isArray(makes)) makes = [makes]
@@ -319,7 +333,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     title={t('layout:news_feed')}
                     href="/advanced-search">
                 </CTALink>
-                <ControlButtons/>
+                <ControlButtons 
+                    resetFilter={onResetFilter}
+                    dynamicHandleSubmit={handleSubmit}
+                />
               <div className={classes.filtersTop} onClick={() => toggleFilters()}>
                 <Typography variant="h4">
                   {t('filters:select-filters')}
@@ -334,7 +351,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={vehicleTypesDefault()}
-                            selected={query.vehicleType}
+                            selected={router.query.vehicleType}
                             onChange={(e, name) =>{
                                 // onVehicleTypeChange(selected.value)
                                 setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
@@ -350,7 +367,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             control={control}
                             errors={errors}
                             options={announceTypesFiltered}
-                            selected={query.adType}
+                            selected={router.query.adType}
                             onChange={(selected, name) =>{
                                 // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
@@ -416,7 +433,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     )
 }
 
-const ControlButtons = () => {
+const ControlButtons = ({...props}) => {
     const { t } = useTranslation()
 
     return (
@@ -426,9 +443,10 @@ const ControlButtons = () => {
                 variant="contained"
                 color="primary"
                 startIcon={<FilterListIcon/>}
-                type="submit"
+                type="button"
+                onClick={e =>{ props.resetFilter(e)}}
             >
-                {t('vehicles:apply-filters')}
+                {t('vehicles:clear-filters')}
             </Button>
         </div>
     )
