@@ -30,6 +30,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announces: [],
         total: 0
     })
+    const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
@@ -109,7 +110,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: state.announces.length })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} />
+                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
                 <Col sm={12} md={8}>

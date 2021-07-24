@@ -12,6 +12,7 @@
   "filter-by": "Фильтровать",
   "filtered-by": "Отфильтровано",
   "apply-filters": "Применить фильтр",
+  "clear-filters": "Очистить",
   "edit_filters": "Редактировать фильтры",
   "reset-filters": "Сбросить фильтры",
   "{count}_results_search" : "{{count}} результаты поиска",
