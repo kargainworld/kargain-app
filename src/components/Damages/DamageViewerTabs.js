@@ -140,7 +140,7 @@ const DamagesMappedImg = ({ tab, index, annoRefs }) => {
 const DamagesList = ({ tab }) => {
     const classes = useStyles()
     const { t } = useTranslation()
-
+    console.log(tab)
     return (
         <div className={clsx(classes.annoInputs)}>
             <Header h3> {t('vehicles:damages')} :</Header>
@@ -156,7 +156,7 @@ const DamagesList = ({ tab }) => {
                         }}>
                             <input type="text"
                                 readOnly
-                                value={stage.input}
+                                value={stage.text}
                                 className={clsx(classes.annoInputField, 'form-control form-control-sm')}
                                 name={`annotation_${index + 1}`}
                                 placeholder={t('vehicles:damages-{number}-description', { number : index + 1})}
