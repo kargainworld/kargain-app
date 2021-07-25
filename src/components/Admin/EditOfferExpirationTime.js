@@ -55,9 +55,15 @@ const EditOfferExpirationTime = props => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const { fetchOfferExpirationTime, updateOfferExpirationTime } = useKargainContract()
 
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal } = useContext(MessageContext)
+
+    const [isBlockchainFail, setIsBlockchainFail] = useState(false)
 
     useEffect(()=> {
+        if (isBlockchainFail) {
+            return
+        }
+
         const action = async () => {
             try {
                 const value = await fetchOfferExpirationTime()
@@ -67,12 +73,12 @@ const EditOfferExpirationTime = props => {
                 setOfferExpirationTime(value.toString())
             } catch (err) {
                 console.error(err)
-                dispatchModalError({ err })
+                setIsBlockchainFail(true)
             }
         } 
 
         action()
-    }, [dispatchModalError, fetchOfferExpirationTime])
+    }, [fetchOfferExpirationTime, isBlockchainFail])
 
     const handleOfferExpirationSave = async () => {
         setIsConfirmed(false)
@@ -107,8 +113,8 @@ const EditOfferExpirationTime = props => {
                             OFFER EXPIRATION
                         </Typography>
                         <br /><br />
-                        {offerExpirationTime === null && <Skeleton variant="rect" width={210} height={56} />}
-                        {offerExpirationTime !== null && <TextField
+                        {!isBlockchainFail && offerExpirationTime === null && <Skeleton variant="rect" width={210} height={56} />}
+                        {!isBlockchainFail && offerExpirationTime !== null && <TextField
                             label="Days"
                             fullWidth={true}
                             InputProps={{
@@ -133,6 +139,7 @@ const EditOfferExpirationTime = props => {
                             disabled={!isConfirmed}
                             variant="outlined"
                         />}
+                        {isBlockchainFail && <span>You cannot edit this value, check if you are connected to the correct network and if you are using an admin account.</span>}
                     </Grid>
                     <Grid item>
                         <Avatar className={classes.avatar}>

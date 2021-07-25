@@ -1,36 +1,37 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import { NextSeo } from 'next-seo';
-import Link from 'next-translate/Link';
-import { useRouter } from 'next/router';
-import { Col, Container, Row } from 'reactstrap';
-import Alert from '@material-ui/lab/Alert';
-import { useMediaQuery } from '@material-ui/core';
-import CommentIcon from '@material-ui/icons/Comment';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import Typography from '@material-ui/core/Typography';
-import useTheme from '@material-ui/core/styles/useTheme';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useTranslation from 'next-translate/useTranslation';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import GalleryViewer from '../../../components/Gallery/GalleryViewer';
-import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs';
-import CarInfos from '../../../components/Products/car/CarInfos';
-import Comments from '../../../components/Comments/Comments';
-import TagsList from '../../../components/Tags/TagsList';
-import CTALink from '../../../components/CTALink';
-import {Action} from '../../../components/AnnounceCard/components';
-import AnnounceService from '../../../services/AnnounceService';
-import AnnounceModel from '../../../models/announce.model';
-import { MessageContext } from '../../../context/MessageContext';
-import { ModalContext } from '../../../context/ModalContext';
-import { useAuth } from '../../../context/AuthProvider';
-import { getTimeAgo } from '../../../libs/utils';
-import Error from '../../_error';
-import { Avatar } from '../../../components/AnnounceCard/components';
-import { useSocket } from '../../../context/SocketContext';
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
-import * as i from '@material-ui/icons';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import clsx from 'clsx'
+import { NextSeo } from 'next-seo'
+import Link from 'next-translate/Link'
+import { useRouter } from 'next/router'
+import { Col, Container, Row } from 'reactstrap'
+import Alert from '@material-ui/lab/Alert'
+import { useWeb3React } from "@web3-react/core"
+import Typography from '@material-ui/core/Typography'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import useTranslation from 'next-translate/useTranslation'
+import GalleryViewer from '../../../components/Gallery/GalleryViewer'
+import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
+import CarInfos from '../../../components/Products/car/CarInfos'
+import Comments from '../../../components/Comments/Comments'
+import TagsList from '../../../components/Tags/TagsList'
+import CTALink from '../../../components/CTALink'
+import { Action } from '../../../components/AnnounceCard/components'
+import AnnounceService from '../../../services/AnnounceService'
+import AnnounceModel from '../../../models/announce.model'
+import { MessageContext } from '../../../context/MessageContext'
+import { ModalContext } from '../../../context/ModalContext'
+import { useAuth } from '../../../context/AuthProvider'
+import { getTimeAgo } from '../../../libs/utils'
+import Error from '../../_error'
+import { Avatar } from '../../../components/AnnounceCard/components'
+import { useSocket } from '../../../context/SocketContext'
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+import * as i from '@material-ui/icons'
+import useKargainContract from 'hooks/useKargainContract'
+import TextField from '@material-ui/core/TextField'
+import { injected } from "../../../connectors"
+import usePriceTracker from 'hooks/usePriceTracker'
+
 
 const useStyles = makeStyles(() => ({
     formRow: {
@@ -38,14 +39,14 @@ const useStyles = makeStyles(() => ({
 
         '& > div': {
             margin: '1rem',
-            flex: 1,
-        },
+            flex: 1
+        }
     },
 
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
-        margin: '1rem 0',
+        margin: '1rem 0'
     },
 
     priceStarsWrapper: {
@@ -53,27 +54,33 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid',
+        borderBottom: '1px solid'
     },
     wysiwyg: {
-        margin: '1rem',
-    },
-}));
+        margin: '1rem'
+    }
+}))
 
 const Announce = () => {
-    const refImg = useRef();
-    const theme = useTheme();
-    const classes = useStyles();
-    const router = useRouter();
-    const { slug } = router.query;
-    const { t, lang } = useTranslation();
-    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
-    const { dispatchModalError } = useContext(MessageContext);
-    const { dispatchModalState } = useContext(ModalContext);
-    const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
-        defaultMatches: true,
-    });
-    const { getOnlineStatusByUserId } = useSocket();
+    const { library, chainId, account, activate, active } = useWeb3React()
+    const refImg = useRef()
+    const classes = useStyles()
+    const router = useRouter()
+    const { slug } = router.query
+    const { t, lang } = useTranslation()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalState } = useContext(ModalContext)
+    const { getOnlineStatusByUserId } = useSocket()
+    const { getPriceTracker } = usePriceTracker()
+    const [priceEther, setPrice] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
+    const [tokenPrice, setTokenPrice] = useState(null)
+    const [error, setError] = useState(null)
+    const [isConfirmed, setIsConfirmed] = useState(true)
+    const [isMinted, setIsMinted] = useState(false)
+
+    const { fetchTokenPrice, mintToken, updateTokenPrince } = useKargainContract()
 
     const [state, setState] = useState({
         err: null,
@@ -82,91 +89,137 @@ const Announce = () => {
         isAdmin: false,
         announce: new AnnounceModel(),
         likesCounter: 0
-    });
+    })
 
-    const [isLiking, setIsLiking] = useState(false);
+    const [tried, setTried] = useState(false)
 
-    const { announce } = state;
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                    fetchTokenPrice(state.announce.getTokenId)
+                        .then((price) => {
+                            setTokenPrice(price)
+                            setIsLoading(false)
+                            setIsMinted(price ? true : false)
+                        })
+                        .catch(() => {
+                            setIsLoading(false)
+                        })
+                }).catch(() => {
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
 
-    const handleCLickImg = (index) => {
-        if (refImg.current) {
-            refImg.current.slideToIndex(index);
-            refImg.current.fullScreen();
+    useEffect(() => {
+        if (!tried && active) {
+            setTried(true)
         }
-    };
+
+    }, [tried, active])
+
+    const [isLiking, setIsLiking] = useState(false)
+
+    const { announce } = state
 
     const checkIfAlreadyLike = () => {
-        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID);
-        const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID);
-        return !!matchUserFavorite || !!matchAnnounceLike;
-    };
+        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
+        const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID)
+        return !!matchUserFavorite || !!matchAnnounceLike
+    }
 
-    const alreadyLikeCurrentUser = checkIfAlreadyLike();
+    const alreadyLikeCurrentUser = checkIfAlreadyLike()
 
     const [like, setLike] = useState(alreadyLikeCurrentUser)
-    
-    const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id;
-    
+
+    const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id
+
     const toggleVisibility = () => {
         AnnounceService.updateAnnounce(announce.getSlug, { visible: !announce?.raw?.visible }).then(() =>
             window.location.reload()
-        );
-    };
-    
+        )
+    }
+
     const handleClickLikeButton = async () => {
-        if(isOwn) return;
-        if (!isAuthenticated) return setForceLoginModal(true);
-        let counter = state.likesCounter;
-        if(isLiking) return;
+        if(isOwn) return
+        if (!isAuthenticated) return setForceLoginModal(true)
+        let counter = state.likesCounter
+        if(isLiking) return
         setIsLiking(true)
         try {
             if (like) {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID);
+                await AnnounceService.removeLikeLoggedInUser(announce.getID)
                 setState((state) => ({
                     ...state,
-                    likesCounter: Math.max(0, counter - 1),
-                }));
+                    likesCounter: Math.max(0, counter - 1)
+                }))
             } else {
-                await AnnounceService.addLikeLoggedInUser(announce.getID);
+                await AnnounceService.addLikeLoggedInUser(announce.getID)
                 setState((state) => ({
                     ...state,
-                    likesCounter: counter + 1,
-                }));
+                    likesCounter: counter + 1
+                }))
             }
             setLike(!like)
             setIsLiking(false)
         } catch (err) {
-            dispatchModalError({ err });
+            dispatchModalError({ err })
         }
-    };
+    }
 
     const fetchAnnounce = useCallback(async () => {
         try {
-            const result = await AnnounceService.getAnnounceBySlug(slug);
-            const { announce, isAdmin, isSelf } = result;
+            const result = await AnnounceService.getAnnounceBySlug(slug)
+            const { announce, isAdmin, isSelf } = result
 
             setState((state) => ({
                 ...state,
                 stateReady: true,
                 announce: new AnnounceModel(announce),
                 isAdmin,
-                isSelf,
-            }));
+                isSelf
+            }))
         } catch (err) {
             setState((state) => ({
                 ...state,
                 stateReady: true,
-                err,
-            }));
+                err
+            }))
         }
-    }, [slug]);
+    }, [slug])
 
     useEffect(() => {
-        fetchAnnounce();
-    }, [fetchAnnounce]);
+        fetchAnnounce()
+    }, [fetchAnnounce])
 
-    if (!state.stateReady) return null;
-    if (state.err) return <Error statusCode={state.err?.statusCode} />;
+    useEffect(() => {
+        if (!state.stateReady) return
+
+        setIsLoading(true)
+
+        const tokenId = state.announce.getTokenId
+        getPriceTracker().then((price) => {
+            setPrice(price.quotes.USD.price)
+            console.log(price.quotes.USD.price)
+        })
+
+        fetchTokenPrice(tokenId)
+            .then((price) => {
+                setTokenPrice(price)
+                setIsLoading(false)
+                setIsMinted(price ? true : false)
+            })
+            .catch(() => {
+                setIsLoading(false)
+            })
+    }, [state, fetchTokenPrice])
+
+    if (!state.stateReady) return null
+    if (state.err) return <Error statusCode={state.err?.statusCode} />
 
     return (
         <Container>
@@ -196,16 +249,16 @@ const Announce = () => {
                                 <div className="price-announce">
                                     {isAuthenticated && authenticatedUser.getIsPro ? (
                                         <>
-                      <span className="mx-1">
-                        <strong>{announce.getPriceHT}€ HT</strong>
-                      </span>
+                                            <span className="mx-1">
+                                                <strong>{announce.getPriceHT}€ HT</strong>
+                                            </span>
                                             <span> - </span>
                                             <span className="mx-1">
-                        <small>{announce.getPrice}€</small>
-                      </span>
+                                                <small>{announce.getPrice}€</small>
+                                            </span>
                                         </>
                                     ) : (
-                                        <span>{announce.getPrice} €</span>
+                                        <span>{(tokenPrice * priceEther).toFixed(2)} USD</span>
                                     )}
                                 </div>
 
@@ -214,7 +267,7 @@ const Announce = () => {
                                     onClick={() =>
                                         dispatchModalState({
                                             openModalShare: true,
-                                            modalShareAnnounce: announce,
+                                            modalShareAnnounce: announce
                                         })
                                     }
                                 >
@@ -263,10 +316,10 @@ const Announce = () => {
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <div className="top-profile-location">
                                         <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                      <span className="top-profile-location">
-                        <RoomOutlinedIcon />
-                          {announce.getAdOrAuthorCustomAddress()}
-                      </span>
+                                            <span className="top-profile-location">
+                                                <RoomOutlinedIcon />
+                                                {announce.getAdOrAuthorCustomAddress()}
+                                            </span>
                                         </a>
                                     </div>
                                 )}
@@ -279,15 +332,15 @@ const Announce = () => {
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                             <div className="icons-profile-wrapper">
 
-                            {isOwn && (
-                                <Action onClick={toggleVisibility}>
-                                {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                                </Action>
-                            )}
+                                {isOwn && (
+                                    <Action onClick={toggleVisibility}>
+                                        {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                    </Action>
+                                )}
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444',
+                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
                                         }}
                                     />
                                     <span>{state.likesCounter}</span>
@@ -305,22 +358,65 @@ const Announce = () => {
                                     onClick={() =>
                                         dispatchModalState({
                                             openModalMessaging: true,
-                                            modalMessagingProfile: announce.getAuthor,
+                                            modalMessagingProfile: announce.getAuthor
                                         })
                                     }
                                 >
                                     <i.MailOutline style={{ position: 'relative', top: -1 }} />
                                 </Action>
 
-                                {state.isAdmin || state.isSelf ? (
-                                    <div className="">
+                                {(state.isAdmin || state.isSelf) && (
+                                    <div style={{ display: "flex", gap: 5 }}>
                                         <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                                     </div>
-                                ) : (
-                                    <></>
                                 )}
                             </div>
                         </div>
+                        {(state.isAdmin || state.isSelf) && (
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                                <div className="icons-profile-wrapper">
+
+                                    {!isLoading && (
+                                        <div style={{ display: "flex", gap: 5 }}>
+                                            <TextField
+                                                label="Token price"
+                                                onChange={(event) => setTokenPrice(event.target.value)}
+                                                value={tokenPrice}
+                                                type="number"
+                                                InputLabelProps={{ shrink: true }}
+                                                error={!!error}
+                                                helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
+                                                disabled={!isConfirmed || !active}
+                                                variant="outlined"
+                                            />
+                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
+                                                const tokenId = state.announce.getTokenId
+
+                                                setIsConfirmed(false)
+                                                setError(null)
+
+                                                const task = !isMinted ?
+                                                    mintToken(tokenId, +tokenPrice) :
+                                                    updateTokenPrince(tokenId, +tokenPrice)
+
+                                                task.then(() => {
+                                                    setIsConfirmed(true)
+                                                    setIsMinted(true)
+                                                    dispatchModal({ msg: 'Token price confirmed!' })
+                                                }).catch((error) => {
+                                                    console.error(error)
+                                                    setError(error)
+                                                    setIsConfirmed(true)
+                                                })
+                                            }}>
+                                                {isMinted ? t('vehicles:save') : t('vehicles:mint')}
+                                            </button>
+                                        </div>
+                                    )}
+
+                                </div>
+                            </div>
+                        )}
                         <Comments announceRaw={announce.getRaw} />
                     </Col>
                 </Row>
@@ -344,7 +440,7 @@ const Announce = () => {
                                         <Typography>{equipment.label}</Typography>
                                     </div>
                                 </Col>
-                            );
+                            )
                         })}
                     </Row>
                 </section>
@@ -366,7 +462,7 @@ const Announce = () => {
                 </section>
             </div>
         </Container>
-    );
-};
+    )
+}
 
-export default Announce;
+export default Announce

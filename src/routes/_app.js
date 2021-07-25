@@ -27,6 +27,13 @@ import theme from '../theme'
 import '../scss/theme.scss'
 import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
+import { Web3ReactProvider } from '@web3-react/core'
+import Web3 from 'web3'
+
+function getLibrary(provider) {
+    const library = new Web3(provider)
+    return library
+}
 
 const MyApp = ({ Component, pageProps }) => {
     const { formKey } = pageProps
@@ -41,25 +48,25 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
-
-                <MessageContextProvider>
-                    <AuthProvider>
-                        <SocketProvider>
-                            <FormContextProvider formKey={formKey}>
-                                <SearchContextProvider>
-                                    <ModalContextProvider>
-                                        <NextProgress />
-                                        <DefaultSeo {...SEO} />
-                                        <ProtectedRouter pageProps={pageProps}>
-                                            <Component {...pageProps} />
-                                        </ProtectedRouter>
-                                    </ModalContextProvider>
-                                </SearchContextProvider>
-                            </FormContextProvider>
-                        </SocketProvider>
-                    </AuthProvider>
-                </MessageContextProvider>
-
+                <Web3ReactProvider getLibrary={getLibrary}>
+                    <MessageContextProvider>
+                        <AuthProvider>
+                            <SocketProvider>
+                                <FormContextProvider formKey={formKey}>
+                                    <SearchContextProvider>
+                                        <ModalContextProvider>
+                                            <NextProgress />
+                                            <DefaultSeo {...SEO} />
+                                            <ProtectedRouter pageProps={pageProps}>
+                                                <Component {...pageProps} />
+                                            </ProtectedRouter>
+                                        </ModalContextProvider>
+                                    </SearchContextProvider>
+                                </FormContextProvider>
+                            </SocketProvider>
+                        </AuthProvider>
+                    </MessageContextProvider>
+                </Web3ReactProvider>
             </ThemeProvider>
         </StyledThemeProvider>
     )

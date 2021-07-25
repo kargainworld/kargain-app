@@ -48,6 +48,7 @@
 						"@web3-react/walletlink-connector": "6.0.2",
 						"bootstrap": "^4.5.0",
 						"bourbon": "^7.0.0",
+						"bson-objectid": "^2.0.1",
 						"clsx": "^1.1.1",
 						"contentful": "^7.14.5",
 						"copy-to-clipboard": "^3.3.1",
