@@ -30,6 +30,7 @@ import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
+import usePriceTracker from 'hooks/usePriceTracker'
 
 
 const useStyles = makeStyles(() => ({
@@ -71,7 +72,8 @@ const Announce = () => {
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
-
+    const { getPriceTracker } = usePriceTracker()
+    const [priceEther, setPrice] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
     const [error, setError] = useState(null)
@@ -133,20 +135,20 @@ const Announce = () => {
     const alreadyLikeCurrentUser = checkIfAlreadyLike()
 
     const [like, setLike] = useState(alreadyLikeCurrentUser)
-    
-    const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id;
-    
+
+    const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id
+
     const toggleVisibility = () => {
         AnnounceService.updateAnnounce(announce.getSlug, { visible: !announce?.raw?.visible }).then(() =>
             window.location.reload()
-        );
-    };
-    
+        )
+    }
+
     const handleClickLikeButton = async () => {
-        if(isOwn) return;
-        if (!isAuthenticated) return setForceLoginModal(true);
-        let counter = state.likesCounter;
-        if(isLiking) return;
+        if(isOwn) return
+        if (!isAuthenticated) return setForceLoginModal(true)
+        let counter = state.likesCounter
+        if(isLiking) return
         setIsLiking(true)
         try {
             if (like) {
@@ -200,6 +202,10 @@ const Announce = () => {
         setIsLoading(true)
 
         const tokenId = state.announce.getTokenId
+        getPriceTracker().then((price) => {
+            setPrice(price.quotes.USD.price)
+            console.log(price.quotes.USD.price)
+        })
 
         fetchTokenPrice(tokenId)
             .then((price) => {
@@ -252,7 +258,7 @@ const Announce = () => {
                                             </span>
                                         </>
                                     ) : (
-                                        <span>{announce.getPrice} €</span>
+                                        <span>{(tokenPrice * priceEther).toFixed(2)} USD</span>
                                     )}
                                 </div>
 
@@ -326,11 +332,11 @@ const Announce = () => {
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                             <div className="icons-profile-wrapper">
 
-                            {isOwn && (
-                                <Action onClick={toggleVisibility}>
-                                {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                                </Action>
-                            )}
+                                {isOwn && (
+                                    <Action onClick={toggleVisibility}>
+                                        {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                    </Action>
+                                )}
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
