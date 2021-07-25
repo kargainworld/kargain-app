@@ -15,10 +15,18 @@ import { useAuth } from '../context/AuthProvider'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from '../components/Loading'
 import CTALink from './CTALink'
+import useKargainContract from 'hooks/useKargainContract'
+import usePriceTracker from 'hooks/usePriceTracker'
+import Web3 from 'web3'
+import ObjectID from 'bson-objectid'
+
+const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
+    const { getPriceTracker } = usePriceTracker()
+    const { fetchTokenPrice } = useKargainContract()
     const { t } = useTranslation()
-    const { query } = useRouter();
+    const { query } = useRouter()
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
@@ -28,6 +36,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         filters: {},
         page: 1,
         announces: [],
+        announcesMinted: [],
         total: 0
     })
     const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
@@ -45,7 +54,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             page,
             size
         }
-        
+
         setState(state => ({
             ...state,
             loading: true
