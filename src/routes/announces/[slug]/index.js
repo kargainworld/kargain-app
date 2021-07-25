@@ -204,7 +204,6 @@ const Announce = () => {
         const tokenId = state.announce.getTokenId
         getPriceTracker().then((price) => {
             setPrice(price.quotes.USD.price)
-            console.log(price.quotes.USD.price)
         })
 
         fetchTokenPrice(tokenId)
