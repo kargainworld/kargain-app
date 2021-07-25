@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useRouter } from "next/router";
 import { Col, Container, Row } from 'reactstrap'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
@@ -17,6 +18,7 @@ import CTALink from './CTALink'
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const { t } = useTranslation()
+    const { query } = useRouter();
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
@@ -28,11 +30,14 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announces: [],
         total: 0
     })
+    const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
 
+        if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
+        if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
         const params = {
             ...filters,
             sort_by: sorter.key,
@@ -40,7 +45,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             page,
             size
         }
-
+        
         setState(state => ({
             ...state,
             loading: true
@@ -105,7 +110,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: state.announces.length })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} />
+                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
                 <Col sm={12} md={8}>

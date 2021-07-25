@@ -83,7 +83,7 @@ const Page = () => {
 
     if (state.loading) return <Loading/>
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
-    if (state.profile.getCountGarage >= 2 && isAuthenticated) {
+    if (state.profile.getCountGarage >= 2 && isAuthenticated && state.profile.getCountGarage >= authenticatedUser.getSubscriptionOfferMaxAnnounces) {
         const userName = authenticatedUser.getUsername
         router.push(`/profile/${userName}/edit?offer=true`)
     }

@@ -49,6 +49,14 @@ export default function ModalMessaging() {
     }
   };
 
+  const onEnterPress = (e) => {
+    e.persist()
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      onSubmitMessage({ message: e.target.value})
+    }
+  }
+
   const onSubmitMessage = async (form) => {
     const { message } = form;
     try {
@@ -187,6 +195,7 @@ export default function ModalMessaging() {
                     placeholder={t('layout:write_your_message')}
                     maxLength={30000}
                     rows={2}
+                    onKeyDown={onEnterPress} 
                   />
                   {errors && <ValidationError errors={errors} name={name} />}
                   <button className={classes.conversationInputButton} type="submit">

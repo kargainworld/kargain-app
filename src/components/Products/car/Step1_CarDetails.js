@@ -40,7 +40,16 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         RadioChoicesPaints: [],
         RadioChoicesMaterials: [],
         RadioChoicesExternalColor: [],
-        mileageType: []
+        mileageType: [
+            {
+                label: 'mileage',
+                value: 'mi'
+            },
+            {
+                label: 'kilometer',
+                value: 'km'
+            }
+        ]
     })
 
     const getData = useCallback(async () => {

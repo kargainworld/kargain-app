@@ -12,6 +12,7 @@
   "filter-by": "Фильтровать",
   "filtered-by": "Отфильтровано",
   "apply-filters": "Применить фильтр",
+  "clear-filters": "Очистить",
   "edit_filters": "Редактировать фильтры",
   "reset-filters": "Сбросить фильтры",
   "{count}_results_search" : "{{count}} результаты поиска",
@@ -214,6 +215,8 @@
   "informations_request" : "Запрос информации",
   "partnership_request" : "Запрос на партнерство",
   "back_to_profile" : "Вернуться к профилю",
+  "announce_approve" : "Announce Approve as Free",
+  "announce_count" : "Announces Count"
   "i_dont_know_other" : "Я не знаю / Другое",
   "mint" : "MINT"
 }

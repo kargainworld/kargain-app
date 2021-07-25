@@ -29,6 +29,7 @@ import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
+import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
 import Blockchain from './Blockchain/blockchain'
 
 const Root = styled.header`
@@ -90,13 +91,13 @@ const NavbarClient = () => {
                                             />
                                         </div>
                                         {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
+                                        <AutocompleteDropdown />
                                         {isAuthenticated && <Blockchain />}
-                                        <NavbarAction vertical={true}/>
                                     </div>
                                 ) : (
                                     <div className={clsx("d-flex", "navbar-menu")}>
+                                        <AutocompleteDropdown />
                                         {isAuthenticated && <Blockchain />}
-                                        <NavbarAction/>
                                         {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
                                     </div>
                                 )}
@@ -153,18 +154,26 @@ const NavbarAction = ({ vertical }) => {
         }
     }
 
+    const setSearchQueryByKeyUp = (value) => {
+        setSearchQuery(value)
+        if (searchQuery) {
+            dispatchSearchQuery(searchQuery)
+        }
+    }
+
     return (
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
                 <form className="search-form" onSubmit={onSubmitSearch}>
                     <SearchInputContainer>
                         <SearchInput
-                            value={searchQuery}
-                            onChange={({ target }) => setSearchQuery(target.value)}
-                            name="query"
-                            type="search"
-                            placeholder={t('layout:search')}
-                            iconright={<Search />}
+                          value={searchQuery}
+                          onChange={({ target }) => setSearchQuery(target.value)}
+                          onKeyUp={({ target }) => setSearchQueryByKeyUp(target.value)}
+                          name="query"
+                          type="search"
+                          placeholder={t('layout:search')}
+                          iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>

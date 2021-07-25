@@ -54,6 +54,10 @@ export default class UserModel {
         return this.raw?.subscription?.offer?.title ?? null
     }
 
+    get getSubscriptionOfferMaxAnnounces () {
+        return this.raw?.subscriptionOfferMaxAnnounces ?? null
+    }
+
     get getAvatar () {
         return this.raw?.avatar?.location ?? null
     }

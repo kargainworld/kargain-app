@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
+import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
+import { FormContext } from '../../../context/FormContext'
+import { useRouter, withRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Alert from '@material-ui/lab/Alert'
 import filterProps from '../../../libs/filterProps'
 import vehicleTypes from '../../../business/vehicleTypes.js'
@@ -12,8 +16,20 @@ import AnnounceTypeRadioButton from "../../AnnounceTypeRadioButton";
 import VehicleTypeSelect from "../../VehicleTypeSelect";
 
 
+const path = require('path')
+
+const useStyles = makeStyles(() => ({
+    button: {
+        padding: '6px 2rem',
+        border: '1px solid',
+        backgroundColor: '#111111'
+    }
+}))
 
 const HomeFilters = ({ updateFilters, totalResult }) => {
+    const router = useRouter()
+    const classes = useStyles()
+    const formRef = useRef()
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
     const [vehicleType, setVehicleType] = useState(vehicleTypes()[0]?.value)
@@ -25,21 +41,22 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
         }
     })
 
+    const { dispatchFormUpdate, dispatchFormClear } = useContext(FormContext)
+
     const { errors, register, handleSubmit } = methods
 
-    const onSubmit = (form, e) => {
-        const { coordinates, radius } = form
-        const filtersFlat = filterProps(form)
-        const data = { ...filtersFlat }
-
-        if (coordinates && radius) {
-            data.radius = radius
-            data.coordinates = coordinates
-            data.enableGeocoding = true
-        }
-
-        e.preventDefault()
-        updateFilters(data)
+    const onSubmit = (data) => {
+        dispatchFormClear();
+        const { adType} = data
+        const route = `advanced-search` 
+        dispatchFormUpdate({ adType, vehicleType })
+        router.push({
+            pathname: route,
+            query: {
+                adType: adType,
+                vehicleType: vehicleType
+            },
+        })
     }
 
     return (
@@ -70,6 +87,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <VehicleTypeSelect
                     value={vehicleType}
+                    name="vehicleType"
                     items={vehicleTypes()}
                     onChange={setVehicleType}
                     style={{ maxWidth: 532, width: '100%' }}
@@ -92,14 +110,11 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                     marginTop: 40
                 }}
             >
-                <div className="submit mx-2" style={{ marginTop: 0 }}>
-                    <CTALink
-                        href="/advanced-search"
-                        color="primary"
-                        variant="contained"
-                        style={{ paddingLeft: 40, paddingRight: 40 }}
-                        title={<span style={{ color: 'white' }}>GO</span>}
-                    />
+                <div className="submit mx-2" style={{ marginTop: 0 }}>                    
+                    <button className={clsx('btn', classes.button)}
+                        type="submit">
+                        {<span style={{ color: 'white' }}>GO</span>}
+                    </button>
                 </div>
             </div>
         </form>

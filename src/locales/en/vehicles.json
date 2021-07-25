@@ -12,6 +12,7 @@
     "filter-by": "Filter by",
     "filtered-by": "Filtered by",
     "apply-filters": "Apply filters",
+    "clear-filters": "Clear",
     "edit_filters": "Edit filters",
     "reset-filters": "Reset filters",
     "{count}_results_search" : "{{count}} search results",
@@ -219,4 +220,6 @@
     "back_to_profile" : "Back to profile",
     "i_dont_know_other" : "I don't know/Other",
     "mint" : "MINT"
+    "announce_approve" : "Announce Approve as Free",
+    "announce_count" : "Announces Count"
 }
