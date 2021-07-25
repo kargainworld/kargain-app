@@ -45,8 +45,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         const { sorter, filters, page } = state
         const { size } = props
 
-        if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
-        if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
         const params = {
             ...filters,
             sort_by: sorter.key,
@@ -69,8 +67,37 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 announces: result.rows || [],
                 total: result.total || 0,
+            }))
+            let tokensMinted = []
+
+            try {
+                let token = {}
+                for (const announce of result.rows) {
+                    let tokenId = toBN(ObjectID(announce.id).toHexString())
+                    fetchTokenPrice(tokenId)
+                        .then((price) => {
+                            token = {
+                                isMinted: !!price,
+                                tokenPrice: price,
+                                id: announce.id
+                            }
+                            console.log(token)
+                            if (token.isMinted) {
+                                tokensMinted.push(token)
+                            }
+                        })
+                        .catch((error) => {
+                        })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted,
                 loading: false
             }))
+            console.log(state.announcesMinted)
 
         } catch (err) {
             setState(state => ({
@@ -135,14 +162,31 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            return (
-                                                <Col key={index} sm={12} md={12} className="my-2">
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw}
-                                                        detailsFontSize={'13px'}
-                                                    />
-                                                </Col>
-                                            )
+                                            var exist = false
+                                            const BreakException = {}
+                                            try {
+                                                (state.announcesMinted).forEach(function (token) {
+                                                    console.log("Element : ", announceRaw.id)
+                                                    if (token.id == announceRaw.id) {
+                                                        exist = true
+                                                        console.log(true)
+                                                        throw BreakException
+                                                    }
+                                                })
+                                            } catch (e) {
+                                                if (e !== BreakException) throw e
+                                            }
+                                            console.log(exist)
+                                            if (exist) {
+                                                return (
+                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw}
+                                                            detailsFontSize={'13px'}
+                                                        />
+                                                    </Col>
+                                                )
+                                            }
                                         })}
                                     </Row>
                                 ) : (
