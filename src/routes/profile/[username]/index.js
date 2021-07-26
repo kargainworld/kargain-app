@@ -409,7 +409,8 @@ const Profile = () => {
             <TabsContainer {...{
                 state,
                 filterState,
-                updateFilters
+                updateFilters,
+                fetchAnnounces
             }} />
         </Container>
     )
@@ -430,11 +431,13 @@ const getParams = () => {
     }, {})
 }
 
-const TabsContainer = ({ state, filterState, updateFilters }) => {
+const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
     const router = useRouter()
     const classes = useStyles()
     const { t } = useTranslation()
     const { isAuthenticated } = useAuth()
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalState } = useContext(ModalContext)
     const [filtersOpened] = useState(false)
     const { profile, isSelf } = state
     const { activeTab = 0 } = getParams()
@@ -454,6 +457,7 @@ const TabsContainer = ({ state, filterState, updateFilters }) => {
 		AnnounceService.removeAnnounce(selectedSlug)
 			.then(() => {
 				dispatchModal({ msg: 'Announce successfully removed' })
+                fetchAnnounces();
 			}).catch(err => {
 				dispatchModalError({ err })
 	    })
