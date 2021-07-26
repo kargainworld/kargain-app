@@ -25,14 +25,14 @@ const useKargainContract = () => {
 
         const kargainContract = new library.eth.Contract(KargainContractData.abi, config.contract.KARGAIN_ADDRESS)
 
-        setContract(kargainContract)        
+        setContract(kargainContract)
     }, [account, library])
 
     const fetchPlatformPercent = useCallback(async () => {
         try {
             if (!contract)
                 return
-        
+
             const value = await contract.methods
                 .platformCommissionPercent().call()
 
@@ -65,11 +65,30 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
+    const makeOffer = useCallback(async (tokenId) => {
+        try {
+            if (!contract)
+                return
+
+            const tx = await contract.methods
+                .createOffer(tokenId)
+                .send({ from: account })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract, account, library])
+
     const fetchOfferExpirationTime = useCallback(async () => {
         try {
             if (!contract)
                 return
-        
+
             const value = await contract.methods
                 .offerExpirationTime().call()
 
@@ -105,7 +124,7 @@ const useKargainContract = () => {
     const fetchTokenPrice = useCallback(async (tokenId) => {
         if (!contract)
             return
-        
+
         try {
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
@@ -163,15 +182,16 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    return { 
-        contract, 
-        fetchPlatformPercent, 
-        updatePlatformPercent, 
-        fetchOfferExpirationTime, 
+    return {
+        contract,
+        fetchPlatformPercent,
+        updatePlatformPercent,
+        fetchOfferExpirationTime,
         updateOfferExpirationTime,
         fetchTokenPrice,
         mintToken,
-        updateTokenPrince
+        updateTokenPrince,
+        makeOffer
     }
 }
 
@@ -181,7 +201,7 @@ function parseBlockchainError(error) {
     let result = error
     if (error.message.includes("VM Exception while processing transaction:")) {
         const regex = /"message":"VM Exception while processing transaction: (.*?)"/
-                                                        
+
         result = new Error(regex.exec(error.message)[1].replace("revert Kargain:", "").trim())
     }
 
