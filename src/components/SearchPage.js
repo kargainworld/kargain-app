@@ -74,7 +74,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 let token = {}
                 for (const announce of result.rows) {
                     let tokenId = toBN(ObjectID(announce.id).toHexString())
-                    fetchTokenPrice(tokenId)
+                    await fetchTokenPrice(tokenId)
                         .then((price) => {
                             token = {
                                 isMinted: !!price,
@@ -163,13 +163,14 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
                                             var exist = false
+                                            var priceToken = 0
                                             const BreakException = {}
                                             try {
                                                 (state.announcesMinted).forEach(function (token) {
                                                     console.log("Element : ", announceRaw.id)
                                                     if (token.id == announceRaw.id) {
                                                         exist = true
-                                                        console.log(true)
+                                                        priceToken = token.tokenPrice
                                                         throw BreakException
                                                     }
                                                 })
@@ -182,6 +183,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                     <Col key={index} sm={12} md={12} className="my-2">
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
+                                                            tokenPrice={priceToken}
                                                             detailsFontSize={'13px'}
                                                         />
                                                     </Col>
