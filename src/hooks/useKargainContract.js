@@ -164,6 +164,7 @@ const useKargainContract = () => {
     }, [contract, account, library])
 
     return { 
+        isContractReady: contract ? true : false,
         contract, 
         fetchPlatformPercent, 
         updatePlatformPercent, 

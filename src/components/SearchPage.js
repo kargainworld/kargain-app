@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 import { Col, Container, Row } from 'reactstrap'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
@@ -20,11 +20,12 @@ import usePriceTracker from 'hooks/usePriceTracker'
 import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
 
+
 const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const { getPriceTracker } = usePriceTracker()
-    const { fetchTokenPrice } = useKargainContract()
+    const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
     const { query } = useRouter()
     const { dispatchModalError } = useContext(MessageContext)
@@ -39,7 +40,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announcesMinted: [],
         total: 0
     })
-    const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
+    const defaultFilters = query? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
@@ -67,38 +68,8 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 announces: result.rows || [],
                 total: result.total || 0,
-            }))
-            let tokensMinted = []
-
-            try {
-                let token = {}
-                for (const announce of result.rows) {
-                    let tokenId = toBN(ObjectID(announce.id).toHexString())
-                    await fetchTokenPrice(tokenId)
-                        .then((price) => {
-                            token = {
-                                isMinted: !!price,
-                                tokenPrice: price,
-                                id: announce.id
-                            }
-                            console.log(token)
-                            if (token.isMinted) {
-                                tokensMinted.push(token)
-                            }
-                        })
-                        .catch((error) => {
-                        })
-                }
-            } catch (err) {
-                console.log(err)
-            }
-            setState(state => ({
-                ...state,
-                announcesMinted: tokensMinted,
                 loading: false
             }))
-            console.log(state.announcesMinted)
-
         } catch (err) {
             setState(state => ({
                 ...state,
@@ -133,6 +104,45 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         fetchAnnounces()
         // window.scrollTo(0, 0)
     }, [fetchAnnounces])
+
+    useEffect(() => {
+        if (!isContractReady)
+            return
+
+        setState(state => ({
+            ...state,
+            loading: true
+        }))
+
+        const fetchMintedAnnounces = async() => {
+            let tokensMinted = []
+
+            try {
+                for (const announce of state.announces) {
+                    let tokenId = toBN(ObjectID(announce.id).toHexString())
+                    const price = await fetchTokenPrice(tokenId)
+
+                    const token = {
+                        isMinted: !!price,
+                        tokenPrice: price,
+                        id: announce.id
+                    }
+                    if (token.isMinted) {
+                        tokensMinted.push(token)
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted,
+                loading: false
+            }))
+        }
+
+        fetchMintedAnnounces()
+    }, [state.announces, isContractReady, fetchTokenPrice])
 
     return (
         <Container>
