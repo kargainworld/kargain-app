@@ -35,7 +35,6 @@ import Box from '@material-ui/core/Box'
 
 import Web3 from "web3"
 
-const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
@@ -70,6 +69,7 @@ const useStyles = makeStyles(() => ({
 const Announce = () => {
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
+    const [bnbBalanceWei, setBalanceWei] = useState()
     const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
@@ -87,7 +87,7 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
 
     const [state, setState] = useState({
         err: null,
@@ -101,6 +101,9 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     useEffect(() => {
+        if (!isContractReady)
+            return
+
         if (!!account && !!library) {
             let stale = false
 
@@ -110,6 +113,7 @@ const Announce = () => {
                     if (!stale) {
                         let ethBalance = web3.utils.fromWei(balance, 'ether');
                         setBalance(ethBalance)
+                        setBalanceWei(balance)
                     }
                 })
                 .catch(() => {
@@ -123,7 +127,7 @@ const Announce = () => {
                 setBalance(undefined)
             }
         }
-    }, [account, library, chainId]) //
+    }, [account, library, chainId, isContractReady]) //
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -295,12 +299,18 @@ const Announce = () => {
                                     )}
                                     {!isOwn && (
                                         <Col sm={5}>
-                                            <button onClick={async () => {
+                                            <button disabled={bnbBalance < tokenPrice} onClick={async () => {
                                                 const tokenId = state.announce.getTokenId
                                                 setIsConfirmed(false)
                                                 setError(null)
+                                                console.log(isContractReady)
+                                                console.log(bnbBalanceWei)
+                                                const weiValue = web3.utils.toWei(tokenPrice, 'ether');
+                                                console.log(weiValue)
+                                                
+                                                const task = makeOffer(tokenId, weiValue)
 
-
+                                    
                                             }}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>

@@ -65,14 +65,14 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    const makeOffer = useCallback(async (tokenId) => {
+    const makeOffer = useCallback(async (tokenId, value) => {
         try {
             if (!contract)
                 return
 
             const tx = await contract.methods
                 .createOffer(tokenId)
-                .send({ from: account })
+                .send({ from: account, value: value })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
 
