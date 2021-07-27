@@ -44,7 +44,8 @@ const useStyles = makeStyles(() => ({
         }
     },
 
-    cardTopInfos: {
+
+cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
         margin: '1rem 0'
@@ -246,7 +247,7 @@ const Announce = () => {
                             </Typography>
 
                             <div  style={{ width: '100%' }}>
-                                <Box display="flex" flexDirection="row">
+                                <Box mb={2} display="flex" flexDirection="row">
                                     {isAuthenticated && authenticatedUser.getIsPro ? (
                                         <>
                                             <span className="mx-1">
@@ -259,11 +260,11 @@ const Announce = () => {
                                         </>
                                     ) : (
                                         <Col sm={4}>
-                                            <Typography variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</Typography>
+                                            <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
                                         </Col>
                                     )}
                                     {!isOwn && (
-                                        <Col sm={4}>
+                                        <Col sm={5}>
                                             <button onClick={() => {
                                                 const tokenId = state.announce.getTokenId
                                                 {/*
@@ -286,11 +287,11 @@ const Announce = () => {
                                                 */}
 
                                             }}>
-                                                Make Offer
+                                                <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
-                                    <Col sm={4}
+                                    <Col sm={3}
                                         className="icons-star-prof"
                                         onClick={() =>
                                             dispatchModalState({
