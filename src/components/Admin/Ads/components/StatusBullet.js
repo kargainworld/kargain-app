@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import { MessageContext } from '../../../../context/MessageContext'
 import AnnounceService from '../../../../services/AnnounceService'
 import NiceSelect, { components } from 'react-select'
@@ -83,6 +83,24 @@ const StatusBullet = ({ slug, status: statusProps }) => {
             icon: <BulletPoint color={option.color}/>
         }))
 
+    const wrapperRef = useRef(null);
+    useOutsideClicked(wrapperRef);
+    
+    function useOutsideClicked(ref) {
+        useEffect(() => {
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setSelectedOption(null)
+                    setClicked(false)
+                }
+            }
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref]);
+    }
+    
     const handleUpdate = async () => {
         try {
             await AnnounceService.updateAdminAnnounce(slug, {
@@ -96,7 +114,7 @@ const StatusBullet = ({ slug, status: statusProps }) => {
     }
 
     return (
-        <div className="edit">
+        <div className="edit" ref={wrapperRef}>
             {clicked ? (
                 <div className={classes.editSelectPop}>
                     <NiceSelect
