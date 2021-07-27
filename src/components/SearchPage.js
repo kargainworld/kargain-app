@@ -32,7 +32,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
-    const [onlyMinted, setOnlyMinted] = useState(false)
+    const [onlyMinted, setOnlyMinted] = useState(true)
     const [state, setState] = useState({
         loading: true,
         sorter: {},
@@ -156,6 +156,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 </Col>
 
                 <Col sm={12} md={8}>
+                    {/*
                     <section className="cd-tab-filter-wrapper">
                         <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
                             <Sorters updateSorter={updateSorter} />
@@ -166,6 +167,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             />
                         </div>
                     </section>
+                    */}
 
                     <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
                         {state.loading ? <Loading /> : (
