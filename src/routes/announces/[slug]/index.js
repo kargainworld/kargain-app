@@ -33,6 +33,10 @@ import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 
+import Web3 from "web3"
+
+const toBN = Web3.utils.toBN
+const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
     formRow: {
@@ -45,7 +49,7 @@ const useStyles = makeStyles(() => ({
     },
 
 
-cardTopInfos: {
+    cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
         margin: '1rem 0'
@@ -65,6 +69,7 @@ cardTopInfos: {
 
 const Announce = () => {
     const { library, chainId, account, activate, active } = useWeb3React()
+    const [bnbBalance, setBalance] = useState()
     const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
@@ -82,7 +87,7 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer } = useKargainContract()
 
     const [state, setState] = useState({
         err: null,
@@ -94,6 +99,31 @@ const Announce = () => {
     })
 
     const [tried, setTried] = useState(false)
+
+    useEffect(() => {
+        if (!!account && !!library) {
+            let stale = false
+
+            web3.eth
+                .getBalance(account)
+                .then((balance) => {
+                    if (!stale) {
+                        console.log(balance)
+                        setBalance(balance)
+                    }
+                })
+                .catch(() => {
+                    if (!stale) {
+                        setBalance(null)
+                    }
+                })
+
+            return () => {
+                stale = true
+                setBalance(undefined)
+            }
+        }
+    }, [account, library, chainId]) //
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -172,7 +202,7 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-
+    
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
@@ -265,26 +295,12 @@ const Announce = () => {
                                     )}
                                     {!isOwn && (
                                         <Col sm={5}>
-                                            <button onClick={() => {
+                                            <button onClick={async () => {
                                                 const tokenId = state.announce.getTokenId
-                                                {/*
+                                                console.log(bnbBalance)
                                                 setIsConfirmed(false)
                                                 setError(null)
 
-                                                const task = !isMinted ?
-                                                    mintToken(tokenId, +tokenPrice) :
-                                                    updateTokenPrince(tokenId, +tokenPrice)
-
-                                                task.then(() => {
-                                                    setIsConfirmed(true)
-                                                    setIsMinted(true)
-                                                    dispatchModal({ msg: 'Token price confirmed!' })
-                                                }).catch((error) => {
-                                                    console.error(error)
-                                                    setError(error)
-                                                    setIsConfirmed(true)
-                                                })
-                                                */}
 
                                             }}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
