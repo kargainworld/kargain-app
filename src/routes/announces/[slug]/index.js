@@ -31,6 +31,7 @@ import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
+import Box from '@material-ui/core/Box'
 
 
 const useStyles = makeStyles(() => ({
@@ -244,8 +245,8 @@ const Announce = () => {
                                 {announce.getAnnounceTitle}
                             </Typography>
 
-                            <div className={classes.cardTopInfos}>
-                                <div className="price-announce">
+                            <div  style={{ width: '100%' }}>
+                                <Box display="flex" flexDirection="row">
                                     {isAuthenticated && authenticatedUser.getIsPro ? (
                                         <>
                                             <span className="mx-1">
@@ -257,22 +258,53 @@ const Announce = () => {
                                             </span>
                                         </>
                                     ) : (
-                                        <span>€ {(tokenPrice * priceBNB).toFixed(2)}</span>
+                                        <Col sm={4}>
+                                            <Typography variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</Typography>
+                                        </Col>
                                     )}
-                                </div>
+                                    {!isOwn && (
+                                        <Col sm={4}>
+                                            <button onClick={() => {
+                                                const tokenId = state.announce.getTokenId
+                                                {/*
+                                                setIsConfirmed(false)
+                                                setError(null)
 
-                                <div
-                                    className="icons-star-prof"
-                                    onClick={() =>
-                                        dispatchModalState({
-                                            openModalShare: true,
-                                            modalShareAnnounce: announce
-                                        })
-                                    }
-                                >
-                                    <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
-                                    <img src="/images/share.png" alt="" />
-                                </div>
+                                                const task = !isMinted ?
+                                                    mintToken(tokenId, +tokenPrice) :
+                                                    updateTokenPrince(tokenId, +tokenPrice)
+
+                                                task.then(() => {
+                                                    setIsConfirmed(true)
+                                                    setIsMinted(true)
+                                                    dispatchModal({ msg: 'Token price confirmed!' })
+                                                }).catch((error) => {
+                                                    console.error(error)
+                                                    setError(error)
+                                                    setIsConfirmed(true)
+                                                })
+                                                */}
+
+                                            }}>
+                                                Make Offer
+                                            </button>
+                                        </Col>
+                                    )}
+                                    <Col sm={4}
+                                        className="icons-star-prof"
+                                        onClick={() =>
+                                            dispatchModalState({
+                                                openModalShare: true,
+                                                modalShareAnnounce: announce
+                                            })
+                                        }
+                                    >
+                                        <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <img src="/images/share.png" alt="" />
+                                    </Col>
+                                </Box>
+
+
                             </div>
                         </div>
 
