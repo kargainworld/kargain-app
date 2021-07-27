@@ -182,11 +182,12 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    return {
-        contract,
-        fetchPlatformPercent,
-        updatePlatformPercent,
-        fetchOfferExpirationTime,
+    return { 
+        isContractReady: contract ? true : false,
+        contract, 
+        fetchPlatformPercent, 
+        updatePlatformPercent, 
+        fetchOfferExpirationTime, 
         updateOfferExpirationTime,
         fetchTokenPrice,
         mintToken,

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 import { Col, Container, Row } from 'reactstrap'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
@@ -15,29 +15,39 @@ import { useAuth } from '../context/AuthProvider'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from '../components/Loading'
 import CTALink from './CTALink'
+import useKargainContract from 'hooks/useKargainContract'
+import usePriceTracker from 'hooks/usePriceTracker'
+import Web3 from 'web3'
+import ObjectID from 'bson-objectid'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+
+const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
+    const { getPriceTracker } = usePriceTracker()
+    const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
-    const { query } = useRouter();
+    const { query } = useRouter()
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
+    const [onlyMinted, setOnlyMinted] = useState(true)
     const [state, setState] = useState({
-        loading: false,
+        loading: true,
         sorter: {},
         filters: {},
         page: 1,
         announces: [],
+        announcesMinted: [],
         total: 0
     })
-    const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
+    const defaultFilters = query? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
 
-        if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
-        if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
         const params = {
             ...filters,
             sort_by: sorter.key,
@@ -45,7 +55,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             page,
             size
         }
-        
+
         setState(state => ({
             ...state,
             loading: true
@@ -62,7 +72,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 total: result.total || 0,
                 loading: false
             }))
-
         } catch (err) {
             setState(state => ({
                 ...state,
@@ -98,6 +107,39 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         // window.scrollTo(0, 0)
     }, [fetchAnnounces])
 
+    useEffect(() => {
+        if (!isContractReady && state.announces.length > 0)
+            return
+
+        const fetchMintedAnnounces = async() => {
+            let tokensMinted = []
+
+            try {
+                for (const announce of state.announces) {
+                    let tokenId = toBN(ObjectID(announce.id).toHexString())
+                    const price = await fetchTokenPrice(tokenId)
+
+                    const token = {
+                        isMinted: !!price,
+                        tokenPrice: price,
+                        id: announce.id
+                    }
+                    if (token.isMinted) {
+                        tokensMinted.push(token)
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted
+            }))
+        }
+
+        fetchMintedAnnounces()
+    }, [state.announces, isContractReady, fetchTokenPrice])
+
     return (
         <Container>
             <NextSeo
@@ -108,17 +150,24 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             <Row>
                 <Col sm={12} md={4}>
                     <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: state.announces.length })}
+                        {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
                 <Col sm={12} md={8}>
+                    {/*
                     <section className="cd-tab-filter-wrapper">
-                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')}>
+                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
                             <Sorters updateSorter={updateSorter} />
+                            <FormControlLabel
+                                style={{ margin:0 }}
+                                control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
+                                label="Show only minted"
+                            />
                         </div>
                     </section>
+                    */}
 
                     <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
                         {state.loading ? <Loading /> : (
@@ -126,14 +175,19 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            return (
-                                                <Col key={index} sm={12} md={12} className="my-2">
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw}
-                                                        detailsFontSize={'13px'}
-                                                    />
-                                                </Col>
-                                            )
+                                            const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
+
+                                            if (!onlyMinted || announceMinted) {
+                                                return (
+                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw}
+                                                            tokenPrice={announceMinted?.tokenPrice}
+                                                            detailsFontSize={'13px'}
+                                                        />
+                                                    </Col>
+                                                )
+                                            }
                                         })}
                                     </Row>
                                 ) : (

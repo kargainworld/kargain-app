@@ -73,7 +73,7 @@ const Announce = () => {
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
-    const [priceEther, setPrice] = useState(0)
+    const [priceBNB, setPrice] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
     const [error, setError] = useState(null)
@@ -203,7 +203,7 @@ const Announce = () => {
 
         const tokenId = state.announce.getTokenId
         getPriceTracker().then((price) => {
-            setPrice(price.quotes.USD.price)
+            setPrice(price.quotes.EUR.price)
         })
 
         fetchTokenPrice(tokenId)
@@ -257,7 +257,7 @@ const Announce = () => {
                                             </span>
                                         </>
                                     ) : (
-                                        <span>{(tokenPrice * priceEther).toFixed(2)} USD</span>
+                                        <span>€ {(tokenPrice * priceBNB).toFixed(2)}</span>
                                     )}
                                 </div>
 

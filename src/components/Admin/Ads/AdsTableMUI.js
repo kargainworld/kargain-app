@@ -14,6 +14,15 @@ import StatusBullet from './components/StatusBullet'
 import VisibleBullet from './components/VisibleBullet'
 import ActivatedBullet from './components/ActivatedBullet'
 import CommentsListAdmin from '../../Comments/CommentsListAdmin'
+import { makeStyles } from "@material-ui/styles"
+
+const useStyles = makeStyles(()=>({
+    table:{
+        "& .MuiDataGrid-viewport": {
+            overflow: "unset"
+        }
+    }
+}), { name:'MUITable' })
 
 const columnsData = [
     {
@@ -177,6 +186,7 @@ const detailPanel = [
 const AdsTable = () => {
     const rowsLength = 60
     const router = useRouter()
+    const classes = useStyles()
     const { dispatchModalError } = useContext(MessageContext)
     const columns = useMemo(() => columnsData, [])
     const [loading, setLoading] = useState(false)
@@ -237,6 +247,7 @@ const AdsTable = () => {
     return (
         <>
             <TableMUI
+                className={classes.table}
                 loading={loading}
                 data={resultFetch.rows}
                 detailPanel={detailPanel}

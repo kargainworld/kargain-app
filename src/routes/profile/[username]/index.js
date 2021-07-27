@@ -457,7 +457,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
 		AnnounceService.removeAnnounce(selectedSlug)
 			.then(() => {
 				dispatchModal({ msg: 'Announce successfully removed' })
-                fetchAnnounces();
+                if(fetchAnnounces) fetchAnnounces();
 			}).catch(err => {
 				dispatchModalError({ err })
 	    })
