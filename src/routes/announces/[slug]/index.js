@@ -108,8 +108,8 @@ const Announce = () => {
                 .getBalance(account)
                 .then((balance) => {
                     if (!stale) {
-                        console.log(balance)
-                        setBalance(balance)
+                        let ethBalance = web3.utils.fromWei(balance, 'ether');
+                        setBalance(ethBalance)
                     }
                 })
                 .catch(() => {
@@ -297,7 +297,6 @@ const Announce = () => {
                                         <Col sm={5}>
                                             <button onClick={async () => {
                                                 const tokenId = state.announce.getTokenId
-                                                console.log(bnbBalance)
                                                 setIsConfirmed(false)
                                                 setError(null)
 
