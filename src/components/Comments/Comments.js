@@ -33,7 +33,7 @@ const Comments = ({ announceRaw }) => {
     await checkAuthRedirection();
     const textarea = textareaCommentRef.current;
     const message = textarea?.value;
-    textarea.value = '';
+    if(textarea)  textarea.value = '';
     try {
       const comment = await commentsService.createComment({
         announce_id: announce.getID,

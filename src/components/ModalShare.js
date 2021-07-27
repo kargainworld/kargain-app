@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 import Fade from '@material-ui/core/Fade'
@@ -11,6 +12,7 @@ import EmailInput from '../components/Form/Inputs/EmailInput'
 import AnnounceService from '../services/AnnounceService'
 import { MessageContext } from '../context/MessageContext'
 import { useAuth } from '../context/AuthProvider'
+import ro from 'date-fns/locale/ro/index.js'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -150,6 +152,7 @@ const Clipboard = () => {
 
 export default function ModalShare () {
     const classes = useStyles()
+    const router = useRouter();
     const { isAuthenticated, setForceLoginModal } = useAuth()
     const { modalStateContext, dispatchModalState } = useContext(ModalContext)
     
@@ -161,7 +164,12 @@ export default function ModalShare () {
     
     useEffect(()=> {
         if(!isAuthenticated){
-            setForceLoginModal(true)
+            console.log(router.asPath);
+            // setForceLoginModal(true)
+            router.push({
+            pathname: '/auth/login',
+            query: { redirect: router.asPath },
+            });
             dispatchModalState({
                 openModalShare : false
             })

@@ -18,7 +18,10 @@ const BooleanBullet = (value) => {
 }
 const useStyles = makeStyles(()=>({
     table:{
-        overflow:'auto!important'
+        overflow:'auto!important',
+        "& .MuiDataGrid-viewport": {
+            overflow: "unset"
+        }
     }
 }), { name:'MUITable' })
 
