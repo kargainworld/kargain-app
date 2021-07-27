@@ -185,7 +185,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         <i.MailOutline style={{ position: 'relative', top: -1 }} />
                     </Action>
 
-                    <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>
+                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
                 </SubHeader>
 
                 <Body>

@@ -19,7 +19,8 @@ import useKargainContract from 'hooks/useKargainContract'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
-
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 
 const toBN = Web3.utils.toBN
 
@@ -31,8 +32,9 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const { dispatchModalError } = useContext(MessageContext)
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
+    const [onlyMinted, setOnlyMinted] = useState(false)
     const [state, setState] = useState({
-        loading: false,
+        loading: true,
         sorter: {},
         filters: {},
         page: 1,
@@ -106,13 +108,8 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }, [fetchAnnounces])
 
     useEffect(() => {
-        if (!isContractReady)
+        if (!isContractReady && state.announces.length > 0)
             return
-
-        setState(state => ({
-            ...state,
-            loading: true
-        }))
 
         const fetchMintedAnnounces = async() => {
             let tokensMinted = []
@@ -136,8 +133,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             }
             setState(state => ({
                 ...state,
-                announcesMinted: tokensMinted,
-                loading: false
+                announcesMinted: tokensMinted
             }))
         }
 
@@ -154,15 +150,20 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             <Row>
                 <Col sm={12} md={4}>
                     <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: state.announces.length })}
+                        {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
                 <Col sm={12} md={8}>
                     <section className="cd-tab-filter-wrapper">
-                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')}>
+                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
                             <Sorters updateSorter={updateSorter} />
+                            <FormControlLabel
+                                style={{ margin:0 }}
+                                control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
+                                label="Show only minted"
+                            />
                         </div>
                     </section>
 
@@ -172,28 +173,14 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            var exist = false
-                                            var priceToken = 0
-                                            const BreakException = {}
-                                            try {
-                                                (state.announcesMinted).forEach(function (token) {
-                                                    console.log("Element : ", announceRaw.id)
-                                                    if (token.id == announceRaw.id) {
-                                                        exist = true
-                                                        priceToken = token.tokenPrice
-                                                        throw BreakException
-                                                    }
-                                                })
-                                            } catch (e) {
-                                                if (e !== BreakException) throw e
-                                            }
-                                            console.log(exist)
-                                            if (exist) {
+                                            const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
+
+                                            if (!onlyMinted || announceMinted) {
                                                 return (
                                                     <Col key={index} sm={12} md={12} className="my-2">
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
-                                                            tokenPrice={priceToken}
+                                                            tokenPrice={announceMinted?.tokenPrice}
                                                             detailsFontSize={'13px'}
                                                         />
                                                     </Col>
