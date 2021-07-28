@@ -89,6 +89,24 @@ const Announce = () => {
 
     const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
 
+    const handleMakeOffer = useCallback(() => {
+        const tokenId = state.announce.getTokenId
+        setIsConfirmed(false)
+        setError(null)
+        
+        const task = makeOffer(tokenId, tokenPrice)
+        task.then(() => {
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: 'Offer confirmed!' })
+        }).catch((error) => {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        })
+
+    }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
+
     const [state, setState] = useState({
         err: null,
         stateReady: false,
@@ -111,7 +129,7 @@ const Announce = () => {
                 .getBalance(account)
                 .then((balance) => {
                     if (!stale) {
-                        let ethBalance = web3.utils.fromWei(balance, 'ether');
+                        let ethBalance = web3.utils.fromWei(balance, 'ether')
                         setBalance(ethBalance)
                         setBalanceWei(balance)
                     }
@@ -299,19 +317,7 @@ const Announce = () => {
                                     )}
                                     {!isOwn && (
                                         <Col sm={5}>
-                                            <button disabled={bnbBalance < tokenPrice} onClick={async () => {
-                                                const tokenId = state.announce.getTokenId
-                                                setIsConfirmed(false)
-                                                setError(null)
-                                                console.log(isContractReady)
-                                                console.log(bnbBalanceWei)
-                                                const weiValue = web3.utils.toWei(tokenPrice, 'ether');
-                                                console.log(weiValue)
-                                                
-                                                const task = makeOffer(tokenId, weiValue)
-
-                                    
-                                            }}>
+                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>

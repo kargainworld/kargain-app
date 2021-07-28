@@ -6,6 +6,7 @@ import config from "../config/config"
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
 import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
+import Web3 from "web3"
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
 
@@ -69,10 +70,12 @@ const useKargainContract = () => {
         try {
             if (!contract)
                 return
+        
+            const waiPrice = Web3.utils.toWei(value.toString(), 'ether')
 
             const tx = await contract.methods
                 .createOffer(tokenId)
-                .send({ from: account, value: value })
+                .send({ from: account, value: waiPrice })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
 
@@ -129,7 +132,9 @@ const useKargainContract = () => {
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
 
-            return value.toString()
+            const price = Web3.utils.fromWei(value)
+
+            return price.toString()
         } catch (error) {
             // tokenId does not exist
             return null
@@ -145,8 +150,10 @@ const useKargainContract = () => {
                 throw new Error(`Price must be grater than zero.`)
             }
 
+            const waiPrice = Web3.utils.toWei(price.toString(), 'ether')
+
             const tx = await contract.methods
-                .mint(tokenId, price)
+                .mint(tokenId, waiPrice)
                 .send({ from: account })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
@@ -168,8 +175,10 @@ const useKargainContract = () => {
                 throw new Error(`Price must be grater than zero.`)
             }
 
+            const waiPrice = Web3.utils.toWei(price.toString(), 'ether')
+
             const tx = await contract.methods
-                .setTokenPrice(tokenId, price)
+                .setTokenPrice(tokenId, waiPrice)
                 .send({ from: account })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
