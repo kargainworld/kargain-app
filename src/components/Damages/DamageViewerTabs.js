@@ -140,7 +140,6 @@ const DamagesMappedImg = ({ tab, index, annoRefs }) => {
 const DamagesList = ({ tab }) => {
     const classes = useStyles()
     const { t } = useTranslation()
-    console.log(tab)
     return (
         <div className={clsx(classes.annoInputs)}>
             <Header h3> {t('vehicles:damages')} :</Header>
