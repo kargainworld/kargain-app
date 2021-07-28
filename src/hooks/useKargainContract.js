@@ -132,7 +132,7 @@ const useKargainContract = () => {
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
 
-            const price = Web3.utils.fromWei(value)
+            const price = Web3.utils.fromWei(value, 'ether')
 
             return price.toString()
         } catch (error) {

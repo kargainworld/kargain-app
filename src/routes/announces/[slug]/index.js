@@ -300,21 +300,9 @@ const Announce = () => {
 
                             <div  style={{ width: '100%' }}>
                                 <Box mb={2} display="flex" flexDirection="row">
-                                    {isAuthenticated && authenticatedUser.getIsPro ? (
-                                        <>
-                                            <span className="mx-1">
-                                                <strong>{announce.getPriceHT}€ HT</strong>
-                                            </span>
-                                            <span> - </span>
-                                            <span className="mx-1">
-                                                <small>{announce.getPrice}€</small>
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <Col sm={4}>
-                                            <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
-                                        </Col>
-                                    )}
+                                    <Col sm={4}>
+                                        <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                    </Col>
                                     {!isOwn && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
@@ -435,7 +423,7 @@ const Announce = () => {
                                 )}
                             </div>
                         </div>
-                        {(state.isAdmin || state.isSelf) && (
+                        {(isOwn) && (
                             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                                 <div className="icons-profile-wrapper">
 
