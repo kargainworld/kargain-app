@@ -15,6 +15,7 @@ import { useAuth } from '../context/AuthProvider'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from '../components/Loading'
 import CTALink from './CTALink'
+import { InfiniteScroll } from 'react-simple-infinite-scroll'
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const { t } = useTranslation()
@@ -27,22 +28,25 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         sorter: {},
         filters: {},
         page: 1,
+        pages: 1,
         announces: [],
-        total: 0
+        total: 0,
+        isScrollLoding: false
     })
     const defaultFilters = query? {TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType} : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
-
+        let nextPage = 1;
         if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
         if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
+        if(state.isScrollLoding) nextPage = page
         const params = {
             ...filters,
             sort_by: sorter.key,
             sort_ord: sorter.asc ? 'ASC' : null,
-            page,
+            page: nextPage,
             size
         }
         
@@ -55,17 +59,30 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             const result = fetchFeed ?
                 await AnnounceService.getFeedAnnounces(params)
                 : await AnnounceService.getSearchAnnounces(params)
-
+            let total_rows = []
+            if(state.isScrollLoding){
+                state.announces.map((row, index) => {
+                    total_rows.push(row)
+                })
+                result.rows.map((row, index) => {
+                    total_rows.push(row)
+                })
+            } else {
+                total_rows = result.rows
+            }
             setState(state => ({
                 ...state,
-                announces: result.rows || [],
+                announces: total_rows || [],
                 total: result.total || 0,
+                page: nextPage,
+                pages: result.pages || 0,
+                isScrollLoding: false,
                 loading: false
             }))
-
         } catch (err) {
             setState(state => ({
                 ...state,
+                isScrollLoding: false,
                 loading: false
             }))
             dispatchModalError({ err })
@@ -73,8 +90,11 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }, [state.page, state.filters, state.sorter])
 
     const handlePageChange = (page) => {
+        if(state.page >= state.pages) return
+        page = state.page + 1
         setState(state => ({
             ...state,
+            isScrollLoding: true,
             page
         }))
     }
@@ -121,7 +141,59 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     </section>
 
                     <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
-                        {state.loading ? <Loading /> : (
+                        <InfiniteScroll
+                            throttle={100}
+                            threshold={300}
+                            isLoading={state.loading}
+                            hasMore={!!state.total}
+                            onLoadMore={handlePageChange}
+                        >
+                            <>
+                                {state.announces.length !== 0 ? (
+                                    <Row className="my-2 d-flex justify-content-center">
+                                        {state.announces.map((announceRaw, index) => {
+                                            return (
+                                                <Col key={index} sm={12} md={12} className="my-2">
+                                                    <AnnounceCard
+                                                        announceRaw={announceRaw}
+                                                        detailsFontSize={'13px'}
+                                                    />
+                                                </Col>
+                                            )
+                                        })}
+                                    </Row>
+                                ) : (
+                                    <>
+                                        {!isAuthenticated ? (
+                                            <CTALink
+                                                title={t('layout:login')}
+                                                href="/auth/login">
+                                            </CTALink>
+                                        ) : (
+                                            <>
+                                                <div className="d-flex align-items-center my-3">
+                                                    <FindInPageIcon fontSize="default" />
+                                                    <Typography variant="h3">
+                                                        {t('layout:no_result')}
+                                                    </Typography>
+                                                </div>
+                                                <div className="text-center">
+                                                    <CTALink
+                                                        title={t('layout:news_feed')}
+                                                        href="/advanced-search">
+                                                    </CTALink>
+                                                </div>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        </InfiniteScroll>
+                        {state.loading && (
+                        <Loading />
+                        )}
+
+                        {/* {state.loading ? <Loading /> : (
                             <>
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
@@ -170,7 +242,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             pageCount={props.paginate}
                             currentPage={state.page}
                             handlePageChange={handlePageChange}
-                        />
+                        /> */}
                     </section>
                 </Col>
             </Row>
