@@ -56,9 +56,15 @@ const EditPlatformCommissionPercent = props => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
 
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal } = useContext(MessageContext)
+
+    const [isBlockchainFail, setIsBlockchainFail] = useState(false)
 
     useEffect(()=> {
+        if (isBlockchainFail) {
+            return
+        }
+
         const action = async () => {
             try {
                 const value = await fetchPlatformPercent()
@@ -68,12 +74,12 @@ const EditPlatformCommissionPercent = props => {
                 setPlatformCommissionPercent(value.toString())
             } catch (err) {
                 console.error(err)
-                dispatchModalError({ err })
+                setIsBlockchainFail(true)
             }
         } 
 
         action()
-    }, [dispatchModalError, fetchPlatformPercent])
+    }, [fetchPlatformPercent, isBlockchainFail])
 
     const handlePlatformPercentSave = async () => {
         setIsConfirmed(false)
@@ -108,8 +114,8 @@ const EditPlatformCommissionPercent = props => {
                             PLATFORM COMMISSION
                         </Typography>
                         <br /><br />
-                        {platformCommissionPercent === null && <Skeleton variant="rect" width={210} height={56} />}
-                        {platformCommissionPercent !== null && <TextField
+                        {!isBlockchainFail && platformCommissionPercent === null && <Skeleton variant="rect" width={210} height={56} />}
+                        {!isBlockchainFail && platformCommissionPercent !== null && <TextField
                             label="Percent"
                             fullWidth={true}
                             InputProps={{
@@ -134,6 +140,7 @@ const EditPlatformCommissionPercent = props => {
                             disabled={!isConfirmed}
                             variant="outlined"
                         />}
+                        {isBlockchainFail && <span>You cannot edit this value, check if you are connected to the correct network and if you are using an admin account.</span>}
                     </Grid>
                     <Grid item>
                         <Avatar className={classes.avatar}>

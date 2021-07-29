@@ -25,74 +25,168 @@ const useKargainContract = () => {
 
         const kargainContract = new library.eth.Contract(KargainContractData.abi, config.contract.KARGAIN_ADDRESS)
 
-        setContract(kargainContract)
+        setContract(kargainContract)        
     }, [account, library])
 
     const fetchPlatformPercent = useCallback(async () => {
-        if (!contract)
-            return
+        try {
+            if (!contract)
+                return
         
-        const value = await contract.methods
-            .platformCommissionPercent().call()
+            const value = await contract.methods
+                .platformCommissionPercent().call()
 
-        return value
+            return value
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
     }, [contract])
 
     const updatePlatformPercent = useCallback(async (percent) => {
-        if (!contract || !library)
-            return
+        try {
+            if (!contract || !library)
+                return
 
-        if (percent < 0 || percent > 100) {
-            throw new Error("Percent must be between 0 and 100")
-        }
+            if (percent < 0 || percent > 100) {
+                throw new Error("Percent must be between 0 and 100")
+            }
 
-        const tx = await contract.methods
-            .setPlatformCommissionPercent(percent)
-            .send({ from: account })
+            const tx = await contract.methods
+                .setPlatformCommissionPercent(percent)
+                .send({ from: account })
 
-        const receipt = await waitTransaction(library, tx.transactionHash)
+            const receipt = await waitTransaction(library, tx.transactionHash)
 
-        if (!isSuccessfulTransaction(receipt)) {
-            throw new Error("Failed to confirm the transaction")
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
         }
     }, [contract, account, library])
 
     const fetchOfferExpirationTime = useCallback(async () => {
-        if (!contract)
-            return
+        try {
+            if (!contract)
+                return
         
-        const value = await contract.methods
-            .offerExpirationTime().call()
+            const value = await contract.methods
+                .offerExpirationTime().call()
 
-        return +value.toString() / ONE_DAY // returns days
+            return +value.toString() / ONE_DAY // returns days
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
     }, [contract])
 
     const updateOfferExpirationTime = useCallback(async (days) => {
-        if (!contract || !library)
-            return
+        try {
+            if (!contract || !library)
+                return
 
-        if (days <= 0 || days > MAX_EXPIRATION_TIME_DAYS) {
-            throw new Error(`Days must be between 1 and ${MAX_EXPIRATION_TIME_DAYS} days`)
+            if (days <= 0 || days > MAX_EXPIRATION_TIME_DAYS) {
+                throw new Error(`Days must be between 1 and ${MAX_EXPIRATION_TIME_DAYS} days`)
+            }
+
+            const tx = await contract.methods
+                .setOfferExpirationTime(days * ONE_DAY)
+                .send({ from: account })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
         }
+    }, [contract, account, library])
 
-        const tx = await contract.methods
-            .setOfferExpirationTime(days * ONE_DAY)
-            .send({ from: account })
+    const fetchTokenPrice = useCallback(async (tokenId) => {
+        if (!contract)
+            return
+        
+        try {
+            const value = await contract.methods
+                .tokenPrice(tokenId).call()
 
-        const receipt = await waitTransaction(library, tx.transactionHash)
+            return value.toString()
+        } catch (error) {
+            // tokenId does not exist
+            return null
+        }
+    }, [contract])
 
-        if (!isSuccessfulTransaction(receipt)) {
-            throw new Error("Failed to confirm the transaction")
+    const mintToken = useCallback(async (tokenId, price) => {
+        try {
+            if (!contract || !library)
+                return
+
+            if (price <= 0) {
+                throw new Error(`Price must be grater than zero.`)
+            }
+
+            const tx = await contract.methods
+                .mint(tokenId, price)
+                .send({ from: account })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract, account, library])
+
+    const updateTokenPrince = useCallback(async (tokenId, price) => {
+        try {
+            if (!contract || !library)
+                return
+
+            if (price <= 0) {
+                throw new Error(`Price must be grater than zero.`)
+            }
+
+            const tx = await contract.methods
+                .setTokenPrice(tokenId, price)
+                .send({ from: account })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
         }
     }, [contract, account, library])
 
     return { 
+        isContractReady: contract ? true : false,
         contract, 
         fetchPlatformPercent, 
         updatePlatformPercent, 
         fetchOfferExpirationTime, 
-        updateOfferExpirationTime 
+        updateOfferExpirationTime,
+        fetchTokenPrice,
+        mintToken,
+        updateTokenPrince
     }
 }
 
 export default useKargainContract
+
+function parseBlockchainError(error) {
+    let result = error
+    if (error.message.includes("VM Exception while processing transaction:")) {
+        const regex = /"message":"VM Exception while processing transaction: (.*?)"/
+                                                        
+        result = new Error(regex.exec(error.message)[1].replace("revert Kargain:", "").trim())
+    }
+
+    console.log("error", error, result)
+
+    return result
+}

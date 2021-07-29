@@ -6,11 +6,12 @@ import useTranslation from 'next-translate/useTranslation'
 import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { fade, makeStyles } from '@material-ui/core/styles'
-import {AppBar,  MenuItem, Menu, IconButton, Toolbar} from "@material-ui/core"
+import { AppBar,  MenuItem, Menu, IconButton, Toolbar } from "@material-ui/core"
 import Typography from '@material-ui/core/Typography'
 import theme from '../../../theme'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useAuth } from '../../../context/AuthProvider'
+import Blockchain from "components/Blockchain/blockchain"
 
 const drawerWidth = 240
 
@@ -90,10 +91,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const TopBar = ({handleDrawerToggle, open, ...props}) => {
+const TopBar = ({ handleDrawerToggle, open, ...props }) => {
     const classes = useStyles()
     const { t } = useTranslation()
-    const {className, onClickTogglerNav, ...rest} = props
+    const { className, onClickTogglerNav, ...rest } = props
     const { logout } = useAuth()
     const menuId = 'primary-search-account-menu'
     const mobileMenuId = 'primary-search-account-menu-mobile'
@@ -226,11 +227,12 @@ const TopBar = ({handleDrawerToggle, open, ...props}) => {
                             className="decoration-none"
                             variant="h3"
                             noWrap
-                            style={{color : theme.palette.white}}>
+                            style={{ color : theme.palette.white, marginTop: 0, marginRight: "1rem" }}>
                             Kargain Admin
                         </Typography>
                     </Link>
-                    <div style={{flexGrow: 1}}/>
+                    <Blockchain />
+                    <div style={{ flexGrow: 1 }}/>
                     <div className={classes.sectionDesktop}>
                         {/*<IconButton aria-label="show 4 new mails" color="inherit">*/}
                         {/*    <Badge badgeContent={4} color="secondary">*/}
