@@ -93,7 +93,7 @@ const useKargainContract = () => {
                 return
 
             const value = await contract.methods
-                .offerExpirationTime().call()
+                .offerExpiration().call()
 
             return +value.toString() / ONE_DAY // returns days
         } catch (error) {
@@ -135,6 +135,21 @@ const useKargainContract = () => {
             const price = Web3.utils.fromWei(value, 'ether')
 
             return price.toString()
+        } catch (error) {
+            // tokenId does not exist
+            return null
+        }
+    }, [contract])
+
+    const offerExpired = useCallback(async (tokenId) => {
+        if (!contract)
+            return
+
+        try {
+            const value = await contract.methods
+                .offerExpiration(tokenId).call()
+
+            return value
         } catch (error) {
             // tokenId does not exist
             return null
@@ -201,7 +216,8 @@ const useKargainContract = () => {
         fetchTokenPrice,
         mintToken,
         updateTokenPrince,
-        makeOffer
+        makeOffer,
+        offerExpired
     }
 }
 

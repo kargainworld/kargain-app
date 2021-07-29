@@ -69,6 +69,7 @@ const useStyles = makeStyles(() => ({
 const Announce = () => {
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
+    const [offerExist, setOfferExist] = useState(false)
     const [bnbBalanceWei, setBalanceWei] = useState()
     const refImg = useRef()
     const classes = useStyles()
@@ -87,7 +88,7 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, offerExpired } = useKargainContract()
 
     const handleMakeOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
@@ -154,8 +155,16 @@ const Announce = () => {
                     fetchTokenPrice(state.announce.getTokenId)
                         .then((price) => {
                             setTokenPrice(price)
-                            setIsLoading(false)
                             setIsMinted(price ? true : false)
+                            offerExpired(state.announce.getTokenId)
+                                .then((exist) => {
+                                    setOfferExist(exist)
+                                    console.log(exist)
+                                    setIsLoading(false)                            
+                                })
+                                .catch(() => {
+                                    setIsLoading(false)
+                                })
                         })
                         .catch(() => {
                             setIsLoading(false)

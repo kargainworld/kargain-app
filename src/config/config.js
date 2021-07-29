@@ -24,6 +24,6 @@ module.exports = {
         }
     },
     contract: {
-        KARGAIN_ADDRESS: '0x98b836d740bF07fdBeD9F8D4855A6314c4ac5116'
+        KARGAIN_ADDRESS: '0xd607507bd3d4787e13eBbB96347D779C004FB57F'
     }
 }
