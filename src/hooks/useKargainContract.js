@@ -146,12 +146,13 @@ const useKargainContract = () => {
             return
 
         try {
+            console.log(tokenId)
             const value = await contract.methods
                 .offerExpiration(tokenId).call()
 
             return value
         } catch (error) {
-            // tokenId does not exist
+            console.log('entro')
             return null
         }
     }, [contract])

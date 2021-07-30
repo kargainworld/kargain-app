@@ -94,7 +94,7 @@ const Announce = () => {
         const tokenId = state.announce.getTokenId
         setIsConfirmed(false)
         setError(null)
-        
+
         const task = makeOffer(tokenId, tokenPrice)
         task.then(() => {
             setIsConfirmed(true)
@@ -149,6 +149,10 @@ const Announce = () => {
     }, [account, library, chainId, isContractReady]) //
 
     useEffect(() => {
+
+        if (!isContractReady)
+            return
+
         injected.isAuthorized().then((isAuthorized) => {
             if (isAuthorized) {
                 activate(injected, undefined, true).then(() =>{
@@ -160,7 +164,7 @@ const Announce = () => {
                                 .then((exist) => {
                                     setOfferExist(exist)
                                     console.log(exist)
-                                    setIsLoading(false)                            
+                                    setIsLoading(false)
                                 })
                                 .catch(() => {
                                     setIsLoading(false)
@@ -169,6 +173,8 @@ const Announce = () => {
                         .catch(() => {
                             setIsLoading(false)
                         })
+
+
                 }).catch(() => {
                     setTried(true)
                 })
@@ -176,7 +182,7 @@ const Announce = () => {
                 setTried(true)
             }
         })
-    }, [])
+    }, [isContractReady])
 
     useEffect(() => {
         if (!tried && active) {
@@ -233,7 +239,7 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-    
+
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
