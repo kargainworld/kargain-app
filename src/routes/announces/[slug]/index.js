@@ -160,15 +160,19 @@ const Announce = () => {
                         .then((price) => {
                             setTokenPrice(price)
                             setIsMinted(price ? true : false)
-                            offerExpired(state.announce.getTokenId)
-                                .then((exist) => {
-                                    setOfferExist(exist)
-                                    console.log(exist)
+
+                            const fetchOfferExpired = async() => {
+                                try {
+                                    const status = await offerExpired(state.announce.getTokenId)
+                                    console.log(status)
+                                    setOfferExist(status)
+                                }
+                                catch (e) {
                                     setIsLoading(false)
-                                })
-                                .catch(() => {
-                                    setIsLoading(false)
-                                })
+                                }
+                            }
+                            setIsLoading(false)
+                            fetchOfferExpired()
                         })
                         .catch(() => {
                             setIsLoading(false)
@@ -182,7 +186,7 @@ const Announce = () => {
                 setTried(true)
             }
         })
-    }, [isContractReady])
+    }, [state.announces, isContractReady, offerExpired])
 
     useEffect(() => {
         if (!tried && active) {
