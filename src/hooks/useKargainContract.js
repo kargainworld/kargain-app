@@ -48,7 +48,7 @@ const useKargainContract = () => {
             if (!contract || !library)
                 return
 
-            const value = contract.events.OfferReceived()
+            const value = contract.events.OfferAccepted()
                 .on('data', (event) => {
                     console.log(event)
                     console.log('entro')
