@@ -44,13 +44,23 @@ const useKargainContract = () => {
     }, [contract])
 
     const watchOfferEvent = useCallback(async () => {
-        contract.events.OfferReceived({
-            fromBlock: 0,
-            toBlock: 'latest'
-        }, async (error,result) => {
-            console.log(result)
-        })
-    })
+        try {
+            if (!contract || !library)
+                return
+
+            const value = contract.events.OfferReceived()
+                .on('data', (event) => {
+                    console.log(event)
+                    console.log('entro')
+                })
+                .on('error', console.error)
+
+            return value
+        }
+        catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract])
 
     const updatePlatformPercent = useCallback(async (percent) => {
         try {

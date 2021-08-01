@@ -87,13 +87,13 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent } = useKargainContract()
 
     const handleMakeOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
         setIsConfirmed(false)
         setError(null)
-        
+
         const task = makeOffer(tokenId, tokenPrice)
         task.then(() => {
             setIsConfirmed(true)
@@ -106,6 +106,19 @@ const Announce = () => {
         })
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
+
+    const handleOfferReceived = useCallback(() => {
+        const task = watchOfferEvent()
+        task.then((data) => {
+            //dispatchModal({ msg: 'Offer received!' })
+            console.log(data)
+        }).catch((error) => {
+            console.error(error)
+            setError(error)
+        })
+
+    }, [isContractReady, watchOfferEvent])
+
 
     const [state, setState] = useState({
         err: null,
@@ -224,7 +237,7 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-    
+
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
@@ -248,7 +261,8 @@ const Announce = () => {
 
     useEffect(() => {
         fetchAnnounce()
-    }, [fetchAnnounce])
+        handleOfferReceived()
+    }, [fetchAnnounce, handleOfferReceived])
 
     useEffect(() => {
         if (!state.stateReady) return
