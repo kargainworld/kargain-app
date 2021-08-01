@@ -31,7 +31,11 @@ import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
+import Box from '@material-ui/core/Box'
 
+import Web3 from "web3"
+
+const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
     formRow: {
@@ -42,6 +46,7 @@ const useStyles = makeStyles(() => ({
             flex: 1
         }
     },
+
 
     cardTopInfos: {
         display: 'flex',
@@ -63,6 +68,8 @@ const useStyles = makeStyles(() => ({
 
 const Announce = () => {
     const { library, chainId, account, activate, active } = useWeb3React()
+    const [bnbBalance, setBalance] = useState()
+    const [bnbBalanceWei, setBalanceWei] = useState()
     const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
@@ -80,7 +87,25 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
+
+    const handleMakeOffer = useCallback(() => {
+        const tokenId = state.announce.getTokenId
+        setIsConfirmed(false)
+        setError(null)
+        
+        const task = makeOffer(tokenId, tokenPrice)
+        task.then(() => {
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: 'Offer confirmed!' })
+        }).catch((error) => {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        })
+
+    }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
     const [state, setState] = useState({
         err: null,
@@ -92,6 +117,35 @@ const Announce = () => {
     })
 
     const [tried, setTried] = useState(false)
+
+    useEffect(() => {
+        if (!isContractReady)
+            return
+
+        if (!!account && !!library) {
+            let stale = false
+
+            web3.eth
+                .getBalance(account)
+                .then((balance) => {
+                    if (!stale) {
+                        let ethBalance = web3.utils.fromWei(balance, 'ether')
+                        setBalance(ethBalance)
+                        setBalanceWei(balance)
+                    }
+                })
+                .catch(() => {
+                    if (!stale) {
+                        setBalance(null)
+                    }
+                })
+
+            return () => {
+                stale = true
+                setBalance(undefined)
+            }
+        }
+    }, [account, library, chainId, isContractReady]) //
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -170,7 +224,7 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-
+    
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
@@ -244,35 +298,33 @@ const Announce = () => {
                                 {announce.getAnnounceTitle}
                             </Typography>
 
-                            <div className={classes.cardTopInfos}>
-                                <div className="price-announce">
-                                    {isAuthenticated && authenticatedUser.getIsPro ? (
-                                        <>
-                                            <span className="mx-1">
-                                                <strong>{announce.getPriceHT}€ HT</strong>
-                                            </span>
-                                            <span> - </span>
-                                            <span className="mx-1">
-                                                <small>{announce.getPrice}€</small>
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <span>€ {(tokenPrice * priceBNB).toFixed(2)}</span>
+                            <div  style={{ width: '100%' }}>
+                                <Box mb={2} display="flex" flexDirection="row">
+                                    <Col sm={4}>
+                                        <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                    </Col>
+                                    {!isOwn && (
+                                        <Col sm={5}>
+                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
+                                                <h4>{t('vehicles:makeOffer')}</h4>
+                                            </button>
+                                        </Col>
                                     )}
-                                </div>
+                                    <Col sm={3}
+                                        className="icons-star-prof"
+                                        onClick={() =>
+                                            dispatchModalState({
+                                                openModalShare: true,
+                                                modalShareAnnounce: announce
+                                            })
+                                        }
+                                    >
+                                        <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <img src="/images/share.png" alt="" />
+                                    </Col>
+                                </Box>
 
-                                <div
-                                    className="icons-star-prof"
-                                    onClick={() =>
-                                        dispatchModalState({
-                                            openModalShare: true,
-                                            modalShareAnnounce: announce
-                                        })
-                                    }
-                                >
-                                    <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
-                                    <img src="/images/share.png" alt="" />
-                                </div>
+
                             </div>
                         </div>
 
@@ -371,7 +423,7 @@ const Announce = () => {
                                 )}
                             </div>
                         </div>
-                        {(state.isAdmin || state.isSelf) && (
+                        {(isOwn) && (
                             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
                                 <div className="icons-profile-wrapper">
 

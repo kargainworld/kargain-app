@@ -6,6 +6,7 @@ import config from "../config/config"
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
 import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
+import Web3 from "web3"
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
 
@@ -25,14 +26,14 @@ const useKargainContract = () => {
 
         const kargainContract = new library.eth.Contract(KargainContractData.abi, config.contract.KARGAIN_ADDRESS)
 
-        setContract(kargainContract)        
+        setContract(kargainContract)
     }, [account, library])
 
     const fetchPlatformPercent = useCallback(async () => {
         try {
             if (!contract)
                 return
-        
+
             const value = await contract.methods
                 .platformCommissionPercent().call()
 
@@ -65,11 +66,32 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    const fetchOfferExpirationTime = useCallback(async () => {
+    const makeOffer = useCallback(async (tokenId, value) => {
         try {
             if (!contract)
                 return
         
+            const waiPrice = Web3.utils.toWei(value.toString(), 'ether')
+
+            const tx = await contract.methods
+                .createOffer(tokenId)
+                .send({ from: account, value: waiPrice })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract, account, library])
+
+    const fetchOfferExpirationTime = useCallback(async () => {
+        try {
+            if (!contract)
+                return
+
             const value = await contract.methods
                 .offerExpirationTime().call()
 
@@ -105,12 +127,14 @@ const useKargainContract = () => {
     const fetchTokenPrice = useCallback(async (tokenId) => {
         if (!contract)
             return
-        
+
         try {
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
 
-            return value.toString()
+            const price = Web3.utils.fromWei(value, 'ether')
+
+            return price.toString()
         } catch (error) {
             // tokenId does not exist
             return null
@@ -126,8 +150,10 @@ const useKargainContract = () => {
                 throw new Error(`Price must be grater than zero.`)
             }
 
+            const waiPrice = Web3.utils.toWei(price.toString(), 'ether')
+
             const tx = await contract.methods
-                .mint(tokenId, price)
+                .mint(tokenId, waiPrice)
                 .send({ from: account })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
@@ -149,8 +175,10 @@ const useKargainContract = () => {
                 throw new Error(`Price must be grater than zero.`)
             }
 
+            const waiPrice = Web3.utils.toWei(price.toString(), 'ether')
+
             const tx = await contract.methods
-                .setTokenPrice(tokenId, price)
+                .setTokenPrice(tokenId, waiPrice)
                 .send({ from: account })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
@@ -172,7 +200,8 @@ const useKargainContract = () => {
         updateOfferExpirationTime,
         fetchTokenPrice,
         mintToken,
-        updateTokenPrince
+        updateTokenPrince,
+        makeOffer
     }
 }
 
@@ -182,7 +211,7 @@ function parseBlockchainError(error) {
     let result = error
     if (error.message.includes("VM Exception while processing transaction:")) {
         const regex = /"message":"VM Exception while processing transaction: (.*?)"/
-                                                        
+
         result = new Error(regex.exec(error.message)[1].replace("revert Kargain:", "").trim())
     }
 
