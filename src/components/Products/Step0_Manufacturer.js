@@ -100,7 +100,9 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 		if (!make) return
 		if (!cache.current[cacheKey]) {
 			
-			const modelsService = VehiclesService.getMakeModels
+			// const modelsService = VehiclesService.getMakeModels
+			const modelsService = isCar ? VehiclesService.getCarsDistinctModels
+			: VehiclesService.getMakeModels
 
 			await modelsService(vehicleTypeModel, make)
 				.then(models => {
@@ -108,11 +110,19 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 					if (!Array.isArray(models)) models = [models]
 					let modelsOptions = []
 
-					modelsOptions = models.map(model => ({
-						value: model._id,
-						label: model.model
-					}))
-
+					if (isCar) {
+						modelsOptions = models.map(model => ({
+							value: model,
+							label: model
+						}))
+					}
+					else {
+						modelsOptions = models.map(model => ({
+							value: model._id,
+							label: model.model
+						}))
+					}
+					
 					const defaultOption = {
 						value: 'other',
 						label: t(`vehicles:i_dont_know_other`)
