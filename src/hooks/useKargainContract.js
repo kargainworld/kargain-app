@@ -43,6 +43,15 @@ const useKargainContract = () => {
         }
     }, [contract])
 
+    const watchOfferEvent = useCallback(async () => {
+        contract.events.OfferReceived({
+            fromBlock: 0,
+            toBlock: 'latest'
+        }, async (error,result) => {
+            console.log(result)
+        })
+    })
+
     const updatePlatformPercent = useCallback(async (percent) => {
         try {
             if (!contract || !library)
@@ -70,7 +79,7 @@ const useKargainContract = () => {
         try {
             if (!contract)
                 return
-        
+
             const waiPrice = Web3.utils.toWei(value.toString(), 'ether')
 
             const tx = await contract.methods
@@ -141,6 +150,17 @@ const useKargainContract = () => {
         }
     }, [contract])
 
+    const acceptOffer = useCallback(async (tokenId) => {
+        try {
+            if (!contract || !library)
+                return
+
+
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract, account, library])
+
     const mintToken = useCallback(async (tokenId, price) => {
         try {
             if (!contract || !library)
@@ -191,17 +211,19 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
-    return { 
+    return {
         isContractReady: contract ? true : false,
-        contract, 
-        fetchPlatformPercent, 
-        updatePlatformPercent, 
-        fetchOfferExpirationTime, 
+        contract,
+        fetchPlatformPercent,
+        updatePlatformPercent,
+        fetchOfferExpirationTime,
         updateOfferExpirationTime,
         fetchTokenPrice,
         mintToken,
         updateTokenPrince,
-        makeOffer
+        makeOffer,
+        watchOfferEvent,
+        acceptOffer
     }
 }
 
