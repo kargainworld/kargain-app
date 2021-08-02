@@ -32,8 +32,10 @@ import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
+import ObjectID from 'bson-objectid'
 
 import Web3 from "web3"
+const toBN = Web3.utils.toBN
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -108,7 +110,8 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
     const handleOfferReceived = useCallback(() => {
-        const task = watchOfferEvent()
+        console.log(announce.getID)
+        const task = watchOfferEvent(announce.getID)
         task.then((data) => {
             //dispatchModal({ msg: 'Offer received!' })
             console.log(data)

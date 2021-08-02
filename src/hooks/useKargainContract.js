@@ -2,6 +2,7 @@
 
 import KargainContractData from "../config/Kargain.json"
 import config from "../config/config"
+import ObjectID from 'bson-objectid'
 
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
@@ -9,6 +10,7 @@ import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
 import Web3 from "web3"
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
+const toBN = Web3.utils.toBN
 
 const MAX_EXPIRATION_TIME_DAYS = 266
 
@@ -43,7 +45,7 @@ const useKargainContract = () => {
         }
     }, [contract])
 
-    const watchOfferEvent = useCallback(async () => {
+    const watchOfferEvent = useCallback(async (tokenId) => {
         try {
             if (!contract || !library)
                 return
@@ -54,7 +56,10 @@ const useKargainContract = () => {
                     fromBlock: START_BLOCK,
                     toBlock: 'latest' // You can also specify 'latest'
                 })
-                .then(events => console.log(events))
+                .then(events => {
+                    console.log(events[0].returnValues.tokenId)
+                    console.log(tokenId)
+                })
                 .catch((err) => console.error(err))
             return events
         }
