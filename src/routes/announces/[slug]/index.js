@@ -93,6 +93,8 @@ const Announce = () => {
 
     const handleMakeOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
+        console.log(state.announce.getID)
+        console.log(state.announce.getTokenId)
         setIsConfirmed(false)
         setError(null)
 

@@ -172,7 +172,8 @@ const useKargainContract = () => {
                 return
 
             const tx = await contract.methods
-                .acceptOffer(tokenId).call()
+                .acceptOffer(tokenId)
+                .send({ from: account })
 
             const receipt = await waitTransaction(library, tx.transactionHash)
 
