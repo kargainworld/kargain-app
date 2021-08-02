@@ -171,6 +171,14 @@ const useKargainContract = () => {
             if (!contract || !library)
                 return
 
+            const tx = await contract.methods
+                .acceptOffer(tokenId).call()
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
 
         } catch (error) {
             throw parseBlockchainError(error)

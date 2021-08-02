@@ -209,6 +209,7 @@
     "garage" : "Garage",
     "moto" : "Motorbike",
     "car" : "Car",
+    "acceptOffer": "Accept Offer",
     "utility" : "Utility",
     "camper" : "Camper",
     "message" : "Message",

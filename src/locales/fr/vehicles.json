@@ -209,6 +209,7 @@
   "car" : "Voiture",
   "utility" : "Utilitaire",
   "camper" : "Camping car",
+  "acceptOffer": "Accepter l'offre",
   "message" : "Message",
   "messaging" : "Messagerie",
   "no_conversations_yet" : "Pas de conversation pour le moment",

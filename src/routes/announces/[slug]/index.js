@@ -89,7 +89,7 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, acceptOffer } = useKargainContract()
 
     const handleMakeOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
@@ -108,6 +108,23 @@ const Announce = () => {
         })
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
+
+    const handleAcceptOffer = useCallback(() => {
+        const tokenId = state.announce.getTokenId
+        setIsConfirmed(false)
+        setError(null)
+
+        const task = acceptOffer(tokenId)
+        task.then(() => {
+            setIsConfirmed(true)
+            dispatchModal({ msg: 'Offer accepted confirmed!' })
+        }).catch((error) => {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        })
+
+    }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
     const handleOfferReceived = useCallback(() => {
         console.log(announce.getID)
@@ -324,6 +341,13 @@ const Announce = () => {
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
+                                            </button>
+                                        </Col>
+                                    )}
+                                    {isOwn && (
+                                        <Col sm={5}>
+                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
+                                                <h4>{t('vehicles:acceptOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
