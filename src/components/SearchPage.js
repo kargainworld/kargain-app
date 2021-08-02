@@ -180,7 +180,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 </Col>
 
                 <Col sm={12} md={8}>
-                    {/*
+
                     <section className="cd-tab-filter-wrapper">
                         <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
                             <Sorters updateSorter={updateSorter} />
@@ -191,7 +191,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             />
                         </div>
                     </section>
-                    */}
+
 
                     <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
                         <InfiniteScroll
@@ -205,17 +205,22 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <Row className="my-2 d-flex justify-content-center">
                                         {state.announces.map((announceRaw, index) => {
-                                            return (
-                                                <Col key={index} sm={12} md={12} className="my-2">
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw}
-                                                        detailsFontSize={'13px'}
-                                                    />
-                                                </Col>
-                                            )
+                                            const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
+
+                                            if (!onlyMinted || announceMinted) {
+                                                return (
+                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw}
+                                                            tokenPrice={announceMinted?.tokenPrice}
+                                                            detailsFontSize={'13px'}
+                                                        />
+                                                    </Col>
+                                                )
+                                            }
                                         })}
                                     </Row>
-                                ) : (
+                                ): (
                                     <>
                                         {!isAuthenticated ? (
                                             <CTALink
