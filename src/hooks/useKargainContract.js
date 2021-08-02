@@ -48,14 +48,15 @@ const useKargainContract = () => {
             if (!contract || !library)
                 return
 
-            const value = contract.events.OfferAccepted()
-                .on('data', (event) => {
-                    console.log(event)
-                    console.log('entro')
+            const START_BLOCK = 0
+            const events = contract.getPastEvents("OfferReceived",
+                {
+                    fromBlock: START_BLOCK,
+                    toBlock: 'latest' // You can also specify 'latest'
                 })
-                .on('error', console.error)
-
-            return value
+                .then(events => console.log(events))
+                .catch((err) => console.error(err))
+            return events
         }
         catch (error) {
             throw parseBlockchainError(error)
