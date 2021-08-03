@@ -473,13 +473,13 @@ const Announce = () => {
                                     {!isLoading && (
                                         <div style={{ display: "flex", gap: 5 }}>
                                             <TextField
-                                                label="Token price"
+                                                label={t('vehicles:tokenPrice')}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
                                                 value={tokenPrice}
                                                 type="number"
                                                 InputLabelProps={{ shrink: true }}
                                                 error={!!error}
-                                                helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
+                                                helperText={error ? error.message : (!isConfirmed && t('vehicles:waitingConfirmation'))}
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
@@ -496,7 +496,7 @@ const Announce = () => {
                                                 task.then(() => {
                                                     setIsConfirmed(true)
                                                     setIsMinted(true)
-                                                    dispatchModal({ msg: 'Token price confirmed!' })
+                                                    dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
                                                 }).catch((error) => {
                                                     console.error(error)
                                                     setError(error)
