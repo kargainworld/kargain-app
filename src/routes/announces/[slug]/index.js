@@ -102,7 +102,7 @@ const Announce = () => {
         task.then(() => {
             setIsConfirmed(true)
             setIsMinted(true)
-            dispatchModal({ msg: 'Offer confirmed!' })
+            dispatchModal({ msg: t('vehicles:offerConfirmed') })
         }).catch((error) => {
             console.error(error)
             setError(error)
@@ -119,7 +119,7 @@ const Announce = () => {
         const task = acceptOffer(tokenId)
         task.then(() => {
             setIsConfirmed(true)
-            dispatchModal({ msg: 'Offer accepted confirmed!' })
+            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
         }).catch((error) => {
             console.error(error)
             setError(error)

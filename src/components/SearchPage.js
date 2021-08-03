@@ -187,7 +187,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             <FormControlLabel
                                 style={{ margin:0 }}
                                 control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
-                                label="Show only minted"
+                                label={t('vehicles:showOnlyMinted')}
                             />
                         </div>
                     </section>
@@ -248,7 +248,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             </>
                         </InfiniteScroll>
                         {state.loading && (
-                        <Loading />
+                            <Loading />
                         )}
 
                         {/* {state.loading ? <Loading /> : (
