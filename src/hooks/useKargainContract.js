@@ -68,6 +68,29 @@ const useKargainContract = () => {
         }
     }, [contract])
 
+    const watchOfferAccepted = useCallback(async (tokenId) => {
+        try {
+            if (!contract || !library)
+                return
+
+            const START_BLOCK = 0
+            const events = contract.getPastEvents("OfferAccepted",
+                {
+                    fromBlock: START_BLOCK,
+                    toBlock: 'latest' // You can also specify 'latest'
+                })
+                .then(events => {
+                    console.log(events[0].returnValues.tokenId)
+                    console.log(tokenId)
+                })
+                .catch((err) => console.error(err))
+            return events
+        }
+        catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract])
+
     const updatePlatformPercent = useCallback(async (percent) => {
         try {
             if (!contract || !library)
@@ -186,6 +209,26 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
+    const rejectOffer = useCallback(async (tokenId) => {
+        try {
+            if (!contract || !library)
+                return
+
+            const tx = await contract.methods
+                .rejectOffer(tokenId)
+                .send({ from: account })
+
+            const receipt = await waitTransaction(library, tx.transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract, account, library])
+
     const mintToken = useCallback(async (tokenId, price) => {
         try {
             if (!contract || !library)
@@ -248,7 +291,9 @@ const useKargainContract = () => {
         updateTokenPrince,
         makeOffer,
         watchOfferEvent,
-        acceptOffer
+        watchOfferAccepted,
+        acceptOffer,
+        rejectOffer
     }
 }
 
