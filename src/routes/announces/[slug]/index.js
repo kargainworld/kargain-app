@@ -128,6 +128,23 @@ const Announce = () => {
 
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
+    const handleRejectOffer = useCallback(() => {
+        const tokenId = state.announce.getTokenId
+        setIsConfirmed(false)
+        setError(null)
+
+        const task = rejectOffer(tokenId)
+        task.then(() => {
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:rejectedOffer') })
+        }).catch((error) => {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        })
+
+    }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
+
     const handleOfferReceived = useCallback(() => {
         console.log(announce.getID)
         const task = watchOfferEvent(announce.getID)
@@ -347,11 +364,18 @@ const Announce = () => {
                                         </Col>
                                     )}
                                     {isOwn && (
-                                        <Col sm={5}>
-                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
-                                                <h4>{t('vehicles:acceptOffer')}</h4>
-                                            </button>
-                                        </Col>
+                                        <Row>
+                                            <Col sm={5}>
+                                                <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
+                                                    <h5>{t('vehicles:acceptOffer')}</h5>
+                                                </button>
+                                            </Col>
+                                            <Col sm={5}>
+                                                <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
+                                                    <h5>{t('vehicles:rejectOffer')}</h5>
+                                                </button>
+                                            </Col>
+                                        </Row>
                                     )}
                                     <Col sm={3}
                                         className="icons-star-prof"
