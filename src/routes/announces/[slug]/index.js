@@ -409,7 +409,8 @@ const Announce = () => {
                                     onClick={() =>
                                         dispatchModalState({
                                             openModalMessaging: true,
-                                            modalMessagingProfile: announce.getAuthor
+                                            modalMessagingProfile: announce.getAuthor,
+                                            modalMessaginAnnounce: announce
                                         })
                                     }
                                 >

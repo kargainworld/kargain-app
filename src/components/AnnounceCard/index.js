@@ -178,7 +178,8 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         onClick={() =>
                             dispatchModalState({
                                 openModalMessaging: true,
-                                modalMessagingProfile: announce.getAuthor
+                                modalMessagingProfile: announce.getAuthor,
+                                modalMessaginAnnounce: announce
                             })
                         }
                     >

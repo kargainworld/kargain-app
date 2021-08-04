@@ -1,5 +1,6 @@
 import React, { useReducer, createContext } from 'react'
 import UserModel from '../models/user.model'
+import AnnounceModel from '../models/announce.model'
 
 const defaultValues = {
     //followersModal
@@ -15,6 +16,7 @@ const defaultValues = {
     //MessagingModal
     openModalMessaging : false,
     modalMessagingProfile : new UserModel(),
+    modalMessaginAnnounce : new AnnounceModel(),
     isOwner: false,
     handleUnSubscription: () => {}
 }
