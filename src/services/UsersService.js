@@ -228,6 +228,7 @@ export default {
     uploadAvatar,
     removeAvatar,
     followUser,
+    getUsernameByWallet,
     unFollowUser,
     subscribeNewsletter,
     contact,

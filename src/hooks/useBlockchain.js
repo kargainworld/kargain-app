@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import { useWeb3React } from "@web3-react/core"
 import UsersService from '../services/UsersService'
-import UserModel from '../models/user.model'
 import { injected } from "../connectors"
 import { MessageContext } from "../context/MessageContext"
 import { useAuth } from "../context/AuthProvider"
@@ -10,25 +9,22 @@ export function useEagerConnect() {
     const { activate, active, account } = useWeb3React()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const [tried, setTried] = useState(false)
-    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
+    const { authenticatedUser } = useAuth()
 
     useEffect(() => {
         injected.isAuthorized().then(isAuthorized => {
             if (isAuthorized) {
                 let user = authenticatedUser
                 user.raw.wallet = account
-                //console.log(user)
-                /**
+
                 UsersService.updateUser(user)
-                    .then(() => {
-                        dispatchModal({
-                            msg: 'User successfully updated'
-                        })
+                    .then((response) => {
+                        //console.log(response)
                     }).catch(err => {
                         dispatchModalError({ err })
                     })
                 console.log(isAuthorized)
-                 **/
+
                 activate(injected, undefined, true).catch(() => {
                     setTried(true)
                 })

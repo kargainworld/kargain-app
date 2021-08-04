@@ -33,8 +33,10 @@ import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import ObjectID from 'bson-objectid'
+import UsersService from '../../../services/UsersService'
 
 import Web3 from "web3"
+import UserModel from "../../../models/user.model";
 const toBN = Web3.utils.toBN
 
 const web3 = new Web3(Web3.givenProvider)
@@ -158,6 +160,15 @@ const Announce = () => {
 
     }, [isContractReady, watchOfferEvent])
 
+    const fetchOwner = useCallback(async () => {
+        try{
+            const result = await UsersService.getUsernameByWallet()
+
+        } catch (err) {
+            console.log(err)
+        }
+    },[])
+
 
     const [state, setState] = useState({
         err: null,
@@ -171,6 +182,7 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     useEffect(() => {
+        console.log(authenticatedUser)
         if (!isContractReady)
             return
 
