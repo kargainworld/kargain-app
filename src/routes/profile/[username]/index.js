@@ -113,7 +113,15 @@ const Profile = () => {
     const profile = state.profile
 
     const handleFollowProfile = async () => {
-        if (!isAuthenticated) return setForceLoginModal(true)
+        if (!isAuthenticated) {
+            console.log(router.asPath);
+            router.push({
+                pathname: '/auth/login',
+                query: { redirect: router.asPath },
+            });
+            return
+            // return setForceLoginModal(true)
+        }
         try {
             if (alreadyFollowProfile) {
                 await UsersService.unFollowUser(profile.getID)
@@ -269,10 +277,21 @@ const Profile = () => {
                                     variant="contained"
                                     color="primary"
                                     startIcon={<ChatIcon />}
-                                    onClick={() => dispatchModalState({
-                                        openModalMessaging: true,
-                                        modalMessagingProfile: profile
-                                    })}>
+                                    onClick={ () => {
+                                            if(!isAuthenticated){
+                                                console.log(router.asPath);
+                                                router.push({
+                                                pathname: '/auth/login',
+                                                query: { redirect: router.asPath },
+                                                });
+                                            } else {
+                                                dispatchModalState({
+                                                    openModalMessaging: true,
+                                                    modalMessagingProfile: profile
+                                                })
+                                            }
+                                        }
+                                    }>
                                     {t('vehicles:contact')}
                                 </Button>
                             </div>

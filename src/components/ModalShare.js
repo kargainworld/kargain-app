@@ -163,20 +163,19 @@ export default function ModalShare () {
     }
     
     useEffect(()=> {
-        if(!isAuthenticated){
-            console.log(router.asPath);
-            // setForceLoginModal(true)
-            router.push({
-            pathname: '/auth/login',
-            query: { redirect: router.asPath },
-            });
-            dispatchModalState({
-                openModalShare : false
-            })
-        }
+        // if(!isAuthenticated){
+        //     // setForceLoginModal(true)
+        //     router.push({
+        //     pathname: '/auth/login',
+        //     query: { redirect: router.asPath },
+        //     });
+        //     dispatchModalState({
+        //         openModalShare : false
+        //     })
+        // }
     },[modalStateContext.openModalShare, isAuthenticated])
     
-    if(!isAuthenticated) return null
+    // if(!isAuthenticated) return null
     
     return (
         <Modal
