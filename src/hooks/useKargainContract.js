@@ -68,6 +68,29 @@ const useKargainContract = () => {
         }
     }, [contract])
 
+    const watchOfferRejected = useCallback(async (tokenId) => {
+        try {
+            if (!contract || !library)
+                return
+
+            const START_BLOCK = 0
+            const events = contract.getPastEvents("OfferRejected",
+                {
+                    fromBlock: START_BLOCK,
+                    toBlock: 'latest' // You can also specify 'latest'
+                })
+                .then(events => {
+                    console.log(events[0].returnValues.tokenId)
+                    console.log(tokenId)
+                })
+                .catch((err) => console.error(err))
+            return events
+        }
+        catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [contract])
+
     const watchOfferAccepted = useCallback(async (tokenId) => {
         try {
             if (!contract || !library)
@@ -292,6 +315,7 @@ const useKargainContract = () => {
         makeOffer,
         watchOfferEvent,
         watchOfferAccepted,
+        watchOfferRejected,
         acceptOffer,
         rejectOffer
     }

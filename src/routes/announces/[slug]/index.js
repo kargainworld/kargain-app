@@ -89,7 +89,7 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, acceptOffer, rejectOffer } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, watchOfferRejected, watchOfferAccepted, acceptOffer, rejectOffer } = useKargainContract()
 
     const handleMakeOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
