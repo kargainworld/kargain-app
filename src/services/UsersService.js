@@ -40,6 +40,23 @@ function getUserByUsername (username) {
         })
 }
 
+function getUsernameByWallet (wallet) {
+    const requestOptions = {
+        method: 'GET',
+        credentials: 'include'
+    }
+
+    if (!wallet) throw 'missing username during fetch user'
+    let url = `${config.api}/users/wallet/${wallet}`
+
+    return fetch(url, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 function updateUser (updates) {
     const requestOptions = {
         method: 'PUT',
