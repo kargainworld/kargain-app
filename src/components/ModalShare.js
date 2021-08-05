@@ -93,8 +93,14 @@ const Email = () => {
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { control, errors, handleSubmit } = useForm()
     const { isAuthenticated, setForceLoginModal } = useAuth()
+    const [clipBoarCopied, setClipBoardCopied] = useState(false)
     
     const onSubmit = (form) => {
+        console.log(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
+        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
+        // copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink, {
+        //     onCopy : () => setClipBoardCopied(true)
+        // })
         if(isAuthenticated) {
             AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
             .then(() => {
@@ -149,9 +155,9 @@ const Clipboard = () => {
     const label = !clipBoarCopied ? t('layout:copy_link') : t('layout:copy_link_copied')
     
     const handleClick = () => {
-        copy(modalStateContext.modalShareAnnounce.getAnnounceTitle, {
-            onCopy : () => setClipBoardCopied(true)
-        })}
+        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
+        setClipBoardCopied(true)
+    }
     
     return(
         <div className="d-flex">
