@@ -57,8 +57,8 @@ const useKargainContract = () => {
                     toBlock: 'latest' // You can also specify 'latest'
                 })
                 .then(events => {
-                    console.log(events[0].returnValues.tokenId)
-                    console.log(tokenId)
+                    //console.log(events[0].returnValues.tokenId)
+                    //console.log(tokenId)
                 })
                 .catch((err) => console.error(err))
             return events

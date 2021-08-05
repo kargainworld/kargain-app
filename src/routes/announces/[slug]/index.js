@@ -148,13 +148,13 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
     const handleOfferReceived = useCallback(() => {
-        console.log(announce.getID)
+        //console.log(announce.getID)
         const task = watchOfferEvent(announce.getID)
         task.then((data) => {
             //dispatchModal({ msg: 'Offer received!' })
-            console.log(data)
+            //console.log(data)
         }).catch((error) => {
-            console.error(error)
+            //console.error(error)
             setError(error)
         })
 
