@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import theme from '../../../theme'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useAuth } from '../../../context/AuthProvider'
-import Blockchain from "components/Blockchain/blockchain"
+import Metamask from "components/Wallet/Metamask"
 
 const drawerWidth = 240
 
@@ -231,7 +231,7 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
                             Kargain Admin
                         </Typography>
                     </Link>
-                    <Blockchain />
+                    <Metamask />
                     <div style={{ flexGrow: 1 }}/>
                     <div className={classes.sectionDesktop}>
                         {/*<IconButton aria-label="show 4 new mails" color="inherit">*/}
