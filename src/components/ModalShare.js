@@ -94,7 +94,8 @@ const Email = () => {
     const { control, errors, handleSubmit } = useForm()
     
     const onSubmit = (form) => {
-        AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
+        if(isAuthenticated) {
+            AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
             .then(() => {
                 dispatchModal({
                     msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
@@ -102,6 +103,16 @@ const Email = () => {
             }).catch(err => {
                 dispatchModalError({ err })
             })
+        } else {
+            AnnounceService.mailtoAnnounceLinkWithoutAuth(modalStateContext.modalShareAnnounce.getSlug, form.email)
+            .then(() => {
+                dispatchModal({
+                    msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
+                })
+            }).catch(err => {
+                dispatchModalError({ err })
+            })
+        }
     }
     
     return(

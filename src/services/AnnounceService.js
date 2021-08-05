@@ -212,6 +212,24 @@ const mailtoAnnounceLink = (slug, email) => {
         })
 }
 
+const mailtoAnnounceLinkWithoutAuth = (slug, email) => {
+    const requestOptions = {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email
+        })
+    }
+    
+    return fetch(`${baseRoute}/mailtoWithoutAuth/${slug}`, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 export default {
     getFeedAnnounces,
     getProfileAnnounces,
@@ -226,5 +244,6 @@ export default {
     uploadImages,
     addLikeLoggedInUser,
     removeLikeLoggedInUser,
-    mailtoAnnounceLink
+    mailtoAnnounceLink,
+    mailtoAnnounceLinkWithoutAuth
 }
