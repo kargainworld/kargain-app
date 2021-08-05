@@ -92,6 +92,7 @@ const Email = () => {
     const { modalStateContext } = useContext(ModalContext)
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { control, errors, handleSubmit } = useForm()
+    const { isAuthenticated, setForceLoginModal } = useAuth()
     
     const onSubmit = (form) => {
         if(isAuthenticated) {
