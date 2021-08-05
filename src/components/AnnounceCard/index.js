@@ -175,12 +175,20 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                     </Action>
 
                     <Action
-                        onClick={() =>
+                        onClick={() => {
+                            if (!isAuthenticated) {
+                                router.push({
+                                    pathname: '/auth/login',
+                                    query: { redirect: router.asPath },
+                                });
+                                return
+                            }
                             dispatchModalState({
                                 openModalMessaging: true,
                                 modalMessagingProfile: announce.getAuthor,
                                 modalMessaginAnnounce: announce
                             })
+                            }
                         }
                     >
                         <i.MailOutline style={{ position: 'relative', top: -1 }} />
