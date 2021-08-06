@@ -98,8 +98,7 @@ const ProtectedRouter = ({ children, pageProps }) => {
 
     return (
         <DynamicNamespaces
-            dynamic={(lang, ns) => {import(`../locales/${lang}/${ns}.json`).then((m) => m.default)
-                                    console.log(ns)}}
+            dynamic={(lang, ns) => {import(`../locales/${lang}/${ns}.json`).then((m) => m.default)}}
             namespaces={[
                 'layout',
                 'messages_api',
