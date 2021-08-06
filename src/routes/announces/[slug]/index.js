@@ -148,8 +148,8 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
     const handleOfferReceived = useCallback(() => {
-        //console.log(announce.getID)
-        const task = watchOfferEvent(announce.getID)
+        console.log(announce.getID)
+        const task = watchOfferEvent(announce.getTokenId)
         task.then((data) => {
             //dispatchModal({ msg: 'Offer received!' })
             //console.log(data)
@@ -182,7 +182,7 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     useEffect(() => {
-        console.log(authenticatedUser)
+        //console.log(authenticatedUser)
         if (!isContractReady)
             return
 
@@ -368,14 +368,14 @@ const Announce = () => {
                                     <Col sm={4}>
                                         <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
                                     </Col>
-                                    {!isOwn && (
+                                    {!isOwn && isMinted && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
-                                    {isOwn && (
+                                    {isOwn && isMinted &&(
                                         <Row>
                                             <Col sm={5}>
                                                 <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>

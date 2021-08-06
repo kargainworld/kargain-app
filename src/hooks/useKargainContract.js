@@ -54,11 +54,14 @@ const useKargainContract = () => {
             const events = contract.getPastEvents("OfferReceived",
                 {
                     fromBlock: START_BLOCK,
+                    filter: {
+                        value: [tokenId]
+                    },
                     toBlock: 'latest' // You can also specify 'latest'
                 })
                 .then(events => {
-                    //console.log(events[0].returnValues.tokenId)
-                    //console.log(tokenId)
+                    console.log(events[0].returnValues.payer)
+                    console.log(events[0])
                 })
                 .catch((err) => console.error(err))
             return events
