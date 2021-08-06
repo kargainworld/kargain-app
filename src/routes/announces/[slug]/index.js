@@ -310,7 +310,7 @@ const Announce = () => {
                                             </button>
                                         </Col>
                                     )}
-                                    <Col sm={3}
+                                    {/* <Col sm={3}
                                         className="icons-star-prof"
                                         onClick={() =>
                                             dispatchModalState({
@@ -321,7 +321,7 @@ const Announce = () => {
                                     >
                                         <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
-                                    </Col>
+                                    </Col> */}
                                 </Box>
 
 
