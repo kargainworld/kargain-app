@@ -92,9 +92,17 @@ const Email = () => {
     const { modalStateContext } = useContext(ModalContext)
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { control, errors, handleSubmit } = useForm()
+    const { isAuthenticated, setForceLoginModal } = useAuth()
+    const [clipBoarCopied, setClipBoardCopied] = useState(false)
     
     const onSubmit = (form) => {
-        AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
+        console.log(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
+        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
+        // copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink, {
+        //     onCopy : () => setClipBoardCopied(true)
+        // })
+        if(isAuthenticated) {
+            AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
             .then(() => {
                 dispatchModal({
                     msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
@@ -102,6 +110,16 @@ const Email = () => {
             }).catch(err => {
                 dispatchModalError({ err })
             })
+        } else {
+            AnnounceService.mailtoAnnounceLinkWithoutAuth(modalStateContext.modalShareAnnounce.getSlug, form.email)
+            .then(() => {
+                dispatchModal({
+                    msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
+                })
+            }).catch(err => {
+                dispatchModalError({ err })
+            })
+        }
     }
     
     return(
@@ -137,9 +155,9 @@ const Clipboard = () => {
     const label = !clipBoarCopied ? t('layout:copy_link') : t('layout:copy_link_copied')
     
     const handleClick = () => {
-        copy(modalStateContext.modalShareAnnounce.getAnnounceTitle, {
-            onCopy : () => setClipBoardCopied(true)
-        })}
+        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
+        setClipBoardCopied(true)
+    }
     
     return(
         <div className="d-flex">
@@ -163,20 +181,19 @@ export default function ModalShare () {
     }
     
     useEffect(()=> {
-        if(!isAuthenticated){
-            console.log(router.asPath);
-            // setForceLoginModal(true)
-            router.push({
-            pathname: '/auth/login',
-            query: { redirect: router.asPath },
-            });
-            dispatchModalState({
-                openModalShare : false
-            })
-        }
+        // if(!isAuthenticated){
+        //     // setForceLoginModal(true)
+        //     router.push({
+        //     pathname: '/auth/login',
+        //     query: { redirect: router.asPath },
+        //     });
+        //     dispatchModalState({
+        //         openModalShare : false
+        //     })
+        // }
     },[modalStateContext.openModalShare, isAuthenticated])
     
-    if(!isAuthenticated) return null
+    // if(!isAuthenticated) return null
     
     return (
         <Modal

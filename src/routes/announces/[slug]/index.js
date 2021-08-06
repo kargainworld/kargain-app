@@ -485,11 +485,20 @@ const Announce = () => {
                                 </Action>
 
                                 <Action
-                                    onClick={() =>
+                                    onClick={() => {
+                                        if (!isAuthenticated) {
+                                            router.push({
+                                                pathname: '/auth/login',
+                                                query: { redirect: router.asPath },
+                                            });
+                                            return
+                                        }
                                         dispatchModalState({
                                             openModalMessaging: true,
-                                            modalMessagingProfile: announce.getAuthor
+                                            modalMessagingProfile: announce.getAuthor,
+                                            modalMessaginAnnounce: announce
                                         })
+                                        }
                                     }
                                 >
                                     <i.MailOutline style={{ position: 'relative', top: -1 }} />

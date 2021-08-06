@@ -31,6 +31,21 @@ const getConversationWithProfile = (profileId) => {
         })
 }
 
+const getConversationWithProfileAnnounce = (profileId, announceId) => {
+    const url = `${config.api}/conversations/profileAnnounce/${profileId}/${announceId}`
+    const requestOptions = {
+        method: 'GET',
+        credentials: 'include'
+    }
+
+    return fetch(url, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 const postConversationMessage = (message, recipientId) => {
     const url = `${config.api}/conversations`
     const requestOptions = {
@@ -53,6 +68,7 @@ const postConversationMessage = (message, recipientId) => {
 
 export default {
     getConversationWithProfile,
+    getConversationWithProfileAnnounce,
     getCurrentUserConversations,
     postConversationMessage
 }
