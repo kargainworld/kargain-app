@@ -89,8 +89,8 @@ const NavbarClient = () => {
                                                 onClick={toggleNavbar}
                                             />
                                         </div>
-                                        {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
                                         <AutocompleteDropdown />
+                                        {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
                                         {isAuthenticated && <Blockchain />}
                                     </div>
                                 ) : (
