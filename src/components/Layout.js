@@ -19,7 +19,9 @@ const Layout = ({ children }) => {
             <MainBody>
                 {children}
             </MainBody>
-            <FooterLight/>
+            <I18nProvider lang={lang} namespaces={{ layoutC }}>
+                <FooterLight/>
+            </I18nProvider>
             <ScrollUpButton
                 ShowAtPosition={150}
                 EasingType='easeOutCubic'
