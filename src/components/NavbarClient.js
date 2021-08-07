@@ -90,14 +90,12 @@ const NavbarClient = () => {
                                             />
                                         </div>
                                         <AutocompleteDropdown />
-                                        <StaticNav vertical/>
                                         {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
                                         {isAuthenticated && <Blockchain />}
                                     </div>
                                 ) : (
                                     <div className={clsx("d-flex", "navbar-menu")}>
                                         <AutocompleteDropdown />
-                                        <StaticNav/>
                                         {isAuthenticated && <Blockchain />}
                                         {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
                                     </div>
@@ -307,36 +305,6 @@ const LoggedInUserNav = ({ vertical }) => {
                 </Nav>
             </div>
         </ClickAwayListener>
-    )
-}
-
-const StaticNav = ({ vertical }) => {
-    const { t } = useTranslation()
-
-    return (
-        <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
-            <NavItem className="p-2">
-                <Link href="/static/about" prefetch={false}>
-                    <a className="nav-link py-0">
-                        {t('layoutC:about-us')}
-                    </a>
-                </Link>
-            </NavItem>
-            <NavItem className="p-2">
-                <Link href="/static/confidentiality" prefetch={false}>
-                    <a className="nav-link py-0">
-                        {t('layoutC:confidentiality')}
-                    </a>
-                </Link>
-            </NavItem>
-            <NavItem className="p-2">
-                <Link href="/static/conditions" prefetch={false}>
-                    <a className="nav-link py-0">
-                        {t('layoutC:terms')}
-                    </a>
-                </Link>
-            </NavItem>
-        </Nav>
     )
 }
 
