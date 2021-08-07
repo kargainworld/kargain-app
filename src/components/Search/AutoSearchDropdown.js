@@ -77,7 +77,7 @@ const AutocompleteDropdown = () => {
             style={{ width: 300 }}
             freeSolo
             renderInput={(params) => (
-                <TextField {...params} label={t('layout:search')} variant="outlined" />
+                <TextField {...params} label={t('layoutC:search')} variant="outlined" />
             )}
         />
     );
