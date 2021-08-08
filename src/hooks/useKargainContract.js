@@ -11,6 +11,7 @@ import Web3 from "web3"
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
 const toBN = Web3.utils.toBN
+const web3 = new Web3(Web3.givenProvider)
 
 const MAX_EXPIRATION_TIME_DAYS = 266
 
@@ -51,17 +52,30 @@ const useKargainContract = () => {
                 return
 
             const START_BLOCK = 0
+
+            /** const subscription = web3.eth.subscribe('logs', {
+                address: account,
+            }, function(error, result){
+                if (!error)
+                    console.log(result)
+            })
+            console.log(subscription) **/
+
             const events = contract.getPastEvents("OfferReceived",
                 {
                     fromBlock: START_BLOCK,
-                    filter: {
-                        value: [tokenId]
-                    },
                     toBlock: 'latest' // You can also specify 'latest'
                 })
                 .then(events => {
-                    console.log(events[0].returnValues.payer)
-                    console.log(events[0])
+                    for (let i = 0; i < events.length; i++) {
+                        //console.log((toBN(ObjectID(tokenId).toHexString())).toString(16))
+                        //console.log(toBN(events[i].returnValues['tokenId']).toString(16))
+                        //console.log(events[i].returnValues['tokenId'].toString(10))
+                        if (toBN(events[i].returnValues['tokenId']).toString(16) == tokenId) {
+                            return events[i].returnValues['payer']
+                        }
+                    }
+
                 })
                 .catch((err) => console.error(err))
             return events
@@ -69,7 +83,7 @@ const useKargainContract = () => {
         catch (error) {
             throw parseBlockchainError(error)
         }
-    }, [contract])
+    }, [contract, account])
 
     const watchOfferRejected = useCallback(async (tokenId) => {
         try {

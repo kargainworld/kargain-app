@@ -114,7 +114,7 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
     const handleAcceptOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
+        const tokenId = state.announce.getID
         setIsConfirmed(false)
         setError(null)
 
@@ -149,8 +149,9 @@ const Announce = () => {
 
     const handleOfferReceived = useCallback(() => {
         console.log(announce.getID)
-        const task = watchOfferEvent(announce.getTokenId)
+        const task = watchOfferEvent(announce.getID)
         task.then((data) => {
+            console.log(data)
             //dispatchModal({ msg: 'Offer received!' })
             //console.log(data)
         }).catch((error) => {
