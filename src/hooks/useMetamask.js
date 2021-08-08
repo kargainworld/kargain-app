@@ -12,14 +12,15 @@ export function useEagerConnect() {
     const { authenticatedUser } = useAuth()
 
     useEffect(() => {
-        if (!authenticatedUser)
+        if (!authenticatedUser || !account)
             return
+        console.log(account)
 
         injected.isAuthorized().then(isAuthorized => {
             if (isAuthorized) {
-                let user = authenticatedUser
-                user.raw.wallet = account
-                console.log(account)
+                let user = {}
+                user.wallet = account
+                user.email = authenticatedUser.raw.email
                 UsersService.updateUser(user)
                     .then((response) => {
                     }).catch(err => {
