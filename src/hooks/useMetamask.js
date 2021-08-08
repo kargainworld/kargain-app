@@ -12,19 +12,19 @@ export function useEagerConnect() {
     const { authenticatedUser } = useAuth()
 
     useEffect(() => {
+        if (!authenticatedUser)
+            return
+
         injected.isAuthorized().then(isAuthorized => {
             if (isAuthorized) {
                 let user = authenticatedUser
                 user.raw.wallet = account
-
+                console.log(account)
                 UsersService.updateUser(user)
                     .then((response) => {
-                        //console.log(response)
                     }).catch(err => {
                         dispatchModalError({ err })
                     })
-                console.log(isAuthorized)
-
                 activate(injected, undefined, true).catch(() => {
                     setTried(true)
                 })

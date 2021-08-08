@@ -85,6 +85,8 @@ const Announce = () => {
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
+    const [payer, setPayer] = useState(null)
+    const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
     const [error, setError] = useState(null)
@@ -147,29 +149,33 @@ const Announce = () => {
 
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
-    const handleOfferReceived = useCallback(() => {
+    const fetchProfile = useCallback(async () => {
+        if (!walletPayer || !isContractReady)
+            return
+        console.log(walletPayer)
+        try{
+            const result = await UsersService.getUsernameByWallet(walletPayer)
+            console.log(result)
+        } catch (err) {
+            console.log(err)
+        }
+    },[walletPayer, isContractReady])
+
+    const handleOfferReceived = useCallback(async () => {
+        if (!isContractReady)
+            return
         console.log(announce.getID)
         const task = watchOfferEvent(announce.getID)
-        task.then((data) => {
+        task.then(async (data) => {
             console.log(data)
-            //dispatchModal({ msg: 'Offer received!' })
-            //console.log(data)
+            setWalletPayer(data)
+            await fetchProfile()
         }).catch((error) => {
             //console.error(error)
             setError(error)
         })
 
     }, [isContractReady, watchOfferEvent])
-
-    const fetchOwner = useCallback(async () => {
-        try{
-            const result = await UsersService.getUsernameByWallet()
-
-        } catch (err) {
-            console.log(err)
-        }
-    },[])
-
 
     const [state, setState] = useState({
         err: null,
