@@ -28,7 +28,7 @@ function TelInput ({ name, rules, control, errors, innerProps, ...props }) {
                     as={<ReactPhoneInput
                         className="input-field"
                         required
-                        regions={'europe'}
+                        regions={['america', 'europe', 'asia', 'oceania', 'africa']}
                         value={phone}
                         country={innerProps.country}
                         placeholder={innerProps.placeholder}

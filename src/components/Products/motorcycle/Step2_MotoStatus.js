@@ -56,6 +56,10 @@ const Step = ({ onSubmitStep, prevStep }) => {
                     placeholder='VIN'
                     control={control}
                     errors={errors}
+                    rules={{ required:t('form_validations:required'), maxLength:{
+                        value: 17,
+                        message: t('form_validations:max_length_{max}', { max : 17 })
+                    } }}
                 />
             </FieldWrapper>
 

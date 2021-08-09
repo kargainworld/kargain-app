@@ -12,6 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
 import filterProps from '../../../libs/filterProps'
 import SelectInput from '../../Form/Inputs/SelectInput'
+import SliderInput from '../../Form/Inputs/SliderInputUI'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { useAuth } from '../../../context/AuthProvider'
 import { MessageContext } from '../../../context/MessageContext'
@@ -120,7 +121,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             if(form[key] === null) form[key] = empty;
         }
 
-        if(e !== null)  if(typeof e.type === "submit")   e.preventDefault();
+        if(e !== null)  if(typeof e?.type === "submit")   e.preventDefault();
 
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
@@ -403,8 +404,22 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         />
                     </FieldWrapper>
 
-                    <FieldWrapper label={t('vehicles:year')}>
-                        <SelectInput
+                    <FieldWrapper label={t('vehicles:year')}>                        
+                        <SliderInput
+                            name="year"
+                            defaultValue={[1900, 2021]}
+                            min={1900}
+                            max={2100}
+                            step={10}
+                            errors={errors}
+                            control={control}
+                            suffix=""
+                            onChange={e =>{
+                                setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                        {/* <SelectInput
                             name="year"
                             placeholder="Select year"
                             options={manufacturersData.years}
@@ -415,7 +430,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
-                        />
+                        /> */}
                     </FieldWrapper>
 
                     {DynamicFiltersComponent && (
