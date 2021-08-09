@@ -86,6 +86,7 @@ const Announce = () => {
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
     const [payer, setPayer] = useState(null)
+    const [tokenId, setTokenId] = useState(null)
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
@@ -162,10 +163,10 @@ const Announce = () => {
     },[walletPayer, isContractReady])
 
     const handleOfferReceived = useCallback(async () => {
-        if (!isContractReady)
+        if (!isContractReady || !tokenId)
             return
-        console.log(announce.getID)
-        const task = watchOfferEvent(announce.getID)
+        console.log(tokenId)
+        const task = watchOfferEvent(tokenId)
         task.then(async (data) => {
             console.log(data)
             setWalletPayer(data)
@@ -175,7 +176,7 @@ const Announce = () => {
             setError(error)
         })
 
-    }, [isContractReady, watchOfferEvent])
+    }, [tokenId, isContractReady, watchOfferEvent])
 
     const [state, setState] = useState({
         err: null,
@@ -328,6 +329,7 @@ const Announce = () => {
         setIsLoading(true)
 
         const tokenId = state.announce.getTokenId
+        setTokenId(state.announce.getID)
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
@@ -375,14 +377,14 @@ const Announce = () => {
                                     <Col sm={4}>
                                         <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
                                     </Col>
-                                    {!isOwn && isMinted && (
+                                    {!isOwn && isMinted && !walletPayer && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
-                                    {isOwn && isMinted &&(
+                                    {isOwn && isMinted && walletPayer && (
                                         <Row>
                                             <Col sm={5}>
                                                 <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
