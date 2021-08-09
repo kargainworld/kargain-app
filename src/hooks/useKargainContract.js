@@ -68,7 +68,6 @@ const useKargainContract = () => {
                 })
                 .then(events => {
                     for (let i = 0; i < events.length; i++) {
-                        console.log(events[i])
                         //console.log((toBN(ObjectID(tokenId).toHexString())).toString(16))
                         //console.log(toBN(events[i].returnValues['tokenId']).toString(16))
                         //console.log(events[i].returnValues['tokenId'].toString(10))

@@ -34,11 +34,9 @@ import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import ObjectID from 'bson-objectid'
 import UsersService from '../../../services/UsersService'
-
 import Web3 from "web3"
-import UserModel from "../../../models/user.model";
-const toBN = Web3.utils.toBN
 
+const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
@@ -151,26 +149,31 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
 
     const fetchProfile = useCallback(async () => {
-        if (!walletPayer || !isContractReady)
-            return
-        console.log(walletPayer)
-        try{
-            const result = await UsersService.getUsernameByWallet(walletPayer)
-            console.log(result)
-        } catch (err) {
-            console.log(err)
+        try {
+            if (!walletPayer || !isContractReady || !tokenId)
+                return
+            try{
+                const result = await UsersService.getUsernameByWallet(walletPayer)
+                console.log(result)
+                return result
+            } catch (err) {
+                console.log(err)
+            }
         }
-    },[walletPayer, isContractReady])
+        catch (e) {
+            console.log(e)
+        }
+
+    },[walletPayer, isContractReady, tokenId])
 
     const handleOfferReceived = useCallback(async () => {
         if (!isContractReady || !tokenId)
             return
-        console.log(tokenId)
         const task = watchOfferEvent(tokenId)
-        task.then(async (data) => {
+        task.then((data) => {
             console.log(data)
             setWalletPayer(data)
-            await fetchProfile()
+
         }).catch((error) => {
             //console.error(error)
             setError(error)
@@ -321,7 +324,10 @@ const Announce = () => {
     useEffect(() => {
         fetchAnnounce()
         handleOfferReceived()
-    }, [fetchAnnounce, handleOfferReceived])
+        if (walletPayer) {
+            fetchProfile()
+        }
+    }, [fetchAnnounce, handleOfferReceived, fetchProfile])
 
     useEffect(() => {
         if (!state.stateReady) return
