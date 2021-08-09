@@ -32,7 +32,8 @@ const RangeSlider = ({ name, rules, control, errors, ...props }) => {
 
     const handleChange = (e, val) => {
         setValue(val)
-        if(props.onChange) setTimeout(props.onChange, e, name, val, 100);
+        control.setValue(name, val)
+        if(props.onChange) return props.onChange(e, name, val)
         return e;
     }
 
