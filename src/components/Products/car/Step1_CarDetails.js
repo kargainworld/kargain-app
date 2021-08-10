@@ -102,10 +102,10 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 <Col sm={12} md={6}>
                     <Row>
                         <Col>
-                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
-                                <NumberInput
-                                    name="mileage"
-                                    placeholder={`20000 ${mileageType?.value}`}
+                            <FieldWrapper label={t('vehicles:type')}>
+                                <SelectInput
+                                    name="mileageType"
+                                    options={formData.mileageType}
                                     control={control}
                                     errors={errors}
                                     rules={{ required: t('form_validations:required') }}
@@ -113,13 +113,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             </FieldWrapper>
                         </Col>
                         <Col>
-                            <FieldWrapper label={t('vehicles:type')}>
-                                <SelectInput
-                                    name="mileageType"
-                                    options={formData.mileageType}
+                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                <NumberInput
+                                    name="mileage"
+                                    placeholder={`20000 ${mileageType?.value}`}
                                     control={control}
                                     errors={errors}
-                                    selected={'km'}
+                                    rules={{ required: t('form_validations:required') }}
                                 />
                             </FieldWrapper>
                         </Col>
