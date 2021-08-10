@@ -134,7 +134,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             {getTimeAgo(announce.getCreationDate.raw, lang)}
                         </CreationDate>
 
-                        {/* <ShareIcon
+                        <ShareIcon
                             onClick={() =>
                                 dispatchModalState({
                                     openModalShare: true,
@@ -143,7 +143,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             }
                             src="/images/share.png"
                             alt=""
-                        /> */}
+                        />
                     </Meta>
                 </User>
 

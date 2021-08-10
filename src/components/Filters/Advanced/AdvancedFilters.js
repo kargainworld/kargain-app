@@ -122,7 +122,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         }
 
         if(e !== null)  if(typeof e?.type === "submit")   e.preventDefault();
-
+            console.log(form)
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
