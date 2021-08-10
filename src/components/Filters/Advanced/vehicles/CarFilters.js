@@ -95,7 +95,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     step={100}
                     errors={errors}
                     control={control}
-                    suffix={t(`vehicles:${mileageType?.value}`)}
+                    suffix={mileageType?.value}
                     onChange={e =>{
                         setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
                         return e

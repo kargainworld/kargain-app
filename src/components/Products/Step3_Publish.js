@@ -183,7 +183,6 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     name="phone"
                     errors={errors}
                     control={control}
-                    rules={{ required: t('form_validations:required') }}
                     innerProps={{
                         country: 'fr'
                     }}
