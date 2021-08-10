@@ -14,6 +14,7 @@ export default {
         type: 'array',
         selector: 'label'
     },
+    'year': 'YEAR',
     'vehicleEngineType.value': 'ENGINE_TYPE',
     'vehicleEngineGas.value': 'ENGINE_GAS',
     'vehicleEngineCylinder': 'CYLINDER',

@@ -93,13 +93,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
 
-    useEffect(() => {
-        reset(defaultValues);
-    }, [reset])
+    // useEffect(() => {
+    //     reset(defaultValues);
+    // }, [reset])
 
-    useEffect(() => {
-        register(defaultValues);
-    }, [register])
+    // useEffect(() => {
+    //     register(defaultValues);
+    // }, [register])
 
     useEffect(() => {
         _setVehicleType(vehicleType || vehicleTypes.car);
@@ -121,12 +121,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             if(form[key] === null) form[key] = empty;
         }
 
-        if(e !== null)  if(typeof e?.type === "submit")   e.preventDefault();
-            console.log(form)
+        if(e !== null && e?.type !== null)  if(typeof e?.type === "submit")   e.preventDefault();
+        
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
-
+        
         if (coordinates && radius) {
             data.radius = radius
             data.coordinates = coordinates

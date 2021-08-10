@@ -112,8 +112,7 @@ const Announce = () => {
         stateReady: false,
         isSelf: false,
         isAdmin: false,
-        announce: new AnnounceModel(),
-        likesCounter: 0
+        announce: new AnnounceModel()
     })
 
     const [tried, setTried] = useState(false)
@@ -190,6 +189,13 @@ const Announce = () => {
 
     const [like, setLike] = useState(alreadyLikeCurrentUser)
 
+    const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
+    
+    useEffect(() => {
+        setLike(alreadyLikeCurrentUser)
+        setLikesCounter(state?.announce?.getCountLikes)
+    }, [announce])
+
     const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id
 
     const toggleVisibility = () => {
@@ -201,24 +207,19 @@ const Announce = () => {
     const handleClickLikeButton = async () => {
         if(isOwn) return
         if (!isAuthenticated) return setForceLoginModal(true)
-        let counter = state.likesCounter
         if(isLiking) return
         setIsLiking(true)
         try {
+            console.log(like);
             if (like) {
+                setLike(false)
+                setLikesCounter((likesCounter) => likesCounter - 1)
                 await AnnounceService.removeLikeLoggedInUser(announce.getID)
-                setState((state) => ({
-                    ...state,
-                    likesCounter: Math.max(0, counter - 1)
-                }))
             } else {
+                setLike(true)
+                setLikesCounter((likesCounter) => likesCounter + 1)
                 await AnnounceService.addLikeLoggedInUser(announce.getID)
-                setState((state) => ({
-                    ...state,
-                    likesCounter: counter + 1
-                }))
             }
-            setLike(!like)
             setIsLiking(false)
         } catch (err) {
             dispatchModalError({ err })
@@ -374,7 +375,7 @@ const Announce = () => {
                                         </a>
                                     </div>
                                 )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
+                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
                             </div>
                         </div>
 
@@ -391,10 +392,10 @@ const Announce = () => {
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
+                                            color: like ? '#DB00FF' : '#444444'
                                         }}
                                     />
-                                    <span>{state.likesCounter}</span>
+                                    <span>{likesCounter}</span>
                                 </Action>
 
                                 <Action
