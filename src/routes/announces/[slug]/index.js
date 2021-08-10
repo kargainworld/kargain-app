@@ -375,7 +375,7 @@ const Announce = () => {
                                         </a>
                                     </div>
                                 )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
+                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
                             </div>
                         </div>
 
