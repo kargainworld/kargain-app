@@ -65,13 +65,13 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
         if (!isAuthenticated) return setForceLoginModal(true)
         try {
             if (!liked) {
-                await AnnounceService.addLikeLoggedInUser(announce.getID)
                 setLikesCounter((likesCount) => likesCount + 1)
                 setLiked(true)
+                await AnnounceService.addLikeLoggedInUser(announce.getID)
             } else {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID)
                 setLikesCounter((likesCount) => Math.max(likesCount - 1))
                 setLiked(false)
+                await AnnounceService.removeLikeLoggedInUser(announce.getID)
             }
         } catch (err) {
             dispatchModalError({ err })
@@ -158,7 +158,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                             <i.BookmarkBorder
                                 style={{
-                                    color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
+                                    color: liked ? '#DB00FF' : '#444444'
                                 }}
                             />
                             <span>{likesCounter}</span>
