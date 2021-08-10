@@ -30,15 +30,15 @@ const FooterLight = () => {
     const classes = useStyles()
     const links = [
         {
-            label: t('layout:about-us'),
+            label: t('layoutC:about-us'),
             link: '/static/about'
         },
         {
-            label: t('layout:confidentiality'),
+            label: t('layoutC:confidentiality'),
             link: '/static/confidentiality'
         },
         {
-            label: t('layout:terms'),
+            label: t('layoutC:terms'),
             link: '/static/conditions'
         }
     ]

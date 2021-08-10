@@ -66,7 +66,6 @@ const NavbarClient = () => {
     const toggleNavbar = () => setIsOpen(!isOpen)
     const { isAuthenticated } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
-
     return (
         <Root className="header">
             <Container>
@@ -90,8 +89,8 @@ const NavbarClient = () => {
                                                 onClick={toggleNavbar}
                                             />
                                         </div>
-                                        {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
                                         <AutocompleteDropdown />
+                                        {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
                                         {isAuthenticated && <Metamask />}
                                     </div>
                                 ) : (
@@ -116,10 +115,9 @@ const NavbarClient = () => {
 
 const NewAdButtonCTA = ({ isDesktop, className }) => {
     const { t } = useTranslation()
-
     return (
         <CTALink
-            title={isDesktop && t('layout:create-announce')}
+            title={isDesktop && t('layoutC:create-announce')}
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
@@ -172,7 +170,7 @@ const NavbarAction = ({ vertical }) => {
                           onKeyUp={({ target }) => setSearchQueryByKeyUp(target.value)}
                           name="query"
                           type="search"
-                          placeholder={t('layout:search')}
+                          placeholder={t('layoutC:search')}
                           iconright={<Search />}
                         />
                         <SearchIcon />
@@ -216,7 +214,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
                         <a className="nav-link text-left"><BookmarkIcon/>
                             <span className="m-1">
-                                {t('layout:favorites')}
+                                {t('layoutC:favorites')}
                             </span>
                         </a>
                     </Link>
@@ -225,7 +223,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
                         <a className="nav-link text-left"><FaceIcon/>
                             <span className="m-1">
-                                {t('layout:my-profile')}
+                                {t('layoutC:my-profile')}
                             </span>
                         </a>
                     </Link>
@@ -234,7 +232,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href="/profile/messages" prefetch={false}>
                         <a className="nav-link text-left"><ChatIcon/>
                             <span className="m-1">
-                                {t('layout:messaging')}
+                                {t('layoutC:messaging')}
                             </span>
                         </a>
                     </Link>
@@ -243,7 +241,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
                         <a className="nav-link text-left"><SettingsIcon/>
                             <span className="m-1">
-                                {t('layout:settings')}
+                                {t('layoutC:settings')}
                             </span>
                         </a>
                     </Link>
@@ -256,7 +254,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                         }}>
                             <ExitToAppIcon/>
                             <span className="m-1">
-                                {t('layout:logout')}
+                                {t('layoutC:logout')}
                             </span>
                         </a>
                     </Link>
@@ -318,14 +316,14 @@ const VisitorNav = ({ vertical }) => {
             <NavItem className="p-2">
                 <Link href="/auth/login" prefetch={false}>
                     <a className="nav-link py-0">
-                        {t('layout:login')}
+                        {t('layoutC:login')}
                     </a>
                 </Link>
             </NavItem>
             <NavItem className="p-2">
                 <Link href="/auth/register" prefetch={false}>
                     <a className="nav-link py-0">
-                        {t('layout:register')}
+                        {t('layoutC:register')}
                     </a>
                 </Link>
             </NavItem>

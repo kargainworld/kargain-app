@@ -209,7 +209,7 @@ export default function ModalShare () {
                     <div className="d-flex flex-column my-2 providers">
                         {/*<Facebook/>*/}
                         {/*<Messenger/>*/}
-                        <Email/>
+                        {/* <Email/> */}
                         <Clipboard/>
                     </div>
                 </div>
