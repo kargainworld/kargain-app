@@ -286,7 +286,9 @@ export default class AnnounceModel {
     get showCellPhone () {
         return this.raw?.showCellPhone
     }
-
+    get getPhone () {
+        return this.raw?.phone
+    }
     get getIsVisible () {
         return this.raw?.visible
     }
