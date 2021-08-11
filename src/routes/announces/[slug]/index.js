@@ -83,7 +83,7 @@ const Announce = () => {
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
-    const [payer, setPayer] = useState(null)
+    const [tokenIdBN, setTokenIdBN] = useState(null)
     const [tokenId, setTokenId] = useState(null)
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -113,21 +113,29 @@ const Announce = () => {
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
     const handleAcceptOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
-        setIsConfirmed(false)
-        setError(null)
+        try {
+            if (!isContractReady || !tokenIdBN || !tokenPrice)
+                return 
 
-        const task = acceptOffer(tokenId)
-        task.then(() => {
-            setIsConfirmed(true)
-            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
-        }).catch((error) => {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        })
 
-    }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = acceptOffer(tokenIdBN)
+            task.then(() => {
+                setIsConfirmed(true)
+                dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
+            }).catch((error) => {
+                console.error(error)
+                setError(error)
+                setIsConfirmed(true)
+            })
+        }
+        catch(error) {
+            console.log(console.error())
+        }    
+
+    }, [state?.announce?.getTokenId, tokenPrice,  isContractReady, acceptOffer])
 
     const handleRejectOffer = useCallback(() => {
         const tokenId = state.announce.getTokenId
@@ -150,13 +158,10 @@ const Announce = () => {
         try {
             if (!walletPayer || !isContractReady || !tokenId)
                 return
-            try{
                 const result = await UsersService.getUsernameByWallet(walletPayer)
                 console.log(result)
                 return result
-            } catch (err) {
-                console.log(err)
-            }
+
         }
         catch (e) {
             console.log(e)
@@ -240,7 +245,7 @@ const Announce = () => {
                 setTried(true)
             }
         })
-    }, [])
+    }, [state.announce.getTokenId])
 
     useEffect(() => {
         if (!tried && active) {
@@ -334,6 +339,7 @@ const Announce = () => {
 
         const tokenId = state.announce.getTokenId
         setTokenId(state.announce.getID)
+        setTokenIdBN(state.announce.getTokenId)
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })

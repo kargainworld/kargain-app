@@ -229,14 +229,20 @@ const useKargainContract = () => {
         }
     }, [contract])
 
-    const acceptOffer = useCallback(async (tokenId) => {
+    const acceptOffer = useCallback(async (tokenId, tokenIdHexa) => {
         try {
             if (!contract || !library)
                 return
 
-            const tx = await contract.methods
-                .acceptOffer(tokenId)
-                .send({ from: account })
+                const gasPrice = await web3.eth.getGasPrice();
+                let gasEstimate = await contract.methods
+                    .acceptOffer(tokenId)
+                    .estimateGas({ from: account });
+                const tx = await contract.methods
+                    .acceptOffer(tokenId)
+                    .send({ from: account,
+                        gasPrice: gasPrice,
+                        gas: gasEstimate})
 
             const receipt = await waitTransaction(library, tx.transactionHash)
 
