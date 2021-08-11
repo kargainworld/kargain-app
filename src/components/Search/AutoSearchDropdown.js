@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect} from 'react'
+import { useRouter } from "next/router";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import useTranslation from 'next-translate/useTranslation'
@@ -9,6 +10,7 @@ import SearchService from '../../services/SearchService'
 const AutocompleteDropdown = () => {
     const { t } = useTranslation()
     const filter = createFilterOptions();
+    const router = useRouter();
 
     const top100Films = [
         { title: 'The Shawshank Redemption', year: 1994 },
@@ -33,6 +35,9 @@ const AutocompleteDropdown = () => {
                     setValue({
                         title: newValue.inputValue,
                     });
+                    router.push({
+                        pathname: newValue.slug
+                    })
                 } else {
                     setValue(newValue);
                 }
@@ -46,10 +51,10 @@ const AutocompleteDropdown = () => {
                         const { tags, users, announces } = searchresults
                         const newOptions = [];
                         announces.map((row, index) => {
-                            if(index < 10)  newOptions.push({title: row.title, userAvatarUrl: row.user, group: "Announces"})
+                            if(index < 10)  newOptions.push({title: row.title, slug: `/announces/${row.slug}`, group: "Announces"})
                         })
                         users.map((row, index) => {
-                            if(index < 10)  newOptions.push({title: row.fullname, userAvatarUrl: row.avatarUrl, group: "Users"})
+                            if(index < 10)  newOptions.push({title: row.fullname, slug: `/profile/${row.username}`, group: "Users"})
                         })
                         
                         setResutls(newOptions)
