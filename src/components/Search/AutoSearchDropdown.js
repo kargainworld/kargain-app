@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect} from 'react'
 import { useRouter } from "next/router";
+import SearchIcon from '@material-ui/icons/Search'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import useTranslation from 'next-translate/useTranslation'
@@ -71,16 +72,18 @@ const AutocompleteDropdown = () => {
             groupBy={(option) => option.group}
             getOptionLabel={(option) => {
                 if (typeof option === 'string') {
-                return option;
+                    return option;
                 }
                 if (option.inputValue) {
-                return option.inputValue;
+                    return option.inputValue;
                 }
                 return option.title;
             }}
             renderOption={(option) => option.title}
-            style={{ width: 300 }}
+            style={{ width: 300, popupIndicatorOpen: ".MuiAutocomplete-popupIndicator" }}
             freeSolo
+            forcePopupIcon={true}
+            popupIcon={<SearchIcon />}
             renderInput={(params) => (
                 <TextField {...params} label={t('layoutC:search')} variant="outlined" />
             )}

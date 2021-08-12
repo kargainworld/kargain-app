@@ -9,6 +9,7 @@ import MuiTooltipPopper from './MuiTooltipPopper'
 import MuiTypography from './MuiTypography'
 import MuiSlider from "./MuiSlider";
 import MuiInput from "./MuiInput"
+import MuiAutocomplete from "./MuiAutocomplete"
 
 export default {
     MuiDrawer,
@@ -21,5 +22,6 @@ export default {
     MuiIconButton,
     MuiTableHead,
     MuiSlider,
-    MuiInput
+    MuiInput,
+    MuiAutocomplete
 }
