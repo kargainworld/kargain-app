@@ -8,6 +8,7 @@ import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 import Button from '@material-ui/core/Button'
+import LanguageIcon from '@material-ui/icons/Language'
 import AddIcon from '@material-ui/icons/Add'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -107,6 +108,13 @@ const NavbarClient = () => {
                     <NavItem className="p-2" style={{ listStyle: 'none' }}>
                         <NewAdButtonCTAStyled isDesktop={!isMobile}/>
                     </NavItem>
+                    
+                    <CTALink
+                        icon={LanguageIcon}
+                        href="https://kargain.world"
+                        variant="text"
+                        color="primary"
+                    />
                 </Navbar>
             </Container>
         </Root>
@@ -121,6 +129,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
+            style={{borderRadius: "17px"}}
             variant="contained"
             color="primary"
         />
@@ -128,15 +137,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
 }
 
 const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
-  border-radius: 5px;
-  border: 1px solid #000 !important;
-  background-color: #000;
-  color: #fff;
-
-  .header &:hover {
-    background-color: #fff;
-    color: #000 !important;
-  }
+border-radius: 50px;
 `
 
 const NavbarAction = ({ vertical }) => {
