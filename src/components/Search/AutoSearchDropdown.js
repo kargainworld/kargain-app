@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect} from 'react'
 import { useRouter } from "next/router";
 import SearchIcon from '@material-ui/icons/Search'
+import { Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import useTranslation from 'next-translate/useTranslation'
@@ -36,12 +37,13 @@ const AutocompleteDropdown = () => {
                     setValue({
                         title: newValue.inputValue,
                     });
-                    router.push({
-                        pathname: newValue.slug
-                    })
                 } else {
                     setValue(newValue);
                 }
+                if(newValue && newValue?.slug){
+                    router.push({
+                        pathname: newValue?.slug
+                })}
             }}
             onInputChange={async (event, inputValue, reason)=> {
 
@@ -67,7 +69,7 @@ const AutocompleteDropdown = () => {
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            id="free-solo-with-text-demo"
+            id="navbar-search-box"
             options={results}
             groupBy={(option) => option.group}
             getOptionLabel={(option) => {
@@ -80,7 +82,7 @@ const AutocompleteDropdown = () => {
                 return option.title;
             }}
             renderOption={(option) => option.title}
-            style={{ width: 300, popupIndicatorOpen: ".MuiAutocomplete-popupIndicator" }}
+            style={{ width: 250, height: 36, marginLeft: "auto", marginRight: "auto" }}
             freeSolo
             forcePopupIcon={true}
             popupIcon={<SearchIcon />}
