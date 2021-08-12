@@ -82,6 +82,9 @@ const AutocompleteDropdown = () => {
                 return option.title;
             }}
             renderOption={(option) => option.title}
+            PaperComponent={({ children }) => (
+              <Paper style={{ }}>{children}</Paper>
+            )}
             style={{ width: 250, height: 36, marginLeft: "auto", marginRight: "auto" }}
             freeSolo
             forcePopupIcon={true}

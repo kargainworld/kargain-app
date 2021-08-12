@@ -109,12 +109,13 @@ const NavbarClient = () => {
                         <NewAdButtonCTAStyled isDesktop={!isMobile}/>
                     </NavItem>
                     
-                    <CTALink
-                        icon={LanguageIcon}
+                    <Link
                         href="https://kargain.world"
-                        variant="text"
-                        color="primary"
-                    />
+                        prefetch={false}>
+                        <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
+                            <LanguageIcon/>
+                        </a>
+                    </Link>
                 </Navbar>
             </Container>
         </Root>
