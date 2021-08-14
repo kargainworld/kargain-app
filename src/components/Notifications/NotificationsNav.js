@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsIcon from '../../assets/icons/HeaderNotification.svg';
 import { CircularProgress } from '@material-ui/core';
 import { fetchNotifications, removeNotification } from '../../services/NotificationsService';
 import { makeStyles } from '@material-ui/styles';
