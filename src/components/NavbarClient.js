@@ -182,7 +182,7 @@ const NavbarAction = ({ vertical }) => {
                     <button
                         type="submit"
                         className="search-button">
-                        <SearchIcon/>
+                        <SearchIcon />
                     </button>
                 </form>
             </NavItem>
@@ -215,7 +215,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 )}
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.user/>
+                        <a className="nav-link text-left"><NewIcons.user />
                             <span className="m-1">
                                 {t('layoutC:my-profile')}
                             </span>
@@ -224,7 +224,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.favorite/>
+                        <a className="nav-link text-left"><NewIcons.favorite />
                             <span className="m-1">
                                 {t('layoutC:favorites')}
                             </span>
@@ -233,7 +233,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href="/profile/messages" prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.message/>
+                        <a className="nav-link text-left"><NewIcons.message />
                             <span className="m-1">
                                 {t('layoutC:messaging')}
                             </span>
@@ -242,7 +242,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.setting/>
+                        <a className="nav-link text-left"><NewIcons.setting />
                             <span className="m-1">
                                 {t('layoutC:settings')}
                             </span>
@@ -255,7 +255,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             router.push('/')
                             logout()
                         }}>
-                            <NewIcons.signout/>
+                            <NewIcons.signout />
                             <span className="m-1">
                                 {t('layoutC:logout')}
                             </span>

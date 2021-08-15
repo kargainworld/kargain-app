@@ -37,7 +37,7 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
                     <Typography
                         variant="h3"
                         style={{
-                            color: isActive ? '#000' : '#999',
+                            color: isActive ? '#3291FF' : '#999999',
                             marginTop: 20
                         }}
                     >
