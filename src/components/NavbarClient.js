@@ -23,7 +23,6 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import FaceIcon from '@material-ui/icons/Face'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
-import { getLogo } from '../libs/utils'
 import { useAuth } from '../context/AuthProvider'
 import NotificationsNav from '../components/Notifications/NotificationsNav'
 import CTALink from './CTALink'
@@ -32,6 +31,8 @@ import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
 import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
 import Blockchain from './Blockchain/blockchain'
+
+import { NewIcons } from '../assets/icons';
 
 const Root = styled.header`
   position: sticky;
@@ -72,7 +73,7 @@ const NavbarClient = () => {
             <Container>
                 <Navbar light expand="md" className="navbar position-relative">
                     <NavbarBrand href="/">
-                        <img src={getLogo()} width="150" alt="logo"/>
+                        <NewIcons.logo width="150" alt="logo" />
                     </NavbarBrand>
                     
                     <NavbarToggler
@@ -181,7 +182,7 @@ const NavbarAction = ({ vertical }) => {
                     <button
                         type="submit"
                         className="search-button">
-                        <SearchIcon/>
+                        <SearchIcon />
                     </button>
                 </form>
             </NavItem>
@@ -201,7 +202,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 aria-haspopup="true"
                 aria-expanded="true"
                 onClick={() => toggle(keyName)}>
-                <PermIdentityIcon/>
+                <NewIcons.navuser />
             </IconButton>
 
             <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
@@ -213,17 +214,8 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     </li>
                 )}
                 <li className="px-0 dropdown-item">
-                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                        <a className="nav-link text-left"><BookmarkIcon/>
-                            <span className="m-1">
-                                {t('layoutC:favorites')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
-                        <a className="nav-link text-left"><FaceIcon/>
+                        <a className="nav-link text-left"><NewIcons.user />
                             <span className="m-1">
                                 {t('layoutC:my-profile')}
                             </span>
@@ -231,8 +223,17 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     </Link>
                 </li>
                 <li className="px-0 dropdown-item">
+                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
+                        <a className="nav-link text-left"><NewIcons.favorite />
+                            <span className="m-1">
+                                {t('layoutC:favorites')}
+                            </span>
+                        </a>
+                    </Link>
+                </li>
+                <li className="px-0 dropdown-item">
                     <Link href="/profile/messages" prefetch={false}>
-                        <a className="nav-link text-left"><ChatIcon/>
+                        <a className="nav-link text-left"><NewIcons.message />
                             <span className="m-1">
                                 {t('layoutC:messaging')}
                             </span>
@@ -241,7 +242,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
-                        <a className="nav-link text-left"><SettingsIcon/>
+                        <a className="nav-link text-left"><NewIcons.setting />
                             <span className="m-1">
                                 {t('layoutC:settings')}
                             </span>
@@ -254,7 +255,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             router.push('/')
                             logout()
                         }}>
-                            <ExitToAppIcon/>
+                            <NewIcons.signout />
                             <span className="m-1">
                                 {t('layoutC:logout')}
                             </span>
@@ -297,7 +298,7 @@ const LoggedInUserNav = ({ vertical }) => {
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <HomeIcon/>
+                                    <NewIcons.home />
                                 </IconButton>
                             </a>
                         </Link>
