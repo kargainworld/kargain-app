@@ -24,12 +24,6 @@ export default {
         main: '#FE73F1',
         light: colors.grey['A400']
     },
-    customgray: {
-        contrastText: white,
-        dark: colors.grey[900],
-        main: '#EAEAEA',
-        light: '#FAFAFA'
-    },
     gradient: {
         contrastText: white,
         dark: "linear-gradient(180deg, #DB00FF 0%, #5200FF 100%)",

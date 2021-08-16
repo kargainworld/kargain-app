@@ -11,7 +11,7 @@ const VehicleTypesWrapper = styled.div`
 `
 
 const VehicleTypeContainer = styled.div`
-  border: 1px solid ${({ selected, theme: { palette: { customgray } } }) => selected ? customgray.light : customgray.main};
+  border: 1px solid ${({ selected, theme: { palette: { primary } } }) => selected ? primary.main : primary.light};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
                     <Typography
                         variant="h3"
                         style={{
-                            color: isActive ? '#3291FF' : '#999999',
+                            color: isActive ? '#000' : '#999',
                             marginTop: 20
                         }}
                     >

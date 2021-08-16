@@ -9,21 +9,21 @@ const AnnounceTypeRadioButtonContainer = styled.div`
 `
 
 const AnnounceTypeRadioButtonLabel = styled.label`
-  border-bottom: 3px solid ${({ theme }) => theme.palette.customgray.main};
+  border-bottom: 3px solid #EAEAEA;
   width: 100%;
   text-align: center;
   cursor: pointer;
   padding: 8px;
   
   & * {
-    color: ${({ theme }) => theme.palette.customgray.main} !important;
+    color: ${({ theme }) => theme.palette.primary.light} !important;
   }
   
   input:checked + & {
-    border-bottom: 3px solid ${({ theme }) => theme.palette.secondary.main};
+    border-bottom: 3px solid #000;
 
     & * {
-      color: ${({ theme }) => theme.palette.secondary.main} !important;
+      color: ${({ theme }) => theme.palette.primary.main} !important;
     }
   }
 `

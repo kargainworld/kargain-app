@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { Container } from 'reactstrap'
 import { useRouter} from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import useIsMounted from '../hooks/useIsMounted'
@@ -75,18 +76,20 @@ const SearchPage = ( ) => {
     },[fetchSearch, isMounted])
 
     return (
-        <div className={classes.filtersContainer}>
-            <HomeFilters
-                totalResult={state.total}
-                query={query}
-                updateFilters={filters =>{
-                    setState(state => ({
-                        ...state,
-                        filters,
-                        hideFilters: true
-                    }))}}
-            />
-        </div>
+        <Container>
+            <div className={classes.filtersContainer}>
+                <HomeFilters
+                    totalResult={state.total}
+                    query={query}
+                    updateFilters={filters =>{
+                        setState(state => ({
+                            ...state,
+                            filters,
+                            hideFilters: true
+                        }))}}
+                />
+            </div>
+        </Container>
     )
 }
 
