@@ -22,6 +22,7 @@ const path = require('path')
 
 const useStyles = makeStyles(() => ({
     button: {
+        width: '100px',
         padding: '6px 2rem',
         borderRadius: '20px',
         background: customColors.gradient.main
