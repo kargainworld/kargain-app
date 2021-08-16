@@ -260,7 +260,7 @@ const Profile = () => {
                     <div className="top-profile-name-btn">
                         <h1>
                             {profile.getFullName}
-                            {(profile.getIsPro && profile.getIsActivated) && <img className="mx-2" src="/images/star.png" alt="" />}
+                            {(profile.getIsPro && profile.getIsActivated)}
                         </h1>
 
                         {state.isSelf ? (
