@@ -8,6 +8,7 @@ import message from './message.svg';
 import favorite from './Favorite.svg';
 import setting from './Setting.svg';
 import signout from './SignOut.svg';
+import goToworld from './Language_world.svg';
 
 export const NewIcons = {
     message,
@@ -21,4 +22,5 @@ export const NewIcons = {
     favorite,
     setting,
     signout,
+    goToworld,
 }

@@ -114,7 +114,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <LanguageIcon/>
+                            <NewIcons.goToworld />
                         </a>
                     </Link>
                 </Navbar>
