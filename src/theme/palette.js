@@ -26,9 +26,9 @@ export default {
     },
     customgray: {
         contrastText: white,
-        dark: colors.grey[900],
+        dark: "#999999",
         main: '#EAEAEA',
-        light: '#FAFAFA'
+        light: '#FBFBFB'
     },
     gradient: {
         contrastText: white,
