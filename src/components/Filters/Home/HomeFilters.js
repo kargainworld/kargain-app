@@ -68,14 +68,14 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             {isMobile ? (
                 <Row>
                     <Col md={12}>
-                        <img src="/images/MainCar-mobile.png" width="100%" />
+                        <img src="/images/MainCar-mobile.png" width="100%" height="100%"/>
                     </Col>
                     
                     <Col md={12}>
                         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
                             <div
                                 style={{
-                                    maxWidth: 532,
+                                    maxWidth: 720,
                                     width: '100%',
                                     margin: '0 auto',
                                     display: 'flex',
@@ -102,7 +102,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     name="vehicleType"
                                     items={vehicleTypes()}
                                     onChange={setVehicleType}
-                                    style={{ maxWidth: 532, width: '100%' }}
+                                    style={{ maxWidth: 720, width: '100%' }}
                                 />
                             </div>
 
@@ -135,14 +135,14 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 ) : (
                 <Row>
                     <Col md={4}>
-                        <img src="/images/MainCar.png" width="100%" />
+                        <img src="/images/MainCar.png" width="100%" height="100%" />
                     </Col>
                     
                     <Col md={8}>
-                        <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
+                        <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)} style={{ paddingTop: '9%' }}>
                             <div
                                 style={{
-                                    maxWidth: 532,
+                                    maxWidth: 720,
                                     width: '100%',
                                     margin: '0 auto',
                                     display: 'flex',
@@ -169,7 +169,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     name="vehicleType"
                                     items={vehicleTypes()}
                                     onChange={setVehicleType}
-                                    style={{ maxWidth: 532, width: "100%" }}
+                                    style={{ maxWidth: 720, width: "100%" }}
                                 />
                             </div>
     
