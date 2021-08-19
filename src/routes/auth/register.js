@@ -42,7 +42,8 @@ const useStyles = makeStyles(() => ({
 			padding: '6px 2rem',
 			borderRadius: '20px',
 			color: 'white',
-			fontSize: '16px',
+			fontSize: '14px',
+			fontWeight: "bold",
 			background: customColors.gradient.main
 		},
 		
@@ -78,7 +79,7 @@ const RegisterPage = () => {
 
     return (
 	<Container>
-	    <h1>{t('vehicles:register')}</h1>
+	    <h1 style={{fontSize:"24px"}}>{t('vehicles:register')}</h1>
 	    <Row>
 		<Col className="m-auto" sm="12" md="10">
 
@@ -142,6 +143,7 @@ const RegisterPage = () => {
 
 			<FieldWrapper label={t('vehicles:password_confirm')}>
 			    <RPasswordInput
+				style={{fontSize:"14px", fontWeight:"normal"}}
 				name="confirmPwd"
 				errors={errors}
 				control={control}
