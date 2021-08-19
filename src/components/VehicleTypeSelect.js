@@ -11,7 +11,7 @@ const VehicleTypesWrapper = styled.div`
 `
 
 const VehicleTypeContainer = styled.div`
-  border: 1px solid ${({ selected, theme: { palette: { customgray, background } } }) => selected ? background.paper : customgray.light};
+  border: 1px solid ${({ selected, theme: { palette: { customgray } } }) => selected ? customgray.light : customgray.main};
   border-radius: 5px;
   display: flex;
   flex-direction: column;

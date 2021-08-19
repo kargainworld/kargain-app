@@ -9,14 +9,14 @@ const AnnounceTypeRadioButtonContainer = styled.div`
 `
 
 const AnnounceTypeRadioButtonLabel = styled.label`
-  border-bottom: 2px solid ${({ theme }) => theme.palette.customgray.main};
+  border-bottom: 3px solid ${({ theme }) => theme.palette.customgray.main};
   width: 100%;
   text-align: center;
   cursor: pointer;
   padding: 8px;
   
   & * {
-    color: ${({ theme }) => theme.palette.customgray.dark} !important;
+    color: ${({ theme }) => theme.palette.customgray.main} !important;
   }
   
   input:checked + & {
