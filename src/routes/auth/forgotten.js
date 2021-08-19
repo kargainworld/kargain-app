@@ -32,12 +32,14 @@ const useStyles = makeStyles(() => ({
         }
     },
     button: {
-                border: "none !important",
+        border: "none !important",
         padding: '6px 2rem',
         borderRadius: '20px',
-                color: 'white',
+        color: 'white',
+        font: '16px',
         background: customColors.gradient.main
-    }
+    },
+    
 }))
 
 

@@ -7,7 +7,7 @@ import { MessageContext } from '../../context/MessageContext'
 import AuthService from '../../services/AuthService'
 import TextInput from '../../components/Form/Inputs/TextInput'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
-import CheckBoxInput from '../../components/Form/Inputs/CheckBoxInput'
+import RCheckBoxInput from '../../components/Form/Inputs/RCheckBoxInput'
 import RPasswordInput from '../../components/Form/Inputs/RPasswordInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import CTAButton from '../../components/CTAButton'
@@ -164,12 +164,14 @@ const RegisterPage = () => {
 			</FieldWrapper>
 
 			<FieldWrapper>
-			    <CheckBoxInput
+			    <RCheckBoxInput
+			
 				name="confirm"
 				label={t('vehicles:accept-cgu')}
 				errors={errors}
 				control={control}
 				rules={{ required: t('form_validations:required') }}
+				
 			    />
 			</FieldWrapper>
 

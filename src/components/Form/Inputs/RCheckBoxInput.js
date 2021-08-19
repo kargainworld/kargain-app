@@ -4,21 +4,20 @@ import clsx from 'clsx'
 import ValidationError from '../Validations/ValidationError'
 import Checkbox from '@material-ui/core/Checkbox'
 
-const CheckBoxInput = ({ name, rules, control, errors, ...props }) => {
+const RCheckBoxInput = ({ name, rules, control, errors, ...props }) => {
      
     return (
         <>
             <div className={clsx('input', 'input-field', props.fullwidth && 'w-100', props.className)}>
                 <label className="pl-1" htmlFor={name} >
-                    <input
+                    
+                    <Checkbox 
                         id={name}
                         name={name}                        
                         ref={control.register(rules)}
-                        className="radio_field"                        
-                        type="checkbox"
-                       
-                    
+                        inputProps = {{ 'aria-label': 'uncontrolled-checkbox'}} 
                     />
+                    
 
                     {' '} {props.label}
                     {props.required && <span className="required_label">*</span>}
@@ -29,9 +28,9 @@ const CheckBoxInput = ({ name, rules, control, errors, ...props }) => {
     )
 }
 
-CheckBoxInput.propTypes = {
+RCheckBoxInput.propTypes = {
     name: PropTypes.string.isRequired,
     control : PropTypes.any.isRequired
 }
 
-export default memo(CheckBoxInput)
+export default memo(RCheckBoxInput)
