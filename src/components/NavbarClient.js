@@ -36,6 +36,7 @@ import { NewIcons } from '../assets/icons';
 
 const Root = styled.header`
   position: sticky;
+  padding: 10px 0 12px 0;
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
@@ -114,7 +115,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <LanguageIcon/>
+                            <LanguageIcon style={{ width: 20, height: 20}} />
                         </a>
                     </Link>
                 </Navbar>
@@ -131,7 +132,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            style={{borderRadius: "17px"}}
+            style={{borderRadius: "17px", height: "33px" }}
             variant="contained"
             color="primary"
         />
