@@ -40,7 +40,7 @@ export default {
           paddingRight: 52 + 4 + 9
         },
         '& $input': {
-          padding: '9.5px 4px'
+          padding: '7px 4px'
         },
         '& $input:first-child': {
           paddingLeft: 6
