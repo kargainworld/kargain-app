@@ -15,6 +15,43 @@ import AuthService from '../../services/AuthService'
 import { useAuth } from '../../context/AuthProvider'
 import UserModel from '../../models/user.model'
 import useSocket from '../../hooks/useSocket'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import clsx from 'clsx'
+import customColors from '../../theme/palette'
+
+const useStyles = makeStyles(()=>({
+	
+	gradientbox: {  
+		display: "flex",
+		alignItems: "center",
+		//width: 50vw;
+		width: "90%",
+		backgroundClip: 'padding-box', /* !importanté */
+		border: 'solid 3px transparent', /* !importanté */
+		borderRadius: 20,
+		'&:before': {
+				content: '',
+				position: "absolute",
+				top: 0, right: 0, bottom: 0, left: 0,
+				zIndex: -1,
+				margin: -3, /* !importanté */
+				borderRadius: "inherit", /* !importanté */
+				background: customColors.gradient.main
+		}
+	},
+	button: {
+		border: "none !important",
+		padding: '6px 2rem',
+		borderRadius: '20px',
+		color: 'white',
+		fontSize: '16px',
+		background: customColors.gradient.main
+	},
+	text: {
+		fontSize: "14px",
+	}
+
+}))
 
 export default ({ forceLogout }) => {
 	const router = useRouter()
@@ -22,6 +59,8 @@ export default ({ forceLogout }) => {
 	const { t } = useTranslation()
 	const { initializeAuth } = useAuth()
 	useSocket()
+	const classes = useStyles()
+        
 	const { redirect } = router.query
 	const { dispatchModalError } = useContext(MessageContext)
 	const { control, errors, handleSubmit } = useForm({
@@ -77,6 +116,7 @@ export default ({ forceLogout }) => {
 
 						<FieldWrapper label="Email">
 							<EmailInput
+								className = {clsx('txt', classes.text)}
 								name="email"
 								inline
 								errors={errors}
@@ -87,6 +127,7 @@ export default ({ forceLogout }) => {
 
 						<FieldWrapper label={t('vehicles:password')}>
 							<PasswordInput
+								className = {clsx('txt', classes.text)}
 								name="password"
 								errors={errors}
 								control={control}
@@ -98,8 +139,7 @@ export default ({ forceLogout }) => {
 											min: 4, max: 16
 										})
 									}
-								}
-								}
+								}}
 							/>
 						</FieldWrapper>
 
@@ -111,6 +151,8 @@ export default ({ forceLogout }) => {
 
 						<div className="submit">
 							<CTAButton
+								
+								className={clsx('btn', classes.button)}
 								title={t('vehicles:login')}
 								submit
 							/>

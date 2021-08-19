@@ -8,12 +8,15 @@ const CheckBoxInput = ({ name, rules, control, errors, ...props }) => {
     return (
         <>
             <div className={clsx('input', 'input-field', props.fullwidth && 'w-100', props.className)}>
-                <label className="pl-1" htmlFor={name}>
+                <label className="pl-1" htmlFor={name} >
+                
                     <input
                         id={name}
                         name={name}
+                        
                         ref={control.register(rules)}
                         className="radio_field"
+                        
                         type="checkbox"
                     />
 

@@ -8,6 +8,10 @@ import message from './message.svg';
 import favorite from './Favorite.svg';
 import setting from './Setting.svg';
 import signout from './SignOut.svg';
+import eye from './Vector.svg';
+import eyeslash from './Vectorslash.svg';
+import Reye from './VectorR.svg';
+import Reyeslash from './VectorslashR.svg';
 
 export const NewIcons = {
     message,
@@ -21,4 +25,8 @@ export const NewIcons = {
     favorite,
     setting,
     signout,
+    eye,
+    eyeslash,
+    Reye,
+    Reyeslash,
 }
