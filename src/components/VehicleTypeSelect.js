@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 
 const VehicleTypesWrapper = styled.div`
+  max-width: 700px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
@@ -17,6 +18,7 @@ const VehicleTypeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 350px;
   height: 200px;
 `
 

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         listStyle: 'none',
-        padding: theme.spacing(0.5),
+        padding: theme.spacing(0.0),
         margin: 0
     },
     chip: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     filtersContainer: {
-        padding: '.5rem'
+        padding: '0'
     },
 
     filtersTop: {
