@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { NewIcons } from '../../../assets/icons';
 
-const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
+const RPasswordInput = memo(({ name, control, rules, errors, ...props }) => {
     const [hidden, setHidden] = useState(true)
 
     if (!control) return null
@@ -23,7 +23,7 @@ const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
                     disabled={props.disabled}
                 />
                 <span className="password__show" onClick={() => setHidden(!hidden)}>
-                    {hidden ? <NewIcons.eye alt="eye"/> : <NewIcons.eyeslash alt="eyeslash"/>}
+                    {hidden ? <NewIcons.Reye alt="eye"/> : <NewIcons.Reyeslash alt="eyeslash"/>}
                 </span>
             </div>
             {errors && <ValidationError errors={errors} name={name}/>}
@@ -31,15 +31,15 @@ const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
     )
 })
 
-PasswordInput.propTypes = {
+RPasswordInput.propTypes = {
     control: PropTypes.any.isRequired
 }
 
-PasswordInput.defaultProps = {
+RPasswordInput.defaultProps = {
     required: false,
     disabled: false,
     hidden: true,
     display: 'col'
 }
 
-export default PasswordInput
+export default RPasswordInput

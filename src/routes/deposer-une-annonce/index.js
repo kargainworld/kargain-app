@@ -17,13 +17,38 @@ import UserModel from '../../models/user.model'
 import Loading from '../../components/Loading'
 import Error from '../_error'
 
+import customColors from '../../theme/palette'
+
 const path = require('path')
 
 const useStyles = makeStyles(() => ({
-    button: {
-        padding: '1rem',
-        border: '1px solid'
-    }
+    gradientbox: {  
+		display: "flex",
+		alignItems: "center",
+		//width: 50vw;
+		width: "90%",
+		backgroundClip: 'padding-box', /* !importanté */
+		border: 'solid 3px transparent', /* !importanté */
+		borderRadius: 20,
+		'&:before': {
+				content: '',
+				position: "absolute",
+				top: 0, right: 0, bottom: 0, left: 0,
+				zIndex: -1,
+				margin: -3, /* !importanté */
+				borderRadius: "inherit", /* !importanté */
+				background: customColors.gradient.main
+		}
+	},
+	button: {
+		border: "none !important",
+		padding: '6px 2rem',
+		borderRadius: '20px',
+		color: 'white',
+		fontSize: '14px',
+		fontWeight: 'bold',
+		background: customColors.gradient.main
+	},
 }))
 
 const Page = () => {
@@ -118,7 +143,7 @@ const Page = () => {
                     })}
                 </Row>
 
-                <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
+                <Typography style={{fontSize:"20px", fontWeight:"500" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
                 <Row className="justify-content-center">
                     {announceTypes() && announceTypes()
                         .filter(type => {
@@ -145,6 +170,7 @@ const Page = () => {
 
                 <Row className="justify-content-center">
                     <button className={clsx('btn', classes.button)}
+                        className={clsx("btn"), classes.button}
                         type="submit"
                         disabled={!formState.isValid}>
                         {t('vehicles:next')}

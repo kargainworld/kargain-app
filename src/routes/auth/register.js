@@ -7,12 +7,47 @@ import { MessageContext } from '../../context/MessageContext'
 import AuthService from '../../services/AuthService'
 import TextInput from '../../components/Form/Inputs/TextInput'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
-import CheckBoxInput from '../../components/Form/Inputs/CheckBoxInput'
-import PasswordInput from '../../components/Form/Inputs/PasswordInput'
+import RCheckBoxInput from '../../components/Form/Inputs/RCheckBoxInput'
+import RPasswordInput from '../../components/Form/Inputs/RPasswordInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import CTAButton from '../../components/CTAButton'
 import SSOProviders from '../../components/SSOProviders'
 import CTALink from '../../components/CTALink'
+import { Icon } from '@material-ui/core'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import clsx from 'clsx'
+import customColors from '../../theme/palette'
+
+const useStyles = makeStyles(() => ({
+	gradientbox: {  
+			display: "flex",
+			alignItems: "center",
+			//width: 50vw;
+			width: "90%",
+			backgroundClip: 'padding-box', /* !importanté */
+			border: 'solid 3px transparent', /* !importanté */
+			borderRadius: 20,
+			'&:before': {
+					content: '',
+					position: "absolute",
+					top: 0, right: 0, bottom: 0, left: 0,
+					zIndex: -1,
+					margin: -3, /* !importanté */
+					borderRadius: "inherit", /* !importanté */
+					background: customColors.gradient.main
+			}
+		},
+		button: {
+			border: "none !important",
+			padding: '6px 2rem',
+			borderRadius: '20px',
+			color: 'white',
+			fontSize: '14px',
+			fontWeight: "bold",
+			background: customColors.gradient.main
+		},
+		
+	}))
 
 const formConfig = {
     mode: 'onChange',
@@ -24,7 +59,7 @@ const RegisterPage = () => {
     const { control, errors, getValues, handleSubmit } = useForm(formConfig)
     const { t } = useTranslation()
     const router = useRouter()
-
+	const classes = useStyles()
     const onSubmit = (form) => {
 	// eslint-disable-next-line unused-imports/no-unused-vars
 	const { confirm, confirmPwd, ...data } = form
@@ -44,7 +79,7 @@ const RegisterPage = () => {
 
     return (
 	<Container>
-	    <h1>{t('vehicles:register')}</h1>
+	    <h1 style={{fontSize:"24px"}}>{t('vehicles:register')}</h1>
 	    <Row>
 		<Col className="m-auto" sm="12" md="10">
 
@@ -89,7 +124,7 @@ const RegisterPage = () => {
 			</FieldWrapper>
 
 			<FieldWrapper label={t('vehicles:password')}>
-			    <PasswordInput
+			    <RPasswordInput
 				name="password"
 				errors={errors}
 				control={control}
@@ -102,11 +137,13 @@ const RegisterPage = () => {
 					})
 				    }}
 				}
+				
 			    />
 			</FieldWrapper>
 
 			<FieldWrapper label={t('vehicles:password_confirm')}>
-			    <PasswordInput
+			    <RPasswordInput
+				style={{fontSize:"14px", fontWeight:"normal"}}
 				name="confirmPwd"
 				errors={errors}
 				control={control}
@@ -129,19 +166,22 @@ const RegisterPage = () => {
 			</FieldWrapper>
 
 			<FieldWrapper>
-			    <CheckBoxInput
+			    <RCheckBoxInput
+			
 				name="confirm"
 				label={t('vehicles:accept-cgu')}
 				errors={errors}
 				control={control}
 				rules={{ required: t('form_validations:required') }}
+				
 			    />
 			</FieldWrapper>
 
 			<div className="submit">
 			    <CTAButton
-				title={t('vehicles:register')}
-				submit
+					className = {clsx('btn', classes.button)}
+					title={t('vehicles:register')}
+					submit
 			    />
 			</div>
 		    </form>
