@@ -85,7 +85,7 @@ const AutocompleteDropdown = () => {
             PaperComponent={({ children }) => (
               <Paper style={{ }}>{children}</Paper>
             )}
-            style={{ width: 250, height: 36, marginLeft: "auto", marginRight: "auto" }}
+            style={{ width: 250, height: 36, marginLeft: "auto" }}
             freeSolo
             forcePopupIcon={true}
             popupIcon={<SearchIcon />}
