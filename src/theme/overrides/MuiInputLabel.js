@@ -3,7 +3,7 @@ export default {
         // see comment above on filled.zIndex
         zIndex: 1,
         pointerEvents: 'none',
-        transform: 'translate(14px, 14px) scale(1)',
+        transform: 'translate(14px, 12px) scale(1)',
         '&$marginDense': {
           transform: 'translate(14px, 12px) scale(1)'
         },

@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 const VehicleTypesWrapper = styled.div`
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   cursor: pointer;
   user-select: none;
 `

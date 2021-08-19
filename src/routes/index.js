@@ -14,15 +14,14 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         listStyle: 'none',
-        padding: theme.spacing(0.5),
         margin: 0
     },
     chip: {
-        margin: theme.spacing(0.5)
+        // margin: theme.spacing(0.5)
     },
 
     filtersContainer: {
-        padding: '.5rem'
+        padding: '0'
     },
 
     filtersTop: {
