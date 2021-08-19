@@ -117,13 +117,14 @@ const Page = () => {
         <Container className="annonce1-wrapper-container">
             <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 
-                <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
-                <Row className="justify-content-center">
+                <Typography style={{fontSize:"20px"}} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
+                <Row className="justify-content-center" style={{marginTop:"20px"}}>
                     {vehicleTypes() && vehicleTypes().map((tab, index) => {
                         return (
                             <Col key={index} xs={6} sm={6} md={3} lg={3}>
                                 <div className="form-check form-check-vehicle m-0" style={{ minHeight: '5rem' }}>
                                     <input id={`vehicle_type${index}`}
+                                          
                                         type="radio"
                                         name="vehicleType"
                                         value={tab.value}
@@ -144,7 +145,7 @@ const Page = () => {
                 </Row>
 
                 <Typography style={{fontSize:"20px", fontWeight:"500" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center" style={{fontSize:"14px"}}>
                     {announceTypes() && announceTypes()
                         .filter(type => {
                             if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
