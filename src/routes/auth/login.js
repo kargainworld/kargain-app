@@ -48,11 +48,6 @@ const useStyles = makeStyles(()=>({
 		fontWeight: 'bold',
 		background: customColors.gradient.main
 	},
-	titletext: {
-		fontSize: "24px",
-		fontStyle: "normal",
-		textAlign: "center",
-	}
 
 }))
 
@@ -105,7 +100,7 @@ export default ({ forceLogout }) => {
 
 	return (
 		<Container>
-			<h3 className="titletext" style={{textAlign:"center"}}>{t('vehicles:login')}</h3>
+			<h3 style={{textAlign:"center", fontSize:"24px"}}>{t('vehicles:login')}</h3>
 			<Row>
 				<Col className="m-auto" sm="12" md="10">
 					{/* <SSOProviders/> */}

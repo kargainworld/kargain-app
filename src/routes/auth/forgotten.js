@@ -36,7 +36,10 @@ const useStyles = makeStyles(() => ({
         padding: '6px 2rem',
         borderRadius: '20px',
         color: 'white',
-        font: '16px',
+        font: '14px',
+        fontWeight: 'bold',
+        fontStyle: "normal",
+
         background: customColors.gradient.main
     },
     
@@ -67,7 +70,7 @@ const ForgottenForm = () => {
 
     return (
         <main>
-            <h1>{t('vehicles:password-forgotten')}</h1>
+            <h3 style={{textAlign: "center", fontSize:"24px"}}>{t('vehicles:password-forgotten')}</h3>
             <form className="mt-3 mx-auto"
                 onSubmit={handleSubmit(onSubmit)}
                 style={{ maxWidth: '400px' }}>
