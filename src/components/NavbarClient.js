@@ -115,7 +115,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <LanguageIcon style={{ width: 16, height: 16}} />
+                            <LanguageIcon style={{ width: 20, height: 20}} />
                         </a>
                     </Link>
                 </Navbar>
@@ -132,7 +132,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            style={{borderRadius: "17px"}}
+            style={{borderRadius: "17px", height: "33px" }}
             variant="contained"
             color="primary"
         />

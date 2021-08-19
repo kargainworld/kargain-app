@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect} from 'react'
 import { useRouter } from "next/router";
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from '../../assets/icons/Search.svg';
 import { Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
