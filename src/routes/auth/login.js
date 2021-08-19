@@ -44,11 +44,14 @@ const useStyles = makeStyles(()=>({
 		padding: '6px 2rem',
 		borderRadius: '20px',
 		color: 'white',
-		fontSize: '16px',
+		fontSize: '14px',
+		fontWeight: 'bold',
 		background: customColors.gradient.main
 	},
-	text: {
-		fontSize: "14px",
+	titletext: {
+		fontSize: "24px",
+		fontStyle: "normal",
+		textAlign: "center",
 	}
 
 }))
@@ -102,7 +105,7 @@ export default ({ forceLogout }) => {
 
 	return (
 		<Container>
-			<h1>{t('vehicles:login')}</h1>
+			<h3 className="titletext" style={{textAlign:"center"}}>{t('vehicles:login')}</h3>
 			<Row>
 				<Col className="m-auto" sm="12" md="10">
 					{/* <SSOProviders/> */}
@@ -116,7 +119,6 @@ export default ({ forceLogout }) => {
 
 						<FieldWrapper label="Email">
 							<EmailInput
-								className = {clsx('txt', classes.text)}
 								name="email"
 								inline
 								errors={errors}
@@ -145,7 +147,7 @@ export default ({ forceLogout }) => {
 
 						<div className="text-right">
 							<Link href="/auth/forgotten">
-								<a className="">{t('vehicles:password-forgotten')} </a>
+								<a className="" style={{fontSize: "14px"}}>{t('vehicles:password-forgotten')} </a>
 							</Link>
 						</div>
 
