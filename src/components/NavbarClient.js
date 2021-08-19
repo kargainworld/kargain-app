@@ -36,6 +36,7 @@ import { NewIcons } from '../assets/icons';
 
 const Root = styled.header`
   position: sticky;
+  padding: 10px 0 12px 0;
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
@@ -114,7 +115,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <NewIcons.goToworld />
+                            <LanguageIcon style={{ width: 16, height: 16}} />
                         </a>
                     </Link>
                 </Navbar>
