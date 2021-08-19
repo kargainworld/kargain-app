@@ -12,6 +12,7 @@ import eye from './Icon_eye.svg';
 import eyeslash from './Icon_eye_slash.svg';
 import Reye from './Icon_eye_pink.svg';
 import Reyeslash from './Icon_eye_slash_pink.svg';
+import iconcar from './Icon_car';
 import goToworld from './Language_world.svg';
 
 export const NewIcons = {
@@ -30,5 +31,6 @@ export const NewIcons = {
     eyeslash,
     Reye,
     Reyeslash,
+    iconcar,
     goToworld,
 }
