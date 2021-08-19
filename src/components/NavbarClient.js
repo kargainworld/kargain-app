@@ -319,14 +319,14 @@ const VisitorNav = ({ vertical }) => {
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
                 <Link href="/auth/login" prefetch={false}>
-                    <a className="nav-link py-0">
+                    <a className="nav-link py-0" style={{ color: "#666666" }}>
                         {t('layoutC:login')}
                     </a>
                 </Link>
             </NavItem>
             <NavItem className="p-2">
                 <Link href="/auth/register" prefetch={false}>
-                    <a className="nav-link py-0">
+                    <a className="nav-link py-0" style={{ color: "#666666" }}>
                         {t('layoutC:register')}
                     </a>
                 </Link>
