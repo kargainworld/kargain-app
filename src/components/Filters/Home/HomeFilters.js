@@ -22,7 +22,8 @@ const path = require('path')
 
 const useStyles = makeStyles(() => ({
     button: {
-        width: '100px',
+        width: 100, 
+        height: 33,
         padding: '6px 2rem',
         borderRadius: '20px',
         background: customColors.gradient.main
@@ -119,7 +120,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     display: 'flex',
                                     flexWrap: 'wrap',
                                     justifyContent: "center",
-                                    marginTop: 40
+                                    marginTop: 45
                                 }}
                             >
                                 <div className="submit mx-2" style={{ marginTop: 0 }}>                    
@@ -186,7 +187,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     display: 'flex',
                                     flexWrap: 'wrap',
                                     justifyContent: "center",
-                                    marginTop: 40
+                                    marginTop: 45
                                 }}
                             >
                                 <div className="submit mx-2" style={{ marginTop: 0 }}>                    
