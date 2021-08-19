@@ -117,8 +117,8 @@ const Page = () => {
         <Container className="annonce1-wrapper-container">
             <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 
-                <Typography style={{fontSize:"20px"}} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
-                <Row className="justify-content-center" style={{marginTop:"20px"}}>
+                <Typography style={{fontSize:"20px", marginTop:"40px"}} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
+                <Row className="justify-content-center" style={{marginTop:"30px"}}>
                     {vehicleTypes() && vehicleTypes().map((tab, index) => {
                         return (
                             <Col key={index} xs={6} sm={6} md={3} lg={3}>
@@ -144,7 +144,7 @@ const Page = () => {
                     })}
                 </Row>
 
-                <Typography style={{fontSize:"20px", fontWeight:"500" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
+                <Typography style={{fontSize:"20px", fontWeight:"500", marginTop:"30px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
                 <Row className="justify-content-center" style={{fontSize:"14px"}}>
                     {announceTypes() && announceTypes()
                         .filter(type => {
