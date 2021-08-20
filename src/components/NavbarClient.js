@@ -132,7 +132,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            style={{borderRadius: "17px", height: "33px" }}
+            style={{borderRadius: "20px", height: "33px" }}
             variant="contained"
             color="primary"
         />
@@ -140,7 +140,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
 }
 
 const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
-border-radius: 50px;
+border-radius: 20px;
 `
 
 const NavbarAction = ({ vertical }) => {
