@@ -95,12 +95,10 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 				 maxActiveStep={maxActiveStep}
 				 
 		/>
-		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
-
-		<div>
-		{/* ss  */}
-			<Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
-		</div>
+		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+		<NewIcons.car/>
+		<Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
+		
 		<ControlledStep
 		    step={steps[activeStep]}
 		    onSubmitStep={onSubmitStep}

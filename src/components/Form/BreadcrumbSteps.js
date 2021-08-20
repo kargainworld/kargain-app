@@ -1,19 +1,43 @@
 import React, { memo } from 'react'
 import clsx from 'clsx'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import customColors from '../../theme/palette'
+
+const useStyles = makeStyles(()=>({
+	button: {
+		border: "none !important",
+		padding: '6px 2rem',
+		borderRadius: '20px',
+		color: 'white',
+		fontSize: '14px',
+		fontWeight: 'bold',
+		background: customColors.gradient.main
+	},
+    breadcrumb: {
+        '& ol': {
+            backgroundColor: "#fff",
+            marginTop: '10px',
+            '& li + li::before': {    
+                content: "'|' !important",
+            }
+        },
+    },
+  
+}))
 
 const BreadcrumbSteps = ({ steps, activeStepIndex, maxActiveStep, setStep }) => {
+    
+	const classes = useStyles()
     return (
-        <section id="header" style={{backgroundColor: "white"}}>
-            <Breadcrumb id="breadcrumb" className="navigation-bar" style={{backgroundColor: "white"}}>
-                
+        <section id="header">
+            <Breadcrumb id="breadcrumb" className={clsx('navigation-bar', classes.breadcrumb)} > 
                 {steps.length > 0 && steps.map((step, index) => {
                     return (
-                        <BreadcrumbItem
-                            style={{backgroundColor: "white"}}
+                        <BreadcrumbItem 
                             key={index}
                             active={index === activeStepIndex}
-                            className={clsx(index <= activeStepIndex && 'valid')}
+                            className={clsx(classes.slash, index <= activeStepIndex && 'valid')}
                             onClick={(e) => {
                                 if (index === activeStepIndex) e.preventDefault()
                                 // if (index <= maxActiveStep) setStep(index)
