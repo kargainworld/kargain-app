@@ -79,7 +79,7 @@ const RegisterPage = () => {
 
     return (
 	<Container>
-	    <h1 style={{fontSize:"24px"}}>{t('vehicles:register')}</h1>
+	    <h1 style={{fontSize:"24px", marginTop:'40px'}}>{t('vehicles:register')}</h1>
 	    <Row>
 		<Col className="m-auto" sm="12" md="10">
 

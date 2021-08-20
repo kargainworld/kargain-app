@@ -70,7 +70,7 @@ const ForgottenForm = () => {
 
     return (
         <main>
-            <h3 style={{textAlign: "center", fontSize:"24px"}}>{t('vehicles:password-forgotten')}</h3>
+            <h3 style={{textAlign: "center", fontSize:"24px", marginTop:"40px"}}>{t('vehicles:password-forgotten')}</h3>
             <form className="mt-3 mx-auto"
                 onSubmit={handleSubmit(onSubmit)}
                 style={{ maxWidth: '400px' }}>

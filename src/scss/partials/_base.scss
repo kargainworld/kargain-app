@@ -174,7 +174,7 @@ main {
     span {
         padding: 1rem;
         margin: 0 auto;
-        background-color: $grey;
+        background-color: white;
     }
 }
 
@@ -244,11 +244,11 @@ main {
 
 .breadcrumb-item.active {
     a {
-        background-color: $grey;
+        background-color: white;
         padding: 0 1rem;
         border-radius: 10px;
         //text-decoration: underline;
-        color: $white
+        color: #ED86ED;
     }
 }
 
