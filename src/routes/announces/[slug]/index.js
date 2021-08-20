@@ -245,7 +245,7 @@ const Announce = () => {
                 setTried(true)
             }
         })
-    }, [state.announce.getTokenId])
+    }, [])
 
     useEffect(() => {
         if (!tried && active) {
