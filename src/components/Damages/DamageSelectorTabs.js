@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import DamagesNavResponsive from './DamagesNavResponsive'
 import Header from '../Header'
 import { NewIcons } from '../../assets/icons'
+import { Emoji } from 'react-apple-emojis'
 
 const useStyles = makeStyles(() => ({
     annoPickerContainer: {
@@ -183,7 +184,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                         return (
                             <TabPane key={indexTab} tabId={indexTab}>
                                 <Row>
-                                    <Col sm={12} md={col} lg={6}>
+                                    <Col sm={12} md={col} lg={4}>
                                         <DamagesPicker {...{
                                             annoRefs,
                                             indexTab,
@@ -191,11 +192,14 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                             getClick
                                         }}/>
                                     </Col>
-                                    <Col sm={12} md={col} lg={6}>
-                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px'}}>
+                                    <Col sm={12} md={col} lg={8}>
+                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold"}}>❌ {t('vehicles:click-image')}</h4>}
+                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '3%'}}>
+                                                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
+			                                    {t('vehicles:click-image')}
+                                            </h4>}
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
                                             {stages.map((stage, indexStage) => {
@@ -215,7 +219,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                         </div>
                                                         <div style={{
                                                             margin: 'auto',
-                                                            flex: 3
+                                                            flex: 7.5
                                                         }}>
                                                             <input type="text"
                                                                 value={stage.text || ''}
