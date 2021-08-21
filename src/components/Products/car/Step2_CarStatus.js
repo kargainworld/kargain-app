@@ -48,8 +48,11 @@ const Step = ({ onSubmitStep, prevStep }) => {
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(onSubmitStep)}>
-            <Header text={t('vehicles:vehicle-state')}/>
-
+            {/* <Header text={t('vehicles:vehicle-state')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+                <img src="/icons/carfront-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
+                {t('vehicles:vehicle-state')} 
+            </h3>
             <FieldWrapper label={t('vehicles:chassis_number')}>
                 <TextInput
                     name="chassisNumber"
@@ -112,7 +115,11 @@ const Step = ({ onSubmitStep, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <Header text={t('vehicles:data-sheet')}/>
+            {/* <Header text={t('vehicles:data-sheet')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"25px"}}>
+                <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
+                {t('vehicles:data-sheet')}
+            </h3>
             <DamageSelectorControlled
                 vehicleType="car"
                 name="damages"
