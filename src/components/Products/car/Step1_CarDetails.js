@@ -194,7 +194,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header strong text={t('vehicles:consumption')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
                 <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:consumption')} 
             </h3>
@@ -256,7 +256,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header text={t('vehicles:vehicle-informations')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
                 <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:vehicle-informations')}
             </h3>

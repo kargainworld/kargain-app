@@ -49,7 +49,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
     return (
         <form className="form_wizard" onSubmit={handleSubmit(onSubmitStep)}>
             {/* <Header text={t('vehicles:vehicle-state')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
                 <img src="/icons/carfront-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:vehicle-state')} 
             </h3>
@@ -86,21 +86,21 @@ const Step = ({ onSubmitStep, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <FieldWrapper>
-                <CheckBoxInput
+            <FieldWrapper label={t('vehicles:accident_vehicle')}>
+                <SelectInput 
                     name="accidentVehicle"
                     control={control}
                     errors={errors}
-                    label={t('vehicles:accident_vehicle')}
+                    
                 />
             </FieldWrapper>
 
-            <FieldWrapper>
-                <CheckBoxInput
+            <FieldWrapper label={t('vehicles:defective_vehicle')}>
+                <SelectInput
                     name="defectiveVehicle"
                     control={control}
                     errors={errors}
-                    label={t('vehicles:defective_vehicle')}
+                    
                 />
             </FieldWrapper>
 
@@ -116,7 +116,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:data-sheet')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"25px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
                 <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:data-sheet')}
             </h3>
