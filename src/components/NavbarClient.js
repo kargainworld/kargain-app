@@ -10,6 +10,7 @@ import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem 
 import Button from '@material-ui/core/Button'
 import LanguageIcon from '@material-ui/icons/Language'
 import AddIcon from '@material-ui/icons/Add'
+import { Emoji } from 'react-apple-emojis'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ChatIcon from '@material-ui/icons/Chat'
@@ -115,7 +116,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <img src="../icons/kargain_world.png" />
+                            <Emoji name="globe-with-meridians" width={16} />
                         </a>
                     </Link>
                 </Navbar>
