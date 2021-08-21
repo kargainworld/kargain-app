@@ -193,7 +193,11 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header strong text={t('vehicles:consumption')} />
+            {/* <Header strong text={t('vehicles:consumption')} /> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+                <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
+                {t('vehicles:consumption')} 
+            </h3>
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={`${t('vehicles:consumption')} mixt`}>
@@ -251,7 +255,11 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header text={t('vehicles:vehicle-informations')} />
+            {/* <Header text={t('vehicles:vehicle-informations')} /> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+                <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
+                {t('vehicles:vehicle-informations')}
+            </h3>
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:doors_quantity')}>
