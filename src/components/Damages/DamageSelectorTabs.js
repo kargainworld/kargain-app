@@ -207,7 +207,8 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                                 className={classes.margin}
                                                                 tabIndex="-1"
                                                                 onClick={() => rmStage(indexTab, indexStage)}>
-                                                                <DeleteIcon fontSize="small"/>
+                                                                {/* <DeleteIcon fontSize="small"/> */}
+                                                                <NewIcons.recycle alt="recycle"/>
                                                             </IconButton>
                                                             <span style={{backgroundColor:"#A291F3"}}
                                                                 className={clsx(classes.annoNumber)}>{indexStage + 1}</span>

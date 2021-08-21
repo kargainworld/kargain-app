@@ -15,6 +15,8 @@ import Reyeslash from './Icon_eye_slash_pink.svg';
 import car from './Icon_car.svg';
 import goToworld from './Language_world.svg';
 import close from './icon_close.svg';
+import recycle from './icon_recycle.svg';
+
 
 export const NewIcons = {
     message,
@@ -35,4 +37,5 @@ export const NewIcons = {
     car,
     goToworld,
     close,
+    recycle,
 }
