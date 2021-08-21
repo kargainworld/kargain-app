@@ -336,8 +336,8 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 					</FieldWrapper>
 				</Col>
 			</Row>
-			<button className="btn" onClick={triggerSkipStep}>{t(`vehicles:skip-step`)}</button>
 			<StepNavigation prev={prevStep} submit />
+			<button className="btn" style={{color: '#2C65F6', fontSize: "14px", fontWeight: "normal"}}  onClick={triggerSkipStep}>{t(`vehicles:skip-step`)} </button>
 		</form>
 	)
 }

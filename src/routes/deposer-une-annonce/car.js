@@ -61,7 +61,6 @@ const CarForm = (props) => {
             onFinalSubmit={onFinalSubmit}>
 
             <Step0_Manufacturer
-                icon="car"
                 vehicleType={vehicleTypes.car}
                 title={t('vehicles:vehicle-selection')}
             />

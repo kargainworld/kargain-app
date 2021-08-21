@@ -19,24 +19,7 @@ import clsx from 'clsx'
 import customColors from '../../theme/palette'
 
 const useStyles = makeStyles(() => ({
-	gradientbox: {  
-			display: "flex",
-			alignItems: "center",
-			//width: 50vw;
-			width: "90%",
-			backgroundClip: 'padding-box', /* !importanté */
-			border: 'solid 3px transparent', /* !importanté */
-			borderRadius: 20,
-			'&:before': {
-					content: '',
-					position: "absolute",
-					top: 0, right: 0, bottom: 0, left: 0,
-					zIndex: -1,
-					margin: -3, /* !importanté */
-					borderRadius: "inherit", /* !importanté */
-					background: customColors.gradient.main
-			}
-		},
+	
 		button: {
 			border: "none !important",
 			padding: '6px 2rem',

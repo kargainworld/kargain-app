@@ -5,15 +5,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import customColors from '../../theme/palette'
 
 const useStyles = makeStyles(()=>({
-	button: {
-		border: "none !important",
-		padding: '6px 2rem',
-		borderRadius: '20px',
-		color: 'white',
-		fontSize: '14px',
-		fontWeight: 'bold',
-		background: customColors.gradient.main
-	},
     breadcrumb: {
         '& ol': {
             backgroundColor: "#fff",
