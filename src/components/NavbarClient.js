@@ -133,7 +133,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            style={{borderRadius: "20px", height: "33px" }}
+            style={{ borderRadius: 25, height: 33, fontWeight: "bold", fontFamily: "Roboto", fontSize: 14, lineHeight: "150%", fontStyle: "normal" }}
             variant="contained"
             color="primary"
         />
