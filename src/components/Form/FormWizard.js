@@ -97,9 +97,11 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 		/>
 		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
 		{/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
-		<h4>
+		
+		<h4 >
 			{/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
-			<Emoji name="Automobile" width={16} />
+			
+			<Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="automobile" width={18} />
 			{[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
 		</h4>
 		<ControlledStep

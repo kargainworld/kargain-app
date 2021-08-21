@@ -14,6 +14,7 @@ import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import TextInput from "../../Form/Inputs/TextInput";
 import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
+import { Emoji } from 'react-apple-emojis'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -48,10 +49,12 @@ const Step = ({ onSubmitStep, prevStep }) => {
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(onSubmitStep)}>
-            {/* <Header text={t('vehicles:vehicle-state')}/> */}
+            
             <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
-                <img src="/icons/carfront-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
-                {t('vehicles:vehicle-state')} 
+                <div></div>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="oncoming-automobile" width={18} />
+                {t('vehicles:vehicle-state')}
             </h3>
             <FieldWrapper label={t('vehicles:chassis_number')}>
                 <TextInput
@@ -117,7 +120,8 @@ const Step = ({ onSubmitStep, prevStep }) => {
 
             {/* <Header text={t('vehicles:data-sheet')}/> */}
             <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
-                <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
                 {t('vehicles:data-sheet')}
             </h3>
             <DamageSelectorControlled
