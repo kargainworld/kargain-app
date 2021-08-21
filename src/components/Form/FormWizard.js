@@ -13,6 +13,7 @@ import { FormContext } from '../../context/FormContext'
 import Header from '../Header'
 
 import { NewIcons } from '../../assets/icons'
+import { Emoji } from 'react-apple-emojis'
 
 const calculatePourcent = (current, length) => {
     return ((current + 1) / (length + 1)) * 100
@@ -97,7 +98,8 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
 		{/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
 		<h4>
-			<img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/>
+			{/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
+			<Emoji name="Automobile" width={16} />
 			{[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
 		</h4>
 		<ControlledStep
