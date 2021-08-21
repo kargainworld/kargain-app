@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
 import DamagesNavResponsive from './DamagesNavResponsive'
 import Header from '../Header'
+import { NewIcons } from '../../assets/icons'
 
 const useStyles = makeStyles(() => ({
     annoPickerContainer: {
@@ -191,10 +192,10 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         }}/>
                                     </Col>
                                     <Col sm={12} md={col} lg={6}>
-                                        <div className={clsx(classes.annoInputs)}>
+                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px'}}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <Header h1> {t('vehicles:click-image')} </Header>}
+                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold"}}>❌ {t('vehicles:click-image')}</h4>}
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
                                             {stages.map((stage, indexStage) => {
@@ -208,7 +209,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                                 onClick={() => rmStage(indexTab, indexStage)}>
                                                                 <DeleteIcon fontSize="small"/>
                                                             </IconButton>
-                                                            <span
+                                                            <span style={{backgroundColor:"#A291F3"}}
                                                                 className={clsx(classes.annoNumber)}>{indexStage + 1}</span>
                                                         </div>
                                                         <div style={{
