@@ -22,24 +22,6 @@ import customColors from '../../theme/palette'
 const path = require('path')
 
 const useStyles = makeStyles(() => ({
-    gradientbox: {  
-		display: "flex",
-		alignItems: "center",
-		//width: 50vw;
-		width: "90%",
-		backgroundClip: 'padding-box', /* !importanté */
-		border: 'solid 3px transparent', /* !importanté */
-		borderRadius: 20,
-		'&:before': {
-				content: '',
-				position: "absolute",
-				top: 0, right: 0, bottom: 0, left: 0,
-				zIndex: -1,
-				margin: -3, /* !importanté */
-				borderRadius: "inherit", /* !importanté */
-				background: customColors.gradient.main
-		}
-	},
 	button: {
 		border: "none !important",
 		padding: '6px 2rem',
@@ -124,7 +106,6 @@ const Page = () => {
                             <Col key={index} xs={6} sm={6} md={3} lg={3}>
                                 <div className="form-check form-check-vehicle m-0" style={{ minHeight: '5rem' }}>
                                     <input id={`vehicle_type${index}`}
-                                          
                                         type="radio"
                                         name="vehicleType"
                                         value={tab.value}

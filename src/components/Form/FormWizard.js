@@ -85,7 +85,6 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 	    setEndForm(false)
 	}
     }, [endForm])
-
     return (
 	<Root>
 	    <div className="formWizardContainer">
@@ -95,12 +94,12 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 				 maxActiveStep={maxActiveStep}
 				 
 		/>
-		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #5480e4, #2C6BFC)"/>
-
-		<div>
-		{/* ss  */}
-			<Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/>
-		</div>
+		<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+		{/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
+		<h4>
+			<img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/>
+			{[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
+		</h4>
 		<ControlledStep
 		    step={steps[activeStep]}
 		    onSubmitStep={onSubmitStep}
