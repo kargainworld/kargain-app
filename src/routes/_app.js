@@ -29,6 +29,8 @@ import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
 import { Web3ReactProvider } from '@web3-react/core'
 import Web3 from 'web3'
+import { EmojiProvider, Emoji } from 'react-apple-emojis'
+import emojiData from 'react-apple-emojis/lib/data.json'
 
 function getLibrary(provider) {
     const library = new Web3(provider)
@@ -55,11 +57,13 @@ const MyApp = ({ Component, pageProps }) => {
                                 <FormContextProvider formKey={formKey}>
                                     <SearchContextProvider>
                                         <ModalContextProvider>
-                                            <NextProgress />
-                                            <DefaultSeo {...SEO} />
-                                            <ProtectedRouter pageProps={pageProps}>
-                                                <Component {...pageProps} />
-                                            </ProtectedRouter>
+                                            <EmojiProvider data={emojiData}>
+                                                <NextProgress />
+                                                <DefaultSeo {...SEO} />
+                                                <ProtectedRouter pageProps={pageProps}>
+                                                    <Component {...pageProps} />
+                                                </ProtectedRouter>
+                                            </EmojiProvider>   
                                         </ModalContextProvider>
                                     </SearchContextProvider>
                                 </FormContextProvider>
