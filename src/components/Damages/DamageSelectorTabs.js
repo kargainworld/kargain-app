@@ -192,7 +192,9 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                     </Col>
                                     <Col sm={12} md={col} lg={6}>
                                         <div className={clsx(classes.annoInputs)}>
-                                            <Header h3> {t('vehicles:damages')} :</Header>
+                                            {/* <Header h3> {t('vehicles:damages')} :</Header> */}
+                                            {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
+                                            {stages.length !== 0 && <Header h1> {t('vehicles:click-image')} </Header>}
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
                                             {stages.map((stage, indexStage) => {
