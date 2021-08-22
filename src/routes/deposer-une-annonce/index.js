@@ -59,6 +59,12 @@ const Page = () => {
     }
 
     const onSubmit = (data) => {
+        if (!isAuthenticated) {
+            router.push({
+                pathname: '/auth/login',
+                query: { redirect: router.asPath },
+            });
+        }
         dispatchFormClear();
         const { adType, vehicleType} = data
         const route = `${vehicleType.toLowerCase()}`
