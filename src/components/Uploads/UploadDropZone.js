@@ -39,16 +39,19 @@ const useStyles = makeStyles((theme) => ({
     },
 
     labelInput: {
-        backgroundColor: blue,
-        color: theme.palette.white,
-        cursor: 'pointer',
-        padding: 10,
-        borderRadius: 3,
-        transition: 'all .2s ease',
-        border: `2px solid ${blue}`,
-        '&:hover': {
-            backgroundColor: theme.palette.white,
-            color: blue
+        // backgroundColor: blue,
+        // color: theme.palette.white,
+        // cursor: 'pointer',
+        // padding: 10,
+        // borderRadius: 3,
+        // transition: 'all .2s ease',
+        // border: `2px solid ${blue}`,
+        // '&:hover': {
+        //     backgroundColor: theme.palette.white,
+        //     color: '#FE74F1 !important',
+        // },
+        '& label':{
+            color:'#FE74F1 !important',
         }
     },
     img: {
@@ -140,6 +143,7 @@ const getFilesFromEvent = e => {
 }
 
 const SubmitButton = (props) => {
+    
     if (props.hideSubmit) return null
     const { className, buttonClassName, style, buttonStyle, disabled, content, onSubmit, files } = props
 
@@ -170,7 +174,7 @@ const SubmitButton = (props) => {
 
 const UploadDropZone = ({ fireFiles, ...props }) => {
     const max = props.multiple ? props.maxFiles : 1
-
+    const classes = useStyles()
     const handleSubmit = (FilesObject, allFiles) => {
         let files = FilesObject.map(file => file.file)
         fireFiles(files)
@@ -180,7 +184,7 @@ const UploadDropZone = ({ fireFiles, ...props }) => {
     }
 
     return (
-        <div className="d-flex m-3">
+        <div className={clsx('d-flex m-3', classes.labelInput)}>
             <DropZone
                 onSubmit={handleSubmit}
                 maxFiles={max}
