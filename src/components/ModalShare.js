@@ -92,7 +92,7 @@ const Email = () => {
     const { modalStateContext } = useContext(ModalContext)
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { control, errors, handleSubmit } = useForm()
-    const { isAuthenticated, setForceLoginModal } = useAuth()
+    const { isAuthenticated } = useAuth()
     const [clipBoarCopied, setClipBoardCopied] = useState(false)
     
     const onSubmit = (form) => {
@@ -171,7 +171,7 @@ const Clipboard = () => {
 export default function ModalShare () {
     const classes = useStyles()
     const router = useRouter();
-    const { isAuthenticated, setForceLoginModal } = useAuth()
+    const { isAuthenticated } = useAuth()
     const { modalStateContext, dispatchModalState } = useContext(ModalContext)
     
     const handleClose = () => {

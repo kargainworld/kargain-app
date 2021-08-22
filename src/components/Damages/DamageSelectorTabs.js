@@ -184,7 +184,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                         return (
                             <TabPane key={indexTab} tabId={indexTab}>
                                 <Row>
-                                    <Col sm={12} md={col} lg={4}>
+                                    <Col sm={12} md={col} lg={6}>
                                         <DamagesPicker {...{
                                             annoRefs,
                                             indexTab,
@@ -192,7 +192,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                             getClick
                                         }}/>
                                     </Col>
-                                    <Col sm={12} md={col} lg={8}>
+                                    <Col sm={12} md={col} lg={6}>
                                         <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}

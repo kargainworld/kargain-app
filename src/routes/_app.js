@@ -109,7 +109,6 @@ const ProtectedRouter = ({ children, pageProps }) => {
                 'form_validations'
             ]}
         >
-            {(isAuthReady && showLoginModal) && <PopupLogin />}
             {searchStateContext?.openModalSearch && <ModalSearchResults />}
             {modalStateContext.openModalMessaging && <ModalMessaging />}
             {modalStateContext.openModalFollowers && <ModalFollowers />}
