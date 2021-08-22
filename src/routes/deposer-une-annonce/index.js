@@ -59,12 +59,6 @@ const Page = () => {
     }
 
     const onSubmit = (data) => {
-        if (!isAuthenticated) {
-            router.push({
-                pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
-        }
         dispatchFormClear();
         const { adType, vehicleType} = data
         const route = `${vehicleType.toLowerCase()}`
@@ -118,7 +112,7 @@ const Page = () => {
                                         ref={register({required : t('form_validations:field-is-required')})}
                                         onChange={() => handleSelectVehicleType(index)}
                                     />
-                                    <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem', backgroundColor: '#FAFAFA' }}>
+                                    <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem' }}>
                                         <img src={vehicleType === tab.value ? `/images/${tab.imgSelected}` : `/images/${tab.img}`}
                                             alt={tab.label}
                                             title={tab.label}
@@ -142,7 +136,7 @@ const Page = () => {
                             return (
                                 <Col key={index} xs={12} sm={4} md={3} lg={4}>
                                     <div className="form-check-transparent"
-                                        style={{ minHeight: '5rem'}}>
+                                        style={{ minHeight: '5rem' }}>
                                         <input id={`ad_type${index}`}
                                             type="radio"
                                             name="adType"

@@ -11,7 +11,7 @@ import { FormContext } from '../../../context/FormContext'
 import { MessageContext } from '../../../context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
-import { Emoji } from 'react-apple-emojis'
+import Header from '../../Header'
 
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -194,9 +194,8 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header strong text={t('vehicles:consumption')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
-                {/* <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="fuel-pump" width={18} />
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+                <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:consumption')} 
             </h3>
             <Row>
@@ -257,9 +256,8 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header text={t('vehicles:vehicle-informations')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
-                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"20px"}}>
+                <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/>
                 {t('vehicles:vehicle-informations')}
             </h3>
             <Row>

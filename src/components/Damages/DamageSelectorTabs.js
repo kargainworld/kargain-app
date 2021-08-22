@@ -8,8 +8,6 @@ import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
 import DamagesNavResponsive from './DamagesNavResponsive'
 import Header from '../Header'
-import { NewIcons } from '../../assets/icons'
-import { Emoji } from 'react-apple-emojis'
 
 const useStyles = makeStyles(() => ({
     annoPickerContainer: {
@@ -184,7 +182,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                         return (
                             <TabPane key={indexTab} tabId={indexTab}>
                                 <Row>
-                                    <Col sm={12} md={col} lg={6}>
+                                    <Col sm={12} md={col} lg={4}>
                                         <DamagesPicker {...{
                                             annoRefs,
                                             indexTab,
@@ -193,13 +191,8 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         }}/>
                                     </Col>
                                     <Col sm={12} md={col} lg={6}>
-                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
-                                            {/* <Header h3> {t('vehicles:damages')} :</Header> */}
-                                            {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '4%'}}>
-                                                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
-			                                    {t('vehicles:click-image')}
-                                            </h4>}
+                                        <div className={clsx(classes.annoInputs)}>
+                                            <Header h3> {t('vehicles:damages')} :</Header>
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
                                             {stages.map((stage, indexStage) => {
@@ -211,15 +204,14 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                                 className={classes.margin}
                                                                 tabIndex="-1"
                                                                 onClick={() => rmStage(indexTab, indexStage)}>
-                                                                {/* <DeleteIcon fontSize="small"/> */}
-                                                                <NewIcons.recycle alt="recycle"/>
+                                                                <DeleteIcon fontSize="small"/>
                                                             </IconButton>
-                                                            <span style={{backgroundColor:"#A291F3"}}
+                                                            <span
                                                                 className={clsx(classes.annoNumber)}>{indexStage + 1}</span>
                                                         </div>
                                                         <div style={{
                                                             margin: 'auto',
-                                                            flex: 5.5
+                                                            flex: 3
                                                         }}>
                                                             <input type="text"
                                                                 value={stage.text || ''}
@@ -251,23 +243,75 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
 const DamagesPicker = ({ annoRefs, indexTab, damageTab, getClick }) => {
     const classes = useStyles()
     return (
-        <div className={clsx(classes.annoPickerContainer)}>
-            <div className={clsx(classes.annoStage)}
-                id={`anno_${indexTab}`}
-                ref={annoRef => annoRefs[indexTab] = annoRef}
-                onClick={(e) => getClick(e, indexTab)}
-            >
-                <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
+        <div className="carousel-wrapper">
+        <Carousel>
+            <div>
+                {/* <img src="/images/annotations-views/inside.png" /> */}
+                <div className={clsx(classes.annoPickerContainer)}>
+                    <div className={clsx(classes.annoStage)}
+                        id={`anno_${indexTab}`}
+                        ref={annoRef => annoRefs[indexTab] = annoRef}
+                        onClick={(e) => getClick(e, indexTab)}
+                    >
 
-                {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
-                    <span key={indexStage}
-                        style={{ ...stage.position }}
-                        className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
-                        {indexStage + 1}
-                    </span>
-                ))}
+                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
+
+                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
+                            <span key={indexStage}
+                                style={{ ...stage.position }}
+                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
+                                {indexStage + 1}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                
             </div>
-        </div>
+            <div>
+                {/* <img src="/images/annotations-views/outside.png" /> */}
+                <div className={clsx(classes.annoPickerContainer)}>
+                    <div className={clsx(classes.annoStage)}
+                        id={`anno_${indexTab}`}
+                        ref={annoRef => annoRefs[indexTab] = annoRef}
+                        onClick={(e) => getClick(e, indexTab)}
+                    >
+
+                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
+
+                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
+                            <span key={indexStage}
+                                style={{ ...stage.position }}
+                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
+                                {indexStage + 1}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div>
+                {/* <img src="/images/annotations-views/skeleton.png" /> */}
+                <div className={clsx(classes.annoPickerContainer)}>
+                    <div className={clsx(classes.annoStage)}
+                        id={`anno_${indexTab}`}
+                        ref={annoRef => annoRefs[indexTab] = annoRef}
+                        onClick={(e) => getClick(e, indexTab)}
+                    >
+
+                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
+
+                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
+                            <span key={indexStage}
+                                style={{ ...stage.position }}
+                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
+                                {indexStage + 1}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </Carousel>
+    </div>
+        
     )
 }
 

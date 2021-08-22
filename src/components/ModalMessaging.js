@@ -1,7 +1,6 @@
 import React, { useRef, useContext, useEffect, useState } from 'react';
 import Link from 'next-translate/Link';
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Modal from '@material-ui/core/Modal';
 import Fade from '@material-ui/core/Fade';
@@ -21,8 +20,7 @@ export default function ModalMessaging() {
   const contentRef = useRef();
   const classes = useStyles();
   const { t } = useTranslation();
-  const router = useRouter()
-  const { isAuthenticated, authenticatedUser } = useAuth();
+  const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
   const { dispatchModal, dispatchModalError } = useContext(MessageContext);
   const { modalStateContext, dispatchModalState } = useContext(ModalContext);
   const [conversation, setConversation] = useState(null);
@@ -107,10 +105,7 @@ export default function ModalMessaging() {
   }, [contentRef.current?.scrollHeight]);
 
   if (!isAuthenticated) {
-    router.push({
-        pathname: '/auth/login',
-        query: { redirect: router.asPath },
-    });
+    setForceLoginModal(true);
     return null;
   }
 

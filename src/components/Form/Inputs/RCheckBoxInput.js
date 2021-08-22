@@ -18,8 +18,8 @@ const RCheckBoxInput = ({ name, rules, control, errors, ...props }) => {
                         ref={control.register(rules)}
                         inputProps = {{ 'aria-label': 'uncontrolled-checkbox'}} 
                     />
+                    
 
-  
                     {' '} {props.label}
                     {props.required && <span className="required_label">*</span>}
                 </label>

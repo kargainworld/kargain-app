@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { useRouter } from 'next/router'
 import { loadStripe } from '@stripe/stripe-js'
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -186,7 +185,6 @@ const CARD_OPTIONS = {
 const StripeCard = ({ offer }) => {
     const classes = useStyles()
     const stripe = useStripe()
-    const router = useRouter()
     const elements = useElements()
     const [error, setError] = useState(null)
     const [disabled, setDisabled] = useState(true)
@@ -196,7 +194,7 @@ const StripeCard = ({ offer }) => {
     const [cardComplete, setCardComplete] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
 
     const createPaymentIntent = async () => {
         try {
@@ -223,13 +221,7 @@ const StripeCard = ({ offer }) => {
     }
 
     const handleSubmit = async () => {
-        if (!isAuthenticated) {
-            router.push({
-                pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
-            return;
-        }
+        if (!isAuthenticated) return setForceLoginModal(true)
         if (cardComplete) setProcessing(true)
         if (!stripe || !elements) {
             // Stripe.js has not loaded yet. Make sure to disable
