@@ -46,7 +46,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     const { dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const [likesCounter, setLikesCounter] = useState(announce.getCountLikes)
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const isAuthor = isAuthenticated && authenticatedUser.getID === announce.getAuthor?.getID
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
@@ -62,13 +62,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
     const handleClickLikeButton = async () => {
         if(isOwn) return
-        if (!isAuthenticated) {
-            router.push({
-                pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
-            return null;
-        }
+        if (!isAuthenticated) return setForceLoginModal(true)
         try {
             if (!liked) {
                 setLikesCounter((likesCount) => likesCount + 1)

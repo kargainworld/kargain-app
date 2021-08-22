@@ -75,7 +75,7 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t, lang } = useTranslation()
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
@@ -206,13 +206,7 @@ const Announce = () => {
 
     const handleClickLikeButton = async () => {
         if(isOwn) return
-        if (!isAuthenticated){
-            router.push({
-                pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
-            return;
-        }
+        if (!isAuthenticated) return setForceLoginModal(true)
         if(isLiking) return
         setIsLiking(true)
         try {
