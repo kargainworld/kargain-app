@@ -10,8 +10,6 @@ import DamagesNavResponsive from './DamagesNavResponsive'
 import Header from '../Header'
 import { NewIcons } from '../../assets/icons'
 import { Emoji } from 'react-apple-emojis'
-import { Carousel } from 'react-responsive-carousel'
-import "react-responsive-carousel/lib/styles/carousel.min.css"
 
 const useStyles = makeStyles(() => ({
     annoPickerContainer: {
@@ -186,7 +184,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                         return (
                             <TabPane key={indexTab} tabId={indexTab}>
                                 <Row>
-                                    <Col sm={12} md={col} lg={4}>
+                                    <Col sm={12} md={col} lg={6}>
                                         <DamagesPicker {...{
                                             annoRefs,
                                             indexTab,
@@ -194,11 +192,11 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                             getClick
                                         }}/>
                                     </Col>
-                                    <Col sm={12} md={col} lg={8}>
+                                    <Col sm={12} md={col} lg={6}>
                                         <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '3%'}}>
+                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '4%'}}>
                                                 <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
 			                                    {t('vehicles:click-image')}
                                             </h4>}
@@ -221,7 +219,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                         </div>
                                                         <div style={{
                                                             margin: 'auto',
-                                                            flex: 7.5
+                                                            flex: 5.5
                                                         }}>
                                                             <input type="text"
                                                                 value={stage.text || ''}
@@ -253,75 +251,23 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
 const DamagesPicker = ({ annoRefs, indexTab, damageTab, getClick }) => {
     const classes = useStyles()
     return (
-        <div className="carousel-wrapper">
-        <Carousel>
-            <div>
-                {/* <img src="/images/annotations-views/inside.png" /> */}
-                <div className={clsx(classes.annoPickerContainer)}>
-                    <div className={clsx(classes.annoStage)}
-                        id={`anno_${indexTab}`}
-                        ref={annoRef => annoRefs[indexTab] = annoRef}
-                        onClick={(e) => getClick(e, indexTab)}
-                    >
+        <div className={clsx(classes.annoPickerContainer)}>
+            <div className={clsx(classes.annoStage)}
+                id={`anno_${indexTab}`}
+                ref={annoRef => annoRefs[indexTab] = annoRef}
+                onClick={(e) => getClick(e, indexTab)}
+            >
+                <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
 
-                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
-
-                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
-                            <span key={indexStage}
-                                style={{ ...stage.position }}
-                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
-                                {indexStage + 1}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-                
+                {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
+                    <span key={indexStage}
+                        style={{ ...stage.position }}
+                        className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
+                        {indexStage + 1}
+                    </span>
+                ))}
             </div>
-            <div>
-                {/* <img src="/images/annotations-views/outside.png" /> */}
-                <div className={clsx(classes.annoPickerContainer)}>
-                    <div className={clsx(classes.annoStage)}
-                        id={`anno_${indexTab}`}
-                        ref={annoRef => annoRefs[indexTab] = annoRef}
-                        onClick={(e) => getClick(e, indexTab)}
-                    >
-
-                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
-
-                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
-                            <span key={indexStage}
-                                style={{ ...stage.position }}
-                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
-                                {indexStage + 1}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div>
-                {/* <img src="/images/annotations-views/skeleton.png" /> */}
-                <div className={clsx(classes.annoPickerContainer)}>
-                    <div className={clsx(classes.annoStage)}
-                        id={`anno_${indexTab}`}
-                        ref={annoRef => annoRefs[indexTab] = annoRef}
-                        onClick={(e) => getClick(e, indexTab)}
-                    >
-
-                        <img className={clsx(classes.annoImg)} src={damageTab.img} alt={damageTab.title}/>
-
-                        {damageTab.stages && damageTab.stages.map((stage, indexStage) => (
-                            <span key={indexStage}
-                                style={{ ...stage.position }}
-                                className={clsx(classes.annoFloatingNumber, classes.annoNumber)}>
-                                {indexStage + 1}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </Carousel>
-    </div>
-        
+        </div>
     )
 }
 
