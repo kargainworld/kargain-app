@@ -6,12 +6,31 @@ import { useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
 import useTranslation from 'next-translate/useTranslation'
 
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+        navlink:{
+            '& li:hover': {
+                color:'#FE74F1 !important',
+            },
+            border: 'none',
+            borderBottom: '3px solid #FE74F1 !important',
+            // marginTop: '1px !important',
+            color:'#FE74F1',
+            textAlign: 'center !important',
+            background: 'none !important',
+            fontSize: '16px !important',
+            width: '100% !important',
+        }
+	}))
+
 const DamagesNav = ({ activeTab, setActiveTab, damagesTabs }) => {
     const theme = useTheme()
     const { t } = useTranslation()
     const isUpTablet = useMediaQuery(theme.breakpoints.up('md'), {
         defaultMatches: true
     })
+    const classes = useStyles()
 
     return (
         <div className="annoNav">
@@ -19,8 +38,9 @@ const DamagesNav = ({ activeTab, setActiveTab, damagesTabs }) => {
                 <ul className="nav nav-tabs">
                     {damagesTabs.map((tab, indexTab) => {
                         return (
-                            <li key={indexTab} className={clsx('nav-item')}>
-                                <a className={clsx('nav-link', activeTab === indexTab && 'active')}
+                            <li key={indexTab} className={clsx('nav-item')} style={{width:'358px'}}>
+                                <a className={clsx('nav-link', activeTab === indexTab && classes.navlink)}
+                                    style={{fontSize:'16px', width: '100%'}}
                                     onClick={() => {
                                         setActiveTab(indexTab)
                                     }}>
