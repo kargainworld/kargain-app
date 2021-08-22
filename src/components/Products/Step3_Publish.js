@@ -6,6 +6,7 @@ import NumberInput from '../Form/Inputs/NumberInput'
 import TelInput from  '../Form/Inputs/TelInput'
 import SelectCountryFlags from '../Form/Inputs/SelectCountryFlags'
 import CheckboxMUI from '../Form/Inputs/CheckboxMUI'
+import BCheckBoxInput from '../Form/Inputs/BCheckBoxInput'
 import TextareaInput from '../Form/Inputs/TextareaInput'
 import StepNavigation from '../Form/StepNavigation'
 import FieldWrapper from '../Form/FieldWrapper'
@@ -17,6 +18,7 @@ import TagsControlled from '../Tags/TagsControlled'
 import Header from '../Header'
 import SelectInput from "../Form/Inputs/SelectInput";
 import {SelectOptionsUtils} from "../../libs/formFieldsUtils";
+import { Emoji } from 'react-apple-emojis'
 
 const Step = ({ handleSubmitForm, prevStep }) => {
     const { t } = useTranslation()
@@ -56,7 +58,12 @@ const Step = ({ handleSubmitForm, prevStep }) => {
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
-            <Header text={t('vehicles:publish-my-ad-now')}/>
+            {/* <Header text={t('vehicles:publish-my-ad-now')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="page-facing-up" width={18} />
+                {t('vehicles:publish-my-ad-now')}
+            </h3>
             <Row>
                 {/*<Col sm={12} md={6}>*/}
                 {/*    <FieldWrapper label={t('vehicles:announce-title')}>*/}
@@ -102,6 +109,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                             label={t('vehicles:vat')}
                             control={control}
                             errors={errors}
+                            stye={{fontSize:'14px', fontWeight:'nomarl'}}
                         />
                     </FieldWrapper>
                 </Col>
@@ -160,7 +168,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:country')}>
+            <FieldWrapper label={t('vehicles:country')} >
                 <SelectCountryFlags
                     name="countrySelect"
                     errors={errors}
@@ -189,8 +197,14 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <Header text={t('vehicles:pictures')}/>
+            {/* <Header text={t('vehicles:pictures')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="paperclip" width={18} />
+                {t('vehicles:pictures')}
+            </h3>
             <UploadDropZone
+                
                 initialFiles={initialImagesRef.current}
                 maxFiles={15}
                 getFiles={getFiles}
@@ -199,12 +213,25 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             />
 
             <FieldWrapper>
-                <CheckboxMUI
+                {/* <CheckboxMUI
                     name="visible"
                     label={t('vehicles:create-and-publish')}
                     control={control}
                     errors={errors}
-                />
+                /> */}
+                <BCheckBoxInput
+
+                    // name="confirm"
+                    // label={t('vehicles:accept-cgu')}
+                    // errors={errors}
+                    // control={control}
+                    // rules={{ required: t('form_validations:required') }}
+                    name="vat"
+                    label={t('vehicles:vat')}
+                    control={control}
+                    errors={errors}
+                    stye={{fontSize:'14px', fontWeight:'nomarl'}}
+                    />
             </FieldWrapper>
 
             <StepNavigation prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>
