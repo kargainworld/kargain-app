@@ -89,7 +89,7 @@ const Profile = () => {
     const { t } = useTranslation()
     const router = useRouter()
     const { username } = router.query
-    const { authenticatedUser, isAuthenticated, setForceLoginModal } = useAuth()
+    const { authenticatedUser, isAuthenticated } = useAuth()
     const { dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const [followerCounter, setFollowersCounter] = useState(0)
