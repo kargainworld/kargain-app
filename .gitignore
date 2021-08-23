@@ -9,6 +9,7 @@ build
 dist
 
 # dotenv environment variables file
+.env.*
 !.env.example
 
 # Dependency directories
