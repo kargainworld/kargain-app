@@ -11,6 +11,7 @@ import { vehicleTypes } from '../../../../business/vehicleTypes'
 import { MessageContext } from '../../../../context/MessageContext'
 
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Row } from 'reactstrap'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Emoji } from 'react-apple-emojis'
@@ -43,8 +44,20 @@ const useStyles = makeStyles(() => ({
                     marginLeft:'5px !important',
                 }
             }
-        }
-            
+        },
+    rowbuttons:{
+        padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    },   
+    overflow:{
+        overflowX:'auto',
+    }
 	}))
 
 const CarFilters = ({ control, watch, errors, ...props }) => {
@@ -98,27 +111,67 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     // }
     return (
         <>  
-            <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                
-                <DropdownToggle caret>
-                    <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                    Button Dropdown
-                </DropdownToggle>
-                <DropdownMenu>
-                    <FieldWrapper label={t('vehicles:type')}>
-                        <SelectInput
-                            name="mileageType"
-                            options={formData.mileageType}
-                            control={control}
-                            errors={errors}
-                            onChange={(selected, name) =>{
-                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-                </DropdownMenu>
-            </ButtonDropdown>
+            {/* <Row className="form_navigation justify-content-around"> */}
+            {/* <div className={clsx(classes.overflow)}>
+                <div className={clsx(classes.rowbuttons)}>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            a
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            b
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            c
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            d
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            e
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            f
+                        </DropdownMenu>
+                    </ButtonDropdown>
+    </div> */}
+                {/* </Row>     */}
+
+            {/* </div> */} 
 
             <FieldWrapper label={t('vehicles:price')}>
                 <SliderInput

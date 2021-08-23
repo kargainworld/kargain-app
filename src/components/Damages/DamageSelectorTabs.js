@@ -218,7 +218,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                         </div>
                                                         <div style={{
                                                             margin: 'auto',
-                                                            flex: 7.5
+                                                            flex: 5.5
                                                         }}>
                                                             <input type="text"
                                                                 value={stage.text || ''}
