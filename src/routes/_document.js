@@ -18,7 +18,6 @@ class MyDocument extends Document {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"/>
                     <script type="text/javascript" src={`https://maps.googleapis.com/maps/api/js?key=${config.google.static.STATIC_API_KEY}&libraries=places`}/>
-                    {/* <script type="text/javascript" src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBS8c5cg87ULLgdq7_2AdYfujlImd2nTfo&libraries=places`}/> */}
                 </Head>
                 <body>
                     <Main/>
