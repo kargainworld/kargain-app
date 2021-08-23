@@ -10,17 +10,17 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
         navlink:{
-            '& li:hover': {
-                color:'#FE74F1 !important',
-            },
-            border: 'none',
+            border: 'none !important',
             borderBottom: '3px solid #FE74F1 !important',
             // marginTop: '1px !important',
-            color:'#FE74F1',
+            color:'#FE74F1 !important',
             textAlign: 'center !important',
             background: 'none !important',
             fontSize: '16px !important',
             width: '100% !important',
+            '& :hover': {
+                color:'#FE74F1 !important',
+            },
         }
 	}))
 
