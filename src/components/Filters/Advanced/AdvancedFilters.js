@@ -28,6 +28,9 @@ import { Row } from 'reactstrap'
 import { Emoji } from 'react-apple-emojis'
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import customColors from '../../../theme/palette'
+import {  Carousel, CarouselItem, CarouselControl, CarouselIndicators, CarouselCaption} from 'reactstrap';
+import { DriveEta } from '@material-ui/icons'
+import { NewIcons } from '../../../assets/icons'
 
 const useStyles = makeStyles(() => ({
 
@@ -100,6 +103,35 @@ const useStyles = makeStyles(() => ({
         fontWeight: "bold",
         background: customColors.gradient.main
     },
+    filterbutton:{
+        // borderRadius: '26.8293px !important',
+        // borderColor:'#dcd7d7 !important',
+        // backgroundColor: '#c4c4c400 !important',
+        // color: 'black !important',
+        // cursor: 'pointer',
+        // fontSize:"17.1707px !important",
+        // border: 'none',
+        // padding: '15px 32px',
+        // textAlign: 'center',
+        // textDecoration: 'none',
+        // display: 'inline-block',
+        // fontSize: '16px',
+        // margin: '4px 2px',
+        // cursor: 'pointer',
+        backgroundColor: '#c4c4c400', /* Green */
+        border: 'none',
+        color: 'black',
+        padding: '6px 32px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '16px',
+        margin: '4px 2px',
+        cursor: 'pointer',
+        borderRadius: '26.8293px',
+        border: 'solid #dcd7d7',
+        borderWidth: '1px',
+    }
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
@@ -394,13 +426,16 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     resetFilter={onResetFilter}
                     dynamicHandleSubmit={handleSubmit}
                 />
-              <div className={classes.filtersTop} onClick={() => toggleFilters()}>
-                <Typography variant="h4">
-                  {t('filters:select-filters')}
-                  <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                </Typography>
-              </div>
-
+              
+                <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
+                    <NewIcons.filter alt='filter'/>
+                    {/* <Typography variant="h4"> */}
+                    {t('filters:select-filters')}
+                    <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                    {/* </Typography> */}
+                </div>
+               
+                
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <FieldWrapper label={t('vehicles:vehicle-type')}>
                         <SelectInput
