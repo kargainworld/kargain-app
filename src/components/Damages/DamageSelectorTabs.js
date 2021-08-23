@@ -196,7 +196,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '3%'}}>
+                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '21px'}}>
                                                 <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
 			                                    {t('vehicles:click-image')}
                                             </h4>}
@@ -218,7 +218,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                         </div>
                                                         <div style={{
                                                             margin: 'auto',
-                                                            flex: 7.5
+                                                            flex: 5.5
                                                         }}>
                                                             <input type="text"
                                                                 value={stage.text || ''}

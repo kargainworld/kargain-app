@@ -10,7 +10,63 @@ import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
 import { MessageContext } from '../../../../context/MessageContext'
 
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Row } from 'reactstrap'
+import clsx from 'clsx'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import { Emoji } from 'react-apple-emojis'
+import { ListGroup, ListGroupItem } from 'reactstrap';
+
+const useStyles = makeStyles(() => ({
+    buttondropdown:{
+        '& button':{
+                borderRadius: '26.8293px !important',
+                borderColor:'#dcd7d7 !important',
+                backgroundColor: '#c4c4c400 !important',
+                color: 'black !important',
+                cursor: 'pointer',
+                fontSize:"17.1707px !important",
+                '& button:clicked': {
+                    borderRadius: '25px !important',
+                    backgroundColor: '#c4c4c447 !important',
+                    color: 'black !important',
+                    fontSize:"17.1707px !important",
+                },
+                '& button:after': {
+                    FONTVARIANT: 'JIS83 !important',
+                    display: 'inline-block !important',
+                    marginLeft: '0.355em !important',
+                    verticalAlign: '0.255em !important',
+                    content: " !important",
+                    borderTop: '0.4em solid !important',
+                    borderRight: '0.4em solid transparent !important',
+                    borderBottom: '0 !important',
+                    borderLeft:' 0.4em solid transparent !important',
+                    marginLeft:'5px !important',
+                }
+            }
+        },
+    rowbuttons:{
+        padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    },   
+    overflow:{
+        overflowX:'auto',
+    }
+	}))
+
 const CarFilters = ({ control, watch, errors, ...props }) => {
+    const classes = useStyles()
+
+    const [dropdownOpen, setOpen] = useState(false);
+    const toggle = () => setOpen(!dropdownOpen);
+
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
     const selectedMileage = watch('mileageType')
@@ -55,7 +111,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     //     props.formSubmit(form, e);
     // }
     return (
-        <>
+        <> 
             <FieldWrapper label={t('vehicles:price')}>
                 <SliderInput
                     name="price"
