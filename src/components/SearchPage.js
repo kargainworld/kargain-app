@@ -172,14 +172,14 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             />
 
             <Row>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={12}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
-                <Col sm={12} md={8}>
+                <Col sm={12} md={12}>
 
                     <section className="cd-tab-filter-wrapper">
                         <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>

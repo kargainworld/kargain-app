@@ -112,6 +112,28 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     // }
     return (
         <> 
+            <div className={clsx(classes.overflow)}>
+                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                    <DropdownToggle caret>
+                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        Button Dropdown
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <FieldWrapper label={t('vehicles:type')}>
+                            <SelectInput
+                                name="mileageType"
+                                options={formData.mileageType}
+                                control={control}
+                                errors={errors}
+                                onChange={(selected, name) =>{
+                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                    return selected
+                                }}
+                            />
+                        </FieldWrapper>
+                    </DropdownMenu>
+                </ButtonDropdown>
+            </div>
             <FieldWrapper label={t('vehicles:price')}>
                 <SliderInput
                     name="price"
