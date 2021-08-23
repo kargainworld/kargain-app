@@ -15,6 +15,7 @@ import { Row } from 'reactstrap'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Emoji } from 'react-apple-emojis'
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 const useStyles = makeStyles(() => ({
     buttondropdown:{
@@ -110,69 +111,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     //     props.formSubmit(form, e);
     // }
     return (
-        <>  
-            {/* <Row className="form_navigation justify-content-around"> */}
-            {/* <div className={clsx(classes.overflow)}>
-                <div className={clsx(classes.rowbuttons)}>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            a
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            b
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            c
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            d
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            e
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
-                            <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            f
-                        </DropdownMenu>
-                    </ButtonDropdown>
-    </div> */}
-                {/* </Row>     */}
-
-            {/* </div> */} 
-
+        <> 
             <FieldWrapper label={t('vehicles:price')}>
                 <SliderInput
                     name="price"
