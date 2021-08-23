@@ -23,7 +23,14 @@ import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from '../../../hooks/useAddress'
 import CTALink from '../../CTALink'
 
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Row } from 'reactstrap'
+import { Emoji } from 'react-apple-emojis'
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import customColors from '../../../theme/palette'
+
 const useStyles = makeStyles(() => ({
+
     filtersContainer: {
         padding: '.5rem'
     },
@@ -40,10 +47,59 @@ const useStyles = makeStyles(() => ({
           cursor: 'pointer'
         }
     },
-
     filtersHidden: {
         display: 'none'
-    }
+    },
+    buttondropdown:{
+        '& button':{
+                borderRadius: '26.8293px !important',
+                borderColor:'#dcd7d7 !important',
+                backgroundColor: '#c4c4c400 !important',
+                color: 'black !important',
+                cursor: 'pointer',
+                fontSize:"17.1707px !important",
+                '& button:clicked': {
+                    borderRadius: '25px !important',
+                    backgroundColor: '#c4c4c447 !important',
+                    color: 'black !important',
+                    fontSize:"17.1707px !important",
+                },
+                '& button:after': {
+                    FONTVARIANT: 'JIS83 !important',
+                    display: 'inline-block !important',
+                    marginLeft: '0.355em !important',
+                    verticalAlign: '0.255em !important',
+                    content: " !important",
+                    borderTop: '0.4em solid !important',
+                    borderRight: '0.4em solid transparent !important',
+                    borderBottom: '0 !important',
+                    borderLeft:' 0.4em solid transparent !important',
+                    marginLeft:'5px !important',
+                }
+            }
+        },
+    rowbuttons:{
+        padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    },   
+    overflow:{
+        overflowX:'auto',
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        background: customColors.gradient.main
+    },
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
@@ -329,7 +385,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <CTALink
-                    className="w-100"
+                    className={clsx(classes.button)}
                     icon={StorefrontIcon}
                     title={t('layout:news_feed')}
                     href="/advanced-search">
@@ -450,11 +506,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
 const ControlButtons = ({...props}) => {
     const { t } = useTranslation()
+    const classes = useStyles()
 
     return (
-        <div className="d-flex flex-column my-3">
+       
             <Button
-                className="my-1"
+                className={ clsx(classes.button)}
+                
                 variant="contained"
                 color="primary"
                 startIcon={<FilterListIcon/>}
@@ -463,7 +521,7 @@ const ControlButtons = ({...props}) => {
             >
                 {t('vehicles:clear-filters')}
             </Button>
-        </div>
+        
     )
 }
 
