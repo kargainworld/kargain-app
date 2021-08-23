@@ -20,7 +20,20 @@ import SelectInput from "../Form/Inputs/SelectInput";
 import {SelectOptionsUtils} from "../../libs/formFieldsUtils";
 import { Emoji } from 'react-apple-emojis'
 
+import clsx from 'clsx'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+    delete:{
+        '& .special-label':{
+            display:'none',
+        }
+    }
+	}))
+
+
 const Step = ({ handleSubmitForm, prevStep }) => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
@@ -186,15 +199,19 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 </SearchLocationInput>
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:phone')}>
-                <TelInput
-                    name="phone"
-                    errors={errors}
-                    control={control}
-                    innerProps={{
-                        country: 'fr'
-                    }}
-                />
+            <FieldWrapper label={t('vehicles:phone')} >
+                <div className={clsx(classes.delete)}>
+                    <TelInput
+                        className={clsx(classes.delete)}
+                        name="phone"
+                        errors={errors}
+                        control={control}
+                        innerProps={{
+                            country: 'fr'
+                        }}
+                        
+                    />
+                </div>
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:pictures')}/> */}
@@ -220,14 +237,14 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     errors={errors}
                 /> */}
                 <BCheckBoxInput
-
+                    style={{marginBottom:'3px !important'}}
                     // name="confirm"
                     // label={t('vehicles:accept-cgu')}
                     // errors={errors}
                     // control={control}
                     // rules={{ required: t('form_validations:required') }}
                     name="vat"
-                    label={t('vehicles:vat')}
+                    label={t('vehicles:accept-cgu')}
                     control={control}
                     errors={errors}
                     stye={{fontSize:'14px', fontWeight:'nomarl'}}
