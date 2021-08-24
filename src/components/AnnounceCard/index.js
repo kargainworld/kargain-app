@@ -114,160 +114,160 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
     return (
         <Row>
-            <Root>
+            <Root  style={{borderRadius:'25px'}}>
 
-            <CardContent>
-                <Body>
-                    <ImageWrapper>
-                        {announce.getImages.length > 0 && (
-                            <GalleryViewer
-                                images={announce.getImages}
-                                ref={refImg}
-                                handleClick={handleImageClick}
-                                isAnnounceCard={true}
-                            />
-                        )}
-
-                        {!announce.getFeaturedImg && (
-                            <ImagePlaceholder>
-                                <i.CameraAlt fontSize="large" />
-                            </ImagePlaceholder>
-                        )}
-
-                        {announce.getFeaturedImg && (
-                            <ImageCounter>
-                                <i.CameraAlt />
-                                {announce.getCountImages}
-                            </ImageCounter>
-                        )}
-                    </ImageWrapper>
-
-                    <User style={{marginTop:'5%'}}>
-                        <Avatar
-                            src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                            size="medium"
-                            isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                            style={{ width: 45, height: 45, marginRight: 10 }}
-                        />
-
-                        <Info>
-                            <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black'}}>{announce.getAuthor.getFullName}</AuthorName>
-
-                            {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999'}}>
-                                    <i.RoomOutlined size={5.24} />
-                                    {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
-                                </Location>
+                <CardContent>
+                    <Body>
+                        <ImageWrapper>
+                            {announce.getImages.length > 0 && (
+                                <GalleryViewer
+                                    images={announce.getImages}
+                                    ref={refImg}
+                                    handleClick={handleImageClick}
+                                    isAnnounceCard={true}
+                                />
                             )}
-                        </Info>
 
-                        <Meta>
-                            <CreationDate>
-                                <i.AccessTime />
+                            {!announce.getFeaturedImg && (
+                                <ImagePlaceholder>
+                                    <i.CameraAlt fontSize="large" />
+                                </ImagePlaceholder>
+                            )}
 
-                                {getTimeAgo(announce.getCreationDate.raw, lang)}
-                            </CreationDate>
+                            {announce.getFeaturedImg && (
+                                <ImageCounter>
+                                    <i.CameraAlt />
+                                    {announce.getCountImages}
+                                </ImageCounter>
+                            )}
+                        </ImageWrapper>
 
-                            <ShareIcon
-                                onClick={() =>
-                                    dispatchModalState({
-                                        openModalShare: true,
-                                        modalShareAnnounce: announce
-                                    })
-                                }
-                                src="/images/share.png"
-                                alt=""
+                        <User style={{marginTop:'5%'}}>
+                            <Avatar
+                                src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                size="medium"
+                                isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                style={{ width: 45, height: 45, marginRight: 10 }}
                             />
-                        </Meta>
-                    </User>
 
-                    <Link href={announce.getAnnounceLink}>
-                        <a>
-                            <Title>{announce.getAnnounceTitle}</Title>
-                        </a>
-                    </Link>
+                            <Info>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black'}}>{announce.getAuthor.getFullName}</AuthorName>
 
-                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
+                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999'}}>
+                                        <i.RoomOutlined size={5.24} />
+                                        {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                                    </Location>
+                                )}
+                            </Info>
 
-                    {announce.getCountComments > 0 && (
-                        <CommentListStyled
-                            comments={announce.getComments.reverse().slice(0, 1)}
-                            moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
-                        />
-                    )}
-                </Body>
-            
+                            <Meta>
+                                <CreationDate>
+                                    <i.AccessTime />
 
+                                    {getTimeAgo(announce.getCreationDate.raw, lang)}
+                                </CreationDate>
 
-                <SubHeader>
-                    {isOwn && (
-                        <Action onClick={toggleVisibility}>
-                            {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                        </Action>
-                    )}
+                                <ShareIcon
+                                    onClick={() =>
+                                        dispatchModalState({
+                                            openModalShare: true,
+                                            modalShareAnnounce: announce
+                                        })
+                                    }
+                                    src="/images/share.png"
+                                    alt=""
+                                />
+                            </Meta>
+                        </User>
 
-                    {!isAuthor && (
-                        <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                            <i.BookmarkBorder
-                                style={{
-                                    color: liked ? '#DB00FF' : '#444444'
-                                }}
+                        <Link href={announce.getAnnounceLink}>
+                            <a>
+                                <Title>{announce.getAnnounceTitle}</Title>
+                            </a>
+                        </Link>
+
+                        {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
+
+                        {announce.getCountComments > 0 && (
+                            <CommentListStyled
+                                comments={announce.getComments.reverse().slice(0, 1)}
+                                moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
                             />
-                            <span>{likesCounter}</span>
-                        </Action>
-                    )}
-
-                    <Action
-                        title={t('vehicles:comment_plural')}
-                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
-                        onClick={() => handleImageClick()}
-                    >
-                        <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
-                        <span>{announce.getCountComments}</span>
-                    </Action>
-
-                    <Action
-                        onClick={() => {
-                            if (!isAuthenticated) {
-                                router.push({
-                                    pathname: '/auth/login',
-                                    query: { redirect: router.asPath },
-                                });
-                                return
-                            }
-                            dispatchModalState({
-                                openModalMessaging: true,
-                                modalMessagingProfile: announce.getAuthor,
-                                modalMessaginAnnounce: announce
-                            })
-                            }
-                        }
-                    >
-                        <i.MailOutline style={{ position: 'relative', top: -1 }} />
-                    </Action>
-
-                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
-                </SubHeader>
-
+                        )}
+                    </Body>
                 
-            </CardContent>
 
-            <Footer>
-                {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.buttonRemove}
-                        startIcon={<DeleteIcon/>}
-                        onClick={e => {
-                            onSelectSlug(announce.getSlug)
-                            onhandleOpenDialogRemove()
-                        }}>
-                        {t('vehicles:remove-announce')}
-                    </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
-                {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
-            </Footer>
-        </Root>
+
+                    <SubHeader>
+                        {isOwn && (
+                            <Action onClick={toggleVisibility}>
+                                {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                            </Action>
+                        )}
+
+                        {!isAuthor && (
+                            <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                <i.BookmarkBorder
+                                    style={{
+                                        color: liked ? '#DB00FF' : '#444444'
+                                    }}
+                                />
+                                <span>{likesCounter}</span>
+                            </Action>
+                        )}
+
+                        <Action
+                            title={t('vehicles:comment_plural')}
+                            style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                            onClick={() => handleImageClick()}
+                        >
+                            <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                            <span>{announce.getCountComments}</span>
+                        </Action>
+
+                        <Action
+                            onClick={() => {
+                                if (!isAuthenticated) {
+                                    router.push({
+                                        pathname: '/auth/login',
+                                        query: { redirect: router.asPath },
+                                    });
+                                    return
+                                }
+                                dispatchModalState({
+                                    openModalMessaging: true,
+                                    modalMessagingProfile: announce.getAuthor,
+                                    modalMessaginAnnounce: announce
+                                })
+                                }
+                            }
+                        >
+                            <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                        </Action>
+
+                        {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
+                    </SubHeader>
+
+                    
+                </CardContent>
+
+                <Footer>
+                    {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.buttonRemove}
+                            startIcon={<DeleteIcon/>}
+                            onClick={e => {
+                                onSelectSlug(announce.getSlug)
+                                onhandleOpenDialogRemove()
+                            }}>
+                            {t('vehicles:remove-announce')}
+                        </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
+                    {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
+                </Footer>
+            </Root>
         </Row>
     )
 }
