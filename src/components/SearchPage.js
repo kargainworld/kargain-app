@@ -193,7 +193,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                     </section>
 
 
-                    <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
+                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{padding:'10px 1% !important'}}>
                         <InfiniteScroll
                             throttle={100}
                             threshold={300}
@@ -209,7 +209,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
                                             if (!onlyMinted || announceMinted) {
                                                 return (
-                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                    <Col key={index} className="my-2" style={{width: '32%', marginLeft: '1.5%'}}>
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
                                                             tokenPrice={announceMinted?.tokenPrice}

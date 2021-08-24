@@ -24,6 +24,8 @@ import GalleryViewer from '../Gallery/GalleryViewer'
 import { useSocket } from '../../context/SocketContext'
 import usePriceTracker from 'hooks/usePriceTracker'
 
+import { Row } from 'reactstrap'
+
 const useStyles = makeStyles(() => ({
     buttonRemove: {
         backgroundColor : themeColors.red,
@@ -111,47 +113,91 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     }, [state])
 
     return (
-        <Root>
+        <Row>
+            <Root>
 
             <CardContent>
-                <User>
-                    <Avatar
-                        src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                        size="medium"
-                        isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                        style={{ width: 52, height: 52, marginRight: 10 }}
-                    />
-
-                    <Info>
-                        <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
-
-                        {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                            <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                <i.RoomOutlined size={18} />
-                                {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
-                            </Location>
+                <Body>
+                    <ImageWrapper>
+                        {announce.getImages.length > 0 && (
+                            <GalleryViewer
+                                images={announce.getImages}
+                                ref={refImg}
+                                handleClick={handleImageClick}
+                                isAnnounceCard={true}
+                            />
                         )}
-                    </Info>
 
-                    <Meta>
-                        <CreationDate>
-                            <i.AccessTime />
+                        {!announce.getFeaturedImg && (
+                            <ImagePlaceholder>
+                                <i.CameraAlt fontSize="large" />
+                            </ImagePlaceholder>
+                        )}
 
-                            {getTimeAgo(announce.getCreationDate.raw, lang)}
-                        </CreationDate>
+                        {announce.getFeaturedImg && (
+                            <ImageCounter>
+                                <i.CameraAlt />
+                                {announce.getCountImages}
+                            </ImageCounter>
+                        )}
+                    </ImageWrapper>
 
-                        <ShareIcon
-                            onClick={() =>
-                                dispatchModalState({
-                                    openModalShare: true,
-                                    modalShareAnnounce: announce
-                                })
-                            }
-                            src="/images/share.png"
-                            alt=""
+                    <User>
+                        <Avatar
+                            src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                            size="medium"
+                            isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                            style={{ width: 52, height: 52, marginRight: 10 }}
                         />
-                    </Meta>
-                </User>
+
+                        <Info>
+                            <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
+
+                            {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                    <i.RoomOutlined size={18} />
+                                    {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                                </Location>
+                            )}
+                        </Info>
+
+                        <Meta>
+                            <CreationDate>
+                                <i.AccessTime />
+
+                                {getTimeAgo(announce.getCreationDate.raw, lang)}
+                            </CreationDate>
+
+                            <ShareIcon
+                                onClick={() =>
+                                    dispatchModalState({
+                                        openModalShare: true,
+                                        modalShareAnnounce: announce
+                                    })
+                                }
+                                src="/images/share.png"
+                                alt=""
+                            />
+                        </Meta>
+                    </User>
+
+                    <Link href={announce.getAnnounceLink}>
+                        <a>
+                            <Title>{announce.getAnnounceTitle}</Title>
+                        </a>
+                    </Link>
+
+                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
+
+                    {announce.getCountComments > 0 && (
+                        <CommentListStyled
+                            comments={announce.getComments.reverse().slice(0, 1)}
+                            moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
+                        />
+                    )}
+                </Body>
+            
+
 
                 <SubHeader>
                     {isOwn && (
@@ -203,46 +249,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                     {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
                 </SubHeader>
 
-                <Body>
-                    <ImageWrapper>
-                        {announce.getImages.length > 0 && (
-                            <GalleryViewer
-                                images={announce.getImages}
-                                ref={refImg}
-                                handleClick={handleImageClick}
-                                isAnnounceCard={true}
-                            />
-                        )}
-
-                        {!announce.getFeaturedImg && (
-                            <ImagePlaceholder>
-                                <i.CameraAlt fontSize="large" />
-                            </ImagePlaceholder>
-                        )}
-
-                        {announce.getFeaturedImg && (
-                            <ImageCounter>
-                                <i.CameraAlt />
-                                {announce.getCountImages}
-                            </ImageCounter>
-                        )}
-                    </ImageWrapper>
-
-                    <Link href={announce.getAnnounceLink}>
-                        <a>
-                            <Title>{announce.getAnnounceTitle}</Title>
-                        </a>
-                    </Link>
-
-                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
-
-                    {announce.getCountComments > 0 && (
-                        <CommentListStyled
-                            comments={announce.getComments.reverse().slice(0, 1)}
-                            moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
-                        />
-                    )}
-                </Body>
+                
             </CardContent>
 
             <Footer>
@@ -261,6 +268,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                 {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
             </Footer>
         </Root>
+        </Row>
     )
 }
 
