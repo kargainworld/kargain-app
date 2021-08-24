@@ -112,6 +112,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
     }, [state])
 
+    var str = announce.getAnnounceTitle;
+    const tempArr = str.split("|");
+    var temp1 = tempArr[0]+'|'+tempArr[1]
+    var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
     return (
         <Row>
             <Root  style={{borderRadius:'25px'}}>
@@ -164,7 +168,6 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             <Meta>
                                 <CreationDate>
                                     <i.AccessTime />
-
                                     {getTimeAgo(announce.getCreationDate.raw, lang)}
                                 </CreationDate>
 
@@ -183,7 +186,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
                         <Link href={announce.getAnnounceLink}>
                             <a>
-                                <Title>{announce.getAnnounceTitle}</Title>
+                                <Title>
+                                    <p style={{color:'black'}}> {temp1} </p>
+                                    <p> {temp2}  </p>
+                                </Title>
                             </a>
                         </Link>
 
@@ -196,8 +202,6 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             />
                         )}
                     </Body>
-                
-
 
                     <SubHeader>
                         {isOwn && (

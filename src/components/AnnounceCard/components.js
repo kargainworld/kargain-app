@@ -221,7 +221,8 @@ export const ImageCounter = styled.span`
 
 export const Title = styled.h3`
   margin-top: ${({ theme }) => theme.spacing(3)}px;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: 17.4674px !important;
   font-weight: 500;
   color: ${({ theme: { palette } }) => palette.primary.main};
 `;
