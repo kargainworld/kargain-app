@@ -173,10 +173,10 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
             <Row>
                 <Col sm={12} md={12}>
+                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                     </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
                 </Col>
 
                 <Col sm={12} md={12}>
