@@ -25,6 +25,7 @@ import { useSocket } from '../../context/SocketContext'
 import usePriceTracker from 'hooks/usePriceTracker'
 
 import { Row } from 'reactstrap'
+import { NewIcons } from '../../assets/icons'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -122,6 +123,24 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
                 <CardContent>
                     <Body>
+                        <Meta>
+                            <CreationDate>
+                                <i.AccessTime />
+                                {getTimeAgo(announce.getCreationDate.raw, lang)}
+                            </CreationDate>
+
+                            <ShareIcon
+                                onClick={() =>
+                                    dispatchModalState({
+                                        openModalShare: true,
+                                        modalShareAnnounce: announce
+                                    })
+                                }
+                                src="/images/share.png"
+                                alt=""
+                            />
+                        </Meta>
+                        
                         <ImageWrapper>
                             {announce.getImages.length > 0 && (
                                 <GalleryViewer
@@ -155,34 +174,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             />
 
                             <Info>
-                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black'}}>{announce.getAuthor.getFullName}</AuthorName>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'2px'}}>{announce.getAuthor.getFullName}</AuthorName>
 
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999'}}>
-                                        <i.RoomOutlined size={5.24} />
+                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
+                                        {/* <i.RoomOutlined size={5.24} /> */}
+                                        <NewIcons.card_location/>
                                         {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
                                     </Location>
                                 )}
                             </Info>
 
-                            {/* <Meta>
-                                <CreationDate>
-                                    <i.AccessTime />
-                                    {getTimeAgo(announce.getCreationDate.raw, lang)}
-                                </CreationDate>
-
-                                <ShareIcon
-                                    onClick={() =>
-                                        dispatchModalState({
-                                            openModalShare: true,
-                                            modalShareAnnounce: announce
-                                        })
-                                    }
-                                    src="/images/share.png"
-                                    alt=""
-                                />
-                            </Meta>
-                         */}
+                            
                             <SubHeader>
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
