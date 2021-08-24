@@ -142,20 +142,20 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         )}
                     </ImageWrapper>
 
-                    <User>
+                    <User style={{marginTop:'5%'}}>
                         <Avatar
                             src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                             size="medium"
                             isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                            style={{ width: 52, height: 52, marginRight: 10 }}
+                            style={{ width: 45, height: 45, marginRight: 10 }}
                         />
 
                         <Info>
-                            <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
+                            <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black'}}>{announce.getAuthor.getFullName}</AuthorName>
 
                             {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                    <i.RoomOutlined size={18} />
+                                <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999'}}>
+                                    <i.RoomOutlined size={5.24} />
                                     {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
                                 </Location>
                             )}

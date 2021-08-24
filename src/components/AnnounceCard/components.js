@@ -121,7 +121,7 @@ export const Info = styled.div`
 `;
 
 export const AuthorName = styled(Link)`
-  font-size: 16px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,8 +131,8 @@ export const Location = styled(Link)`
   margin-top: 4px !important;
   display: flex !important;
   align-items: center !important;
-  font-size: 16px !important;
-  color: ${({ theme: { palette } }) => palette.primary.light} !important;
+  font-size: 13px !important;
+  color: #99999 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
