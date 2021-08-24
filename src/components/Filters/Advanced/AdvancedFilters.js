@@ -568,6 +568,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             </FieldWrapper>
                         </DropdownMenu>
                     </ButtonDropdown>
+                    
                     <div style={{marginLeft: '76%', marginTop: '-43px'}}> 
                         <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
                             <NewIcons.filter alt='filter'/>
@@ -581,7 +582,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                 </div>
                 
                 <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                    <FieldWrapper label={t('vehicles:vehicle-type')}>
+                    {/* <FieldWrapper label={t('vehicles:vehicle-type')}>
                         <SelectInput
                             name="vehicleType"
                             control={control}
@@ -653,7 +654,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
                                 return e
                             }}
-                        />
+                        /> */}
                         {/* <SelectInput
                             name="year"
                             placeholder="Select year"
@@ -665,8 +666,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
-                        /> */}
-                    </FieldWrapper>
+                        /> */} 
+                    {/* </FieldWrapper> */}
 
                     {DynamicFiltersComponent && (
                         <DynamicFiltersComponent
