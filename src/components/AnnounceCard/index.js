@@ -185,57 +185,61 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 )}
                             </Info>
 
+                            <Meta>
+                                <SubHeader style={{marginTop:'21px'}}>
+                                    {isOwn && (
+                                        <Action onClick={toggleVisibility}>
+                                            {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                        </Action>
+                                    )}
+
+                                    {!isAuthor && (
+                                        <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                            {/* <i.BookmarkBorder
+                                                style={{
+                                                    color: liked ? '#DB00FF' : '#444444'
+                                                }}
+                                            /> */}
+                                            <NewIcons.card_heart />
+                                            <span>{likesCounter}</span>
+                                        </Action>
+                                    )}
+
+                                    <Action
+                                        title={t('vehicles:comment_plural')}
+                                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                        onClick={() => handleImageClick()}
+                                    >
+                                        {/* <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} /> */}
+                                        <NewIcons.card_message />
+                                        <span>{announce.getCountComments}</span>
+                                    </Action>
+
+                                    {/* <Action
+                                        onClick={() => {
+                                            if (!isAuthenticated) {
+                                                router.push({
+                                                    pathname: '/auth/login',
+                                                    query: { redirect: router.asPath },
+                                                });
+                                                return
+                                            }
+                                            dispatchModalState({
+                                                openModalMessaging: true,
+                                                modalMessagingProfile: announce.getAuthor,
+                                                modalMessaginAnnounce: announce
+                                            })
+                                            }
+                                        }
+                                    >
+                                        <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                    </Action> */}
+
+                                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
+                                </SubHeader>
+
+                            </Meta>
                             
-                            <SubHeader>
-                                {isOwn && (
-                                    <Action onClick={toggleVisibility}>
-                                        {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                                    </Action>
-                                )}
-
-                                {!isAuthor && (
-                                    <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                        <i.BookmarkBorder
-                                            style={{
-                                                color: liked ? '#DB00FF' : '#444444'
-                                            }}
-                                        />
-                                        <span>{likesCounter}</span>
-                                    </Action>
-                                )}
-
-                                <Action
-                                    title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
-                                    onClick={() => handleImageClick()}
-                                >
-                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
-                                    <span>{announce.getCountComments}</span>
-                                </Action>
-
-                                <Action
-                                    onClick={() => {
-                                        if (!isAuthenticated) {
-                                            router.push({
-                                                pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                            });
-                                            return
-                                        }
-                                        dispatchModalState({
-                                            openModalMessaging: true,
-                                            modalMessagingProfile: announce.getAuthor,
-                                            modalMessaginAnnounce: announce
-                                        })
-                                        }
-                                    }
-                                >
-                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
-                                </Action>
-
-                                {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
-                            </SubHeader>
-
                         </User>
                         
                         
