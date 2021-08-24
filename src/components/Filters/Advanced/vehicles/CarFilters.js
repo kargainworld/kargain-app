@@ -116,7 +116,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             <div className={clsx(classes.overflow)}>
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="dollar-banknote" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:price')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -142,7 +142,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="joystick" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:type')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -164,7 +164,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="stopwatch" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t(`vehicles:${mileageType?.label}`)}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -189,7 +189,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="globe-showing-americas" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:gear-box')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -232,7 +232,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="nut-and-bolt" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:cylinder')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -257,7 +257,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="stopwatch" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:power')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -281,7 +281,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="globe-showing-americas" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:country')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -393,7 +393,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="alarm-clock" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:co2-consumption')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -417,7 +417,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="sport-utility-vehicle" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:doors_quantity')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -463,7 +463,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="house" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:paint')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -485,7 +485,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="artist-palette" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:external_color')}
                     </DropdownToggle>
                     <DropdownMenu>
@@ -506,7 +506,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
+                        <Emoji name="artist-palette" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                         {t('vehicles:internal_color')}
                     </DropdownToggle>
                     <DropdownMenu>

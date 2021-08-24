@@ -307,6 +307,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             handlePageChange={handlePageChange}
                         /> */}
                     </section>
+                
                 </Col>
             </Row>
         </Container>
