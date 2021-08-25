@@ -180,7 +180,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     </DropdownMenu>
                 </ButtonDropdown>
 
-                <ButtonDropdown isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)} >
+                {/* <ButtonDropdown isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t('vehicles:type')}
@@ -200,9 +200,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                         </FieldWrapper>
                         
                     </DropdownMenu>
-                </ButtonDropdown>
+                </ButtonDropdown> */}
 
-                <ButtonDropdown isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
+                {/* <ButtonDropdown isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t(`vehicles:${mileageType?.label}`)}
@@ -225,11 +225,11 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             />
                         </FieldWrapper>
                     </DropdownMenu>
-                </ButtonDropdown>
+                </ButtonDropdown> */}
 
                 <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                        <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t('vehicles:gear-box')}
                     </DropdownToggle>
                     <DropdownMenu>
