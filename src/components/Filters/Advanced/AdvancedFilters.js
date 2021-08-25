@@ -104,7 +104,7 @@ const useStyles = makeStyles(() => ({
         // padding: '10px',
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'10px',
+        marginTop:'20px',
         // margin: '10px',
 
         // background-color: lightblue;
@@ -454,7 +454,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <div style={{marginLeft: '65%'}}>
+                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
                     <CTALink
                         className={clsx(classes.button)}
                         icon={StorefrontIcon}
