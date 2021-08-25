@@ -248,7 +248,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     </DropdownMenu>
                 </ButtonDropdown>
 
-                <ButtonDropdown isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
+                {/* <ButtonDropdown isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t('vehicles:gas')}
@@ -268,7 +268,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             />
                         </FieldWrapper>
                     </DropdownMenu>
-                </ButtonDropdown>
+                </ButtonDropdown> */}
 
                 <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
@@ -382,7 +382,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     </DropdownMenu>
                 </ButtonDropdown>
             
-                <ButtonDropdown isOpen={dropdownOpen10} toggle={toggle10} className={clsx(classes.buttondropdown)} >
+                {/* <ButtonDropdown isOpen={dropdownOpen10} toggle={toggle10} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t('vehicles:radius')}
@@ -406,7 +406,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
                     </DropdownMenu>
                 </ButtonDropdown>
-            
+             */}
                 <ButtonDropdown isOpen={dropdownOpen11} toggle={toggle11} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="oncoming-automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
