@@ -186,7 +186,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             </Info>
 
                             <Meta>
-                                <SubHeader style={{marginTop:'21px'}}>
+                                <SubHeader style={{marginTop:'21px !important'}}>
                                     {isOwn && (
                                         <Action onClick={toggleVisibility}>
                                             {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}

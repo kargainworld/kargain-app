@@ -155,10 +155,23 @@ const useStyles = makeStyles(() => ({
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
+    
+    // const [dropdownOpen, setOpen] = new Array();
+  
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
-    
 
+    const [dropdownOpen1, setOpen1] = useState(false);
+    const toggle1 = () => setOpen1(!dropdownOpen1);
+
+    const [dropdownOpen2, setOpen2] = useState(false);
+    const toggle2 = () => setOpen2(!dropdownOpen2);
+
+    const [dropdownOpen3, setOpen3] = useState(false);
+    const toggle3 = () => setOpen3(!dropdownOpen3);
+
+    const [dropdownOpen4, setOpen4] = useState(false);
+    const toggle4 = () => setOpen4(!dropdownOpen4);
 
     const cache = useRef({})
     const classes = useStyles()
@@ -453,13 +466,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     />
                 </div>
                 <div className={clsx(classes.rowbuttons)}>
-                
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)}  >
-                        <DropdownToggle caret>
+
+                    <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_1">
                             <Emoji name="automobile" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                             {t('vehicles:vehicle-type')}
                         </DropdownToggle>
-                        <DropdownMenu classes={clsx(classes.dropdowntoggle)}>
+                        <DropdownMenu id="button_1" classes={clsx(classes.dropdowntoggle)}>
                             <FieldWrapper >
                                 <SelectInput
                                     name="vehicleType"
@@ -478,12 +491,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
+                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
+                        <DropdownToggle caret id="button_2">
                             <Emoji name="page-facing-up" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                             {t('vehicles:announce-type')}
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu id="buuton_2">
                             <FieldWrapper >
                                 <SelectInput
                                     name="adType"
@@ -501,12 +514,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
+                    <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_3">
                             <Emoji name="wrench" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                             {t('vehicles:make')}
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu id="button_3">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.make"
@@ -522,12 +535,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
                     
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
+                    <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_4">
                             <Emoji name="two-oclock" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                             {t('vehicles:model')}
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu id="button_4">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.model"
@@ -544,12 +557,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
                     
-                    <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                        <DropdownToggle caret>
+                    <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_5">
                             <Emoji name="calendar" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
                             {t('vehicles:year')}
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu id="button_5">
                             <FieldWrapper >
                                 <SliderInput
                                     name="year"
@@ -568,7 +581,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             </FieldWrapper>
                         </DropdownMenu>
                     </ButtonDropdown>
-                    
+                     
                     <div style={{marginLeft: '76%', marginTop: '-43px'}}> 
                         <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
                             <NewIcons.filter alt='filter'/>
@@ -666,7 +679,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
-                        /> */} 
+                        />*/}
                     {/* </FieldWrapper> */}
 
                     {DynamicFiltersComponent && (
