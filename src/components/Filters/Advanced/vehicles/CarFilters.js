@@ -409,7 +409,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
             
                 <ButtonDropdown isOpen={dropdownOpen11} toggle={toggle11} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
-                        <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                        <Emoji name="oncoming-automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                         {t('vehicles:equipments')}
                     </DropdownToggle>
                     <DropdownMenu>
