@@ -119,8 +119,8 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
     return (
         <Row>
-            <Root  style={{borderRadius:'25px'}}>
-
+            <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box'}}>
+            
                 <CardContent>
                     <Body>
                         <Meta style={{marginTop: '7px', marginRight: '2px', marginBottom: '-15px'}}>
