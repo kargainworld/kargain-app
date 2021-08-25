@@ -123,13 +123,13 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
                 <CardContent>
                     <Body>
-                        <Meta>
-                            <CreationDate>
+                        <Meta style={{marginTop: '7px', marginRight: '2px', marginBottom: '-15px'}}>
+                            {/* <CreationDate>
                                 <i.AccessTime />
                                 {getTimeAgo(announce.getCreationDate.raw, lang)}
-                            </CreationDate>
+                            </CreationDate> */}
 
-                            <ShareIcon
+                            <NewIcons.share
                                 onClick={() =>
                                     dispatchModalState({
                                         openModalShare: true,
