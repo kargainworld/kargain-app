@@ -142,7 +142,7 @@ const useStyles = makeStyles(() => ({
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: 'black',
-        padding: '6px 32px',
+        padding: '6px 15px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
@@ -466,17 +466,18 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         dynamicHandleSubmit={handleSubmit}
                     />
                 </div>
-                <div style={{marginLeft: '76%', marginTop: '-43px'}}> 
-                    <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
-                        <NewIcons.filter alt='filter'/>
-                        {/* <Typography variant="h4"> */}
-                        {t('filters:select-filters')}
-                        <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                        {/* </Typography> */}
-                    </div>
-                </div>
+                
                 <div className={clsx(classes.rowbuttons)}>
-
+                    <div style={{display: 'flex', justifyContent: 'flex-end'}}> 
+                        <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
+                            <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
+                            {/* <Typography variant="h4"> */}
+                            {t('filters:select-filters')}
+                            <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                            {/* </Typography> */}
+                        </div>
+                    </div>
+                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_1">
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
@@ -689,8 +690,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             dynamicHandleSubmit={handleSubmit}
                         />
                     )}
-                {/* </div> */}
-            
+                    </div>
+                   
                 </div>
             </form>
         </div>
