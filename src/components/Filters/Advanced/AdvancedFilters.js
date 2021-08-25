@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
                 color: 'black !important',
                 cursor: 'pointer',
                 fontSize:"17.1707px !important",
-                marginLeft: '15px !important',
+                marginRight: '10px !important',
                 '& button:clicked': {
                     borderRadius: '25px !important',
                     backgroundColor: '#c4c4c447 !important',
@@ -101,10 +101,11 @@ const useStyles = makeStyles(() => ({
             },
     },        
     rowbuttons:{
-        padding: '10px',
+        // padding: '10px',
         position: 'relative',
         backgroundColor: '#fff',
-        margin: '10px',
+        marginTop:'10px',
+        // margin: '10px',
 
         // background-color: lightblue;
         // width: 40px;
@@ -465,6 +466,15 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         dynamicHandleSubmit={handleSubmit}
                     />
                 </div>
+                <div style={{marginLeft: '76%', marginTop: '-43px'}}> 
+                    <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
+                        <NewIcons.filter alt='filter'/>
+                        {/* <Typography variant="h4"> */}
+                        {t('filters:select-filters')}
+                        <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                        {/* </Typography> */}
+                    </div>
+                </div>
                 <div className={clsx(classes.rowbuttons)}>
 
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
@@ -582,19 +592,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
                      
-                    <div style={{marginLeft: '76%', marginTop: '-43px'}}> 
-                        <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
-                            <NewIcons.filter alt='filter'/>
-                            {/* <Typography variant="h4"> */}
-                            {t('filters:select-filters')}
-                            <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                            {/* </Typography> */}
-                        </div>
-                    </div>   
-                    
-                </div>
-                
-                <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    {/* <div className={clsx(hiddenForm && classes.filtersHidden)}> */}
                     {/* <FieldWrapper label={t('vehicles:vehicle-type')}>
                         <SelectInput
                             name="vehicleType"
@@ -691,6 +689,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             dynamicHandleSubmit={handleSubmit}
                         />
                     )}
+                {/* </div> */}
+            
                 </div>
             </form>
         </div>

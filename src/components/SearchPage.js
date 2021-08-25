@@ -23,9 +23,27 @@ import ObjectID from 'bson-objectid'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+    row:{
+        // padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        marginTop:'30px',
+        // margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    }, 
+}))
+
 const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
+    const classes = useStyles()
+
     const { getPriceTracker } = usePriceTracker()
     const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
@@ -174,25 +192,29 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             <Row>
                 <Col sm={12} md={12}>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
-                    <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
-                    </Typography>
-                </Col>
 
-                <Col sm={12} md={12}>
-
-                    <section className="cd-tab-filter-wrapper">
-                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
+                    <div className={clsx(classes.row)}>
+                        
+                        {/* <Typography component="p" variant="h2" >
+                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                        </Typography> */}
+                        <h3 style={{fontSize: '20px', fontWeight: '500'}}>
+                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                        </h3>
+                    
+                        <div  style={{ marginTop: '-60px'}}>
                             <Sorters updateSorter={updateSorter} />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 style={{ margin:0 }}
                                 control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
                                 label="Show only minted"
-                            />
+                            /> */}
                         </div>
-                    </section>
+                        
+                    </div>
+                </Col>
 
-
+                <Col sm={12} md={12}>
                     <section className={clsx(filtersOpened && 'filter-is-visible')} style={{padding:'10px 1% !important'}}>
                         <InfiniteScroll
                             throttle={100}
@@ -207,7 +229,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                         {state.announces.map((announceRaw, index) => {
                                             const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
 
-                                            if (!onlyMinted || announceMinted) {
+                                            // if (!onlyMinted || announceMinted) {
                                                 return (
                                                     <Col key={index} style={{width: '32%', marginLeft: '1.5%'}}>
                                                         <AnnounceCard
@@ -217,7 +239,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                         />
                                                     </Col>
                                                 )
-                                            }
+                                            // }
                                         })}
                                     </Row>
                                 ): (

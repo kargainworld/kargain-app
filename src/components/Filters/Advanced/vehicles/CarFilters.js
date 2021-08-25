@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => ({
                 color: 'black !important',
                 cursor: 'pointer',
                 fontSize:"17.1707px !important",
-                marginLeft: '15px !important',
+                marginRight: '10px !important',
+                marginTop: '5px !important',
                 '& button:clicked': {
                     borderRadius: '25px !important',
                     backgroundColor: '#c4c4c447 !important',
@@ -152,7 +153,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     // }
     return (
         <> 
-            <div className={clsx(classes.overflow)}>
+            {/* <div className={clsx(classes.overflow)}> */}
                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="dollar-banknote" width="18" style={{marginLeft: '10px', marginRight: '10px', marginBottom: '3%'}}/>
@@ -585,7 +586,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     </DropdownMenu>
                 </ButtonDropdown>
             
-            </div>
+            {/* </div> */}
             {/* <FieldWrapper label={t('vehicles:price')}>
                 <SliderInput
                     name="price"
