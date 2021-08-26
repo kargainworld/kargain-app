@@ -182,7 +182,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
         //     strkm = strmaile.slice(strlength-x, strlength-y) + ',' + strkm;
         // }
         strkm = strmaile.slice(strlength-3, strlength);
-        strkm = strmaile.slice(0, m) + ',' +strkm;
+        strkm = strmaile.slice(0, m) + '.' +strkm;
     }
     
     return (
@@ -337,16 +337,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 // moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
                             />
                         )} */}
-              
+                        <div style={{marginLeft:'5px ', marginBottom:'-15px '}}>
+                            <h6 style={{fontsSize:'16px ', textAlign:'left'}}> 
+                                {/* {announce.getMileage} */}
+                                {strkm} Km      
+                            </h6>
+                        </div>
                     </Body>
  
                 </CardContent>
 
-                <Footer>
-                    <h6 style={{fontsSize:'16px !important', textAlign:'left !important'}}> 
-                            {/* {announce.getMileage} */}
-                            {strkm} Km      
-                    </h6>
+                {/* <Footer> */}
+                    
                     {/* {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
                         <Button
                             variant="contained"
@@ -360,7 +362,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             {t('vehicles:remove-announce')}
                         </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
                     {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />} */}
-                </Footer>
+                {/* </Footer> */}
             </Root>
         </Row>
     )
