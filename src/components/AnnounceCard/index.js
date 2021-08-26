@@ -55,6 +55,13 @@ const useStyles = makeStyles(() => ({
         lineHeight: '150%',
         color: '#999999',
     },
+    a_info:{
+        marginTop: '5px',
+        fontWeight: 'bold',
+        fontSize: '17.4674px !important',
+        fontWeight: '500',
+        color: '#2C65F6',
+    },
     filterbutton:{
         borderRadius: '100rem',
         padding: '1rem',
@@ -245,7 +252,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 )}
                             </Info>
 
-                            <Meta>
+                            <div style={{marginLeft: '100px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
                                 <SubHeader style={{marginTop:'21px !important'}}>
                                     {isOwn && (
                                         <Action onClick={toggleVisibility}>
@@ -298,18 +305,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                     {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
                                 </SubHeader>
 
-                            </Meta>
+                            </div>
                             
                         </User>
                         <div style={{marginLeft:'5px', marginTop:'15px'}}>
                             <a className={clsx(classes.a_coin)}>#1212</a>
                         </div>
                         <Link href={announce.getAnnounceLink}>
-                            <a>
-                                <Title style={{marginTop:'10px !important'}}>
+                            <a > 
+                                <h3 className={clsx(classes.a_info)}>
                                     <p style={{color:'black'}}> {temp1} </p>
                                     <p> {temp2}  </p>
-                                </Title>
+                                </h3>
                             </a>
                         </Link>
                         
