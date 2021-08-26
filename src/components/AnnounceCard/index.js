@@ -43,6 +43,26 @@ const useStyles = makeStyles(() => ({
             height: '240px !important',
             objectFit: 'fill !important',
         }
+    },
+
+    a_coin:{
+        
+        position: 'absolute',
+        left: '8.29%',
+        right: '91.71%',
+        bottom: '20.07%',
+        fontFamily: 'Roboto',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: '12.2272px',
+        lineHeight: '150%',
+        marginBottom: '15px',
+        /* or 18px */
+        letterSpacing: '-0.0009em',
+
+        /* Primary / Accent 3 */
+
+        color: '#999999',
     }
 }))
 
@@ -251,7 +271,9 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             
                         </User>
                         
-                        <Link href={announce.getAnnounceLink}>
+                        <a className={clsx(classes.a_coin)}>#1212</a>
+
+                        <Link href={announce.getAnnounceLink} style={{marginTop: "30px"}}>
                             <a>
                                 <Title>
                                     <p style={{color:'black'}}> {temp1} </p>
