@@ -226,6 +226,31 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                         </FieldWrapper>
                     </DropdownMenu>
                 </ButtonDropdown> */}
+                <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
+                    <DropdownToggle caret>
+                        <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                        {t('vehicles:cylinder')}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <FieldWrapper>
+                            <SliderInput
+                                name="vehicleEngineCylinder"
+                                suffix="cm3"
+                                min={10}
+                                max={1000}
+                                step={10}
+                                defaultValue={[1, 1000]}
+                                errors={errors}
+                                control={control}
+                                onChange={e =>{
+                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                    return e
+                                }}
+                            />
+                        </FieldWrapper>
+                    </DropdownMenu>
+                </ButtonDropdown>
+
 
                 <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
@@ -270,31 +295,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     </DropdownMenu>
                 </ButtonDropdown> */}
 
-                <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:cylinder')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="vehicleEngineCylinder"
-                                suffix="cm3"
-                                min={10}
-                                max={1000}
-                                step={10}
-                                defaultValue={[1, 1000]}
-                                errors={errors}
-                                control={control}
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-
+                
                 <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
                     <DropdownToggle caret>
                         <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>

@@ -142,13 +142,13 @@ const useStyles = makeStyles(() => ({
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: 'black',
-        padding: '6px 15px',
+        padding: '8px 15px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
         margin: '4px 2px',
-        cursor: 'pointer',
+        // cursor: 'pointer',
         borderRadius: '26.8293px',
         border: 'solid #dcd7d7',
         borderWidth: '1px',
@@ -468,7 +468,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
-                    <div style={{display: 'flex', justifyContent: 'flex-end'}}> 
+                    <div > 
                         <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
                             <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
                             {/* <Typography variant="h4"> */}
@@ -477,7 +477,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             {/* </Typography> */}
                         </div>
                     </div>
+
                     <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_1">
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
