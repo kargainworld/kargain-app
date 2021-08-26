@@ -24,7 +24,7 @@ import GalleryViewer from '../Gallery/GalleryViewer'
 import { useSocket } from '../../context/SocketContext'
 import usePriceTracker from 'hooks/usePriceTracker'
 
-import { Row } from 'reactstrap'
+import { ButtonToggle, Row } from 'reactstrap'
 import { NewIcons } from '../../assets/icons'
 import clsx from 'clsx'
 
@@ -63,6 +63,23 @@ const useStyles = makeStyles(() => ({
         /* Primary / Accent 3 */
 
         color: '#999999',
+    },
+    filterbutton:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontFamily: 'Avenir Next',
+        fontSize: '14px',
+        fontWeight: '700',
+        padding: '.1rem 1rem',
+        color: '$color-black',
+        boxShadow: '0 0 6px 0 #f0eeee',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(179deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #f0eeee inset',
+        baclgroundColor: '#F0EEEE !important',
+        transform: 'translate(-50%, -50%)',
     }
 }))
 
@@ -192,7 +209,14 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                     {announce.getCountImages}
                                 </ImageCounter>
                             )}
+                            <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '-50px'}}> 
+                                <div className={'btn btn-primary', classes.filterbutton}>
+                                    € {announce.getPrice}
+                                </div>
+                            </div>
                         </ImageWrapper>
+                        
+                        
 
                         <User style={{marginTop:'5%'}}>
                             <Avatar
