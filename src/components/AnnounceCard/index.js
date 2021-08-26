@@ -27,6 +27,7 @@ import usePriceTracker from 'hooks/usePriceTracker'
 import { ButtonToggle, Row } from 'reactstrap'
 import { NewIcons } from '../../assets/icons'
 import clsx from 'clsx'
+import { Emoji } from 'react-apple-emojis'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles(() => ({
     },
 
     image:{
+       
         '& .image-gallery-image':{
             width:'100% !important',
             height: '240px !important',
@@ -163,13 +165,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     }else if(strlength/3 == 1){
         strkm = '0.'+ strmaile;
     }else{
-        var s = strlength / 3;
         var m = strlength % 3;
-        // for(var i = 1; i < s + 1; i++){
-            // var x = 3 * i;
-            // var y = x - 3;
-        //     strkm = strmaile.slice(strlength-x, strlength-y) + ',' + strkm;
-        // }
         strkm = strmaile.slice(strlength-3, strlength);
         strkm = strmaile.slice(0, m) + '.' +strkm;
     }
@@ -331,6 +327,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 {/* {announce.getMileage} */}
                                 {strkm} Km      
                             </h6>
+                            <Emoji name="gear" width="13"/>
                         </div>
                     </Body>
  
