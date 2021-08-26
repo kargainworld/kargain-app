@@ -46,22 +46,11 @@ const useStyles = makeStyles(() => ({
     },
 
     a_coin:{
-        
-        position: 'absolute',
-        left: '8.29%',
-        right: '91.71%',
-        bottom: '20.07%',
-        fontFamily: 'Roboto',
+       
         fontStyle: 'normal',
         fontWeight: '500',
         fontSize: '12.2272px',
         lineHeight: '150%',
-        marginBottom: '15px',
-        /* or 18px */
-        letterSpacing: '-0.0009em',
-
-        /* Primary / Accent 3 */
-
         color: '#999999',
     },
     filterbutton:{
@@ -316,10 +305,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             </Meta>
                             
                         </User>
-                        
-                        <a className={clsx(classes.a_coin)}>#1212</a>
-
-                        <Link href={announce.getAnnounceLink} style={{marginTop: "30px"}}>
+                        <div style={{marginLeft:'5px', marginTop:'15px'}}>
+                            <a className={clsx(classes.a_coin)}>#1212</a>
+                        </div>
+                        <Link href={announce.getAnnounceLink}>
                             <a>
                                 <Title>
                                     <p style={{color:'black'}}> {temp1} </p>
