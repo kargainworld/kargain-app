@@ -225,7 +225,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         
                         
 
-                        <User style={{marginTop:'5%'}}>
+                        <User style={{marginTop:'-5%'}}>
                             <Avatar
                                 src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                                 size="medium"
@@ -306,7 +306,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         </div>
                         <Link href={announce.getAnnounceLink}>
                             <a>
-                                <Title>
+                                <Title style={{marginTop:'10px !important'}}>
                                     <p style={{color:'black'}}> {temp1} </p>
                                     <p> {temp2}  </p>
                                 </Title>
