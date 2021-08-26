@@ -163,6 +163,28 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     const tempArr = str.split("|");
     var temp1 = tempArr[0]+'|'+tempArr[1]
     var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
+
+    var strmaile = announce.getMileage;
+    var strlength = strmaile.length;
+    var strkm = '';
+    if(strlength/3 < 0.4){
+        strkm = '0.00'+strmaile;
+    }else if(0.4 < strlength/3 < 0.7){
+        strkm = '0.0'+strmaile;
+    }else if(strlength/3 == 1){
+        strkm = '0.'+ strmaile;
+    }else{
+        var s = strlength / 3;
+        var m = strlength % 3;
+        // for(var i = 1; i < s + 1; i++){
+            // var x = 3 * i;
+            // var y = x - 3;
+        //     strkm = strmaile.slice(strlength-x, strlength-y) + ',' + strkm;
+        // }
+        strkm = strmaile.slice(strlength-3, strlength);
+        strkm = strmaile.slice(0, m) + ',' +strkm;
+    }
+    
     return (
         <Row>
             <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', width: '98%'}}>
@@ -305,7 +327,8 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 </Title>
                             </a>
                         </Link>
-
+                        
+                        
                         {/* {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />} */}
                         
                         {/* {announce.getCountComments > 0 && (
@@ -320,6 +343,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                 </CardContent>
 
                 <Footer>
+                    <h6 style={{fontsSize:'16px !important', textAlign:'left !important'}}> 
+                            {/* {announce.getMileage} */}
+                            {strkm} Km      
+                    </h6>
                     {/* {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
                         <Button
                             variant="contained"
