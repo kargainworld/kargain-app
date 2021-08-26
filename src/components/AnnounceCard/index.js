@@ -260,14 +260,14 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             </a>
                         </Link>
 
-                        {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
+                        {/* {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />} */}
                         
-                        {announce.getCountComments > 0 && (
+                        {/* {announce.getCountComments > 0 && (
                             <CommentListStyled
-                                comments={announce.getComments.reverse().slice(0, 1)}
-                                moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
+                                // comments={announce.getComments.reverse().slice(0, 1)}
+                                // moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
                             />
-                        )}
+                        )} */}
               
                     </Body>
  
