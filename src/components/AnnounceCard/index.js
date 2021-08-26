@@ -325,9 +325,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         <div style={{marginLeft:'5px ', marginBottom:'-15px '}}>
                             <h6 style={{fontsSize:'16px ', textAlign:'left'}}> 
                                 {/* {announce.getMileage} */}
-                                {strkm} Km      
+                                {strkm} Km 
+                                     
                             </h6>
-                            <Emoji name="gear" width="13"/>
+                            <Emoji name="gear" width="18" style={{marginTop:'-55px', marginLeft:"90%"}} />
                         </div>
                     </Body>
  
