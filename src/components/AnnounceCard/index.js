@@ -128,7 +128,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
     return (
         <Row>
-            <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box'}}>
+            <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', width: '98%'}}>
             
                 <CardContent>
                     <Body>
@@ -251,8 +251,6 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             
                         </User>
                         
-                        
-
                         <Link href={announce.getAnnounceLink}>
                             <a>
                                 <Title>
@@ -272,13 +270,11 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                         )}
               
                     </Body>
-
-                    
-                    
+ 
                 </CardContent>
 
                 <Footer>
-                    {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
+                    {/* {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
                         <Button
                             variant="contained"
                             color="secondary"
@@ -290,7 +286,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             }}>
                             {t('vehicles:remove-announce')}
                         </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
-                    {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
+                    {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />} */}
                 </Footer>
             </Root>
         </Row>

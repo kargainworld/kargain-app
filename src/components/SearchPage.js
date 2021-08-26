@@ -231,7 +231,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
                                             // if (!onlyMinted || announceMinted) {
                                                 return (
-                                                    <Col key={index} style={{width: '32%', marginLeft: '1.5%'}}>
+                                                    <Col key={index} className="my-4" style={{width:"400px"}}>
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
                                                             tokenPrice={announceMinted?.tokenPrice}
