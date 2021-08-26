@@ -26,6 +26,7 @@ import usePriceTracker from 'hooks/usePriceTracker'
 
 import { Row } from 'reactstrap'
 import { NewIcons } from '../../assets/icons'
+import clsx from 'clsx'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -33,6 +34,14 @@ const useStyles = makeStyles(() => ({
 
         "&:hover" : {
             backgroundColor : themeColors.red
+        }
+    },
+
+    image:{
+        '& .image-gallery-image':{
+            width:'100% !important',
+            height: '240px !important',
+            objectFit: 'fill !important',
         }
     }
 }))
@@ -141,7 +150,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             />
                         </Meta>
                         
-                        <ImageWrapper>
+                        <ImageWrapper className={clsx(classes.image)}>
                             {announce.getImages.length > 0 && (
                                 <GalleryViewer
                                     images={announce.getImages}
