@@ -21,7 +21,7 @@ import card_message from './icon_message.svg';
 import card_heart from './icon_heart.svg';
 import card_location from './icon_location.svg';
 import share from './icon_share.svg';
-import modalclose from './icon_modalclose.svg'
+import modalclose from './Icon_modalclose.svg'
 
 export const NewIcons = {
     message,
