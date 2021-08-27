@@ -196,8 +196,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                         modalShareAnnounce: announce
                                     })
                                 }
-                                src="/images/share.png"
-                                alt=""
+                                alt="share"
                             />
                         </Meta>
                         

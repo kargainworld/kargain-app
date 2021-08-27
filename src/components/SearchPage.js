@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
         // padding: '10px',
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'60px',
+        marginTop:'30px',
         // margin: '10px',
 
         // background-color: lightblue;

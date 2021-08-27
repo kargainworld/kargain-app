@@ -24,12 +24,8 @@ import useAddress from '../../../hooks/useAddress'
 import CTALink from '../../CTALink'
 
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Row } from 'reactstrap'
 import { Emoji } from 'react-apple-emojis'
-import { ListGroup, ListGroupItem } from 'reactstrap';
 import customColors from '../../../theme/palette'
-import {  Carousel, CarouselItem, CarouselControl, CarouselIndicators, CarouselCaption} from 'reactstrap';
-import { DriveEta } from '@material-ui/icons'
 import { NewIcons } from '../../../assets/icons'
 
 const useStyles = makeStyles(() => ({
