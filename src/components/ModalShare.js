@@ -13,6 +13,9 @@ import AnnounceService from '../services/AnnounceService'
 import { MessageContext } from '../context/MessageContext'
 import { useAuth } from '../context/AuthProvider'
 import ro from 'date-fns/locale/ro/index.js'
+import customColors from '../theme/palette'
+import clsx from 'clsx'
+import { NewIcons } from '../assets/icons';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -24,11 +27,12 @@ const useStyles = makeStyles((theme) => ({
     
     paper: {
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        // border: '2px solid #000',
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
+        padding: theme.spacing(2, 4, 4),
         maxWidth : '600px',
-        width : '100%'
+        width : '30%',
+        textAlign: 'center',
     },
 
     list: {
@@ -42,6 +46,28 @@ const useStyles = makeStyles((theme) => ({
     pointerClose: {
         display: 'flex',
         cursor: 'pointer'
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        width: "50%",
+        textAlign:'center',
+        background: customColors.gradient.main
+    },
+    share:{
+        color:'#212121',
+        fontSize: '24px',
+        marginTop: '10px',
+        fontFamily: 'Droid Sans,-apple-system,Helvetica Neue,sans-serif',
+        fontWeight: '500',
+        textAlign: 'center',
+        marginTop: '1px',
+        marginBottom: '15px',
     }
 }))
 
@@ -160,8 +186,8 @@ const Clipboard = () => {
     }
     
     return(
-        <div className="d-flex">
-            <a className="social-link-modal" href="#" onClick={handleClick}>
+        <div >
+            <a className="social-link-modal" style={{color: 'white'}} href="#" onClick={handleClick}>
                 {label}
             </a>
         </div>
@@ -202,15 +228,20 @@ export default function ModalShare () {
             onClose={handleClose}>
             <Fade in={modalStateContext.openModalShare}>
                 <div className={classes.paper}>
-                    <Typography component="h2" variant="h2">
+                    <div style={{ display:'flex', justifyContent: 'flex-end'}}>
+                        <NewIcons.modalclose onClick={handleClose}/>    
+                    </div>
+                    <div className={clsx(classes.share)}>
                         Partager
-                    </Typography>
+                    </div>
                     
-                    <div className="d-flex flex-column my-2 providers">
-                        {/*<Facebook/>*/}
-                        {/*<Messenger/>*/}
-                        {/* <Email/> */}
-                        <Clipboard/>
+                    <div style={{display:'flex', justifyContent: 'center'}}>
+                        <div className={clsx(classes.button)}>
+                            {/*<Facebook/>*/}
+                            {/*<Messenger/>*/}
+                            {/* <Email/> */}
+                            <Clipboard/>
+                        </div>
                     </div>
                 </div>
             </Fade>
