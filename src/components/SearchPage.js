@@ -23,9 +23,27 @@ import ObjectID from 'bson-objectid'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+    row:{
+        // padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        marginTop:'30px',
+        // margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    }, 
+}))
+
 const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
+    const classes = useStyles()
+
     const { getPriceTracker } = usePriceTracker()
     const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
@@ -172,28 +190,32 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             />
 
             <Row>
-                <Col sm={12} md={4}>
-                    <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
-                    </Typography>
+                <Col sm={12} md={12}>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
-                </Col>
 
-                <Col sm={12} md={8}>
-
-                    <section className="cd-tab-filter-wrapper">
-                        <div className={clsx('cd-tab-filter', filtersOpened && 'filter-is-visible')} style={{ display:"flex" }}>
+                    <div className={clsx(classes.row)}>
+                        
+                        {/* <Typography component="p" variant="h2" >
+                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                        </Typography> */}
+                        <h3 style={{fontSize: '20px', fontWeight: '500'}}>
+                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                        </h3>
+                    
+                        <div  style={{ marginTop: '-60px'}}>
                             <Sorters updateSorter={updateSorter} />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 style={{ margin:0 }}
                                 control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
                                 label="Show only minted"
-                            />
+                            /> */}
                         </div>
-                    </section>
+                        
+                    </div>
+                </Col>
 
-
-                    <section className={clsx('cd-gallery', filtersOpened && 'filter-is-visible')}>
+                <Col sm={12} md={12}>
+                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{padding:'10px 1% !important'}}>
                         <InfiniteScroll
                             throttle={100}
                             threshold={300}
@@ -207,9 +229,9 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                         {state.announces.map((announceRaw, index) => {
                                             const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
 
-                                            if (!onlyMinted || announceMinted) {
+                                            // if (!onlyMinted || announceMinted) {
                                                 return (
-                                                    <Col key={index} sm={12} md={12} className="my-2">
+                                                    <Col key={index} className="my-3 d-flex justify-content-center">
                                                         <AnnounceCard
                                                             announceRaw={announceRaw}
                                                             tokenPrice={announceMinted?.tokenPrice}
@@ -217,7 +239,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                         />
                                                     </Col>
                                                 )
-                                            }
+                                            // }
                                         })}
                                     </Row>
                                 ): (
@@ -307,6 +329,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             handlePageChange={handlePageChange}
                         /> */}
                     </section>
+                
                 </Col>
             </Row>
         </Container>

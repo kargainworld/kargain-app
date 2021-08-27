@@ -23,7 +23,13 @@ import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from '../../../hooks/useAddress'
 import CTALink from '../../CTALink'
 
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Emoji } from 'react-apple-emojis'
+import customColors from '../../../theme/palette'
+import { NewIcons } from '../../../assets/icons'
+
 const useStyles = makeStyles(() => ({
+
     filtersContainer: {
         padding: '.5rem'
     },
@@ -40,13 +46,129 @@ const useStyles = makeStyles(() => ({
           cursor: 'pointer'
         }
     },
-
     filtersHidden: {
         display: 'none'
+    },
+    buttondropdown:{
+        '& button':{
+                borderRadius: '26.8293px !important',
+                borderColor:'#dcd7d7 !important',
+                backgroundColor: '#c4c4c400 !important',
+                color: 'black !important',
+                cursor: 'pointer',
+                fontSize:"17.1707px !important",
+                marginRight: '10px !important',
+                '& button:clicked': {
+                    borderRadius: '25px !important',
+                    backgroundColor: '#c4c4c447 !important',
+                    color: 'black !important',
+                    fontSize:"17.1707px !important",
+                },
+                '& button:after': {
+                    FONTVARIANT: 'JIS83 !important',
+                    display: 'inline-block !important',
+                    marginLeft: '0.355em !important',
+                    verticalAlign: '0.255em !important',
+                    content: " !important",
+                    borderTop: '0.4em solid !important',
+                    borderRight: '0.4em solid transparent !important',
+                    borderBottom: '0 !important',
+                    borderLeft:' 0.4em solid transparent !important',
+                    marginLeft:'5px !important',
+                },
+                '& .propTypes':{
+                    disabled: 'PropTypes.bool',
+                    direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
+                    group: 'PropTypes.bool',
+                    isOpen: 'PropTypes.bool',
+                    tag: 'PropTypes.string',
+                    toggle: 'PropTypes.func'
+                    },
+            },
+        },
+    dropdowntoggle:{
+        '& .propTypes':{
+            caret: 'PropTypes.bool',
+            color: 'PropTypes.string',
+            disabled: 'PropTypes.bool',
+            onClick: 'PropTypes.func',
+            dataToggle: 'PropTypes.string',
+            ariaHaspopup: 'PropTypes.bool'
+            },
+    },        
+    rowbuttons:{
+        // padding: '10px',
+        position: 'relative',
+        backgroundColor: '#fff',
+        marginTop:'20px',
+        // margin: '10px',
+
+        // background-color: lightblue;
+        // width: 40px;
+        // overflowX: 'auto',
+    },   
+    overflow:{
+        overflowX:'auto',
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        background: customColors.gradient.main
+    },
+    filterbutton:{
+        // borderRadius: '26.8293px !important',
+        // borderColor:'#dcd7d7 !important',
+        // backgroundColor: '#c4c4c400 !important',
+        // color: 'black !important',
+        // cursor: 'pointer',
+        // fontSize:"17.1707px !important",
+        // border: 'none',
+        // padding: '15px 32px',
+        // textAlign: 'center',
+        // textDecoration: 'none',
+        // display: 'inline-block',
+        // fontSize: '16px',
+        // margin: '4px 2px',
+        // cursor: 'pointer',
+        backgroundColor: 'white', /* Green */
+        border: 'none',
+        color: 'black',
+        padding: '8px 15px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '16px',
+        margin: '4px 2px',
+        // cursor: 'pointer',
+        borderRadius: '26.8293px',
+        border: 'solid #dcd7d7',
+        borderWidth: '1px',
     }
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
+    
+    // const [dropdownOpen, setOpen] = new Array();
+  
+    const [dropdownOpen, setOpen] = useState(false);
+    const toggle = () => setOpen(!dropdownOpen);
+
+    const [dropdownOpen1, setOpen1] = useState(false);
+    const toggle1 = () => setOpen1(!dropdownOpen1);
+
+    const [dropdownOpen2, setOpen2] = useState(false);
+    const toggle2 = () => setOpen2(!dropdownOpen2);
+
+    const [dropdownOpen3, setOpen3] = useState(false);
+    const toggle3 = () => setOpen3(!dropdownOpen3);
+
+    const [dropdownOpen4, setOpen4] = useState(false);
+    const toggle4 = () => setOpen4(!dropdownOpen4);
 
     const cache = useRef({})
     const classes = useStyles()
@@ -328,25 +450,149 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <CTALink
-                    className="w-100"
-                    icon={StorefrontIcon}
-                    title={t('layout:news_feed')}
-                    href="/advanced-search">
-                </CTALink>
-                <ControlButtons 
-                    resetFilter={onResetFilter}
-                    dynamicHandleSubmit={handleSubmit}
-                />
-              <div className={classes.filtersTop} onClick={() => toggleFilters()}>
-                <Typography variant="h4">
-                  {t('filters:select-filters')}
-                  <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                </Typography>
-              </div>
+                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
+                    <CTALink
+                        className={clsx(classes.button)}
+                        icon={StorefrontIcon}
+                        title={t('layout:news_feed')}
+                        href="/advanced-search">
+                    </CTALink>
+                    <ControlButtons 
+                        resetFilter={onResetFilter}
+                        dynamicHandleSubmit={handleSubmit}
+                    />
+                </div>
+                
+                <div className={clsx(classes.rowbuttons)}>
+                    <div > 
+                        <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
+                            <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
+                            {/* <Typography variant="h4"> */}
+                            {t('filters:select-filters')}
+                            <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
+                            {/* </Typography> */}
+                        </div>
+                    </div>
 
-                <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                    <FieldWrapper label={t('vehicles:vehicle-type')}>
+                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    
+                    <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_1">
+                            <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:vehicle-type')}
+                        </DropdownToggle>
+                        <DropdownMenu id="button_1" classes={clsx(classes.dropdowntoggle)}>
+                            <FieldWrapper >
+                                <SelectInput
+                                    name="vehicleType"
+                                    control={control}
+                                    errors={errors}
+                                    options={vehicleTypesDefault()}
+                                    selected={router.query.vehicleType}
+                                    onChange={(e, name) =>{
+                                        // onVehicleTypeChange(selected.value)
+                                        setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
+                                        return e
+                                    }}
+
+                                />
+                            </FieldWrapper>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+
+                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
+                        <DropdownToggle caret id="button_2">
+                            <Emoji name="page-facing-up" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:announce-type')}
+                        </DropdownToggle>
+                        <DropdownMenu id="buuton_2">
+                            <FieldWrapper >
+                                <SelectInput
+                                    name="adType"
+                                    control={control}
+                                    errors={errors}
+                                    options={announceTypesFiltered}
+                                    selected={router.query.adType}
+                                    onChange={(selected, name) =>{
+                                        // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
+                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                        return selected
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+
+                    <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_3">
+                            <Emoji name="wrench" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:make')}
+                        </DropdownToggle>
+                        <DropdownMenu id="button_3">
+                            <FieldWrapper >
+                                <SelectInput
+                                    name="manufacturer.make"
+                                    control={control}
+                                    errors={errors}
+                                    options={manufacturersData.makes}
+                                    onChange={(selected, name) =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                        return selected
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    
+                    <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_4">
+                            <Emoji name="two-oclock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:model')}
+                        </DropdownToggle>
+                        <DropdownMenu id="button_4">
+                            <FieldWrapper >
+                                <SelectInput
+                                    name="manufacturer.model"
+                                    options={manufacturersData.models}
+                                    control={control}
+                                    errors={errors}
+                                    disabled={!watch('manufacturer.make')}
+                                    onChange={(selected, name) =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
+                                        return selected
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                    
+                    <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret id="button_5">
+                            <Emoji name="calendar" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:year')}
+                        </DropdownToggle>
+                        <DropdownMenu id="button_5">
+                            <FieldWrapper >
+                                <SliderInput
+                                    name="year"
+                                    defaultValue={[1900, 2021]}
+                                    min={1900}
+                                    max={2100}
+                                    step={10}
+                                    errors={errors}
+                                    control={control}
+                                    suffix=""
+                                    onChange={e =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
+                                        return e
+                                    }}
+                                />
+                            </FieldWrapper>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                     
+                    {/* <div className={clsx(hiddenForm && classes.filtersHidden)}> */}
+                    {/* <FieldWrapper label={t('vehicles:vehicle-type')}>
                         <SelectInput
                             name="vehicleType"
                             control={control}
@@ -418,7 +664,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
                                 return e
                             }}
-                        />
+                        /> */}
                         {/* <SelectInput
                             name="year"
                             placeholder="Select year"
@@ -430,8 +676,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                 return selected
                             }}
-                        /> */}
-                    </FieldWrapper>
+                        />*/}
+                    {/* </FieldWrapper> */}
 
                     {DynamicFiltersComponent && (
                         <DynamicFiltersComponent
@@ -442,6 +688,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             dynamicHandleSubmit={handleSubmit}
                         />
                     )}
+                    </div>
+                   
                 </div>
             </form>
         </div>
@@ -450,11 +698,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
 const ControlButtons = ({...props}) => {
     const { t } = useTranslation()
+    const classes = useStyles()
 
     return (
-        <div className="d-flex flex-column my-3">
+       
             <Button
-                className="my-1"
+                className={ clsx(classes.button)}
+                
                 variant="contained"
                 color="primary"
                 startIcon={<FilterListIcon/>}
@@ -463,7 +713,7 @@ const ControlButtons = ({...props}) => {
             >
                 {t('vehicles:clear-filters')}
             </Button>
-        </div>
+        
     )
 }
 

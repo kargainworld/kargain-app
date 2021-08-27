@@ -16,7 +16,12 @@ import car from './Icon_car.svg';
 import goToworld from './Language_world.svg';
 import close from './icon_close.svg';
 import recycle from './icon_recycle.svg';
-
+import filter from './icon_filter.svg';
+import card_message from './icon_message.svg';
+import card_heart from './icon_heart.svg';
+import card_location from './icon_location.svg';
+import share from './icon_share.svg';
+import modalclose from './icon_modalclose.svg'
 
 export const NewIcons = {
     message,
@@ -38,4 +43,10 @@ export const NewIcons = {
     goToworld,
     close,
     recycle,
+    filter,
+    card_location,
+    card_heart,
+    card_message,
+    share,
+    modalclose,
 }
