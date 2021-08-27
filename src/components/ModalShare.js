@@ -229,7 +229,7 @@ export default function ModalShare () {
             <Fade in={modalStateContext.openModalShare}>
                 <div className={classes.paper}>
                     <div style={{ display:'flex', justifyContent: 'flex-end'}}>
-                        <NewIcons.modalclose />    
+                        <NewIcons.modalclose onClick={handleClose}/>    
                     </div>
                     <div className={clsx(classes.share)}>
                         Partager
