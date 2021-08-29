@@ -121,20 +121,7 @@ const useStyles = makeStyles(() => ({
         background: customColors.gradient.main
     },
     filterbutton:{
-        // borderRadius: '26.8293px !important',
-        // borderColor:'#dcd7d7 !important',
-        // backgroundColor: '#c4c4c400 !important',
-        // color: 'black !important',
-        // cursor: 'pointer',
-        // fontSize:"17.1707px !important",
-        // border: 'none',
-        // padding: '15px 32px',
-        // textAlign: 'center',
-        // textDecoration: 'none',
-        // display: 'inline-block',
-        // fontSize: '16px',
-        // margin: '4px 2px',
-        // cursor: 'pointer',
+       
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: 'black',
@@ -591,94 +578,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
                      
-                    {/* <div className={clsx(hiddenForm && classes.filtersHidden)}> */}
-                    {/* <FieldWrapper label={t('vehicles:vehicle-type')}>
-                        <SelectInput
-                            name="vehicleType"
-                            control={control}
-                            errors={errors}
-                            options={vehicleTypesDefault()}
-                            selected={router.query.vehicleType}
-                            onChange={(e, name) =>{
-                                // onVehicleTypeChange(selected.value)
-                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                return e
-                            }}
-
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:announce-type')}>
-                        <SelectInput
-                            name="adType"
-                            control={control}
-                            errors={errors}
-                            options={announceTypesFiltered}
-                            selected={router.query.adType}
-                            onChange={(selected, name) =>{
-                                // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:make')}>
-                        <SelectInput
-                            name="manufacturer.make"
-                            control={control}
-                            errors={errors}
-                            options={manufacturersData.makes}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:model')}>
-                        <SelectInput
-                            name="manufacturer.model"
-                            options={manufacturersData.models}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.make')}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:year')}>                        
-                        <SliderInput
-                            name="year"
-                            defaultValue={[1900, 2021]}
-                            min={1900}
-                            max={2100}
-                            step={10}
-                            errors={errors}
-                            control={control}
-                            suffix=""
-                            onChange={e =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
-                                return e
-                            }}
-                        /> */}
-                        {/* <SelectInput
-                            name="year"
-                            placeholder="Select year"
-                            options={manufacturersData.years}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.model') || !isCar}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />*/}
-                    {/* </FieldWrapper> */}
-
                     {DynamicFiltersComponent && (
                         <DynamicFiltersComponent
                             control={control}
