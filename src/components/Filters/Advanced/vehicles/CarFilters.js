@@ -55,7 +55,26 @@ const useStyles = makeStyles(() => ({
     },   
     overflow:{
         overflowX:'auto',
+    },
+    label:{
+        textAlign:'left', 
+        fontSize:'14px', 
+        fontWeight: 'normal', 
+        lineHeight: '150%',
+        color: 'black',
+        marginLeft:'5px',
+        marginBottom: '-10px',
+    },
+    dropdownmenu:{
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '15px 10px 20px',
     }
+
 	}))
 
 const CarFilters = ({ control, watch, errors, ...props }) => {
@@ -150,7 +169,11 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:price')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:price')}
+                    </label>
                     <FieldWrapper >
                         <SliderInput
                             name="price"
@@ -167,6 +190,10 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             }}
                         />
                     </FieldWrapper>
+                    
+                        <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
+                        <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
+                    
 
                 </DropdownMenu>
             </ButtonDropdown>
