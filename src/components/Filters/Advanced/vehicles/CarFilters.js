@@ -202,9 +202,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     
                         <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
                         <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
-                    
-
-                </DropdownMenu>
+                    </DropdownMenu>
             </ButtonDropdown>
 
             <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
@@ -212,7 +210,10 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:cylinder')}
                 </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:cylinder')}
+                    </label>
                     <FieldWrapper>
                         <SliderInput
                             name="vehicleEngineCylinder"
@@ -229,6 +230,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             }}
                         />
                     </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>10 cm3</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>1000 cm3</label>
+                    
                 </DropdownMenu>
             </ButtonDropdown>
 
