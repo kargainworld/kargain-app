@@ -27,14 +27,16 @@ import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
-import useKargainContract from 'hooks/useKargainContract'
+import useKargainContract from '../../../hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import ObjectID from 'bson-objectid'
+
 import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
+import TransactionsService from '../../../services/TransactionsService'
+import { compareDesc } from 'date-fns'
 
 const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
@@ -83,8 +85,6 @@ const Announce = () => {
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
-    const [tokenIdBN, setTokenIdBN] = useState(null)
-    const [tokenId, setTokenId] = useState(null)
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
@@ -92,14 +92,23 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, watchOfferRejected, watchOfferAccepted, acceptOffer, rejectOffer } = useKargainContract()
+    const { 
+        fetchTokenPrice, 
+        mintToken, 
+        updateTokenPrince, 
+        makeOffer, 
+        isContractReady, 
+        watchOfferEvent, 
+        acceptOffer, 
+        rejectOffer,
+        waitTransactionToBeConfirmed
+    } = useKargainContract()
 
     const handleMakeOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
         setIsConfirmed(false)
         setError(null)
 
-        const task = makeOffer(tokenId, tokenPrice)
+        const task = makeOffer(state?.announce?.getTokenId, tokenPrice)
         task.then(() => {
             setIsConfirmed(true)
             setIsMinted(true)
@@ -110,18 +119,17 @@ const Announce = () => {
             setIsConfirmed(true)
         })
 
-    }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
+    }, [state?.announce, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
     const handleAcceptOffer = useCallback(() => {
         try {
-            if (!isContractReady || !tokenIdBN || !tokenPrice)
+            if (!isContractReady || !state?.announce || !tokenPrice)
                 return 
-
 
             setIsConfirmed(false)
             setError(null)
 
-            const task = acceptOffer(tokenIdBN)
+            const task = acceptOffer(announce.getTokenId)
             task.then(() => {
                 setIsConfirmed(true)
                 dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
@@ -135,10 +143,10 @@ const Announce = () => {
             console.log(console.error())
         }    
 
-    }, [state?.announce?.getTokenId, tokenPrice,  isContractReady, acceptOffer])
+    }, [state?.announce, tokenPrice,  isContractReady, acceptOffer])
 
     const handleRejectOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
+        const tokenId = state?.announce.getTokenId
         setIsConfirmed(false)
         setError(null)
 
@@ -153,36 +161,6 @@ const Announce = () => {
         })
 
     }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
-
-    const fetchProfile = useCallback(async () => {
-        try {
-            if (!walletPayer || !isContractReady || !tokenId)
-                return
-                const result = await UsersService.getUsernameByWallet(walletPayer)
-                console.log(result)
-                return result
-
-        }
-        catch (e) {
-            console.log(e)
-        }
-
-    },[walletPayer, isContractReady, tokenId])
-
-    const handleOfferReceived = useCallback(async () => {
-        if (!isContractReady || !tokenId)
-            return
-        const task = watchOfferEvent(tokenId)
-        task.then((data) => {
-            console.log(data)
-            setWalletPayer(data)
-
-        }).catch((error) => {
-            //console.error(error)
-            setError(error)
-        })
-
-    }, [tokenId, isContractReady, watchOfferEvent])
 
     const [state, setState] = useState({
         err: null,
@@ -227,9 +205,11 @@ const Announce = () => {
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
+            console.log("isAuthorized", isAuthorized)
+
             if (isAuthorized) {
                 activate(injected, undefined, true).then(() =>{
-                    fetchTokenPrice(state.announce.getTokenId)
+                    fetchTokenPrice(state?.announce?.getTokenId)
                         .then((price) => {
                             setTokenPrice(price)
                             setIsLoading(false)
@@ -238,7 +218,8 @@ const Announce = () => {
                         .catch(() => {
                             setIsLoading(false)
                         })
-                }).catch(() => {
+                }).catch((err) => {
+                    console.log("err", err)
                     setTried(true)
                 })
             } else {
@@ -257,6 +238,43 @@ const Announce = () => {
     const [isLiking, setIsLiking] = useState(false)
 
     const { announce } = state
+
+    console.log({ announceId: announce?.getID, isMinted })
+
+    const [transactions, setTransactions] = useState([])
+
+    const something = transactions.sort((a, b) => compareDesc(a.createdAt, b.createdAt))
+    console.log("something", transactions, something)
+
+    useEffect(() => {
+
+        if (!announce) return
+
+        const action = async () => {
+
+            const transactions = await TransactionsService.getTransactionsByAnnounceId(announce.getID)
+
+            setTransactions(transactions)
+
+            const transactionsPending = transactions.filter(x=>x.status === "Pending")
+
+            for (const tx of transactionsPending) {
+                try {
+                    await waitTransactionToBeConfirmed(tx.hashTx)
+
+                    await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Approved" })
+                } catch (error) {
+                    console.log("TransactionsService", error)
+
+                    await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Rejected" })
+                }
+            }
+
+        }
+
+        action()
+
+    }, [announce, waitTransactionToBeConfirmed])
 
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
@@ -303,60 +321,122 @@ const Announce = () => {
         }
     }
 
-    const fetchAnnounce = useCallback(async () => {
-        try {
-            const result = await AnnounceService.getAnnounceBySlug(slug)
-            const { announce, isAdmin, isSelf } = result
-
-            setState((state) => ({
-                ...state,
-                stateReady: true,
-                announce: new AnnounceModel(announce),
-                isAdmin,
-                isSelf
-            }))
-        } catch (err) {
-            setState((state) => ({
-                ...state,
-                stateReady: true,
-                err
-            }))
+    useEffect(() => {
+        const fetchAnnounce = async () => {
+            try {
+                const result = await AnnounceService.getAnnounceBySlug(slug)
+                const { announce, isAdmin, isSelf } = result
+    
+                setState((state) => ({
+                    ...state,
+                    stateReady: true,
+                    announce: new AnnounceModel(announce),
+                    isAdmin,
+                    isSelf
+                }))
+            } catch (err) {
+                setState((state) => ({
+                    ...state,
+                    stateReady: true,
+                    err
+                }))
+            }
         }
+
+        fetchAnnounce()
     }, [slug])
 
     useEffect(() => {
-        fetchAnnounce()
-        handleOfferReceived()
-        if (walletPayer) {
-            fetchProfile()
+        if (!isContractReady || !state?.announce.getTokenId)
+            return
+
+        const handleOfferReceived = async () => {
+            try {
+                const data = await watchOfferEvent(state?.announce.getTokenId)
+
+                console.log({ payerAddress: data })
+
+                setWalletPayer(data)
+            } catch (error) {
+                setError(error)
+            }
         }
-    }, [fetchAnnounce, handleOfferReceived, fetchProfile])
+
+        handleOfferReceived()
+    }, [isContractReady, state?.announce, watchOfferEvent])
+
+    useEffect(() => {
+        if (!walletPayer || !isContractReady || !state?.announce)
+            return
+
+        const fetchProfile = async () => {
+            try {
+                const result = await UsersService.getUsernameByWallet(walletPayer)
+                console.log({ payerProfile: result })
+                return result
+            }
+            catch (e) {
+                console.log(e)
+            }
+        }
+
+        fetchProfile()
+    }, [walletPayer, isContractReady, state?.announce])
 
     useEffect(() => {
         if (!state.stateReady) return
 
         setIsLoading(true)
 
-        const tokenId = state.announce.getTokenId
-        setTokenId(state.announce.getID)
-        setTokenIdBN(state.announce.getTokenId)
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
 
-        fetchTokenPrice(tokenId)
+        fetchTokenPrice(state?.announce.getTokenId)
             .then((price) => {
+                console.log("aaaaaaaa", price)
                 setTokenPrice(price)
                 setIsLoading(false)
                 setIsMinted(price ? true : false)
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log("err token", err)
                 setIsLoading(false)
             })
     }, [state, fetchTokenPrice])
 
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
+
+
+    const handleApplyPriceChange = async () => {
+        const tokenId = state?.announce?.getTokenId
+        const announceId = state?.announce?.getID
+
+        setIsConfirmed(false)
+        setError(null)
+
+        try {
+            const task = !isMinted ?
+                mintToken(tokenId, +tokenPrice) :
+                updateTokenPrince(tokenId, +tokenPrice)
+
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+    }
 
     return (
         <Container>
@@ -508,8 +588,8 @@ const Announce = () => {
                                         if (!isAuthenticated) {
                                             router.push({
                                                 pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                            });
+                                                query: { redirect: router.asPath }
+                                            })
                                             return
                                         }
                                         dispatchModalState({
@@ -517,7 +597,7 @@ const Announce = () => {
                                             modalMessagingProfile: announce.getAuthor,
                                             modalMessaginAnnounce: announce
                                         })
-                                        }
+                                    }
                                     }
                                 >
                                     <i.MailOutline style={{ position: 'relative', top: -1 }} />
@@ -547,26 +627,7 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
-                                                const tokenId = state.announce.getTokenId
-
-                                                setIsConfirmed(false)
-                                                setError(null)
-
-                                                const task = !isMinted ?
-                                                    mintToken(tokenId, +tokenPrice) :
-                                                    updateTokenPrince(tokenId, +tokenPrice)
-
-                                                task.then(() => {
-                                                    setIsConfirmed(true)
-                                                    setIsMinted(true)
-                                                    dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
-                                                }).catch((error) => {
-                                                    console.error(error)
-                                                    setError(error)
-                                                    setIsConfirmed(true)
-                                                })
-                                            }}>
+                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>

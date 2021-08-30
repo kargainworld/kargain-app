@@ -2,16 +2,14 @@
 
 import KargainContractData from "../config/Kargain.json"
 import config from "../config/config"
-import ObjectID from 'bson-objectid'
-
 import { useWeb3React } from "@web3-react/core"
 import { useCallback, useEffect, useState } from "react"
 import { isSuccessfulTransaction, waitTransaction } from "libs/confirmations"
 import Web3 from "web3"
+
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
 const toBN = Web3.utils.toBN
-const web3 = new Web3(Web3.givenProvider)
 
 const MAX_EXPIRATION_TIME_DAYS = 266
 
@@ -53,14 +51,6 @@ const useKargainContract = () => {
 
             const START_BLOCK = 0
 
-            /** const subscription = web3.eth.subscribe('logs', {
-                address: account,
-            }, function(error, result){
-                if (!error)
-                    console.log(result)
-            })
-            console.log(subscription) **/
-
             const events = contract.getPastEvents("OfferReceived",
                 {
                     fromBlock: START_BLOCK,
@@ -68,9 +58,6 @@ const useKargainContract = () => {
                 })
                 .then(events => {
                     for (let i = 0; i < events.length; i++) {
-                        //console.log((toBN(ObjectID(tokenId).toHexString())).toString(16))
-                        //console.log(toBN(events[i].returnValues['tokenId']).toString(16))
-                        //console.log(events[i].returnValues['tokenId'].toString(10))
                         if (toBN(events[i].returnValues['tokenId']).toString(16) == tokenId) {
                             return events[i].returnValues['payer']
                         }
@@ -83,7 +70,7 @@ const useKargainContract = () => {
         catch (error) {
             throw parseBlockchainError(error)
         }
-    }, [contract, account])
+    }, [contract, library])
 
     const watchOfferRejected = useCallback(async (tokenId) => {
         try {
@@ -106,7 +93,7 @@ const useKargainContract = () => {
         catch (error) {
             throw parseBlockchainError(error)
         }
-    }, [contract])
+    }, [contract, library])
 
     const watchOfferAccepted = useCallback(async (tokenId) => {
         try {
@@ -129,7 +116,7 @@ const useKargainContract = () => {
         catch (error) {
             throw parseBlockchainError(error)
         }
-    }, [contract])
+    }, [contract, library])
 
     const updatePlatformPercent = useCallback(async (percent) => {
         try {
@@ -165,15 +152,11 @@ const useKargainContract = () => {
                 .createOffer(tokenId)
                 .send({ from: account, value: waiPrice })
 
-            const receipt = await waitTransaction(library, tx.transactionHash)
-
-            if (!isSuccessfulTransaction(receipt)) {
-                throw new Error("Failed to confirm the transaction")
-            }
+            return tx.transactionHash
         } catch (error) {
             throw parseBlockchainError(error)
         }
-    }, [contract, account, library])
+    }, [contract, account])
 
     const fetchOfferExpirationTime = useCallback(async () => {
         try {
@@ -212,11 +195,29 @@ const useKargainContract = () => {
         }
     }, [contract, account, library])
 
+
+    const waitTransactionToBeConfirmed = useCallback(async (transactionHash) => {
+        try {
+            if (!library)
+                return
+
+            const receipt = await waitTransaction(library, transactionHash)
+
+            if (!isSuccessfulTransaction(receipt)) {
+                throw new Error("Failed to confirm the transaction")
+            }
+        } catch (error) {
+            throw parseBlockchainError(error)
+        }
+    }, [library])
+
     const fetchTokenPrice = useCallback(async (tokenId) => {
         if (!contract)
             return
 
         try {
+            console.log("fetchTokenPrice", tokenId)
+
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
 
@@ -224,31 +225,22 @@ const useKargainContract = () => {
 
             return price.toString()
         } catch (error) {
+            console.error("fetchTokenPrice", error)
             // tokenId does not exist
             return null
         }
     }, [contract])
 
-    const acceptOffer = useCallback(async (tokenId, tokenIdHexa) => {
+    const acceptOffer = useCallback(async (tokenId) => {
         try {
             if (!contract || !library)
                 return
 
-                const gasPrice = await web3.eth.getGasPrice();
-                let gasEstimate = await contract.methods
-                    .acceptOffer(tokenId)
-                    .estimateGas({ from: account });
-                const tx = await contract.methods
-                    .acceptOffer(tokenId)
-                    .send({ from: account,
-                        gasPrice: gasPrice,
-                        gas: gasEstimate})
+            const tx = await contract.methods
+                .acceptOffer(tokenId)
+                .send({ from: account })
 
-            const receipt = await waitTransaction(library, tx.transactionHash)
-
-            if (!isSuccessfulTransaction(receipt)) {
-                throw new Error("Failed to confirm the transaction")
-            }
+            return tx.transactionHash
 
         } catch (error) {
             throw parseBlockchainError(error)
@@ -264,11 +256,7 @@ const useKargainContract = () => {
                 .rejectOffer(tokenId)
                 .send({ from: account })
 
-            const receipt = await waitTransaction(library, tx.transactionHash)
-
-            if (!isSuccessfulTransaction(receipt)) {
-                throw new Error("Failed to confirm the transaction")
-            }
+            return tx.transactionHash
 
         } catch (error) {
             throw parseBlockchainError(error)
@@ -290,11 +278,7 @@ const useKargainContract = () => {
                 .mint(tokenId, waiPrice)
                 .send({ from: account })
 
-            const receipt = await waitTransaction(library, tx.transactionHash)
-
-            if (!isSuccessfulTransaction(receipt)) {
-                throw new Error("Failed to confirm the transaction")
-            }
+            return tx.transactionHash
         } catch (error) {
             throw parseBlockchainError(error)
         }
@@ -315,11 +299,7 @@ const useKargainContract = () => {
                 .setTokenPrice(tokenId, waiPrice)
                 .send({ from: account })
 
-            const receipt = await waitTransaction(library, tx.transactionHash)
-
-            if (!isSuccessfulTransaction(receipt)) {
-                throw new Error("Failed to confirm the transaction")
-            }
+            return tx.transactionHash
         } catch (error) {
             throw parseBlockchainError(error)
         }
@@ -340,7 +320,8 @@ const useKargainContract = () => {
         watchOfferAccepted,
         watchOfferRejected,
         acceptOffer,
-        rejectOffer
+        rejectOffer,
+        waitTransactionToBeConfirmed
     }
 }
 
