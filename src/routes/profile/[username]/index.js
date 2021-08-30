@@ -81,6 +81,14 @@ const useStyles = makeStyles((theme) => ({
     button: {
         margin: '1rem'
     },
+    pagetopdiv: {
+        position: 'absolute',
+        width: '100%',
+        height: '126px',
+        left: '0px',
+        top: '-25px',
+        background: '#EAEAEA',
+    }
     
 }))
 
@@ -238,198 +246,203 @@ const Profile = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode} />
     // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
-        <Container style={{ marginTop: 25 }}>
+        <div>
+            <div className={clsx(classes.pagetopdiv)}></div>
 
-            <NextSeo
-                title={`${profile.getFullName} - Kargain`}
-            />
+            <Container style={{ marginTop: 25 }}>
 
-            {state.isAdmin && (
-                <Alert severity="info" className="mb-2">
-                    Connected as Admin
-                </Alert>
-            )}
+                <NextSeo
+                    title={`${profile.getFullName} - Kargain`}
+                />
 
-            <Row className="mx-auto">
-                <Col md={2}>
-                    <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
-                </Col>
-                <Col md={10}>
-                    <div className="top-profile-name-btn">
-                        <h1>
-                            {profile.getFullName}
-                            {(profile.getIsPro && profile.getIsActivated)}
-                        </h1>
+                {state.isAdmin && (
+                    <Alert severity="info" className="mb-2">
+                        Connected as Admin
+                    </Alert>
+                )}
 
-                        {state.isSelf ? (
-                            <div className="mx-2">
-                                <Link href={profile.getProfileEditLink}>
-                                    <Button component="a" variant="outlined">
-                                        {t('vehicles:edit-my-profile')}
+                <Row className="mx-auto">
+                    <Col md={2}>
+                        <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
+                    </Col>
+                    <Col md={10}>
+                        <div className="top-profile-name-btn">
+                            <h1>
+                                {profile.getFullName}
+                                {(profile.getIsPro && profile.getIsActivated)}
+                            </h1>
+
+                            {state.isSelf ? (
+                                <div className="mx-2">
+                                    <Link href={profile.getProfileEditLink}>
+                                        <Button component="a" variant="outlined">
+                                            {t('vehicles:edit-my-profile')}
+                                        </Button>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="mx-2">
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<ChatIcon />}
+                                        onClick={ () => {
+                                                if(!isAuthenticated){
+                                                    console.log(router.asPath);
+                                                    router.push({
+                                                    pathname: '/auth/login',
+                                                    query: { redirect: router.asPath },
+                                                    });
+                                                } else {
+                                                    dispatchModalState({
+                                                        openModalMessaging: true,
+                                                        modalMessagingProfile: profile
+                                                    })
+                                                }
+                                            }
+                                        }>
+                                        {t('vehicles:contact')}
                                     </Button>
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="mx-2">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<ChatIcon />}
-                                    onClick={ () => {
-                                            if(!isAuthenticated){
-                                                console.log(router.asPath);
-                                                router.push({
-                                                pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                                });
-                                            } else {
-                                                dispatchModalState({
-                                                    openModalMessaging: true,
-                                                    modalMessagingProfile: profile
-                                                })
-                                            }
-                                        }
-                                    }>
-                                    {t('vehicles:contact')}
-                                </Button>
-                            </div>
-                        )}
-                    </div>
-
-                    <p className={classes.userName}>
-                        @{profile.getUsername}
-                    </p>
-
-                    {profile.getAddressParts.fullAddress && (
-                        <a href={profile.buildAddressGoogleMapLink()}
-                            target="_blank"
-                            rel="noreferrer">
-                            <span className="top-profile-location">
-                                <LocationOnOutlinedIcon />
-                                {profile.buildAddressString()}
-                            </span>
-                        </a>
-                    )}
-
-                    <div className={classes.subscriptionWrapper}>
-                        <div className={classes.followContainer}
-                            onClick={() => dispatchModalState({
-                                openModalFollowers: true,
-                                modalFollowersProfiles: profile.getFollowers,
-                                modalFollowersTitle: t('vehicles:followers'),
-                                isFollowing: false,                                
-                            })}>
-                            <div>
-                                {state.isSelf ? (
-                                    <span>
-                                        {followerCounter} {t('vehicles:followers', { count: followerCounter })}
-                                    </span>
-                                ) : (
-                                    <>
-                                        <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
-                                            e.stopPropagation()
-                                            // handleFollowProfile()
-                                        }}>
-                                            {
-                                                alreadyFollowProfile ?
-                                                    // <StarSVGYellow/>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.btnFollow}
-                                                        onClick={() => handleFollowProfile()}>
-                                                        {t('vehicles:un-subscriptions')}
-                                                    </Button>
-                                                    :
-                                                    <Button
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        className={classes.btnFollow}
-                                                        onClick={() => handleFollowProfile()}>
-                                                        {t('vehicles:subscriptions')}
-                                                    </Button>
-                                                // <StarSVG/>
-                                            }
-                                        </span>
-                                        <span>
-                                            {followerCounter} {t('vehicles:followers', { count: followerCounter })}
-                                        </span>
-                                    </>
-                                )}
-                            </div>
-
-                            {profile.getCountFollowers !== 0 && (
-                                <div className="my-2">
-                                    <ul className="d-flex align-items-center list-style-none">
-                                        {profile.getFollowers.slice(0, 3)
-                                            .map((user, index) => {
-                                                return (
-                                                    <li key={index} className="nav-item navbar-dropdown p-1">
-                                                        <img className="dropdown-toggler rounded-circle"
-                                                            width="30"
-                                                            height="30"
-                                                            src={user.getAvatar || user.getAvatarUrl}
-                                                            title={user.getFullName}
-                                                            alt={user.getUsername}
-                                                        />
-                                                    </li>
-                                                )
-                                            })}
-                                    </ul>
                                 </div>
                             )}
                         </div>
 
+                        <p className={classes.userName}>
+                            @{profile.getUsername}
+                        </p>
 
-                        <div className={classes.followContainer}
-                            onClick={() => dispatchModalState({
-                                openModalFollowers: true,
-                                modalFollowersProfiles: profile.getFollowings,
-                                modalFollowersTitle: t('vehicles:subscriptions'),
-                                isFollowing: true,
-                                isOwner: profile.getID === authenticatedUser.getID,
-                                handleUnSubscription: handleUnSubscription
-                            })}>
+                        {profile.getAddressParts.fullAddress && (
+                            <a href={profile.buildAddressGoogleMapLink()}
+                                target="_blank"
+                                rel="noreferrer">
+                                <span className="top-profile-location">
+                                    <LocationOnOutlinedIcon />
+                                    {profile.buildAddressString()}
+                                </span>
+                            </a>
+                        )}
 
-                            <span>
-                                {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
-                            </span>
+                        <div className={classes.subscriptionWrapper}>
+                            <div className={classes.followContainer}
+                                onClick={() => dispatchModalState({
+                                    openModalFollowers: true,
+                                    modalFollowersProfiles: profile.getFollowers,
+                                    modalFollowersTitle: t('vehicles:followers'),
+                                    isFollowing: false,                                
+                                })}>
+                                <div>
+                                    {state.isSelf ? (
+                                        <span>
+                                            {followerCounter} {t('vehicles:followers', { count: followerCounter })}
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
+                                                e.stopPropagation()
+                                                // handleFollowProfile()
+                                            }}>
+                                                {
+                                                    alreadyFollowProfile ?
+                                                        // <StarSVGYellow/>
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            className={classes.btnFollow}
+                                                            onClick={() => handleFollowProfile()}>
+                                                            {t('vehicles:un-subscriptions')}
+                                                        </Button>
+                                                        :
+                                                        <Button
+                                                            variant="outlined"
+                                                            color="primary"
+                                                            className={classes.btnFollow}
+                                                            onClick={() => handleFollowProfile()}>
+                                                            {t('vehicles:subscriptions')}
+                                                        </Button>
+                                                    // <StarSVG/>
+                                                }
+                                            </span>
+                                            <span>
+                                                {followerCounter} {t('vehicles:followers', { count: followerCounter })}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
 
-                            {/*{profile.getCountFollowings !== 0 && (*/}
-                            {/*    <div className="my-2">*/}
-                            {/*        <ul className="d-flex align-items-center list-style-none">*/}
-                            {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
-                            {/*                return (*/}
-                            {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
-                            {/*                        <img className="dropdown-toggler rounded-circle"*/}
-                            {/*                             width="30"*/}
-                            {/*                             height="30"*/}
-                            {/*                             src={user.getAvatar}*/}
-                            {/*                             title={user.getFullName}*/}
-                            {/*                             alt={user.getUsername}*/}
-                            {/*                        />*/}
-                            {/*                    </li>*/}
-                            {/*                )*/}
-                            {/*            })}*/}
-                            {/*        </ul>*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
+                                {profile.getCountFollowers !== 0 && (
+                                    <div className="my-2">
+                                        <ul className="d-flex align-items-center list-style-none">
+                                            {profile.getFollowers.slice(0, 3)
+                                                .map((user, index) => {
+                                                    return (
+                                                        <li key={index} className="nav-item navbar-dropdown p-1">
+                                                            <img className="dropdown-toggler rounded-circle"
+                                                                width="30"
+                                                                height="30"
+                                                                src={user.getAvatar || user.getAvatarUrl}
+                                                                title={user.getFullName}
+                                                                alt={user.getUsername}
+                                                            />
+                                                        </li>
+                                                    )
+                                                })}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
+
+                            <div className={classes.followContainer}
+                                onClick={() => dispatchModalState({
+                                    openModalFollowers: true,
+                                    modalFollowersProfiles: profile.getFollowings,
+                                    modalFollowersTitle: t('vehicles:subscriptions'),
+                                    isFollowing: true,
+                                    isOwner: profile.getID === authenticatedUser.getID,
+                                    handleUnSubscription: handleUnSubscription
+                                })}>
+
+                                <span>
+                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
+                                </span>
+
+                                {/*{profile.getCountFollowings !== 0 && (*/}
+                                {/*    <div className="my-2">*/}
+                                {/*        <ul className="d-flex align-items-center list-style-none">*/}
+                                {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
+                                {/*                return (*/}
+                                {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
+                                {/*                        <img className="dropdown-toggler rounded-circle"*/}
+                                {/*                             width="30"*/}
+                                {/*                             height="30"*/}
+                                {/*                             src={user.getAvatar}*/}
+                                {/*                             title={user.getFullName}*/}
+                                {/*                             alt={user.getUsername}*/}
+                                {/*                        />*/}
+                                {/*                    </li>*/}
+                                {/*                )*/}
+                                {/*            })}*/}
+                                {/*        </ul>*/}
+                                {/*    </div>*/}
+                                {/*)}*/}
+                            </div>
                         </div>
-                    </div>
 
-                    <p className="top-profile-desc">
-                        {profile.getDescription}
-                    </p>
+                        <p className="top-profile-desc">
+                            {profile.getDescription}
+                        </p>
 
-                </Col>
-            </Row>
-            <TabsContainer {...{
-                state,
-                filterState,
-                updateFilters,
-                fetchAnnounces
-            }} />
-        </Container>
+                    </Col>
+                </Row>
+                <TabsContainer {...{
+                    state,
+                    filterState,
+                    updateFilters,
+                    fetchAnnounces
+                }} />
+            </Container>
+            
+        </div>
     )
 }
 
@@ -539,9 +552,11 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                             <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        <div key={index} style={{maxWidth:'30%', marginRight:'3%', marginTop: '2%'}}>
                                             <AnnounceCard announceRaw={announceRaw} />
-                                        </Col>
+                                        </div>
+                                        // </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{t('vehicles:no-hidden-announces')}</p>
