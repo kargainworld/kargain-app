@@ -262,7 +262,10 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:power')}
                 </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:power')}
+                    </label>
                     <FieldWrapper>
                         <SliderInput
                             name="powerKw"
@@ -278,6 +281,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             }}
                         />
                     </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 pw</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200 pw</label>
+                    
                 </DropdownMenu>
             </ButtonDropdown>
 
@@ -373,7 +379,10 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="alarm-clock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:co2-consumption')}
                 </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:co2-consumption')}
+                    </label>
                     <FieldWrapper>
                         <SliderInput
                             name="consumptionGkm"
@@ -389,6 +398,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             }}
                         />
                     </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 kw</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200 kw</label>
+                    
                 </DropdownMenu>
             </ButtonDropdown>
         
