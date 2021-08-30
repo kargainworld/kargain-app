@@ -6,7 +6,6 @@ import { NextSeo } from 'next-seo'
 import useTranslation from 'next-translate/useTranslation'
 import Typography from '@material-ui/core/Typography'
 import FindInPageIcon from '@material-ui/icons/FindInPage'
-import PaginateResults from './PaginateResults'
 import Sorters from './Sorters/Sorters'
 import AnnounceCard from '../components/AnnounceCard'
 import AnnounceService from '../services/AnnounceService'
@@ -22,20 +21,15 @@ import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-
+import PaginateResults from './PaginateResults'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
     row:{
-        // padding: '10px',
+
         position: 'relative',
         backgroundColor: '#fff',
         marginTop:'30px',
-        // margin: '10px',
-
-        // background-color: lightblue;
-        // width: 40px;
-        // overflowX: 'auto',
     }, 
 }))
 
@@ -146,7 +140,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
     useEffect(() => {
         fetchAnnounces()
-        // window.scrollTo(0, 0)
     }, [fetchAnnounces])
 
     useEffect(() => {
@@ -188,27 +181,18 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 title="Kargain"
                 description="Vos meilleurs annonces automobiles"
             />
-
             <Row>
                 <Col sm={12} md={12}>
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
 
                     <div className={clsx(classes.row)}>
-                        
-                        {/* <Typography component="p" variant="h2" >
-                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
-                        </Typography> */}
+
                         <h3 style={{fontSize: '20px', fontWeight: '500'}}>
                             {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                         </h3>
                     
                         <div  style={{ marginTop: '-60px'}}>
                             <Sorters updateSorter={updateSorter} />
-                            {/* <FormControlLabel
-                                style={{ margin:0 }}
-                                control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
-                                label="Show only minted"
-                            /> */}
                         </div>
                         
                     </div>
@@ -231,13 +215,16 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
                                             // if (!onlyMinted || announceMinted) {
                                                 return (
-                                                    <Col key={index} className="my-3 d-flex justify-content-center">
+                                                    // <Col key={index} className='my-3 d-flex justify-content-center'>
+                                                    <div key={index} style={{maxWidth:'30%', marginRight:'3%', marginTop: '2%'}}>
                                                         <AnnounceCard
+                                                            
                                                             announceRaw={announceRaw}
                                                             tokenPrice={announceMinted?.tokenPrice}
                                                             detailsFontSize={'13px'}
                                                         />
-                                                    </Col>
+                                                    </div>    
+                                                    // </Col>
                                                 )
                                             // }
                                         })}
@@ -252,7 +239,8 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                         ) : (
                                             <>
                                                 <div className="d-flex align-items-center my-3">
-                                                    <FindInPageIcon fontSize="default" />
+                                                    {/* <FindInPageIcon fontSize="default" /> */}
+                                                    <FindInPageIcon />
                                                     <Typography variant="h3">
                                                         {t('layout:no_result')}
                                                     </Typography>
@@ -272,62 +260,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                         {state.loading && (
                         <Loading />
                         )}
-
-                        {/* {state.loading ? <Loading /> : (
-                            <>
-                                {state.announces.length !== 0 ? (
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {state.announces.map((announceRaw, index) => {
-                                            const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
-
-                                            if (!onlyMinted || announceMinted) {
-                                                return (
-                                                    <Col key={index} sm={12} md={12} className="my-2">
-                                                        <AnnounceCard
-                                                            announceRaw={announceRaw}
-                                                            tokenPrice={announceMinted?.tokenPrice}
-                                                            detailsFontSize={'13px'}
-                                                        />
-                                                    </Col>
-                                                )
-                                            }
-                                        })}
-                                    </Row>
-                                ) : (
-                                    <>
-                                        {!isAuthenticated ? (
-                                            <CTALink
-                                                title={t('layout:login')}
-                                                href="/auth/login">
-                                            </CTALink>
-                                        ) : (
-                                            <>
-                                                <div className="d-flex align-items-center my-3">
-                                                    <FindInPageIcon fontSize="default" />
-                                                    <Typography variant="h3">
-                                                        {t('layout:no_result')}
-                                                    </Typography>
-                                                </div>
-                                                <div className="text-center">
-                                                    <CTALink
-                                                        title={t('layout:news_feed')}
-                                                        href="/advanced-search">
-                                                    </CTALink>
-                                                </div>
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-
-                        <PaginateResults
-                            totalPages={state.total}
-                            limit={props.size}
-                            pageCount={props.paginate}
-                            currentPage={state.page}
-                            handlePageChange={handlePageChange}
-                        /> */}
                     </section>
                 
                 </Col>

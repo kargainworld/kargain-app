@@ -15,7 +15,6 @@ import { Row } from 'reactstrap'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Emoji } from 'react-apple-emojis'
-import { ListGroup, ListGroupItem } from 'reactstrap';
 
 const useStyles = makeStyles(() => ({
     buttondropdown:{
@@ -53,14 +52,38 @@ const useStyles = makeStyles(() => ({
         position: 'relative',
         backgroundColor: '#fff',
         margin: '10px',
-
-        // background-color: lightblue;
-        // width: 40px;
-        // overflowX: 'auto',
     },   
     overflow:{
         overflowX:'auto',
+    },
+    label:{
+        textAlign:'left', 
+        fontSize:'14px', 
+        fontWeight: 'normal', 
+        lineHeight: '150%',
+        color: 'black',
+        marginLeft:'5px',
+        marginBottom: '-10px',
+    },
+    dropdownmenuslide:{
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '15px 10px 20px',
+    }, 
+    dropdownmenu: {
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '5px 5px',
     }
+
 	}))
 
 const CarFilters = ({ control, watch, errors, ...props }) => {
@@ -148,722 +171,382 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
         });
     }, [selectedMileage])
 
-    // const onChange = (form, e) => {
-    //     props.formSubmit(form, e);
-    // }
     return (
         <> 
-            {/* <div className={clsx(classes.overflow)}> */}
-                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+            <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:price')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    
+                    <label className={clsx(classes.label)}>
                         {t('vehicles:price')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper >
-                            <SliderInput
-                                name="price"
-                                defaultValue={[1000, 50000]}
-                                min={0}
-                                max={200000}
-                                step={1000}
-                                errors={errors}
-                                control={control}
-                                suffix="€"
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-
+                    </label>
+                    <FieldWrapper >
+                        <SliderInput
+                            name="price"
+                            defaultValue={[1000, 50000]}
+                            min={0}
+                            max={200000}
+                            step={1000}
+                            errors={errors}
+                            control={control}
+                            suffix="€"
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    
+                        <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
+                        <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
                     </DropdownMenu>
-                </ButtonDropdown>
+            </ButtonDropdown>
 
-                {/* <ButtonDropdown isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:type')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper >
-                            <SelectInput
-                                name="mileageType"
-                                options={formData.mileageType}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                        
-                    </DropdownMenu>
-                </ButtonDropdown> */}
-
-                {/* <ButtonDropdown isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t(`vehicles:${mileageType?.label}`)}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper >
-                            <SliderInput
-                                name="mileage"
-                                defaultValue={[1, 50000]}
-                                min={0}
-                                max={200000}
-                                step={100}
-                                errors={errors}
-                                control={control}
-                                suffix={mileageType?.value}
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown> */}
-                <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+            <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:cylinder')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
                         {t('vehicles:cylinder')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="vehicleEngineCylinder"
-                                suffix="cm3"
-                                min={10}
-                                max={1000}
-                                step={10}
-                                defaultValue={[1, 1000]}
-                                errors={errors}
-                                control={control}
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
+                    </label>
+                    <FieldWrapper>
+                        <SliderInput
+                            name="vehicleEngineCylinder"
+                            suffix="cm3"
+                            min={10}
+                            max={1000}
+                            step={10}
+                            defaultValue={[1, 1000]}
+                            errors={errors}
+                            control={control}
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>10 cm3</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>1000 cm3</label>
+                    
+                </DropdownMenu>
+            </ButtonDropdown>
 
+            <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:gear-box')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="vehicleEngineType"
+                            options={formData.RadioTypeFunction}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
 
-                <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:gear-box')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="vehicleEngineType"
-                                options={formData.RadioTypeFunction}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-
-                {/* <ButtonDropdown isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:gas')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="vehicleEngineGas"
-                                className="mb-2"
-                                options={formData.RadioChoicesGas}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown> */}
-
-                
-                <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+            <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:power')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
                         {t('vehicles:power')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="powerKw"
-                                min={0}
-                                max={200}
-                                step={1}
-                                errors={errors}
-                                control={control}
-                                suffix="kw"
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
+                    </label>
+                    <FieldWrapper>
+                        <SliderInput
+                            name="powerKw"
+                            min={0}
+                            max={200}
+                            step={1}
+                            errors={errors}
+                            control={control}
+                            suffix="kw"
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 pw</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200 pw</label>
+                    
+                </DropdownMenu>
+            </ButtonDropdown>
 
-                <ButtonDropdown isOpen={dropdownOpen7} toggle={toggle7} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:country')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectCountryFlags
-                                name="countrySelect"
-                                errors={errors}
-                                control={control}
-                                onChange={(selected) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected.value)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
+            <ButtonDropdown isOpen={dropdownOpen7} toggle={toggle7} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:country')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectCountryFlags
+                            name="countrySelect"
+                            errors={errors}
+                            control={control}
+                            onChange={(selected) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected.value)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
 
-                <ButtonDropdown isOpen={dropdownOpen8} toggle={toggle8} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="house" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:address')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SearchLocationInput
-                                name="address"
-                                country={countrySelect?.value}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected)), 100)
-                                    return selected
-                                }}
-                                >
-                            </SearchLocationInput>
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-                
-                <ButtonDropdown isOpen={dropdownOpen9} toggle={toggle9} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:class_emission')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="emission"
-                                options={formData.RadioChoicesEmission}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
+            <ButtonDropdown isOpen={dropdownOpen8} toggle={toggle8} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="house" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:address')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SearchLocationInput
+                            name="address"
+                            country={countrySelect?.value}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected)), 100)
+                                return selected
+                            }}
+                            >
+                        </SearchLocationInput>
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
             
-                {/* <ButtonDropdown isOpen={dropdownOpen10} toggle={toggle10} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:radius')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="radius"
-                                min={0}
-                                max={500}
-                                step={5}
-                                control={control}
-                                errors={errors}
-                                suffix="km"
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-
-                    </DropdownMenu>
-                </ButtonDropdown>
-             */}
-                <ButtonDropdown isOpen={dropdownOpen11} toggle={toggle11} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="oncoming-automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:equipments')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper >
-                            <SelectInput
-                                name="equipments"
-                                options={formData.CheckboxOptionsEquipments}
-                                isMulti
-                                defaultChecked={['ABS', 'ESP']}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen12} toggle={toggle12} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="alarm-clock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:co2-consumption')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="consumptionGkm"
-                                min={0}
-                                max={200}
-                                step={1}
-                                errors={errors}
-                                control={control}
-                                suffix="kw"
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen13} toggle={toggle13} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="sport-utility-vehicle" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:doors_quantity')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="doors"
-                                min={1}
-                                max={10}
-                                step={1}
-                                errors={errors}
-                                control={control}
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen14} toggle={toggle14} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="seat" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:seats_quantity')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SliderInput
-                                name="seats"
-                                min={1}
-                                max={10}
-                                step={1}
-                                errors={errors}
-                                control={control}
-                                onChange={e =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                    return e
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen15} toggle={toggle15} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:paint')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="paint"
-                                control={control}
-                                options={formData.RadioChoicesPaints}
-                                citycontrol={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen16} toggle={toggle16} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:external_color')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="externalColor"
-                                options={formData.RadioChoicesMaterials}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen17} toggle={toggle17} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:internal_color')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="internalColor"
-                                options={formData.RadioChoicesMaterials}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-                <ButtonDropdown isOpen={dropdownOpen18} toggle={toggle18} className={clsx(classes.buttondropdown)} >
-                    <DropdownToggle caret>
-                        <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                        {t('vehicles:vehicle-state')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <FieldWrapper>
-                            <SelectInput
-                                name="vehicleGeneralState"
-                                options={formData.RadioVehicleGeneralState}
-                                control={control}
-                                errors={errors}
-                                onChange={(selected, name) =>{
-                                    setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                                    return selected
-                                }}
-                            />
-                        </FieldWrapper>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            
-            {/* </div> */}
-            {/* <FieldWrapper label={t('vehicles:price')}>
-                <SliderInput
-                    name="price"
-                    defaultValue={[1000, 50000]}
-                    min={0}
-                    max={200000}
-                    step={1000}
-                    errors={errors}
-                    control={control}
-                    suffix="€"
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:type')}>
-                <SelectInput
-                    name="mileageType"
-                    options={formData.mileageType}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-            
-            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
-                <SliderInput
-                    name="mileage"
-                    defaultValue={[1, 50000]}
-                    min={0}
-                    max={200000}
-                    step={100}
-                    errors={errors}
-                    control={control}
-                    suffix={mileageType?.value}
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:gear-box')}>
-                <SelectInput
-                    name="vehicleEngineType"
-                    options={formData.RadioTypeFunction}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:gas')}>
-                <SelectInput
-                    name="vehicleEngineGas"
-                    className="mb-2"
-                    options={formData.RadioChoicesGas}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:cylinder')}>
-                <SliderInput
-                    name="vehicleEngineCylinder"
-                    suffix="cm3"
-                    min={10}
-                    max={1000}
-                    step={10}
-                    defaultValue={[1, 1000]}
-                    errors={errors}
-                    control={control}
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:power')}>
-                <SliderInput
-                    name="powerKw"
-                    min={0}
-                    max={200}
-                    step={1}
-                    errors={errors}
-                    control={control}
-                    suffix="kw"
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:country')}>
-                <SelectCountryFlags
-                    name="countrySelect"
-                    errors={errors}
-                    control={control}
-                    onChange={(selected) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected.value)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:address')}>
-                <SearchLocationInput
-                    name="address"
-                    country={countrySelect?.value}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected)), 100)
-                        return selected
-                    }}
-                    >
-                </SearchLocationInput>
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:radius')}>
-                <SliderInput
-                    name="radius"
-                    min={0}
-                    max={500}
-                    step={5}
-                    control={control}
-                    errors={errors}
-                    suffix="km"
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:equipments')}>
-                <SelectInput
-                    name="equipments"
-                    options={formData.CheckboxOptionsEquipments}
-                    isMulti
-                    defaultChecked={['ABS', 'ESP']}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:class_emission')}>
-                <SelectInput
-                    name="emission"
-                    options={formData.RadioChoicesEmission}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:co2-consumption')}>
-                <SliderInput
-                    name="consumptionGkm"
-                    min={0}
-                    max={200}
-                    step={1}
-                    errors={errors}
-                    control={control}
-                    suffix="kw"
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:doors_quantity')}>
-                <SliderInput
-                    name="doors"
-                    min={1}
-                    max={10}
-                    step={1}
-                    errors={errors}
-                    control={control}
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:seats_quantity')}>
-                <SliderInput
-                    name="seats"
-                    min={1}
-                    max={10}
-                    step={1}
-                    errors={errors}
-                    control={control}
-                    onChange={e =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                        return e
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:paint')}>
-                <SelectInput
-                    name="paint"
-                    control={control}
-                    options={formData.RadioChoicesPaints}
-                    citycontrol={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:external_color')}>
-                <SelectInput
-                    name="externalColor"
-                    options={formData.RadioChoicesMaterials}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:internal_color')}>
-                <SelectInput
-                    name="internalColor"
-                    options={formData.RadioChoicesMaterials}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper>
-
-            <FieldWrapper label={t('vehicles:vehicle-state')}>
-                <SelectInput
-                    name="vehicleGeneralState"
-                    options={formData.RadioVehicleGeneralState}
-                    control={control}
-                    errors={errors}
-                    onChange={(selected, name) =>{
-                        setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
-                        return selected
-                    }}
-                />
-            </FieldWrapper> */}
+            <ButtonDropdown isOpen={dropdownOpen9} toggle={toggle9} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:class_emission')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="emission"
+                            options={formData.RadioChoicesEmission}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
         
+            <ButtonDropdown isOpen={dropdownOpen11} toggle={toggle11} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="oncoming-automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:equipments')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper >
+                        <SelectInput
+                            name="equipments"
+                            options={formData.CheckboxOptionsEquipments}
+                            isMulti
+                            defaultChecked={['ABS', 'ESP']}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen12} toggle={toggle12} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="alarm-clock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:co2-consumption')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:co2-consumption')}
+                    </label>
+                    <FieldWrapper>
+                        <SliderInput
+                            name="consumptionGkm"
+                            min={0}
+                            max={200}
+                            step={1}
+                            errors={errors}
+                            control={control}
+                            suffix="kw"
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 kw</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200 kw</label>
+                    
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen13} toggle={toggle13} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="sport-utility-vehicle" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:doors_quantity')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:doors_quantity')}
+                    </label>
+                    <FieldWrapper>
+                        <SliderInput
+                            name="doors"
+                            min={1}
+                            max={10}
+                            step={1}
+                            errors={errors}
+                            control={control}
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>1</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>10</label>
+                    
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen14} toggle={toggle14} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="seat" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:seats_quantity')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:seats_quantity')}
+                    </label>
+                    <FieldWrapper>
+                        <SliderInput
+                            name="seats"
+                            min={1}
+                            max={10}
+                            step={1}
+                            errors={errors}
+                            control={control}
+                            onChange={e =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
+                                return e
+                            }}
+                        />
+                    </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>1</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>10</label>
+                    
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen15} toggle={toggle15} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:paint')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="paint"
+                            control={control}
+                            options={formData.RadioChoicesPaints}
+                            citycontrol={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen16} toggle={toggle16} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:external_color')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="externalColor"
+                            options={formData.RadioChoicesMaterials}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen17} toggle={toggle17} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:internal_color')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="internalColor"
+                            options={formData.RadioChoicesMaterials}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
+        
+            <ButtonDropdown isOpen={dropdownOpen18} toggle={toggle18} className={clsx(classes.buttondropdown)} >
+                <DropdownToggle caret>
+                    <Emoji name="card-index" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                    {t('vehicles:vehicle-state')}
+                </DropdownToggle>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                    <FieldWrapper>
+                        <SelectInput
+                            name="vehicleGeneralState"
+                            options={formData.RadioVehicleGeneralState}
+                            control={control}
+                            errors={errors}
+                            onChange={(selected, name) =>{
+                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, selected, name)), 100)
+                                return selected
+                            }}
+                        />
+                    </FieldWrapper>
+                </DropdownMenu>
+            </ButtonDropdown>
+    
         </>
     )
 }

@@ -121,20 +121,7 @@ const useStyles = makeStyles(() => ({
         background: customColors.gradient.main
     },
     filterbutton:{
-        // borderRadius: '26.8293px !important',
-        // borderColor:'#dcd7d7 !important',
-        // backgroundColor: '#c4c4c400 !important',
-        // color: 'black !important',
-        // cursor: 'pointer',
-        // fontSize:"17.1707px !important",
-        // border: 'none',
-        // padding: '15px 32px',
-        // textAlign: 'center',
-        // textDecoration: 'none',
-        // display: 'inline-block',
-        // fontSize: '16px',
-        // margin: '4px 2px',
-        // cursor: 'pointer',
+       
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: 'black',
@@ -148,7 +135,34 @@ const useStyles = makeStyles(() => ({
         borderRadius: '26.8293px',
         border: 'solid #dcd7d7',
         borderWidth: '1px',
-    }
+    },
+    dropdownmenu: {
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '5px 5px',
+    },
+    label:{
+        textAlign:'left', 
+        fontSize:'14px', 
+        fontWeight: 'normal', 
+        lineHeight: '150%',
+        color: 'black',
+        marginLeft:'5px',
+        marginBottom: '-10px',
+    },
+    dropdownmenuslide:{
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '15px 10px 20px',
+    }, 
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
@@ -481,8 +495,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:vehicle-type')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_1" classes={clsx(classes.dropdowntoggle)}>
-                            <FieldWrapper >
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} >
+                            <FieldWrapper>
                                 <SelectInput
                                     name="vehicleType"
                                     control={control}
@@ -505,7 +519,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="page-facing-up" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:announce-type')}
                         </DropdownToggle>
-                        <DropdownMenu id="buuton_2">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
                             <FieldWrapper >
                                 <SelectInput
                                     name="adType"
@@ -528,7 +542,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="wrench" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:make')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_3">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.make"
@@ -549,7 +563,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="two-oclock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:model')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_4">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.model"
@@ -571,7 +585,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="calendar" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:year')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_5">
+                        <DropdownMenu className={clsx(classes.dropdownmenuslide)} id="button_5">
+                            <label className={clsx(classes.label)}>
+                                {t('vehicles:year')}
+                            </label>
                             <FieldWrapper >
                                 <SliderInput
                                     name="year"
@@ -588,97 +605,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                     }}
                                 />
                             </FieldWrapper>
+                            <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>1900</label>
+                            <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>2100</label>
+                    
                         </DropdownMenu>
                     </ButtonDropdown>
                      
-                    {/* <div className={clsx(hiddenForm && classes.filtersHidden)}> */}
-                    {/* <FieldWrapper label={t('vehicles:vehicle-type')}>
-                        <SelectInput
-                            name="vehicleType"
-                            control={control}
-                            errors={errors}
-                            options={vehicleTypesDefault()}
-                            selected={router.query.vehicleType}
-                            onChange={(e, name) =>{
-                                // onVehicleTypeChange(selected.value)
-                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                return e
-                            }}
-
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:announce-type')}>
-                        <SelectInput
-                            name="adType"
-                            control={control}
-                            errors={errors}
-                            options={announceTypesFiltered}
-                            selected={router.query.adType}
-                            onChange={(selected, name) =>{
-                                // setVehicleType(selected.value) // TODO: think it should be smth like "setAdType()"
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:make')}>
-                        <SelectInput
-                            name="manufacturer.make"
-                            control={control}
-                            errors={errors}
-                            options={manufacturersData.makes}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:model')}>
-                        <SelectInput
-                            name="manufacturer.model"
-                            options={manufacturersData.models}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.make')}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />
-                    </FieldWrapper>
-
-                    <FieldWrapper label={t('vehicles:year')}>                        
-                        <SliderInput
-                            name="year"
-                            defaultValue={[1900, 2021]}
-                            min={1900}
-                            max={2100}
-                            step={10}
-                            errors={errors}
-                            control={control}
-                            suffix=""
-                            onChange={e =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
-                                return e
-                            }}
-                        /> */}
-                        {/* <SelectInput
-                            name="year"
-                            placeholder="Select year"
-                            options={manufacturersData.years}
-                            control={control}
-                            errors={errors}
-                            disabled={!watch('manufacturer.model') || !isCar}
-                            onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                return selected
-                            }}
-                        />*/}
-                    {/* </FieldWrapper> */}
-
                     {DynamicFiltersComponent && (
                         <DynamicFiltersComponent
                             control={control}
