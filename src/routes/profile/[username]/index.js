@@ -261,11 +261,12 @@ const Profile = () => {
                     </Alert>
                 )}
 
-                <Row className="mx-auto">
-                    <Col md={2}>
+                
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                         <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
-                    </Col>
-                    <Col md={10}>
+                    </div>
+                <Row className="mx-auto">
+                    <div>
                         <div className="top-profile-name-btn">
                             <h1>
                                 {profile.getFullName}
@@ -432,7 +433,7 @@ const Profile = () => {
                             {profile.getDescription}
                         </p>
 
-                    </Col>
+                    </div>
                 </Row>
                 <TabsContainer {...{
                     state,
