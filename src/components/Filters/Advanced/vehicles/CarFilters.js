@@ -409,7 +409,10 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="sport-utility-vehicle" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:doors_quantity')}
                 </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                    <label className={clsx(classes.label)}>
+                        {t('vehicles:doors_quantity')}
+                    </label>
                     <FieldWrapper>
                         <SliderInput
                             name="doors"
@@ -424,6 +427,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                             }}
                         />
                     </FieldWrapper>
+                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>1</label>
+                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>10</label>
+                    
                 </DropdownMenu>
             </ButtonDropdown>
         
