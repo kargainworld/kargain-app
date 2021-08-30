@@ -79,7 +79,7 @@ export const Avatar = (props) => {
 
   return isonline === 'true' ? (
     <StyledOnlineBadge
-      overlap="circle"
+      overlap="circular"
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
@@ -90,7 +90,7 @@ export const Avatar = (props) => {
     </StyledOnlineBadge>
   ) : (
     <StyledOfflineBadge
-      overlap="circle"
+      overlap="circular"
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',

@@ -19,7 +19,9 @@ import useKargainContract from 'hooks/useKargainContract'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
-
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import PaginateResults from './PaginateResults'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
@@ -214,7 +216,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                             // if (!onlyMinted || announceMinted) {
                                                 return (
                                                     // <Col key={index} className='my-3 d-flex justify-content-center'>
-                                                    <div style={{maxWidth:'30%', marginRight:'3%', marginTop: '2%'}}>
+                                                    <div key={index} style={{maxWidth:'30%', marginRight:'3%', marginTop: '2%'}}>
                                                         <AnnounceCard
                                                             
                                                             announceRaw={announceRaw}

@@ -245,9 +245,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
                                         {/* <i.RoomOutlined size={5.24} /> */}
-                                        <div className={clsx(classes.avatar)}>
                                             <NewIcons.card_location/>
-                                        </div>
                                         {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
                                     </Location>
                                 )}

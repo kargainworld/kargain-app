@@ -65,7 +65,7 @@ const useStyles = makeStyles(() => ({
         marginLeft:'5px',
         marginBottom: '-10px',
     },
-    dropdownmenu:{
+    dropdownmenuslide:{
         position: 'absolute',
         width: '250px',
         // height: 105px;
@@ -73,6 +73,15 @@ const useStyles = makeStyles(() => ({
         top: '225.49px',
 
         padding: '15px 10px 20px',
+    }, 
+    dropdownmenu: {
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '5px 5px',
     }
 
 	}))
@@ -169,7 +178,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:price')}
                 </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenu)}>
+                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     
                     <label className={clsx(classes.label)}>
                         {t('vehicles:price')}
@@ -203,7 +212,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:cylinder')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SliderInput
                             name="vehicleEngineCylinder"
@@ -228,7 +237,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="joystick" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:gear-box')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="vehicleEngineType"
@@ -249,7 +258,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="stopwatch" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:power')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SliderInput
                             name="powerKw"
@@ -273,7 +282,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:country')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectCountryFlags
                             name="countrySelect"
@@ -293,7 +302,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="house" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:address')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SearchLocationInput
                             name="address"
@@ -315,7 +324,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="globe-showing-americas" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:class_emission')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="emission"
@@ -336,7 +345,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="oncoming-automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:equipments')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper >
                         <SelectInput
                             name="equipments"
@@ -360,7 +369,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="alarm-clock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:co2-consumption')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SliderInput
                             name="consumptionGkm"
@@ -384,7 +393,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="sport-utility-vehicle" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:doors_quantity')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SliderInput
                             name="doors"
@@ -407,7 +416,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="seat" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:seats_quantity')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SliderInput
                             name="seats"
@@ -430,7 +439,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:paint')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="paint"
@@ -452,7 +461,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:external_color')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="externalColor"
@@ -473,7 +482,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="artist-palette" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:internal_color')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="internalColor"
@@ -494,7 +503,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <Emoji name="card-index" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:vehicle-state')}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
                         <SelectInput
                             name="vehicleGeneralState"

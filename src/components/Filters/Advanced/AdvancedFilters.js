@@ -135,7 +135,34 @@ const useStyles = makeStyles(() => ({
         borderRadius: '26.8293px',
         border: 'solid #dcd7d7',
         borderWidth: '1px',
-    }
+    },
+    dropdownmenu: {
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '5px 5px',
+    },
+    label:{
+        textAlign:'left', 
+        fontSize:'14px', 
+        fontWeight: 'normal', 
+        lineHeight: '150%',
+        color: 'black',
+        marginLeft:'5px',
+        marginBottom: '-10px',
+    },
+    dropdownmenuslide:{
+        position: 'absolute',
+        width: '250px',
+        // height: 105px;
+        right: '220px',
+        top: '225.49px',
+
+        padding: '15px 10px 20px',
+    }, 
 }))
 
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
@@ -468,8 +495,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:vehicle-type')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_1" classes={clsx(classes.dropdowntoggle)}>
-                            <FieldWrapper >
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} >
+                            <FieldWrapper>
                                 <SelectInput
                                     name="vehicleType"
                                     control={control}
@@ -492,7 +519,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="page-facing-up" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:announce-type')}
                         </DropdownToggle>
-                        <DropdownMenu id="buuton_2">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
                             <FieldWrapper >
                                 <SelectInput
                                     name="adType"
@@ -515,7 +542,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="wrench" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:make')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_3">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.make"
@@ -536,7 +563,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="two-oclock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:model')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_4">
+                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
                             <FieldWrapper >
                                 <SelectInput
                                     name="manufacturer.model"
@@ -558,7 +585,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <Emoji name="calendar" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:year')}
                         </DropdownToggle>
-                        <DropdownMenu id="button_5">
+                        <DropdownMenu className={clsx(classes.dropdownmenuslide)} id="button_5">
+                            <label className={clsx(classes.label)}>
+                                {t('vehicles:year')}
+                            </label>
                             <FieldWrapper >
                                 <SliderInput
                                     name="year"
@@ -575,6 +605,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                     }}
                                 />
                             </FieldWrapper>
+                            <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>1900</label>
+                            <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>2100</label>
+                    
                         </DropdownMenu>
                     </ButtonDropdown>
                      
