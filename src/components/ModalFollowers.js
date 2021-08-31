@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { ModalContext } from '../context/ModalContext';
 import { MessageContext } from '../context/MessageContext';
+import { NewIcons } from '../assets/icons';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -48,7 +49,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: 'center',
     color: 'black',
-  },
+    fontWeight: '500',
+    fontSize: '24px',
+    lineHeight: '150%',
+    },
 }));
 
 export default function ModalFollowers() {
@@ -79,10 +83,10 @@ export default function ModalFollowers() {
           </Typography>
 
           <IconButton className={classes.pointerClose} onClick={handleClose}>
-            <HighlightOffOutlinedIcon />
+            <NewIcons.modalclose />
           </IconButton>
 
-          <div className="my-2">
+          <div className="my-2" style={{marginLeft: '-20px'}}>
             <ul className={classes.list}>
               {modalStateContext.modalFollowersProfiles.map((user, index) => {
                 return (
@@ -94,13 +98,13 @@ export default function ModalFollowers() {
                       <a className="d-flex align-items-center">
                         <img
                           className="dropdown-toggler rounded-circle mx-2"
-                          width="50"
-                          height="50"
+                          width="32"
+                          height="32"
                           src={user.getAvatar || user.getAvatarUrl}
                           title={user.getFullName}
                           alt={user.getUsername}
                         />
-                        <Typography variant="body1">{user.getFullName}</Typography>
+                        <Typography variant="body1" style={{color:'black'}}>{user.getFullName}</Typography>
                       </a>
                     </Link>
                     {isFetching && <CircularProgress fontSize="small" />}

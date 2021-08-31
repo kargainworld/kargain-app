@@ -464,7 +464,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
+                <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
                     <CTALink
                         className={clsx(classes.button)}
                         icon={StorefrontIcon}

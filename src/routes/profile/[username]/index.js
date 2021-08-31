@@ -32,6 +32,8 @@ import { makeStyles } from "@material-ui/styles"
 import clsx from "clsx"
 import customColors from '../../../theme/palette'
 import { NewIcons } from '../../../assets/icons'
+import Sorters from '../../../components/Sorters/Sorters'
+
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -73,7 +75,11 @@ const useStyles = makeStyles((theme) => ({
         '& .FieldWrapper': {
             marginRight: '0 !important',
             marginLeft: '0 !important'
+        },
+        '& #new_feed':{
+            display: 'none !important',
         }
+
     },
     btnFollow: {
         padding: '3px 8px',
@@ -240,6 +246,7 @@ const Profile = () => {
             }))
         }
     }, [filterState.sorter, filterState.filters, filterState.page])
+
 
     const updateFilters = (filters) => {
         setFilterState(filterState => ({
@@ -485,6 +492,18 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     const[selectedSlug, setSelectedSlug] = useState("")
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
 
+    const [state1, setState] = useState({
+        loading: true,
+        sorter: {},
+        filters: {},
+        page: 1,
+        pages: 1,
+        announces: [],
+        total: 0,
+        isScrollLoding: false,
+        announcesMinted: []
+    })
+
     const handleOpenDialogRemove = () => {
 	    setOpenDialogRemove(true)
     }
@@ -508,32 +527,39 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
         router.push(`${href}?activeTab=${tab}`)
     }
 
+    const updateSorter = (sorter) => {
+        setState(state1 => ({
+            ...state1,
+            sorter
+        }))
+    }
     return (
         <Container>
             <Row>
-                <Col sm={12} md={12}>
-                    <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: filterState.total })}
-                    </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                </Col>
-                
-                <Col sm={12} md={12}>
-                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
+                <div style={{width:'103%'}}>
+                    {/* <Col sm={12} md={12} style={{marginLeft: '-10px'}} id="section_1" style={{transform:'translate(10px, 10px)'}}>
+                        <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
+                        <div style={{marginTop:'35px'}}>
+                        <Typography component="p" variant="h3" style={{fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px'}}>
+                            {t('vehicles:{count}_results_search', { count: filterState.total })}
+                        </Typography>
+                        <div  style={{ marginTop: '-40px'}}>
+                            <Sorters updateSorter={updateSorter} />
+                        </div>
+                        </div>
+                    </Col> */}
+                         
+                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}}>      
+                       
                         <Tabs.Item id="home-tab" title="Vitrine">
+                            
                             <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                 <Row className="my-2 d-flex justify-content-center">
+                                    
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                        <Col
-                                            key={index}
-                                            sm={12}
-                                            md={6}
-                                            lg={6}
-                                            xl={6}
-                                            className="my-2"
-                                        >
+                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}>  
                                             <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                        </Col>
+                                        </div>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             {/*{profile.getCountGarage !== 0? */}
@@ -558,13 +584,17 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 </Row>
                             </section>
                         </Tabs.Item>
-
+                                   
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
+                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
+                                
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
                                         // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                        <div key={index} style={{maxWidth:'30%', marginRight:'3%', marginTop: '2%'}}>
+                                        <div
+                                            key={index}
+                                            style={{maxWidth: '31% !important', marginRight:'2.1%'}}
+                                        > 
                                             <AnnounceCard announceRaw={announceRaw} />
                                         </div>
                                         // </Col>
@@ -579,11 +609,12 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
 
                         {isSelf && (
                             <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{maxWidth:'33%'}}>
+                                 
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}> 
                                             <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                        </Col>
+                                        </div>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{(t('vehicles:no-favorite-announces'))}</p>
@@ -593,7 +624,8 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                             </Tabs.Item>
                         )}
                     </Tabs>
-                </Col>
+                
+                </div>
             </Row>
             
             <Dialog
