@@ -288,9 +288,19 @@ const Profile = () => {
                     </Alert>
                 )}
 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
                 </div>
+
+                {profile.getAddressParts.fullAddress && (
+                    <a href={profile.buildAddressGoogleMapLink()}
+                        target="_blank"
+                        rel="noreferrer">
+                        <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                            {profile.buildAddressString()}  
+                        </p>
+                    </a>
+                )}
 
                 <div>
                     <div className="top-profile-name-btn">
@@ -428,24 +438,10 @@ const Profile = () => {
                         </div>
 
                     </div>
-
                     
-
-                    {profile.getAddressParts.fullAddress && (
-                        <a href={profile.buildAddressGoogleMapLink()}
-                            target="_blank"
-                            rel="noreferrer">
-                            <span className="top-profile-location">
-                                <LocationOnOutlinedIcon />
-                                {profile.buildAddressString()}
-                            </span>
-                        </a>
-                    )}
-
-                    
-                    <p className="top-profile-desc">
+                    {/* <p className="top-profile-desc">
                         {profile.getDescription}
-                    </p>
+                    </p> */}
 
                 </div>
                 <TabsContainer {...{
