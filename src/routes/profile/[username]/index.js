@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "5px",
         background: customColors.gradient.main
     },
-    subbutton:{
+    subscriptionbutton:{
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: 'black',
@@ -111,8 +111,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '16px',
         margin: '4px 2px',
         // cursor: 'pointer',
-        borderRadius: '26.8293px',
-        border: 'solid #dcd7d7',
+        borderRadius: '17.5px',
+        border: '1px solid #C4C4C4',
         borderWidth: '1px',
     },
     
@@ -336,8 +336,12 @@ const Profile = () => {
                                 {(profile.getIsPro && profile.getIsActivated)}
                             </h1>
 
+                            <p className={classes.userName}>
+                                @{profile.getUsername}
+                            </p>
+
                             <div className={classes.subscriptionWrapper}>
-                                <div className={classes.followContainer}
+                                <div className={classes.subscriptionbutton}
                                     onClick={() => dispatchModalState({
                                         openModalFollowers: true,
                                         modalFollowersProfiles: profile.getFollowers,
@@ -347,7 +351,7 @@ const Profile = () => {
                                     <div>
                                         {state.isSelf ? (
                                             <span>
-                                                {followerCounter} {t('vehicles:followers', { count: followerCounter })}
+                                                 {t('vehicles:followers', { count: followerCounter })}
                                             </span>
                                         ) : (
                                             <>
@@ -382,31 +386,9 @@ const Profile = () => {
                                             </>
                                         )}
                                     </div>
-
-                                    {profile.getCountFollowers !== 0 && (
-                                        <div className="my-2">
-                                            <ul className="d-flex align-items-center list-style-none">
-                                                {profile.getFollowers.slice(0, 3)
-                                                    .map((user, index) => {
-                                                        return (
-                                                            <li key={index} className="nav-item navbar-dropdown p-1">
-                                                                <img className="dropdown-toggler rounded-circle"
-                                                                    width="30"
-                                                                    height="30"
-                                                                    src={user.getAvatar || user.getAvatarUrl}
-                                                                    title={user.getFullName}
-                                                                    alt={user.getUsername}
-                                                                />
-                                                            </li>
-                                                        )
-                                                    })}
-                                            </ul>
-                                        </div>
-                                    )}
                                 </div>
 
-
-                                <div className={classes.followContainer}
+                                <div className={classes.subscriptionbutton}
                                     onClick={() => dispatchModalState({
                                         openModalFollowers: true,
                                         modalFollowersProfiles: profile.getFollowings,
@@ -444,9 +426,7 @@ const Profile = () => {
 
                         </div>
 
-                        <p className={classes.userName}>
-                            @{profile.getUsername}
-                        </p>
+                        
 
                         {profile.getAddressParts.fullAddress && (
                             <a href={profile.buildAddressGoogleMapLink()}
