@@ -289,6 +289,7 @@ const Profile = () => {
 
                 <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
+                    <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
                 </div>
 
                 {profile.getAddressParts.fullAddress && (
@@ -510,13 +511,13 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     return (
         <Container>
             <Row>
-                {/* <Col sm={12} md={3}>
+                <Col sm={12} md={12}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: filterState.total })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
                 </Col>
-                 */}
+                
                 <Col sm={12} md={12}>
                     <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
                         <Tabs.Item id="home-tab" title="Vitrine">

@@ -23,6 +23,7 @@ import card_location from './icon_location.svg';
 import share from './icon_share.svg';
 import modalclose from './Icon_modalclose.svg'
 import pigeon from './icon_pigeon.svg'
+import avatarcheck from './icon_avatarcheck.svg'
 
 export const NewIcons = {
     message,
@@ -51,4 +52,5 @@ export const NewIcons = {
     share,
     modalclose,
     pigeon,
+    avatarcheck,
 }
