@@ -1,6 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import { makeStyles } from "@material-ui/styles"
+
+const useStyles = makeStyles((theme) => ({
+    slider:{
+        border: "none",
+        borderBottom: '3px solid #FE74F1',
+        marginBottom: '-1px !important',
+        color: '#FE74F1 !important',
+        fountSize: '16px !important',
+        textAlign: 'center',
+        background: 'none',
+        width: '33.33% !important',
+        
+    },
+    sliderborder:{
+        border: 'none !important',
+        borderBottom: '3px solid #FE74F1 !important',
+        // marginTop: '1px !important',
+        color:'#FE74F1 !important',
+        textAlign: 'center !important',
+        background: 'none !important',
+        fontSize: '16px !important',
+        width:  '33.33% !important',
+        
+    }
+}));
 
 const TabsItem = ({ activeTab, index, ...props }) => {
     return (
@@ -14,6 +40,7 @@ const TabsItem = ({ activeTab, index, ...props }) => {
 }
 
 const Tabs = ({ defaultActive, active, children, id, handleClickTab, className }) => {
+    const classes = useStyles()
     const [activeTab, setActiveTab] = useState(defaultActive || 0)
     const tabs = !Array.isArray(children) ? [children] : children
 
@@ -35,7 +62,8 @@ const Tabs = ({ defaultActive, active, children, id, handleClickTab, className }
 
                     return (
                         <li key={index}
-                            className={clsx('nav-link', className, { active: index === activeTab })}
+                            className={clsx('nav-link', activeTab === index && classes.sliderborder, classes.slider)}   
+                            // className={clsx('nav-link', className, {active: index && classes.navlink === activeTab }, classes.slider)}
                             data-toggle="tab"
                             role="tab"
                             aria-selected={activeTab === index}

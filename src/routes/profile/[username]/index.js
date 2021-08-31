@@ -116,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
     },
-    
 }))
 
 const Profile = () => {
@@ -511,13 +510,14 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     return (
         <Container>
             <Row>
-                <Col sm={12} md={3}>
+                {/* <Col sm={12} md={3}>
                     <Typography component="p" variant="h2">
                         {t('vehicles:{count}_results_search', { count: filterState.total })}
                     </Typography>
                     <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
                 </Col>
-                <Col sm={12} md={9}>
+                 */}
+                <Col sm={12} md={12}>
                     <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
                         <Tabs.Item id="home-tab" title="Vitrine">
                             <section className={filtersOpened ? 'filter-is-visible' : ''}>
@@ -559,7 +559,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         </Tabs.Item>
 
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
                                         // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
@@ -577,7 +577,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         )}
 
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{maxWidth:'33%'}}>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
                                         <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
