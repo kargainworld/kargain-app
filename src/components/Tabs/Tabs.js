@@ -97,7 +97,14 @@ const TabsItem = ({ activeTab, index, ...props }) => {
     )
 }
 
-const Tabs = ({ defaultActive, active, children, id, handleClickTab, className }) => {
+// const updateFilters = (filters) => {
+//     setFilterState(filterState => ({
+//         ...filterState,
+//         filters: filters
+//     }))
+// }
+
+const Tabs = ({ updateFilters, defaultActive, active, children, id, handleClickTab, className  }) => {
     const classes = useStyles()
     const [activeTab, setActiveTab] = useState(defaultActive || 0)
     const tabs = !Array.isArray(children) ? [children] : children
@@ -131,13 +138,6 @@ const Tabs = ({ defaultActive, active, children, id, handleClickTab, className }
     const onClickTabItem = (index) => {
         setActiveTab(index)
         handleClickTab(index)
-    }
-
-    const updateFilters = (filters) => {
-        setFilterState(filterState => ({
-            ...filterState,
-            filters: filters
-        }))
     }
 
     const updateSorter = (sorter) => {

@@ -251,7 +251,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     }, [selectedModel]);
     
     const onSubmit = (form, e, name) => {
-        
+        console.log(form);
         var empty;
         for(var key in form) {
             if(form[key] === null) form[key] = empty;

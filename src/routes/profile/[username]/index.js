@@ -537,19 +537,9 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
         <Container>
             <Row>
                 <div style={{width:'103%'}}>
-                    {/* <Col sm={12} md={12} style={{marginLeft: '-10px'}} id="section_1" style={{transform:'translate(10px, 10px)'}}>
-                        <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                        <div style={{marginTop:'35px'}}>
-                        <Typography component="p" variant="h3" style={{fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px'}}>
-                            {t('vehicles:{count}_results_search', { count: filterState.total })}
-                        </Typography>
-                        <div  style={{ marginTop: '-40px'}}>
-                            <Sorters updateSorter={updateSorter} />
-                        </div>
-                        </div>
-                    </Col> */}
+                    
                          
-                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}}>      
+                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}} >      
                        
                         <Tabs.Item id="home-tab" title="Vitrine">
                             
