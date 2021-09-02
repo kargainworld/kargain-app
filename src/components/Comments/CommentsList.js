@@ -15,6 +15,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import clsx from "clsx"
+import { Avatar } from '../AnnounceCard/components'
 
 const CommentsList = ({ comments, moreLink, className }) => {
     const [deletedComments, setDeletedComments] = useState([])
@@ -76,7 +77,15 @@ const CommentsList = ({ comments, moreLink, className }) => {
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
                             {!isOwn && (
-                                <ErrorOutlineIcon onClick={() => complain(comment.getID)} />
+                                <div onClick={() => complain(comment.getID)}>
+                                    <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        // src={''}
+                                        // isonline={getOnlineStatusByUserId('')}
+                                        // alt={''}
+                                        style={{ width: '41.83px', height: '41.83px' }}
+                                    />
+                                </div>
                             )}
 
                             {isOwn && (

@@ -216,9 +216,8 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                             // if (!onlyMinted || announceMinted) {
                                                 return (
                                                     // <Col key={index} className='my-3 d-flex justify-content-center'>
-                                                    <div key={index} style={{Width:'30%', marginRight:'3%', marginTop: '2%'}}>
+                                                    <div key={index} style={{width:'30%', marginRight:'3%', marginTop: '2%'}}>
                                                         <AnnounceCard
-                                                            
                                                             announceRaw={announceRaw}
                                                             tokenPrice={announceMinted?.tokenPrice}
                                                             detailsFontSize={'13px'}

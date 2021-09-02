@@ -29,6 +29,8 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
+
+
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
@@ -60,7 +62,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid'
+        borderBottom: '1px solid #999999'
     },
     wysiwyg: {
         margin: '1rem'
