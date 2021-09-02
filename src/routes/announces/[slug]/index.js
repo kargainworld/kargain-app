@@ -501,14 +501,14 @@ const Announce = () => {
                     </Col>
                 </Row>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:vehicle-data')}
                     </Typography>
                     <CarInfos announce={announce} enableThirdColumn />
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:equipments')}
                     </Typography>
@@ -525,7 +525,7 @@ const Announce = () => {
                     </Row>
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:description')}
                     </Typography>
@@ -534,7 +534,7 @@ const Announce = () => {
                     </div>
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:data-sheet')}
                     </Typography>
