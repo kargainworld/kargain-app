@@ -165,6 +165,7 @@ const useStyles = makeStyles(() => ({
     }, 
 }))
 
+
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
     
     // const [dropdownOpen, setOpen] = new Array();
@@ -249,16 +250,21 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     useEffect(() => {
         setValue('year', null);
     }, [selectedModel]);
-    
-    const onSubmit = (form, e, name) => {
-        console.log(form);
+
+    const [formData, setFormData] = useState({
+        vehicleType: [],
+        year: [],
+    })
+
+    const onSubmit = useCallback(async (form, e, name) => {
+        
         var empty;
         for(var key in form) {
             if(form[key] === null) form[key] = empty;
         }
 
         if(e !== null && e?.type !== null)  if(typeof e?.type === "submit")   e.preventDefault();
-        
+       
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
@@ -268,9 +274,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             data.coordinates = coordinates
             data.enableGeocoding = true
         }
-
+        
         updateFilters(data)
-    }
+    })
+    
 
     const onResetFilter = (form, e) => {
         const filters = getValues();

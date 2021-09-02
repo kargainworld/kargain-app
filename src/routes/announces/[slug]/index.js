@@ -283,6 +283,7 @@ const Announce = () => {
 
     return (
         <Container>
+
             <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
 
             {state.isAdmin && (
@@ -292,6 +293,8 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
+                    
+
                 {!announce.getIsActivated && (
                     <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
                 )}
@@ -301,6 +304,58 @@ const Announce = () => {
                 <Row>
                     <Col sm={12} md={6}>
                         <div className="top">
+                            
+                            <div className="pic" >
+                                <Avatar
+                                    className="img-profile-wrapper avatar-preview"
+                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                    alt={announce.getTitle}
+                                    style={{ width: 120, height: 120 }}
+                                />
+                            </div>
+
+                            <div >
+                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                                    <a>
+                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
+                                            {announce.getAuthor.getFullName}
+                                        </Typography>
+                                    </a>
+                                </Link>
+
+                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                    <div className="top-profile-location">
+                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                            <span className="top-profile-location">
+                                                <RoomOutlinedIcon />
+                                                {announce.getAdOrAuthorCustomAddress()}
+                                            </span>
+                                        </a>
+                                    </div>
+                                )}
+                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
+                            </div>
+                        
+                        </div>
+
+                        <div className="pics">
+                            {announce.getCountImages > 0 && (
+                                <>
+                                    <GalleryViewer images={announce.getImages} ref={refImg} />
+                                    {/* {isDesktop && (
+                    <GalleryImgsLazy
+                        images={announce.getImages}
+                        handleCLickImg={handleCLickImg}
+                    />
+                  )} */}
+                                </>
+                            )}
+                        </div>
+                    </Col>
+
+                    <Col sm={12} md={6}>
+                        <div className={classes.formRow}>
                             <Typography as="h2" variant="h2">
                                 {announce.getAnnounceTitle}
                             </Typography>
@@ -330,59 +385,8 @@ const Announce = () => {
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
-
-
                             </div>
-                        </div>
-
-                        <div className="pics">
-                            {announce.getCountImages > 0 && (
-                                <>
-                                    <GalleryViewer images={announce.getImages} ref={refImg} />
-                                    {/* {isDesktop && (
-                    <GalleryImgsLazy
-                        images={announce.getImages}
-                        handleCLickImg={handleCLickImg}
-                    />
-                  )} */}
-                                </>
-                            )}
-                        </div>
-                    </Col>
-
-                    <Col sm={12} md={6}>
-                        <div className={classes.formRow}>
-                            <div className="pic" style={{ flex: 1 }}>
-                                <Avatar
-                                    className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                                    alt={announce.getTitle}
-                                    style={{ width: 80, height: 80 }}
-                                />
-                            </div>
-
-                            <div style={{ flex: 4 }}>
-                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                                    <a>
-                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
-                                            {announce.getAuthor.getFullName}
-                                        </Typography>
-                                    </a>
-                                </Link>
-
-                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <div className="top-profile-location">
-                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                            <span className="top-profile-location">
-                                                <RoomOutlinedIcon />
-                                                {announce.getAdOrAuthorCustomAddress()}
-                                            </span>
-                                        </a>
-                                    </div>
-                                )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
-                            </div>
+                        
                         </div>
 
                         <TagsList tags={announce.getTags} />
