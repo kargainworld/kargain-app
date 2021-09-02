@@ -32,6 +32,7 @@ import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
+import { NewIcons } from 'assets/icons'
 
 import Web3 from "web3"
 
@@ -303,40 +304,40 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top">
-                            
-                            <div className="pic" >
-                                <Avatar
-                                    className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                                    alt={announce.getTitle}
-                                    style={{ width: 120, height: 120 }}
-                                />
-                            </div>
+                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                            <Row >
+                                <div className="pic">
+                                    <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                        isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                        alt={announce.getTitle}
+                                        style={{ width: 120, height: 120 }}
+                                    />
+                                </div>
 
-                            <div >
-                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                                    <a>
-                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
-                                            {announce.getAuthor.getFullName}
-                                        </Typography>
-                                    </a>
-                                </Link>
-
-                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <div className="top-profile-location">
-                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                            <span className="top-profile-location">
-                                                <RoomOutlinedIcon />
-                                                {announce.getAdOrAuthorCustomAddress()}
-                                            </span>
+                                <div style={{marginLeft: '10px'}}>
+                                    <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                                        <a>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                                {announce.getAuthor.getFullName}
+                                            </Typography>
                                         </a>
-                                    </div>
-                                )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
-                            </div>
-                        
+                                    </Link>
+
+                                    {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                        <div className="top-profile-location">
+                                            <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
+                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                    {announce.getAdOrAuthorCustomAddress()}
+                                                </span>
+                                            </a>
+                                        </div>
+                                    )}
+                                    {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
+                                </div>
+                            </Row>
                         </div>
 
                         <div className="pics">
@@ -355,24 +356,28 @@ const Announce = () => {
                     </Col>
 
                     <Col sm={12} md={6}>
-                        <div className={classes.formRow}>
-                            <Typography as="h2" variant="h2">
+                        <div style={{marginTop:'25px'}}>
+                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
                                 {announce.getAnnounceTitle}
                             </Typography>
 
-                            <div  style={{ width: '100%' }}>
+                            <div  style={{ width: '100%',marginTop:'10px' }}>
                                 <Box mb={2} display="flex" flexDirection="row">
-                                    <Col sm={4}>
-                                        <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                    
+                                    <Col sm={7}>
+                                        <Row>
+                                            <p style={{fontSize:'22px'}}>€  </p>
+                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
+                                        </Row>
                                     </Col>
-                                    {!isOwn && (
+                                    {/* {!isOwn && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
-                                    )}
-                                    <Col sm={3}
+                                    )} */}
+                                    <Col sm={5}
                                         className="icons-star-prof"
                                         onClick={() =>
                                             dispatchModalState({
@@ -380,11 +385,15 @@ const Announce = () => {
                                                 modalShareAnnounce: announce
                                             })
                                         }
+                                        style={{display:'flex', justifyContent: 'flex-end'}}
                                     >
-                                        <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
+                                <div>
+                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                </div>
                             </div>
                         
                         </div>
