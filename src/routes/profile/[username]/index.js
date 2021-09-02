@@ -547,7 +547,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 <Row className="my-2 d-flex justify-content-center">
                                     
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}>  
+                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}>  
                                             <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
                                         </div>
                                     )) : (
@@ -581,10 +581,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
                                         // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                        <div
-                                            key={index}
-                                            style={{maxWidth: '31% !important', marginRight:'2.1%'}}
-                                        > 
+                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
                                             <AnnounceCard announceRaw={announceRaw} />
                                         </div>
                                         // </Col>
@@ -602,7 +599,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                  
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}> 
+                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
                                             <AnnounceCard announceRaw={announceRaw.getRaw} />
                                         </div>
                                     )) : (

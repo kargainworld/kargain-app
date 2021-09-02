@@ -64,7 +64,7 @@ const useStyles = makeStyles(() => ({
         fontFamily: 'Avenir Next',
         fontSize: '14px',
         fontWeight: '700',
-        padding: '.1rem 1rem',
+        padding: '6px 16px',
         color: '$color-black',
         boxShadow: '0 0 6px 0 #f0eeee',
         border: 'solid 2px transparent',
@@ -73,7 +73,7 @@ const useStyles = makeStyles(() => ({
         backgroundClip: 'content-box, border-box',
         boxShadow: '2px 1000px 1px #f0eeee inset',
         baclgroundColor: '#F0EEEE !important',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translate(10%, -15%)',
     },
     avatar:{
         '& svg':{
@@ -224,14 +224,14 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                     {announce.getCountImages}
                                 </ImageCounter>
                             )}
-                            <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '-50px'}}> 
+                            <div style={{display: 'flex', justifyContent: 'flex-end', marginTop:'-5%'}}> 
                                 <div className={'btn btn-primary', classes.filterbutton}>
                                     € {announce.getPrice}
                                 </div>
                             </div>
                         </ImageWrapper>
 
-                        <User style={{marginTop:'-5%'}}>
+                        <User>
                             <Avatar
                                 src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                                 size="medium"
@@ -239,20 +239,20 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 style={{ width: 45, height: 45, marginRight: 10 }}
                             />
 
-                            <Info>
+                            <Info style={{width:'55%', marginTop:'-5px'}}>
                                 <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'2px'}}>{announce.getAuthor.getFullName}</AuthorName>
 
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
                                         {/* <i.RoomOutlined size={5.24} /> */}
-                                            <NewIcons.card_location/>
+                                        <NewIcons.card_location/>
                                         {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
                                     </Location>
                                 )}
                             </Info>
 
-                            <div style={{marginLeft: '70px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
-                                <SubHeader style={{marginTop:'21px !important'}}>
+                            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+                                <SubHeader style={{marginTop:'20px !important'}}>
                                     {isOwn && (
                                         <Action onClick={toggleVisibility}>
                                             {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
@@ -261,17 +261,17 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
                                     {!isAuthor && (
                                         <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                            <NewIcons.card_heart />
-                                            <span>{likesCounter}</span>
+                                            <NewIcons.card_heart style={{marginRight:'7px'}}/>
+                                            <span style={{color:'#999999'}}>{likesCounter}</span>
                                         </Action>
                                     )}
 
                                     <Action
                                         title={t('vehicles:comment_plural')}
-                                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                        style={{ color: announce.getCountComments > 0 ? '#999999' : '#999999' }}
                                         onClick={() => handleImageClick()}
                                     >
-                                        <NewIcons.card_message style={{marginLeft:'15px'}}/>
+                                        <NewIcons.card_message style={{marginLeft:'10px', marginRight:'7px'}}/>
                                         <span>{announce.getCountComments}</span>
                                     </Action>
 
