@@ -153,7 +153,7 @@ const DamagesList = ({ tab }) => {
                 return (
                     <div key={index} className={classes.annoInput}>
                         <div style={{width: '90px'}}>
-                            <NewIcons.recycle style={{marginRight:'15px'}}/>
+                            <NewIcons.recycle style={{marginRight:'15px', with:"18px"}}/>
                             <span className={clsx(classes.annoNumber)}>{index + 1}</span>
                         </div>
                         
