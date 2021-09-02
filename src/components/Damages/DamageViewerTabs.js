@@ -142,7 +142,7 @@ const DamagesList = ({ tab }) => {
     const { t } = useTranslation()
     return (
         <div className={clsx(classes.annoInputs)}>
-            <Header h3> {t('vehicles:damages')} :</Header>
+            {/* <Header h3> {t('vehicles:damages')} :</Header> */}
             {tab.stages && tab.stages.map((stage, index) => {
                 return (
                     <div key={index} className={classes.annoInput}>

@@ -30,6 +30,10 @@ import AdvancedFilters from '../../../components/Filters/Advanced/AdvancedFilter
 import Error from '../../_error'
 import { makeStyles } from "@material-ui/styles"
 import clsx from "clsx"
+import customColors from '../../../theme/palette'
+import { NewIcons } from '../../../assets/icons'
+import Sorters from '../../../components/Sorters/Sorters'
+
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -71,7 +75,11 @@ const useStyles = makeStyles((theme) => ({
         '& .FieldWrapper': {
             marginRight: '0 !important',
             marginLeft: '0 !important'
+        },
+        '& #new_feed':{
+            display: 'none !important',
         }
+
     },
     btnFollow: {
         padding: '3px 8px',
@@ -81,7 +89,39 @@ const useStyles = makeStyles((theme) => ({
     button: {
         margin: '1rem'
     },
-    
+    pagetopdiv: {
+        position: 'absolute',
+        width: '100%',
+        height: '126px',
+        left: '0px',
+        top: '-25px',
+        background: '#EAEAEA',
+    },
+    button: {
+        border: "none !important",
+        padding: '4.5px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        background: customColors.gradient.main
+    },
+    subscriptionbutton:{
+        backgroundColor: 'white', /* Green */
+        border: 'none',
+        color: '#666666',
+        padding: '4.5px 15px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '16px',
+        margin: '4px 2px',
+        // cursor: 'pointer',
+        borderRadius: '17.5px',
+        border: '1px solid #C4C4C4',
+        borderWidth: '1px',
+    },
 }))
 
 const Profile = () => {
@@ -207,6 +247,7 @@ const Profile = () => {
         }
     }, [filterState.sorter, filterState.filters, filterState.page])
 
+
     const updateFilters = (filters) => {
         setFilterState(filterState => ({
             ...filterState,
@@ -238,198 +279,187 @@ const Profile = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode} />
     // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
-        <Container style={{ marginTop: 25 }}>
+        <>
+            <div className={clsx(classes.pagetopdiv)}></div>
 
-            <NextSeo
-                title={`${profile.getFullName} - Kargain`}
-            />
+            <Container style={{ marginTop: 25 }}>
 
-            {state.isAdmin && (
-                <Alert severity="info" className="mb-2">
-                    Connected as Admin
-                </Alert>
-            )}
+                <NextSeo
+                    title={`${profile.getFullName} - Kargain`}
+                />
 
-            <Row className="mx-auto">
-                <Col md={2}>
+                {state.isAdmin && (
+                    <Alert severity="info" className="mb-2">
+                        Connected as Admin
+                    </Alert>
+                )}
+
+                <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
-                </Col>
-                <Col md={10}>
+                    <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
+                </div>
+
+                {profile.getAddressParts.fullAddress && (
+                    <a href={profile.buildAddressGoogleMapLink()}
+                        target="_blank"
+                        rel="noreferrer">
+                        <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                            {profile.buildAddressString()}  
+                        </p>
+                    </a>
+                )}
+
+                <div>
                     <div className="top-profile-name-btn">
-                        <h1>
-                            {profile.getFullName}
-                            {(profile.getIsPro && profile.getIsActivated)}
-                        </h1>
-
-                        {state.isSelf ? (
-                            <div className="mx-2">
-                                <Link href={profile.getProfileEditLink}>
-                                    <Button component="a" variant="outlined">
-                                        {t('vehicles:edit-my-profile')}
+                        <div style={{display:'flex', justifyContent:'left', marginTop:'-25px'}}>
+                            {state.isSelf ? (
+                                <div className="mx-2">
+                                    <Link href={profile.getProfileEditLink}>
+                                        <Button component="a" variant="outlined" className={clsx(classes.button)}>
+                                            {t('vehicles:edit-my-profile')}
+                                        </Button>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="mx-2">
+                                    <Button
+                                        className={clsx(classes.button)}
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<ChatIcon />}
+                                        onClick={ () => {
+                                                if(!isAuthenticated){
+                                                    console.log(router.asPath);
+                                                    router.push({
+                                                    pathname: '/auth/login',
+                                                    query: { redirect: router.asPath },
+                                                    });
+                                                } else {
+                                                    dispatchModalState({
+                                                        openModalMessaging: true,
+                                                        modalMessagingProfile: profile
+                                                    })
+                                                }
+                                            }
+                                        }>
+                                        {t('vehicles:contact')}
                                     </Button>
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="mx-2">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<ChatIcon />}
-                                    onClick={ () => {
-                                            if(!isAuthenticated){
-                                                console.log(router.asPath);
-                                                router.push({
-                                                pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                                });
-                                            } else {
-                                                dispatchModalState({
-                                                    openModalMessaging: true,
-                                                    modalMessagingProfile: profile
-                                                })
-                                            }
-                                        }
-                                    }>
-                                    {t('vehicles:contact')}
-                                </Button>
-                            </div>
-                        )}
-                    </div>
-
-                    <p className={classes.userName}>
-                        @{profile.getUsername}
-                    </p>
-
-                    {profile.getAddressParts.fullAddress && (
-                        <a href={profile.buildAddressGoogleMapLink()}
-                            target="_blank"
-                            rel="noreferrer">
-                            <span className="top-profile-location">
-                                <LocationOnOutlinedIcon />
-                                {profile.buildAddressString()}
-                            </span>
-                        </a>
-                    )}
-
-                    <div className={classes.subscriptionWrapper}>
-                        <div className={classes.followContainer}
-                            onClick={() => dispatchModalState({
-                                openModalFollowers: true,
-                                modalFollowersProfiles: profile.getFollowers,
-                                modalFollowersTitle: t('vehicles:followers'),
-                                isFollowing: false,                                
-                            })}>
-                            <div>
-                                {state.isSelf ? (
-                                    <span>
-                                        {followerCounter} {t('vehicles:followers', { count: followerCounter })}
-                                    </span>
-                                ) : (
-                                    <>
-                                        <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
-                                            e.stopPropagation()
-                                            // handleFollowProfile()
-                                        }}>
-                                            {
-                                                alreadyFollowProfile ?
-                                                    // <StarSVGYellow/>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.btnFollow}
-                                                        onClick={() => handleFollowProfile()}>
-                                                        {t('vehicles:un-subscriptions')}
-                                                    </Button>
-                                                    :
-                                                    <Button
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        className={classes.btnFollow}
-                                                        onClick={() => handleFollowProfile()}>
-                                                        {t('vehicles:subscriptions')}
-                                                    </Button>
-                                                // <StarSVG/>
-                                            }
-                                        </span>
-                                        <span>
-                                            {followerCounter} {t('vehicles:followers', { count: followerCounter })}
-                                        </span>
-                                    </>
-                                )}
-                            </div>
-
-                            {profile.getCountFollowers !== 0 && (
-                                <div className="my-2">
-                                    <ul className="d-flex align-items-center list-style-none">
-                                        {profile.getFollowers.slice(0, 3)
-                                            .map((user, index) => {
-                                                return (
-                                                    <li key={index} className="nav-item navbar-dropdown p-1">
-                                                        <img className="dropdown-toggler rounded-circle"
-                                                            width="30"
-                                                            height="30"
-                                                            src={user.getAvatar || user.getAvatarUrl}
-                                                            title={user.getFullName}
-                                                            alt={user.getUsername}
-                                                        />
-                                                    </li>
-                                                )
-                                            })}
-                                    </ul>
                                 </div>
                             )}
                         </div>
 
+                        <div style={{textAlign:'center', marginTop:'25px'}} >
+                            <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
+                                {profile.getFullName}
+                                {(profile.getIsPro && profile.getIsActivated)}
+                            </h2>
 
-                        <div className={classes.followContainer}
-                            onClick={() => dispatchModalState({
-                                openModalFollowers: true,
-                                modalFollowersProfiles: profile.getFollowings,
-                                modalFollowersTitle: t('vehicles:subscriptions'),
-                                isFollowing: true,
-                                isOwner: profile.getID === authenticatedUser.getID,
-                                handleUnSubscription: handleUnSubscription
-                            })}>
-
-                            <span>
-                                {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
-                            </span>
-
-                            {/*{profile.getCountFollowings !== 0 && (*/}
-                            {/*    <div className="my-2">*/}
-                            {/*        <ul className="d-flex align-items-center list-style-none">*/}
-                            {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
-                            {/*                return (*/}
-                            {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
-                            {/*                        <img className="dropdown-toggler rounded-circle"*/}
-                            {/*                             width="30"*/}
-                            {/*                             height="30"*/}
-                            {/*                             src={user.getAvatar}*/}
-                            {/*                             title={user.getFullName}*/}
-                            {/*                             alt={user.getUsername}*/}
-                            {/*                        />*/}
-                            {/*                    </li>*/}
-                            {/*                )*/}
-                            {/*            })}*/}
-                            {/*        </ul>*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
+                            <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
+                               <NewIcons.pigeon /> @ {profile.getUsername}
+                            </p>
                         </div>
+
+                        <div className={classes.subscriptionWrapper} style={{display:'flex', justifyContent:'right', marginTop:'-25px'}}>
+                            <div className={classes.subscriptionbutton} 
+                                onClick={() => dispatchModalState({
+                                    openModalFollowers: true,
+                                    modalFollowersProfiles: profile.getFollowers,
+                                    modalFollowersTitle: t('vehicles:followers'),
+                                    isFollowing: false,                                
+                                })}
+                                style={{marginRight:'5px'}}>
+                                <div>
+                                    {state.isSelf ? (
+                                        <span>
+                                                {t('vehicles:followers', { count: followerCounter })}
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
+                                                e.stopPropagation()
+                                                // handleFollowProfile()
+                                            }}>
+                                                {
+                                                    alreadyFollowProfile ?
+                                                        // <StarSVGYellow/>
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            className={classes.btnFollow}
+                                                            onClick={() => handleFollowProfile()}>
+                                                            {t('vehicles:un-subscriptions')}
+                                                        </Button>
+                                                        :
+                                                        <Button
+                                                            variant="outlined"
+                                                            color="primary"
+                                                            className={classes.btnFollow}
+                                                            onClick={() => handleFollowProfile()}>
+                                                            {t('vehicles:subscriptions')}
+                                                        </Button>
+                                                    // <StarSVG/>
+                                                }
+                                            </span>
+                                            <span>
+                                                {followerCounter} {t('vehicles:followers', { count: followerCounter })}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={classes.subscriptionbutton}
+                                onClick={() => dispatchModalState({
+                                    openModalFollowers: true,
+                                    modalFollowersProfiles: profile.getFollowings,
+                                    modalFollowersTitle: t('vehicles:subscriptions'),
+                                    isFollowing: true,
+                                    isOwner: profile.getID === authenticatedUser.getID,
+                                    handleUnSubscription: handleUnSubscription
+                                })}>
+
+                                <span>
+                                    {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
+                                </span>
+
+                                {/*{profile.getCountFollowings !== 0 && (*/}
+                                {/*    <div className="my-2">*/}
+                                {/*        <ul className="d-flex align-items-center list-style-none">*/}
+                                {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
+                                {/*                return (*/}
+                                {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
+                                {/*                        <img className="dropdown-toggler rounded-circle"*/}
+                                {/*                             width="30"*/}
+                                {/*                             height="30"*/}
+                                {/*                             src={user.getAvatar}*/}
+                                {/*                             title={user.getFullName}*/}
+                                {/*                             alt={user.getUsername}*/}
+                                {/*                        />*/}
+                                {/*                    </li>*/}
+                                {/*                )*/}
+                                {/*            })}*/}
+                                {/*        </ul>*/}
+                                {/*    </div>*/}
+                                {/*)}*/}
+                            </div>
+                        </div>
+
                     </div>
-
-                    <p className="top-profile-desc">
+                    
+                    {/* <p className="top-profile-desc">
                         {profile.getDescription}
-                    </p>
+                    </p> */}
 
-                </Col>
-            </Row>
-            <TabsContainer {...{
-                state,
-                filterState,
-                updateFilters,
-                fetchAnnounces
-            }} />
-        </Container>
+                </div>
+                <TabsContainer {...{
+                    state,
+                    filterState,
+                    updateFilters,
+                    fetchAnnounces
+                }} />
+            </Container>
+            
+        </>
     )
 }
 
@@ -462,6 +492,18 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     const[selectedSlug, setSelectedSlug] = useState("")
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
 
+    const [state1, setState] = useState({
+        loading: true,
+        sorter: {},
+        filters: {},
+        page: 1,
+        pages: 1,
+        announces: [],
+        total: 0,
+        isScrollLoding: false,
+        announcesMinted: []
+    })
+
     const handleOpenDialogRemove = () => {
 	    setOpenDialogRemove(true)
     }
@@ -485,31 +527,29 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
         router.push(`${href}?activeTab=${tab}`)
     }
 
+    const updateSorter = (sorter) => {
+        setState(state1 => ({
+            ...state1,
+            sorter
+        }))
+    }
     return (
         <Container>
             <Row>
-                <Col sm={12} md={3}>
-                    <Typography component="p" variant="h2">
-                        {t('vehicles:{count}_results_search', { count: filterState.total })}
-                    </Typography>
-                    <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                </Col>
-                <Col sm={12} md={9}>
-                    <Tabs defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange}>
+                <div style={{width:'103%'}}>
+                    
+                         
+                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}} >      
+                       
                         <Tabs.Item id="home-tab" title="Vitrine">
+                            
                             <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                 <Row className="my-2 d-flex justify-content-center">
+                                    
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                        <Col
-                                            key={index}
-                                            sm={12}
-                                            md={6}
-                                            lg={6}
-                                            xl={6}
-                                            className="my-2"
-                                        >
+                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}>  
                                             <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                        </Col>
+                                        </div>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             {/*{profile.getCountGarage !== 0? */}
@@ -534,14 +574,20 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 </Row>
                             </section>
                         </Tabs.Item>
-
+                                   
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:garage')}>
+                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
+                                
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        <div
+                                            key={index}
+                                            style={{maxWidth: '31% !important', marginRight:'2.1%'}}
+                                        > 
                                             <AnnounceCard announceRaw={announceRaw} />
-                                        </Col>
+                                        </div>
+                                        // </Col>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{t('vehicles:no-hidden-announces')}</p>
@@ -552,12 +598,13 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         )}
 
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{maxWidth:'33%'}}>
+                                 
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                        <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                        <div key={index} style={{maxWidth: '31% !important', marginRight:'2.1%'}}> 
                                             <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                        </Col>
+                                        </div>
                                     )) : (
                                         <div className="d-flex flex-column align-items-center smy-2">
                                             <p>{(t('vehicles:no-favorite-announces'))}</p>
@@ -567,7 +614,8 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                             </Tabs.Item>
                         )}
                     </Tabs>
-                </Col>
+                
+                </div>
             </Row>
             
             <Dialog

@@ -165,6 +165,7 @@ const useStyles = makeStyles(() => ({
     }, 
 }))
 
+
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
     
     // const [dropdownOpen, setOpen] = new Array();
@@ -249,8 +250,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     useEffect(() => {
         setValue('year', null);
     }, [selectedModel]);
-    
-    const onSubmit = (form, e, name) => {
+
+    const [formData, setFormData] = useState({
+        vehicleType: [],
+        year: [],
+    })
+
+    const onSubmit = useCallback(async (form, e, name) => {
         
         var empty;
         for(var key in form) {
@@ -258,7 +264,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         }
 
         if(e !== null && e?.type !== null)  if(typeof e?.type === "submit")   e.preventDefault();
-        
+       
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)
         const data = { ...filtersFlat }
@@ -268,9 +274,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             data.coordinates = coordinates
             data.enableGeocoding = true
         }
-
+        
         updateFilters(data)
-    }
+    })
+    
 
     const onResetFilter = (form, e) => {
         const filters = getValues();
@@ -464,7 +471,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
+                <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
                     <CTALink
                         className={clsx(classes.button)}
                         icon={StorefrontIcon}

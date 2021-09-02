@@ -10,6 +10,7 @@ class MyDocument extends Document {
         return (
             <Html lang={documentLang(this.props)}>
                 <Head>
+                    <meta name="viewport" content="viewport-fit=cover" />
                     <meta charSet="UTF-8"/>
                     <meta property="og:title" content="kargain"/>
                     <meta property="og:url" content="kargain.com"/>

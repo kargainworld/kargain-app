@@ -32,6 +32,7 @@ import TextField from '@material-ui/core/TextField'
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
+import { NewIcons } from 'assets/icons'
 
 import Web3 from "web3"
 
@@ -283,6 +284,7 @@ const Announce = () => {
 
     return (
         <Container>
+
             <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
 
             {state.isAdmin && (
@@ -292,6 +294,8 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
+                    
+
                 {!announce.getIsActivated && (
                     <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
                 )}
@@ -300,39 +304,40 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top">
-                            <Typography as="h2" variant="h2">
-                                {announce.getAnnounceTitle}
-                            </Typography>
+                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                            <Row >
+                                <div className="pic">
+                                    <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                        isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                        alt={announce.getTitle}
+                                        style={{ width: 120, height: 120 }}
+                                    />
+                                </div>
 
-                            <div  style={{ width: '100%' }}>
-                                <Box mb={2} display="flex" flexDirection="row">
-                                    <Col sm={4}>
-                                        <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
-                                    </Col>
-                                    {!isOwn && (
-                                        <Col sm={5}>
-                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
-                                                <h4>{t('vehicles:makeOffer')}</h4>
-                                            </button>
-                                        </Col>
+                                <div style={{marginLeft: '10px'}}>
+                                    <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                                        <a>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                                {announce.getAuthor.getFullName}
+                                            </Typography>
+                                        </a>
+                                    </Link>
+
+                                    {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                        <div className="top-profile-location">
+                                            <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
+                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                    {announce.getAdOrAuthorCustomAddress()}
+                                                </span>
+                                            </a>
+                                        </div>
                                     )}
-                                    <Col sm={3}
-                                        className="icons-star-prof"
-                                        onClick={() =>
-                                            dispatchModalState({
-                                                openModalShare: true,
-                                                modalShareAnnounce: announce
-                                            })
-                                        }
-                                    >
-                                        <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
-                                        <img src="/images/share.png" alt="" />
-                                    </Col>
-                                </Box>
-
-
-                            </div>
+                                    {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
+                                </div>
+                            </Row>
                         </div>
 
                         <div className="pics">
@@ -351,43 +356,51 @@ const Announce = () => {
                     </Col>
 
                     <Col sm={12} md={6}>
-                        <div className={classes.formRow}>
-                            <div className="pic" style={{ flex: 1 }}>
-                                <Avatar
-                                    className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                                    alt={announce.getTitle}
-                                    style={{ width: 80, height: 80 }}
-                                />
-                            </div>
+                        <div style={{marginTop:'25px'}}>
+                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
+                                {announce.getAnnounceTitle}
+                            </Typography>
 
-                            <div style={{ flex: 4 }}>
-                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                                    <a>
-                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
-                                            {announce.getAuthor.getFullName}
-                                        </Typography>
-                                    </a>
-                                </Link>
-
-                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <div className="top-profile-location">
-                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                            <span className="top-profile-location">
-                                                <RoomOutlinedIcon />
-                                                {announce.getAdOrAuthorCustomAddress()}
-                                            </span>
-                                        </a>
-                                    </div>
-                                )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>}
+                            <div  style={{ width: '100%',marginTop:'10px' }}>
+                                <Box mb={2} display="flex" flexDirection="row">
+                                    
+                                    <Col sm={7}>
+                                        <Row>
+                                            <p style={{fontSize:'22px'}}>€  </p>
+                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
+                                        </Row>
+                                    </Col>
+                                    {/* {!isOwn && (
+                                        <Col sm={5}>
+                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
+                                                <h4>{t('vehicles:makeOffer')}</h4>
+                                            </button>
+                                        </Col>
+                                    )} */}
+                                    <Col sm={5}
+                                        className="icons-star-prof"
+                                        onClick={() =>
+                                            dispatchModalState({
+                                                openModalShare: true,
+                                                modalShareAnnounce: announce
+                                            })
+                                        }
+                                        style={{display:'flex', justifyContent: 'flex-end'}}
+                                    >
+                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <img src="/images/share.png" alt="" />
+                                    </Col>
+                                </Box>
+                                <div>
+                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                </div>
                             </div>
+                        
                         </div>
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
                             <div className="icons-profile-wrapper">
 
                                 {isOwn && (
@@ -408,7 +421,7 @@ const Announce = () => {
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
                                 >
-                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: 4 }} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -488,14 +501,14 @@ const Announce = () => {
                     </Col>
                 </Row>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:vehicle-data')}
                     </Typography>
                     <CarInfos announce={announce} enableThirdColumn />
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:equipments')}
                     </Typography>
@@ -512,7 +525,7 @@ const Announce = () => {
                     </Row>
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:description')}
                     </Typography>
@@ -521,7 +534,7 @@ const Announce = () => {
                     </div>
                 </section>
 
-                <section className="my-2">
+                <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:data-sheet')}
                     </Typography>
