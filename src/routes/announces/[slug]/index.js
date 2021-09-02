@@ -400,7 +400,7 @@ const Announce = () => {
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
                             <div className="icons-profile-wrapper">
 
                                 {isOwn && (
@@ -421,7 +421,7 @@ const Announce = () => {
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
                                 >
-                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: 4 }} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
