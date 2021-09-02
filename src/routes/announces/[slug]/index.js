@@ -411,17 +411,18 @@ const Announce = () => {
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: like ? '#DB00FF' : '#444444'
+                                            color: like ? '#444444' : '#444444',
+                                            marginRight: '8px'
                                         }}
                                     />
-                                    <span>{likesCounter}</span>
+                                    <span style={{color:'#444444'}}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                    style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px',}} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -441,8 +442,9 @@ const Announce = () => {
                                         })
                                         }
                                     }
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
                                 </Action>
 
                                 {(state.isAdmin || state.isSelf) && (
