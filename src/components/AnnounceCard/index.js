@@ -248,7 +248,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             />
 
                             <Info style={{width:'55%', marginTop:'-5px'}}>
-                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'2px'}}>{announce.getAuthor.getFullName}</AuthorName>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'6px'}}>{announce.getAuthor.getFullName}</AuthorName>
 
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
