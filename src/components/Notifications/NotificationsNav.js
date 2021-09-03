@@ -64,7 +64,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    fontSize: 14,
+    fontSize: 8,
   },
 }));
 
