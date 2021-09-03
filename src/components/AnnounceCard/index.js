@@ -86,6 +86,11 @@ const useStyles = makeStyles(() => ({
         display: 'flex, -webkitFlex-wrap: wrap',
         flexWrap: 'wrap',
         marginRight: '-15px'
+    },
+    share:{
+        '&:hover':{
+            backgroundColor:'#ececec !important',
+        }
     }
 }))
 
@@ -190,15 +195,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
             
                 <CardContent>
                     <Body>
-                        <Meta style={{marginTop: '7px', marginRight: '2px', marginBottom: '-15px'}}>
+                        <Meta className={clsx(classes.share)} style={{marginTop: '-5px', marginRight: '2px', marginBottom: '-27px', width:'25px', height:'25px', backgroundColor: '#ffffff', borderRadius: '50%'}}> 
                             <NewIcons.share
                                 onClick={() =>
                                     dispatchModalState({
                                         openModalShare: true,
                                         modalShareAnnounce: announce
                                     })
+
                                 }
                                 alt="share"
+                                style={{marginTop: '11px',
+                                    marginRight: '3px'}}
                             />
                         </Meta>
                         
