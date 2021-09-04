@@ -26,6 +26,9 @@ import { Row } from 'reactstrap'
 import { NewIcons } from '../../assets/icons'
 import clsx from 'clsx'
 import { Emoji } from 'react-apple-emojis'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
+import customColors from '../../theme/palette'
+import CTALink from '../CTALink'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -91,10 +94,37 @@ const useStyles = makeStyles(() => ({
         '&:hover':{
             backgroundColor:'#ececec !important',
         }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white !important',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        width: "157px",
+        hegiht: "33px",
+        textAlign:'center',
+        background: customColors.gradient.main
+    },
+    modalcontent:{
+        '& .modal-content':{
+            borderRadius: '5px',
+        }
+    },
+    gear:{
+        marginTop:'-55px',
+        marginLeft:"95%",
+        '&:hover':{
+            width:'20px',
+        }
     }
 }))
 
 const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogRemove, onSelectSlug }) => {
+    
+    const [modalOpen, setModalOpen] = React.useState(false);
     const classes = useStyles()
     const refImg = useRef()
     const router = useRouter()
@@ -308,7 +338,39 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 {strkm} Km 
                             </h6>
                             
-                            <Emoji name="gear" width="18" style={{marginTop:'-55px', marginLeft:"90%"}} />
+                            <Emoji  name="gear" width="18" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
+                            
+                            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen} className={clsx(classes.modalcontent)} style={{borderRadius:'5px', marginTop:'15%', width:'400px'}}>
+                                
+                                <button
+                                    aria-label="Close"
+                                    className=" close"
+                                    type="button"
+                                    onClick={() => setModalOpen(!modalOpen)}
+                                    style={{display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        margin: '15px 15px'}}
+                                >
+                                    <NewIcons.modalclose />
+                                </button>
+
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px'}}>
+                                    <div
+                                        className={clsx(classes.button)}
+                                        onClick={e => {
+                                            onSelectSlug(announce.getSlug)
+                                            onhandleOpenDialogRemove()
+                                        }}>
+                                        {t('vehicles:remove-announce')}
+                                    </div>
+                                </div>
+                                
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px', marginBottom:'50px'}}>
+                                    
+                                    <CTALink className={clsx(classes.button)} title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />
+                                </div>
+                                
+                            </Modal> 
                         </div>
                     </Body>
  
