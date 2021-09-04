@@ -29,6 +29,8 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
+
+
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
@@ -60,7 +62,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid'
+        borderBottom: '1px solid #999999'
     },
     wysiwyg: {
         margin: '1rem'
@@ -411,17 +413,18 @@ const Announce = () => {
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: like ? '#DB00FF' : '#444444'
+                                            color: like ? '#444444' : '#444444',
+                                            marginRight: '8px'
                                         }}
                                     />
-                                    <span>{likesCounter}</span>
+                                    <span style={{color:'#444444'}}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                    style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px',}} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -441,8 +444,9 @@ const Announce = () => {
                                         })
                                         }
                                     }
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
                                 </Action>
 
                                 {(state.isAdmin || state.isSelf) && (

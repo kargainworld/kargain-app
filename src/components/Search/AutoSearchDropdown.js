@@ -8,8 +8,47 @@ import useTranslation from 'next-translate/useTranslation'
 import { MessageContext } from '../../context/MessageContext'
 
 import SearchService from '../../services/SearchService'
+import clsx from 'clsx'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import { withStyles } from "@material-ui/core/styles";
+
+const CssTextField = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: 'green',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: 'green',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#EAEAEA',
+        },
+        '&:hover fieldset': {
+          borderColor: 'black',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'black',
+        },
+      },
+    },
+  })(TextField);
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    margin: {
+      margin: theme.spacing(1),
+    },
+  }));
+
 
 const AutocompleteDropdown = () => {
+
+    const classes = useStyles()
+
     const { t } = useTranslation()
     const filter = createFilterOptions();
     const router = useRouter();
@@ -27,6 +66,7 @@ const AutocompleteDropdown = () => {
 
     return (
         <Autocomplete
+            className={clsx(classes.border)}
             value={value}
             onChange={(event, newValue) => {
                 if (typeof newValue === 'string') {
@@ -85,12 +125,22 @@ const AutocompleteDropdown = () => {
             PaperComponent={({ children }) => (
               <Paper style={{ }}>{children}</Paper>
             )}
-            style={{ width: 250, height: 36, marginLeft: "auto" }}
+            style={{ width: 250, marginLeft: "auto" }}
             freeSolo
             forcePopupIcon={true}
             popupIcon={<SearchIcon />}
+            
             renderInput={(params) => (
-                <TextField {...params} label={t('layoutC:search')} variant="outlined" />
+                <form className={classes.root} noValidate>
+                    <CssTextField
+                    {...params}
+                    placeholder={t('layoutC:search')}
+                    className={classes.margin}
+                    variant="outlined"
+                    id="custom-css-outlined-input"
+                    />
+                </form>
+                // <TextField {...params} placeholder={t('layoutC:search')} variant="outlined"  />
             )}
         />
     );

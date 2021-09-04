@@ -15,6 +15,8 @@ import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import clsx from "clsx"
+import { Avatar } from '../AnnounceCard/components'
+import { Row } from 'reactstrap'
 
 const CommentsList = ({ comments, moreLink, className }) => {
     const [deletedComments, setDeletedComments] = useState([])
@@ -63,7 +65,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
                 handleCallback={handleRemoveComment}
             />
 
-            <ul className="commentsCardList">
+            <ul className="commentsCardList" style={{height: '500px'}}>
                 {comments && comments.filter(filterComments).map((comment, index) => {
                     const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
 
@@ -76,48 +78,61 @@ const CommentsList = ({ comments, moreLink, className }) => {
                     return (
                         <li key={index} className="d-flex align-items-center my-2">
                             {!isOwn && (
-                                <ErrorOutlineIcon onClick={() => complain(comment.getID)} />
+                                <div onClick={() => complain(comment.getID)}>
+                                    <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        // src={''}
+                                        // isonline={getOnlineStatusByUserId('')}
+                                        // alt={''}
+                                        style={{ width: '41.83px', height: '41.83px', marginRight: '5px' }}
+                                    />
+                                </div>
                             )}
 
                             {isOwn && (
                                 <span
                                     className="mx-1 top-profile-location edit"
                                     onClick={()=>handleOpenDialogRemove(comment.getID) }>
-                                    <RemoveCircleIcon/>
+                                     <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        // src={''}
+                                        // isonline={getOnlineStatusByUserId('')}
+                                        // alt={''}
+                                        style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '5px' }}
+                                    />
                                 </span>
                             )}
 
-                            <Link href={comment.getAuthor?.getProfileLink}>
+                            {/* <Link href={comment.getAuthor?.getProfileLink}>
                                 <a>
-                                    <Typography as="p" gutterBottom className="mx-1">
+                                    <Typography as="p" gutterBottom className="mx-1" style={{fontSize:'16.575px'}}>
                                         <strong>{comment.getAuthor?.getFullName} : </strong>
                                     </Typography>
                                 </a>
                             </Link>
 
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    maxWidth: '100%',
-                                    marginBottom: 8
-                                }}
-                            >
+                            <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: '100%', marginBottom: 8 }}>
                                 <Typography
                                     as="p"
                                     gutterBottom
-                                    style={{
-                                        whiteSpace: 'nowrap',
-                                        maxWidth: '100%',
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                        marginRight: 16,
-                                        marginBottom: 0
-                                    }}
+                                    style={{ whiteSpace: 'nowrap', maxWidth: '100%', textOverflow: 'ellipsis', marginRight: 16,
+                                        marginBottom: 0, fontSize:'16.575px' }}
                                 >
                                     {comment.getMessage}
                                 </Typography>
 
+                                {moreLink}
+                            </div> */}
+                         
+                             <div style={{ width:"70%", wordWrap: 'normal'}}>
+                                
+                                <Link href={comment.getAuthor?.getProfileLink}>
+                                    <a style={{fontSize:'16.575px'}}>
+                                        <strong>{comment.getAuthor?.getFullName} : </strong>
+                                    </a>
+                                </Link>
+
+                                <label style={{fontSize:'16.575px'}}>{comment.getMessage} </label>
                                 {moreLink}
                             </div>
                         </li>

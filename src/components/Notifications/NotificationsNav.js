@@ -51,19 +51,20 @@ const useStyles = makeStyles(() => ({
   },
   badge: {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 20,
-    height: 20,
+    top: '12px',
+    right: '10px',
+    width: '10.73px',
+    height: '12px',
     borderRadius: '50%',
-    background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
+    backgroundColor: '#A291F3',
+    // background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
   },
   counts: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    fontSize: 14,
+    fontSize: 8,
   },
 }));
 
