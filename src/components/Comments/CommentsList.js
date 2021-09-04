@@ -65,7 +65,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
                 handleCallback={handleRemoveComment}
             />
 
-            <ul className="commentsCardList" style={{height: '322px'}}>
+            <ul className="commentsCardList" style={{height: '500px'}}>
                 {comments && comments.filter(filterComments).map((comment, index) => {
                     const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
 
@@ -124,7 +124,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                 {moreLink}
                             </div> */}
                          
-                             <Row style={{ width:"70%", wordWrap: 'normal'}}>
+                             <div style={{ width:"70%", wordWrap: 'normal'}}>
                                 
                                 <Link href={comment.getAuthor?.getProfileLink}>
                                     <a style={{fontSize:'16.575px'}}>
@@ -134,7 +134,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
 
                                 <label style={{fontSize:'16.575px'}}>{comment.getMessage} </label>
                                 {moreLink}
-                            </Row>
+                            </div>
                         </li>
                     )
                 })}
