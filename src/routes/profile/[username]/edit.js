@@ -33,6 +33,8 @@ import UsersService from '../../../services/UsersService'
 import { themeColors } from '../../../theme/palette'
 import UserModel from '../../../models/user.model'
 import Error from '../../_error'
+import customColors from '../../../theme/palette'
+import { NewIcons } from 'assets/icons'
 
 const useStyles = makeStyles(() => ({
     stickyNav: {
@@ -71,8 +73,8 @@ const useStyles = makeStyles(() => ({
         '&.active': {
             fontWeight: '700',
             border: 'none',
-            borderBottom: `4px solid ${themeColors.blue}`,
-            color: themeColors.blue,
+            borderBottom: `4px solid #EF5DA8`,
+            color: '#EF5DA8',
             textAlign: 'center',
             background: 'none'
         },
@@ -89,7 +91,70 @@ const useStyles = makeStyles(() => ({
             margin: '1rem',
             flex: 1
         }
-    }
+    },
+
+    customize:{
+        '& h2':{
+            fontSize:'24px !important'
+        },
+        '& input':{
+            backgroundColor:'#ffffff !important',
+        }
+    },
+
+    RemoveColorlabel:{
+       '& label':{
+            marginBottom: '15px !important'
+       }
+    },
+
+    bordergradientbtn:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontSize: '14px',        
+        padding: '5px 30px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset', 
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
+        
+        '& span':{
+        
+            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+            backgroundClip: 'text',
+            color: 'transparent'
+            
+        }        
+    },
+    gradienttext:{
+        background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+        backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+        backgroundClip: 'text',
+        color: 'transparent'
+    },
+    phon:{
+        '& .special-label':{
+            display: 'none !important'
+        }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        background: customColors.gradient.main
+    },
+
+    
 }))
 
 const Edit = () => {
@@ -304,21 +369,22 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                     />
                 </TabPane>
                 <TabPane tabId={1}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                         {t('vehicles:payments-bills')}
                     </Typography>
                     <OffersPurchaseForm offer={offer} />
                 </TabPane>
                 <TabPane tabId={2}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                         {t('vehicles:confidentiality-security')}
                     </Typography>
                     <Button
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<DeleteIcon />}
+                        endIcon={<DeleteIcon />}
                         onClick={handleOpenDialogRemove}
+                        style={{marginTop:'25px'}}
                     >
                         {t('vehicles:remove-profile')}
                     </Button>
@@ -341,7 +407,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     const countrySelect = watch('countrySelect')
     return (
         <>
-            <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+            <Typography component="h2" variant="h2" gutterBottom className={clsx("text-left", classes.customize)}>
                 {t('vehicles:edit-my-profile')}
             </Typography>
             <AvatarPreviewUpload/>
@@ -365,23 +431,32 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 </FieldWrapper>
             </div>
 
-            <FieldWrapper label="Email">
+            <FieldWrapper label="Email" className={clsx(classes.customize)}>
                 <EmailInput
                     name="email"
                     errors={errors}
                     control={control}
                     disabled
                     rules={{ required: t('form_validations:required') }}
+                    className={clsx(classes.customize)}
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:password')} classNameWrapper="my-3">
+            <div classNameWrapper="my-3" style={{marginLeft:'8px'}}>
+                <label style={{
+                    color: '#999999',
+                    width: '100%',
+                    padding: '0',
+                    fontSize: '12px',
+                    marginTop: '12px',
+                    marginBottom: '15px',
+                }}>{t('vehicles:password')}</label>
                 <Link href="/auth/forgotten">
-                    <a className="m-2">
-                        Reset password
+                    <a className={"m-2", clsx(classes.bordergradientbtn)}>
+                        <label className={clsx(classes.gradienttext)}> RESET PASSWORD </label>   
                     </a>
                 </Link>
-            </FieldWrapper>
+            </div>
 
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
@@ -401,16 +476,19 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 </SearchLocationInput>
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:phone')}>
-                <TelInput
-                    name="phone"
-                    errors={errors}
-                    control={control}
-                    rules={{ required: t('form_validations:field-is-required') }}
-                    innerProps={{
-                        country: 'fr'
-                    }}
-                />
+            <FieldWrapper label={t('vehicles:phone')}  >
+                <div className={clsx(classes.phon)} >
+                    <TelInput
+                        name="phone"
+                        errors={errors}
+                        control={control}
+                        rules={{ required: t('form_validations:field-is-required') }}
+                        innerProps={{
+                            country: 'fr'
+                        }}
+                        className={clsx(classes.phon)}
+                    />
+                </div>
             </FieldWrapper>
 
             <FieldWrapper label="Description">
@@ -481,21 +559,23 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     return (
-        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px' }}>
+        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft:'30px' }}>
             <Button
                 variant="contained"
                 color="primary"
                 size="large"
-                className={classes.button}
-                startIcon={<SaveIcon/>}
+                className={clsx(classes.button)}
+                endIcon={<NewIcons.save style={{marginLeft:'8px'}}/>}
                 type="submit"
+                style={{width:'220px', height:'35px', marginLeft:'20px'}}
                 onClick={() => {
                     triggerSubmit()
                 }}>
                 {t('vehicles:save')}
+                
             </Button>
 
-            <CTALink title={t('vehicles:back_to_profile')} href={profilePageLink}/>
+            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{width:'220px', height:'35px', marginTop:'10px', marginLeft:'20px'}}/>
         </div>
     )
 }
