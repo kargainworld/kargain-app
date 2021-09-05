@@ -49,8 +49,6 @@ const useStyles = makeStyles(() => ({
             flex: 1
         }
     },
-
-
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -66,6 +64,23 @@ const useStyles = makeStyles(() => ({
     },
     wysiwyg: {
         margin: '1rem'
+    },
+    buttonblue:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '6px 50px',
+
+        background: '#2C65F6',
+        borderRadius: '25px',
+
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '150%',
+        color:'white',
+        
+        marginTop:'20px',
     }
 }))
 
@@ -501,50 +516,52 @@ const Announce = () => {
                                 </div>
                             </div>
                         )}
-                        
+
                         <Comments announceRaw={announce.getRaw} />
+                        <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
                     </Col>
                 </Row>
+                <div style={{marginTop:'50px'}}>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:vehicle-data')}
+                        </Typography>
+                        <CarInfos announce={announce} enableThirdColumn />
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:vehicle-data')}
-                    </Typography>
-                    <CarInfos announce={announce} enableThirdColumn />
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:equipments')}
+                        </Typography>
+                        <Row>
+                            {announce.getVehicleEquipments.map((equipment, index) => {
+                                return (
+                                    <Col sm={6} md={3} key={index}>
+                                        <div className="equipment m-3">
+                                            <Typography>{equipment.label}</Typography>
+                                        </div>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:equipments')}
-                    </Typography>
-                    <Row>
-                        {announce.getVehicleEquipments.map((equipment, index) => {
-                            return (
-                                <Col sm={6} md={3} key={index}>
-                                    <div className="equipment m-3">
-                                        <Typography>{equipment.label}</Typography>
-                                    </div>
-                                </Col>
-                            )
-                        })}
-                    </Row>
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:description')}
+                        </Typography>
+                        <div className={classes.wysiwyg}>
+                            <Typography>{announce.getDescription}</Typography>
+                        </div>
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:description')}
-                    </Typography>
-                    <div className={classes.wysiwyg}>
-                        <Typography>{announce.getDescription}</Typography>
-                    </div>
-                </section>
-
-                <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:data-sheet')}
                     </Typography>
                     <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
                 </section>
+                </div>
             </div>
         </Container>
     )
