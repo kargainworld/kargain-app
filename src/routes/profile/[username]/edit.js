@@ -73,8 +73,8 @@ const useStyles = makeStyles(() => ({
         '&.active': {
             fontWeight: '700',
             border: 'none',
-            borderBottom: `4px solid ${themeColors.blue}`,
-            color: themeColors.blue,
+            borderBottom: `4px solid #EF5DA8`,
+            color: '#EF5DA8',
             textAlign: 'center',
             background: 'none'
         },
@@ -382,7 +382,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<DeleteIcon />}
+                        endIcon={<DeleteIcon />}
                         onClick={handleOpenDialogRemove}
                     >
                         {t('vehicles:remove-profile')}
