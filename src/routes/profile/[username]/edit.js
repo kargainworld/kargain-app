@@ -89,7 +89,55 @@ const useStyles = makeStyles(() => ({
             margin: '1rem',
             flex: 1
         }
+    },
+
+    customize:{
+        '& h2':{
+            fontSize:'24px !important'
+        },
+        '& input':{
+            backgroundColor:'#ffffff !important',
+        }
+    },
+
+    RemoveColorlabel:{
+       '& label':{
+            marginBottom: '15px !important'
+       }
+    },
+
+    bordergradientbtn:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontSize: '14px',        
+        padding: '5px 30px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset', 
+        
+  
+      
+        /* Use the text as a mask for the background. */
+        /* This will show the gradient as a text color rather than element bg. */
+       
+        //   button.button:hover {
+        //     box-shadow: none;
+        //     color: white;
+        //   }
+    },
+    gradienttext:{
+        background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+    },
+    phon:{
+        '& .special-label':{
+            display: 'none !important'
+        }
     }
+
+    
 }))
 
 const Edit = () => {
@@ -341,7 +389,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     const countrySelect = watch('countrySelect')
     return (
         <>
-            <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+            <Typography component="h2" variant="h2" gutterBottom className={clsx("text-left", classes.customize)}>
                 {t('vehicles:edit-my-profile')}
             </Typography>
             <AvatarPreviewUpload/>
@@ -365,23 +413,32 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 </FieldWrapper>
             </div>
 
-            <FieldWrapper label="Email">
+            <FieldWrapper label="Email" className={clsx(classes.customize)}>
                 <EmailInput
                     name="email"
                     errors={errors}
                     control={control}
                     disabled
                     rules={{ required: t('form_validations:required') }}
+                    className={clsx(classes.customize)}
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:password')} classNameWrapper="my-3">
+            <div classNameWrapper="my-3" style={{marginLeft:'8px'}}>
+                <label style={{
+                    color: '#999999',
+                    width: '100%',
+                    padding: '0',
+                    fontSize: '12px',
+                    marginTop: '12px',
+                    marginBottom: '15px',
+                }}>{t('vehicles:password')}</label>
                 <Link href="/auth/forgotten">
-                    <a className="m-2">
-                        Reset password
+                    <a className={"m-2", clsx(classes.bordergradientbtn)}>
+                        <label className={clsx(classes.gradienttext)}> RESET PASSWORD </label>   
                     </a>
                 </Link>
-            </FieldWrapper>
+            </div>
 
             <FieldWrapper label={t('vehicles:country')}>
                 <SelectCountryFlags
@@ -401,16 +458,19 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 </SearchLocationInput>
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:phone')}>
-                <TelInput
-                    name="phone"
-                    errors={errors}
-                    control={control}
-                    rules={{ required: t('form_validations:field-is-required') }}
-                    innerProps={{
-                        country: 'fr'
-                    }}
-                />
+            <FieldWrapper label={t('vehicles:phone')}  >
+                <div className={clsx(classes.phon)} >
+                    <TelInput
+                        name="phone"
+                        errors={errors}
+                        control={control}
+                        rules={{ required: t('form_validations:field-is-required') }}
+                        innerProps={{
+                            country: 'fr'
+                        }}
+                        className={clsx(classes.phon)}
+                    />
+                </div>
             </FieldWrapper>
 
             <FieldWrapper label="Description">
@@ -495,7 +555,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                 {t('vehicles:save')}
             </Button>
 
-            <CTALink title={t('vehicles:back_to_profile')} href={profilePageLink}/>
+            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink}/>
         </div>
     )
 }
