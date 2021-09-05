@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(() => ({
     button: {
         border: "none !important",
-        padding: '6px 2rem',
+        padding: '8px 2rem',
         borderRadius: '20px',
         color: 'white !important',
         fontSize: '14px',
@@ -30,7 +30,7 @@ const CommentForm = ({ onSubmitComment, textareaCommentRef, doneSubmitting }) =>
         <form onSubmit={e => onSubmitComment(e)}
             className="comments-write" >
             <div style={{display:'flex'}}>
-                <div className="form-group">
+                <div className="form-group" style={{width: '70%'}}>
                     <input 
                         type="text"
                         rows={3}
@@ -38,16 +38,17 @@ const CommentForm = ({ onSubmitComment, textareaCommentRef, doneSubmitting }) =>
                         ref={textareaCommentRef}
                         placeholder="ex: Superbe voiture"
                         // className="form-control editor"]
-                        // style={{height:'40px'}}
+                        style={{width:'100%'}}
                     />
                 </div>
                 
-                <div >
+                <div style={{marginLeft:'10px'}}>
                     <button
                         className={clsx(classes.button)}
                         disabled={!doneSubmitting}
                         type="submit">
-                        {t('vehicles:add_a_comment')}
+                        {t('vehicles:send')}
+                        {/* {t('vehicles:add_a_comment')} */}
                     </button>
                 </div>
             </div>

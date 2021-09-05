@@ -424,7 +424,7 @@ const Announce = () => {
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px',}} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
