@@ -35,6 +35,7 @@ import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import Web3 from "web3"
 
@@ -81,10 +82,34 @@ const useStyles = makeStyles(() => ({
         color:'white',
         
         marginTop:'20px',
+    },
+
+    filtersHidden: {
+        display: 'none'
+    },
+    textfield:{
+        '& .MuiInputBase-root':{
+            height:'40px'
+        },
+        '& input:disabled': {
+            backgroundColor: '#d5d8db',
+            height: '5px'
+        }
     }
 }))
 
 const Announce = () => {
+    const isMobile = useMediaQuery('(max-width:768px)')
+    const [hiddenForm, hideForm] = useState(true)
+
+    const toggleFilters = () => {
+        hideForm((hiddenForm) => !hiddenForm);
+    };
+
+    useEffect(()=>{
+        toggleFilters()
+    },[isMobile])
+
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
     const [bnbBalanceWei, setBalanceWei] = useState()
@@ -418,7 +443,7 @@ const Announce = () => {
                         <TagsList tags={announce.getTags} />
 
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
-                            <div className="icons-profile-wrapper">
+                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -464,31 +489,57 @@ const Announce = () => {
                                     <i.MailOutline style={{ position: 'relative', top: -1,  }} />
                                 </Action>
 
+
                                 {(state.isAdmin || state.isSelf) && (
                                     <div style={{ display: "flex", gap: 5 }}>
                                         <CTALink href={announce.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                                     </div>
                                 )}
                             </div>
+
+                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                                <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
+                            </div>
                         </div>
+
+                        {(!isOwn) && (
+                            <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                <Comments announceRaw={announce.getRaw} />
+                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                            </div>
+                        )}
+                        
+
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5 }}>
-                                            <TextField
-                                                label="Token price"
-                                                onChange={(event) => setTokenPrice(event.target.value)}
-                                                value={tokenPrice}
-                                                type="number"
-                                                InputLabelProps={{ shrink: true }}
-                                                error={!!error}
-                                                helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
-                                                disabled={!isConfirmed || !active}
-                                                variant="outlined"
-                                            />
-                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
+                                        <div style={{ display: "flex", gap: 5, width:'95%'}}>
+                                            <div style={{width:'80%'}}> 
+                                                <div>
+                                                    <label style={{
+                                                        fontWeight: 'normal',
+                                                        fontSize: '12px',
+                                                        lineHeight: '150%',
+                                                        color: '#999999'
+                                                    }}>Token price :</label>
+                                                </div>
+                                                <TextField
+                                                    // label="Token price"
+                                                    className={clsx(classes.textfield)}
+                                                    onChange={(event) => setTokenPrice(event.target.value)}
+                                                    value={tokenPrice}
+                                                    type="number"
+                                                    InputLabelProps={{ shrink: true }}
+                                                    error={!!error}
+                                                    helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
+                                                    disabled={!isConfirmed || !active}
+                                                    variant="outlined"
+                                                    style={{height:'40px', width:'100%'}}
+                                                />
+                                            </div>
+                                            <button className={clsx(classes.buttonblue)} disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
                                                 const tokenId = state.announce.getTokenId
 
                                                 setIsConfirmed(false)
@@ -507,7 +558,9 @@ const Announce = () => {
                                                     setError(error)
                                                     setIsConfirmed(true)
                                                 })
-                                            }}>
+                                                
+                                            }}
+                                            style={{height:'40px', marginTop:'30px'}}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
@@ -516,9 +569,6 @@ const Announce = () => {
                                 </div>
                             </div>
                         )}
-
-                        <Comments announceRaw={announce.getRaw} />
-                        <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
                     </Col>
                 </Row>
                 <div style={{marginTop:'50px'}}>
