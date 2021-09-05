@@ -384,6 +384,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                         className={classes.button}
                         endIcon={<DeleteIcon />}
                         onClick={handleOpenDialogRemove}
+                        style={{marginTop:'25px'}}
                     >
                         {t('vehicles:remove-profile')}
                     </Button>
