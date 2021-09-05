@@ -27,6 +27,7 @@ import avatarcheck from './icon_avatarcheck.svg';
 import card_message_pink from './icon_message_pink.svg';
 import heart_blue from './icon_heart_blue.svg';
 import pen from './icon_pen.svg';
+import save from './icon_save.svg'
 
 export const NewIcons = {
     message,
@@ -59,4 +60,5 @@ export const NewIcons = {
     card_message_pink,
     heart_blue,
     pen,
+    save,
 }

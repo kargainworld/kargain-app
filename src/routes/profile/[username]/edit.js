@@ -33,6 +33,8 @@ import UsersService from '../../../services/UsersService'
 import { themeColors } from '../../../theme/palette'
 import UserModel from '../../../models/user.model'
 import Error from '../../_error'
+import customColors from '../../../theme/palette'
+import { NewIcons } from 'assets/icons'
 
 const useStyles = makeStyles(() => ({
     stickyNav: {
@@ -118,24 +120,42 @@ const useStyles = makeStyles(() => ({
         backgroundClip: 'content-box, border-box',
         boxShadow: '2px 1000px 1px #fff inset', 
         
-  
-      
-        /* Use the text as a mask for the background. */
-        /* This will show the gradient as a text color rather than element bg. */
+        
+        '& span':{
+        
+            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+            backgroundClip: 'text',
+            color: 'transparent'
+            
+        },
        
-        //   button.button:hover {
-        //     box-shadow: none;
-        //     color: white;
-        //   }
+        '& button:hover': {
+            boxShadow: 'none',
+            color: 'white',
+        }
     },
     gradienttext:{
         background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+        backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+        backgroundClip: 'text',
+        color: 'transparent'
     },
     phon:{
         '& .special-label':{
             display: 'none !important'
         }
-    }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        background: customColors.gradient.main
+    },
 
     
 }))
@@ -541,21 +561,23 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     return (
-        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px' }}>
+        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft:'30px' }}>
             <Button
                 variant="contained"
                 color="primary"
                 size="large"
-                className={classes.button}
-                startIcon={<SaveIcon/>}
+                className={clsx(classes.button)}
+                endIcon={<NewIcons.save style={{marginLeft:'8px'}}/>}
                 type="submit"
+                style={{width:'220px', height:'35px', marginLeft:'20px'}}
                 onClick={() => {
                     triggerSubmit()
                 }}>
                 {t('vehicles:save')}
+                
             </Button>
 
-            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink}/>
+            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{width:'220px', height:'35px', marginTop:'10px', marginLeft:'20px'}}/>
         </div>
     )
 }
