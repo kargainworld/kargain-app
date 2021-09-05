@@ -119,7 +119,9 @@ const useStyles = makeStyles(() => ({
         backgroundOrigin: 'border-box',
         backgroundClip: 'content-box, border-box',
         boxShadow: '2px 1000px 1px #fff inset', 
-        
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
         
         '& span':{
         
@@ -128,12 +130,7 @@ const useStyles = makeStyles(() => ({
             backgroundClip: 'text',
             color: 'transparent'
             
-        },
-       
-        '& button:hover': {
-            boxShadow: 'none',
-            color: 'white',
-        }
+        }        
     },
     gradienttext:{
         background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
