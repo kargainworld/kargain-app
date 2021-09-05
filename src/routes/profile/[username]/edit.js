@@ -369,13 +369,13 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                     />
                 </TabPane>
                 <TabPane tabId={1}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                         {t('vehicles:payments-bills')}
                     </Typography>
                     <OffersPurchaseForm offer={offer} />
                 </TabPane>
                 <TabPane tabId={2}>
-                    <Typography component="h2" variant="h2" className="text-center" gutterBottom>
+                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                         {t('vehicles:confidentiality-security')}
                     </Typography>
                     <Button
