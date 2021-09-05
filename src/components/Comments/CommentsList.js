@@ -17,8 +17,38 @@ import CommentsService from '../../services/CommentsService'
 import clsx from "clsx"
 import { Avatar } from '../AnnounceCard/components'
 import { Row } from 'reactstrap'
+import AnnounceModel from '../../models/announce.model'
+import { useSocket } from '../../context/SocketContext'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import { NewIcons } from 'assets/icons'
+
+const useStyles = makeStyles(() => ({
+    '& ul':{
+        '& ::-webkit-scrollbar': {
+            width: '5px'
+        },
+        
+        /* Track */
+        '& ::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 5px grey', 
+            borderRadius: '10px'
+        },
+        
+        /* Handle */
+        '& ::-webkit-scrollbar-thumb': {
+            background: 'red', 
+            borderRadius: '10px',
+        },
+        
+        /* Handle on hover */
+        '& ::-webkit-scrollbar-thumb:hover': {
+            background: '#b30000' 
+        }
+    }
+}))
 
 const CommentsList = ({ comments, moreLink, className }) => {
+    const classes = useStyles()
     const [deletedComments, setDeletedComments] = useState([])
     const { authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
@@ -55,17 +85,32 @@ const CommentsList = ({ comments, moreLink, className }) => {
         }
     }
 
+    const { getOnlineStatusByUserId } = useSocket()
     const filterComments = (CommentModel) => !deletedComments.includes(CommentModel.getID)
 
+    const [state, setState] = useState({
+        err: null,
+        stateReady: false,
+        isSelf: false,
+        isAdmin: false,
+        announce: new AnnounceModel()
+    })
+
+    const { announce } = state
+
     return (
-        <div>
+        <div  className = {clsx(classes)}>
             <ModalConfirmRemoveComment
                 openDialogRemove={openDialogRemove}
                 handleCloseDialogRemove={handleCloseDialogRemove}
                 handleCallback={handleRemoveComment}
             />
 
-            <ul className="commentsCardList" style={{height: '500px'}}>
+            <ul
+                    style={{listStyleType: 'none',
+                        margin: '1rem 0',
+                        height: '300px',
+                        overflowY: 'scroll'}}>
                 {comments && comments.filter(filterComments).map((comment, index) => {
                     const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
 
@@ -76,65 +121,83 @@ const CommentsList = ({ comments, moreLink, className }) => {
                     }
 
                     return (
-                        <li key={index} className="d-flex align-items-center my-2">
-                            {!isOwn && (
-                                <div onClick={() => complain(comment.getID)}>
-                                    <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        // src={''}
-                                        // isonline={getOnlineStatusByUserId('')}
-                                        // alt={''}
-                                        style={{ width: '41.83px', height: '41.83px', marginRight: '5px' }}
-                                    />
+                        <li key={index} >
+                        {/* <li key={index} className="d-flex"> */}
+                            <div className="d-flex align-items-top my-2">
+                                <div style={{display:'flex', width:'80%', wordWrap: 'break-word'}}>
+                                    {!isOwn && (
+                                        <div onClick={() => complain(comment.getID)}
+                                            style={{
+                                                color: '#999999',
+                                                display: '-webkit-flex',
+                                                display: '-moz-box',
+                                                display: 'flex',
+                                                alignItems: 'flex-start'}}
+                                        >
+                                            <Avatar
+                                                className="img-profile-wrapper avatar-preview"
+                                                src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
+                                                isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
+                                                alt={comment.getTitle}
+                                                style={{ width: '41.83px', height: '41.83px', marginRight: '10px' }}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {isOwn && (
+                                        <span
+                                            className="mx-1 top-profile-location edit"
+                                            onClick={()=>handleOpenDialogRemove(comment.getID) }
+                                            style={{
+                                                color: '#999999',
+                                                display: '-webkit-flex',
+                                                display: '-moz-box',
+                                                display: 'flex',
+                                                alignItems: 'flex-start'
+                                            }}
+                                        >
+                                            <Avatar
+                                                className="img-profile-wrapper avatar-preview"
+                                                src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
+                                                isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
+                                                alt={comment.getTitle}
+                                                style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '10px'}}
+                                            />
+                                        </span>
+                                    )}
+                                    <div>
+                                        <div style={{display:'flex'}}>
+                                            <label>
+                                                <Link href={comment.getAuthor?.getProfileLink} style={{width:'30%'}}>
+                                                    <a style={{fontSize:'16.575px'}}>
+                                                        <strong>{comment.getAuthor?.getFullName} : </strong>
+                                                    
+                                                    </a>
+                                                </Link>
+                                                {comment.getMessage} 
+                                            </label>
+                                            {moreLink}
+                                        </div>
+                                        <div style={{fontSize:'14px', color:'#999999', width:'100%', marginTop:'5px', marginBottom:'10px'}}>
+                                            <label style={{marginRight:'10px'}}>2d</label>
+                                            <label style={{marginRight:'10px'}}>1 like</label>
+                                            <label>Reply</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            )}
+                                {!isOwn && (
+                                    <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
+                                        <NewIcons.card_heart style={{width:'15px', height:'15px'}}/>
+                                    </div>
+                                )}
 
-                            {isOwn && (
-                                <span
-                                    className="mx-1 top-profile-location edit"
-                                    onClick={()=>handleOpenDialogRemove(comment.getID) }>
-                                     <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        // src={''}
-                                        // isonline={getOnlineStatusByUserId('')}
-                                        // alt={''}
-                                        style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '5px' }}
-                                    />
-                                </span>
-                            )}
-
-                            {/* <Link href={comment.getAuthor?.getProfileLink}>
-                                <a>
-                                    <Typography as="p" gutterBottom className="mx-1" style={{fontSize:'16.575px'}}>
-                                        <strong>{comment.getAuthor?.getFullName} : </strong>
-                                    </Typography>
-                                </a>
-                            </Link>
-
-                            <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: '100%', marginBottom: 8 }}>
-                                <Typography
-                                    as="p"
-                                    gutterBottom
-                                    style={{ whiteSpace: 'nowrap', maxWidth: '100%', textOverflow: 'ellipsis', marginRight: 16,
-                                        marginBottom: 0, fontSize:'16.575px' }}
-                                >
-                                    {comment.getMessage}
-                                </Typography>
-
-                                {moreLink}
-                            </div> */}
-                         
-                             <div style={{ width:"70%", wordWrap: 'normal'}}>
-                                
-                                <Link href={comment.getAuthor?.getProfileLink}>
-                                    <a style={{fontSize:'16.575px'}}>
-                                        <strong>{comment.getAuthor?.getFullName} : </strong>
-                                    </a>
-                                </Link>
-
-                                <label style={{fontSize:'16.575px'}}>{comment.getMessage} </label>
-                                {moreLink}
+                                {isOwn && (
+                                    <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
+                                        <NewIcons.heart_blue />
+                                    </div>
+                                )}
                             </div>
+                            
                         </li>
                     )
                 })}
