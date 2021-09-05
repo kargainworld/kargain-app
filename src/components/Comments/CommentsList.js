@@ -20,6 +20,7 @@ import { Row } from 'reactstrap'
 import AnnounceModel from '../../models/announce.model'
 import { useSocket } from '../../context/SocketContext'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import { NewIcons } from 'assets/icons'
 
 const useStyles = makeStyles(() => ({
     '& ::-webkit-scrollbar': {
@@ -120,59 +121,72 @@ const CommentsList = ({ comments, moreLink, className }) => {
                     return (
                         <li key={index} className="d-flex align-items-top my-2">
                         {/* <li key={index} className="d-flex"> */}
+                            <div style={{display:'flex', width:'80%', wordWrap: 'break-word'}}>
+                                {!isOwn && (
+                                    <div onClick={() => complain(comment.getID)}
+                                        style={{
+                                            color: '#999999',
+                                            display: '-webkit-flex',
+                                            display: '-moz-box',
+                                            display: 'flex',
+                                            alignItems: 'flex-start'}}
+                                    >
+                                        <Avatar
+                                            className="img-profile-wrapper avatar-preview"
+                                            src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
+                                            isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
+                                            alt={comment.getTitle}
+                                            style={{ width: '41.83px', height: '41.83px', marginRight: '10px' }}
+                                        />
+                                    </div>
+                                )}
+
+                                {isOwn && (
+                                    <span
+                                        className="mx-1 top-profile-location edit"
+                                        onClick={()=>handleOpenDialogRemove(comment.getID) }
+                                        style={{
+                                            color: '#999999',
+                                            display: '-webkit-flex',
+                                            display: '-moz-box',
+                                            display: 'flex',
+                                            alignItems: 'flex-start'
+                                        }}
+                                    >
+                                        <Avatar
+                                            className="img-profile-wrapper avatar-preview"
+                                            src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
+                                            isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
+                                            alt={comment.getTitle}
+                                            style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '10px'}}
+                                        />
+                                    </span>
+                                )}
+
+                                <div style={{display:'flex'}}>
+                                    <label>
+                                        <Link href={comment.getAuthor?.getProfileLink} style={{width:'30%'}}>
+                                            <a style={{fontSize:'16.575px'}}>
+                                                <strong>{comment.getAuthor?.getFullName} : </strong>
+                                            
+                                            </a>
+                                        </Link>
+                                        {comment.getMessage} 
+                                    </label>
+                                    {moreLink}
+                                </div>
+                            </div>
                             {!isOwn && (
-                                <div onClick={() => complain(comment.getID)}
-                                    style={{
-                                        color: '#999999',
-                                        display: '-webkit-flex',
-                                        display: '-moz-box',
-                                        display: 'flex',
-                                        alignItems: 'flex-start'}}
-                                >
-                                    <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
-                                        isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
-                                        alt={comment.getTitle}
-                                        style={{ width: '41.83px', height: '41.83px', marginRight: '10px' }}
-                                    />
+                                <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
+                                    <NewIcons.card_heart style={{width:'15px', height:'15px'}}/>
                                 </div>
                             )}
 
                             {isOwn && (
-                                <span
-                                    className="mx-1 top-profile-location edit"
-                                    onClick={()=>handleOpenDialogRemove(comment.getID) }
-                                    style={{
-                                        color: '#999999',
-                                        display: '-webkit-flex',
-                                        display: '-moz-box',
-                                        display: 'flex',
-                                        alignItems: 'flex-start'
-                                    }}
-                                >
-                                     <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
-                                        isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
-                                        alt={comment.getTitle}
-                                        style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '10px'}}
-                                    />
-                                </span>
+                                <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
+                                    <NewIcons.heart_blue />
+                                </div>
                             )}
-
-                             <div style={{display:'flex', width:'65%', wordWrap: 'break-word'}}>
-                                <label>
-                                    <Link href={comment.getAuthor?.getProfileLink} style={{width:'30%'}}>
-                                        <a style={{fontSize:'16.575px'}}>
-                                            <strong>{comment.getAuthor?.getFullName} : </strong>
-                                           
-                                        </a>
-                                    </Link>
-                                    {comment.getMessage} 
-                                </label>
-                                {moreLink}
-                            </div>
                         </li>
                     )
                 })}

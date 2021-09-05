@@ -501,6 +501,7 @@ const Announce = () => {
                                 </div>
                             </div>
                         )}
+                        
                         <Comments announceRaw={announce.getRaw} />
                     </Col>
                 </Row>
