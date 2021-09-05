@@ -29,10 +29,13 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
+
+
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import Web3 from "web3"
 
@@ -47,8 +50,6 @@ const useStyles = makeStyles(() => ({
             flex: 1
         }
     },
-
-
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -60,14 +61,55 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid'
+        borderBottom: '1px solid #999999'
     },
     wysiwyg: {
         margin: '1rem'
+    },
+    buttonblue:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '6px 50px',
+
+        background: '#2C65F6',
+        borderRadius: '25px',
+
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '150%',
+        color:'white',
+        
+        marginTop:'20px',
+    },
+
+    filtersHidden: {
+        display: 'none'
+    },
+    textfield:{
+        '& .MuiInputBase-root':{
+            height:'40px'
+        },
+        '& input:disabled': {
+            backgroundColor: '#d5d8db',
+            height: '5px'
+        }
     }
 }))
 
 const Announce = () => {
+    const isMobile = useMediaQuery('(max-width:768px)')
+    const [hiddenForm, hideForm] = useState(true)
+
+    const toggleFilters = () => {
+        hideForm((hiddenForm) => !hiddenForm);
+    };
+
+    useEffect(()=>{
+        toggleFilters()
+    },[isMobile])
+
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
     const [bnbBalanceWei, setBalanceWei] = useState()
@@ -401,7 +443,7 @@ const Announce = () => {
                         <TagsList tags={announce.getTags} />
 
                         <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
-                            <div className="icons-profile-wrapper">
+                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -411,17 +453,18 @@ const Announce = () => {
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: like ? '#DB00FF' : '#444444'
+                                            color: like ? '#444444' : '#444444',
+                                            marginRight: '8px'
                                         }}
                                     />
-                                    <span>{likesCounter}</span>
+                                    <span style={{color:'#444444'}}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                    style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -441,9 +484,11 @@ const Announce = () => {
                                         })
                                         }
                                     }
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
                                 </Action>
+
 
                                 {(state.isAdmin || state.isSelf) && (
                                     <div style={{ display: "flex", gap: 5 }}>
@@ -451,25 +496,50 @@ const Announce = () => {
                                     </div>
                                 )}
                             </div>
+
+                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                                <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
+                            </div>
                         </div>
+
+                        {(!isOwn) && (
+                            <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                <Comments announceRaw={announce.getRaw} />
+                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                            </div>
+                        )}
+                        
+
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5 }}>
-                                            <TextField
-                                                label="Token price"
-                                                onChange={(event) => setTokenPrice(event.target.value)}
-                                                value={tokenPrice}
-                                                type="number"
-                                                InputLabelProps={{ shrink: true }}
-                                                error={!!error}
-                                                helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
-                                                disabled={!isConfirmed || !active}
-                                                variant="outlined"
-                                            />
-                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
+                                        <div style={{ display: "flex", gap: 5, width:'95%'}}>
+                                            <div style={{width:'80%'}}> 
+                                                <div>
+                                                    <label style={{
+                                                        fontWeight: 'normal',
+                                                        fontSize: '12px',
+                                                        lineHeight: '150%',
+                                                        color: '#999999'
+                                                    }}>Token price :</label>
+                                                </div>
+                                                <TextField
+                                                    // label="Token price"
+                                                    className={clsx(classes.textfield)}
+                                                    onChange={(event) => setTokenPrice(event.target.value)}
+                                                    value={tokenPrice}
+                                                    type="number"
+                                                    InputLabelProps={{ shrink: true }}
+                                                    error={!!error}
+                                                    helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
+                                                    disabled={!isConfirmed || !active}
+                                                    variant="outlined"
+                                                    style={{height:'40px', width:'100%'}}
+                                                />
+                                            </div>
+                                            <button className={clsx(classes.buttonblue)} disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
                                                 const tokenId = state.announce.getTokenId
 
                                                 setIsConfirmed(false)
@@ -488,7 +558,9 @@ const Announce = () => {
                                                     setError(error)
                                                     setIsConfirmed(true)
                                                 })
-                                            }}>
+                                                
+                                            }}
+                                            style={{height:'40px', marginTop:'30px'}}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
@@ -497,49 +569,49 @@ const Announce = () => {
                                 </div>
                             </div>
                         )}
-                        <Comments announceRaw={announce.getRaw} />
                     </Col>
                 </Row>
+                <div style={{marginTop:'50px'}}>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:vehicle-data')}
+                        </Typography>
+                        <CarInfos announce={announce} enableThirdColumn />
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:vehicle-data')}
-                    </Typography>
-                    <CarInfos announce={announce} enableThirdColumn />
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:equipments')}
+                        </Typography>
+                        <Row>
+                            {announce.getVehicleEquipments.map((equipment, index) => {
+                                return (
+                                    <Col sm={6} md={3} key={index}>
+                                        <div className="equipment m-3">
+                                            <Typography>{equipment.label}</Typography>
+                                        </div>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:equipments')}
-                    </Typography>
-                    <Row>
-                        {announce.getVehicleEquipments.map((equipment, index) => {
-                            return (
-                                <Col sm={6} md={3} key={index}>
-                                    <div className="equipment m-3">
-                                        <Typography>{equipment.label}</Typography>
-                                    </div>
-                                </Col>
-                            )
-                        })}
-                    </Row>
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:description')}
+                        </Typography>
+                        <div className={classes.wysiwyg}>
+                            <Typography>{announce.getDescription}</Typography>
+                        </div>
+                    </section>
 
-                <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:description')}
-                    </Typography>
-                    <div className={classes.wysiwyg}>
-                        <Typography>{announce.getDescription}</Typography>
-                    </div>
-                </section>
-
-                <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:data-sheet')}
                     </Typography>
                     <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
                 </section>
+                </div>
             </div>
         </Container>
     )

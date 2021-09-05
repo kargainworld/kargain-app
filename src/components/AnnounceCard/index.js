@@ -26,6 +26,9 @@ import { Row } from 'reactstrap'
 import { NewIcons } from '../../assets/icons'
 import clsx from 'clsx'
 import { Emoji } from 'react-apple-emojis'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
+import customColors from '../../theme/palette'
+import CTALink from '../CTALink'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -86,10 +89,42 @@ const useStyles = makeStyles(() => ({
         display: 'flex, -webkitFlex-wrap: wrap',
         flexWrap: 'wrap',
         marginRight: '-15px'
+    },
+    share:{
+        '&:hover':{
+            backgroundColor:'#ececec !important',
+        }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white !important',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        width: "157px",
+        hegiht: "33px",
+        textAlign:'center',
+        background: customColors.gradient.main
+    },
+    modalcontent:{
+        '& .modal-content':{
+            borderRadius: '5px',
+        }
+    },
+    gear:{
+        marginTop:'-55px',
+        marginLeft:"95%",
+        '&:hover':{
+            width:'20px',
+        }
     }
 }))
 
 const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogRemove, onSelectSlug }) => {
+    
+    const [modalOpen, setModalOpen] = React.useState(false);
     const classes = useStyles()
     const refImg = useRef()
     const router = useRouter()
@@ -190,15 +225,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
             
                 <CardContent>
                     <Body>
-                        <Meta style={{marginTop: '7px', marginRight: '2px', marginBottom: '-15px'}}>
+                        <Meta className={clsx(classes.share)} style={{marginTop: '-5px', marginRight: '2px', marginBottom: '-27px', width:'25px', height:'25px', backgroundColor: '#ffffff', borderRadius: '50%'}}> 
                             <NewIcons.share
                                 onClick={() =>
                                     dispatchModalState({
                                         openModalShare: true,
                                         modalShareAnnounce: announce
                                     })
+
                                 }
                                 alt="share"
+                                style={{marginTop: '11px',
+                                    marginRight: '3px'}}
                             />
                         </Meta>
                         
@@ -240,7 +278,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                             />
 
                             <Info style={{width:'55%', marginTop:'-5px'}}>
-                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'2px'}}>{announce.getAuthor.getFullName}</AuthorName>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'6px'}}>{announce.getAuthor.getFullName}</AuthorName>
 
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
@@ -300,7 +338,39 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 {strkm} Km 
                             </h6>
                             
-                            <Emoji name="gear" width="18" style={{marginTop:'-55px', marginLeft:"90%"}} />
+                            <Emoji  name="gear" width="18" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
+                            
+                            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen} className={clsx(classes.modalcontent)} style={{borderRadius:'5px', marginTop:'15%', width:'400px'}}>
+                                
+                                <button
+                                    aria-label="Close"
+                                    className=" close"
+                                    type="button"
+                                    onClick={() => setModalOpen(!modalOpen)}
+                                    style={{display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        margin: '15px 15px'}}
+                                >
+                                    <NewIcons.modalclose />
+                                </button>
+
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px'}}>
+                                    <div
+                                        className={clsx(classes.button)}
+                                        onClick={e => {
+                                            onSelectSlug(announce.getSlug)
+                                            onhandleOpenDialogRemove()
+                                        }}>
+                                        {t('vehicles:remove-announce')}
+                                    </div>
+                                </div>
+                                
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px', marginBottom:'50px'}}>
+                                    
+                                    <CTALink className={clsx(classes.button)} title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />
+                                </div>
+                                
+                            </Modal> 
                         </div>
                     </Body>
  

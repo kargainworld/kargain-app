@@ -25,6 +25,7 @@ import modalclose from './Icon_modalclose.svg'
 import pigeon from './icon_pigeon.svg'
 import avatarcheck from './icon_avatarcheck.svg'
 import card_message_pink from './icon_message_pink.svg'
+import heart_blue from './icon_heart_blue.svg'
 
 export const NewIcons = {
     message,
@@ -55,4 +56,5 @@ export const NewIcons = {
     pigeon,
     avatarcheck,
     card_message_pink,
+    heart_blue,
 }
