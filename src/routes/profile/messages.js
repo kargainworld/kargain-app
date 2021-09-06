@@ -16,6 +16,7 @@ import { MessageContext } from '../../context/MessageContext';
 import ValidationError from '../../components/Form/Validations/ValidationError';
 import { useSocket } from '../../context/SocketContext';
 import { Avatar } from '../../components/AnnounceCard/components';
+import { Container } from 'reactstrap';
 
 const Messages = () => {
   const theme = useTheme();
@@ -138,12 +139,12 @@ const Messages = () => {
   }, [contentRef.current?.scrollHeight, selectedRecipient]);
 
   return (
-    <>
-      <div className={classes.conversations}>
+    <Container style={{marginTop:'30px'}}>
+      <h2 style={{fontSize:'28px', marginLeft:'15px'}}>{t('vehicles:messaging')}</h2>     
+      <div className={classes.conversations} >
         <div className={classes.conversationsList}>
           <div className={classes.styleScroller}>
-            <h2>{t('vehicles:messaging')}</h2>
-            <div className={classes.scrollerContainer}>
+             <div className={classes.scrollerContainer}>
               <div style={{ width: '100%' }}>
                 {conversations.length > 0 ? (
                   conversations.map((conversation, index) => {
@@ -156,6 +157,7 @@ const Messages = () => {
                         key={index}
                         className={classes.conversationListItem}
                         onClick={() => handleSelectConversation(index)}
+                        style={{marginLeft:'-10px'}}
                       >
                         <div>
                           <Avatar
@@ -163,12 +165,12 @@ const Messages = () => {
                             src={recipient.getAvatar || recipient.getAvatarUrl}
                             alt={recipient.getUsername}
                             isonline={getOnlineStatusByUserId(recipient.getID)}
-                            style={{width: 52, height: 52}}
+                            style={{width: 32, height: 32}}
                           />
                         </div>
-                        <div className={classes.itemDetails}>
-                          <p className="mt-0">{recipient.getFullName} | <span className="mx-2">{conversation.announce.title}</span></p>
-                          <p className={classes.itemDetailsPreview}>
+                        <div className={classes.itemDetails} style={{width:'100%'}}>
+                          <p className="mt-0" style={{fontSize:'16px', fontWeight:'normal', color:'black'}}>{recipient.getFullName} | <span className="mx-2">{conversation.announce.title}</span></p>
+                          <p className={classes.itemDetailsPreview} style={{color:'#999999', fontSize:'14px'}}>
                             {format(parseISO(conversation.createdAt), 'MM/dd/yyyy')}
                           </p>
                           <p className={classes.itemDetailsPreview}>{conversation?.message?.content}</p>
@@ -187,7 +189,7 @@ const Messages = () => {
         {selectedConversation && selectedRecipient && (
           <div
             className={clsx(classes.conversation, !openedConversation && classes.conversationCloseMobile)}
-            style={{ width: '70%' }}
+            style={{ width: '68%', marginLeft:'2%' }}
           >
             <div className={classes.conversationHeader}>
               <div className={classes.headerUsername}>
@@ -199,12 +201,12 @@ const Messages = () => {
                         src={selectedRecipient.getAvatar || selectedRecipient.getAvatarUrl}
                         alt={selectedRecipient.getUsername}
                         isonline={getOnlineStatusByUserId(selectedRecipient.getID)}
-                        style={{width: 52, height: 52}}
+                        style={{width: 32, height: 32}}
                       />
                       <span className="mx-2">{selectedRecipient.getFullName}</span>
                     </a>
                   </Link>
-                  <Link href={`/announces/${selectedConversation.announce.slug}`} prefetch={false}>
+                  {/* <Link href={`/announces/${selectedConversation.announce.slug}`} prefetch={false}>
                     <a>
                         <img
                           src={selectedConversation.announce.images[0].location}
@@ -213,7 +215,7 @@ const Messages = () => {
                         />
                       <span className="mx-2">{selectedConversation.announce.title}</span>
                     </a>
-                  </Link>
+                  </Link> */}
                 </div>
                 {isMobile && (
                   <div className={classes.pointerClose} onClick={() => closeConversation()}>
@@ -282,7 +284,7 @@ const Messages = () => {
           </div>
         )}
       </div>
-    </>
+    </Container>
   );
 };
 

@@ -95,7 +95,7 @@ export default makeStyles(theme => ({
         left: 0,
         height: '100%',
         overflow: 'hidden',
-        border: '1px solid gainsboro',
+        // border: '1px solid gainsboro',
         background: '#fff',
 
         [theme.breakpoints.down('sm')]: {
