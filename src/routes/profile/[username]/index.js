@@ -299,19 +299,9 @@ const Profile = () => {
                     <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
                 </div>
 
-                {profile.getAddressParts.fullAddress && (
-                    <a href={profile.buildAddressGoogleMapLink()}
-                        target="_blank"
-                        rel="noreferrer">
-                        <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
-                            {profile.buildAddressString()}  
-                        </p>
-                    </a>
-                )}
-
                 <div>
                     <div className="top-profile-name-btn">
-                        <div style={{display:'flex', justifyContent:'left', marginTop:'-25px'}}>
+                        <div style={{display:'flex', justifyContent:'left', marginTop:'-25px', width:'33.33%'}}>
                             {state.isSelf ? (
                                 <div className="mx-2">
                                     <Link href={profile.getProfileEditLink}>
@@ -348,7 +338,7 @@ const Profile = () => {
                             )}
                         </div>
 
-                        <div style={{textAlign:'center', marginTop:'25px'}} >
+                        <div style={{textAlign:'center', marginTop:'25px', width:'33.33%'}} >
                             <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
                                 {profile.getFullName}
                                 {(profile.getIsPro && profile.getIsActivated)}
@@ -357,9 +347,19 @@ const Profile = () => {
                             <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
                                <NewIcons.pigeon /> @ {profile.getUsername}
                             </p>
+
+                            {profile.getAddressParts.fullAddress && (
+                                <a href={profile.buildAddressGoogleMapLink()}
+                                    target="_blank"
+                                    rel="noreferrer">
+                                    <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                                        {profile.buildAddressString()}  
+                                    </p>
+                                </a>
+                            )}
                         </div>
 
-                        <div className={classes.subscriptionWrapper} style={{display:'flex', justifyContent:'right', marginTop:'-25px'}}>
+                        <div className={classes.subscriptionWrapper} style={{display:'flex', justifyContent:'flex-end', marginTop:'-25px', width:'33.33%'}}>
                             <div className={classes.subscriptionbutton} 
                                 onClick={() => dispatchModalState({
                                     openModalFollowers: true,
@@ -379,26 +379,26 @@ const Profile = () => {
                                                 e.stopPropagation()
                                                 // handleFollowProfile()
                                             }}>
-                                                {
-                                                    alreadyFollowProfile ?
-                                                        // <StarSVGYellow/>
-                                                        <Button
+                                                {/* {
+                                                    alreadyFollowProfile ? */}
+                                                        {/* // <StarSVGYellow/> */}
+                                                        {/* <Button
                                                             variant="contained"
                                                             color="primary"
                                                             className={classes.btnFollow}
                                                             onClick={() => handleFollowProfile()}>
                                                             {t('vehicles:un-subscriptions')}
-                                                        </Button>
-                                                        :
-                                                        <Button
-                                                            variant="outlined"
-                                                            color="primary"
-                                                            className={classes.btnFollow}
-                                                            onClick={() => handleFollowProfile()}>
-                                                            {t('vehicles:subscriptions')}
-                                                        </Button>
-                                                    // <StarSVG/>
-                                                }
+                                                        </Button> */}
+                                                        {/* // :
+                                                        // <Button
+                                                        //     variant="outlined"
+                                                        //     color="primary"
+                                                        //     className={classes.btnFollow}
+                                                        //     onClick={() => handleFollowProfile()}>
+                                                        //     {t('vehicles:subscriptions')}
+                                                        // </Button> */}
+                                                    {/* // <StarSVG/>
+                                                // } */}
                                             </span>
                                             <span>
                                                 {followerCounter} {t('vehicles:followers', { count: followerCounter })}
