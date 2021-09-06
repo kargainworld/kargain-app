@@ -35,6 +35,7 @@ import UserModel from '../../../models/user.model'
 import Error from '../../_error'
 import customColors from '../../../theme/palette'
 import { NewIcons } from 'assets/icons'
+import { Container } from 'reactstrap'
 
 const useStyles = makeStyles(() => ({
     stickyNav: {
@@ -94,11 +95,11 @@ const useStyles = makeStyles(() => ({
     },
 
     customize:{
-        '& h2':{
-            fontSize:'24px !important'
-        },
-        '& input':{
-            backgroundColor:'#ffffff !important',
+        
+            fontSize:'24px',
+        
+        '& .input-field':{
+            backgroundColor:'#ffffff',
         }
     },
 
@@ -251,7 +252,7 @@ const Edit = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
 
     return (
-        <>
+        <Container>
             <Dialog
                 open={openDialogRemove}
                 onClose={handleCloseDialogRemove}
@@ -325,7 +326,7 @@ const Edit = () => {
                         }}/>
                 </Col>
             </Row>
-        </>
+        </Container>
     )
 }
 
@@ -438,7 +439,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                     control={control}
                     disabled
                     rules={{ required: t('form_validations:required') }}
-                    className={clsx(classes.customize)}
+                    
                 />
             </FieldWrapper>
 
@@ -518,7 +519,7 @@ const NavDesktop = ({ tabs, activeTab, toggleTab, triggerSubmit, profilePageLink
     return (
         <div className={clsx(classes.nav, classes.stickyNav)}>
             <div className="my-2">
-                <Nav vertical className={classes.navList}>
+                <Nav vertical>
                     {tabs && tabs.map((tab, index) => (
                         <NavItem
                             key={index}
@@ -542,7 +543,7 @@ const NavMobile = ({ tabs, activeTab, toggleTab }) => {
     const classes = useStyles()
 
     return (
-        <Nav className={clsx(classes.navList, classes.navMobile)}>
+        <Nav >
             {tabs && tabs.map((tab, index) => (
                 <NavItem
                     key={index}
@@ -567,7 +568,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                 className={clsx(classes.button)}
                 endIcon={<NewIcons.save style={{marginLeft:'8px'}}/>}
                 type="submit"
-                style={{width:'220px', height:'35px', marginLeft:'20px'}}
+                style={{height:'35px', width:'250px', marginLeft:'10px'}}
                 onClick={() => {
                     triggerSubmit()
                 }}>
@@ -575,7 +576,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                 
             </Button>
 
-            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{width:'220px', height:'35px', marginTop:'10px', marginLeft:'20px'}}/>
+            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px'}}/>
         </div>
     )
 }
