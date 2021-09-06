@@ -491,7 +491,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
-                    
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_1">
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
@@ -513,6 +512,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                                 />
                             </FieldWrapper>
+                        
                         </DropdownMenu>
                     </ButtonDropdown>
 
@@ -710,7 +710,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div className={clsx(hiddenForm && classes.filtersHidden)}>
                             <div  onClick={() => toggleFilters()} style={{height:'20px'}}>
                                 {/* <i className={clsx('ml-2', 'arrow_nav', 'is-top' )}/> */}
-                                {/* </Typography> */}
+                                <label> ... </label>
                             </div>
                     </div>
                 </div>
