@@ -185,6 +185,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const [dropdownOpen4, setOpen4] = useState(false);
     const toggle4 = () => setOpen4(!dropdownOpen4);
 
+    const [dropdownOpen5, setOpen5] = useState(false);
+    const toggle5 = () => setOpen5(!dropdownOpen5);
+
+    const [dropdownOpen6, setOpen6] = useState(false);
+    const toggle6 = () => setOpen6(!dropdownOpen6);
+
     const cache = useRef({})
     const classes = useStyles()
     const { t } = useTranslation()
@@ -485,18 +491,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
-                    <div > 
-                        <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()}>
-                            <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
-                            {/* <Typography variant="h4"> */}
-                            {t('filters:select-filters')}
-                            <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/>
-                            {/* </Typography> */}
-                        </div>
-                    </div>
-
-                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                    
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_1">
                             <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
@@ -518,6 +512,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                                 />
                             </FieldWrapper>
+                        
                         </DropdownMenu>
                     </ButtonDropdown>
 
@@ -618,17 +613,106 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         </DropdownMenu>
                     </ButtonDropdown>
                      
-                    {DynamicFiltersComponent && (
-                        <DynamicFiltersComponent
-                            control={control}
-                            errors={errors}
-                            watch={watch}
-                            dynamicOnSubmit={onSubmit}
-                            dynamicHandleSubmit={handleSubmit}
-                        />
-                    )}
+                    <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:price')}
+                        </DropdownToggle>
+                        <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                            
+                            <label className={clsx(classes.label)}>
+                                {t('vehicles:price')}
+                            </label>
+                            <FieldWrapper >
+                                <SliderInput
+                                    name="price"
+                                    defaultValue={[1000, 50000]}
+                                    min={0}
+                                    max={200000}
+                                    step={1000}
+                                    errors={errors}
+                                    control={control}
+                                    suffix="€"
+                                    onChange={e =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
+                                        return e
+                                    }}
+                                />
+                            </FieldWrapper>
+                            
+                                <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
+                                <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
+                            </DropdownMenu>
+                    </ButtonDropdown>
+
+                    <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
+                        <DropdownToggle caret>
+                            <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            {t('vehicles:cylinder')}
+                        </DropdownToggle>
+                        <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
+                            <label className={clsx(classes.label)}>
+                                {t('vehicles:cylinder')}
+                            </label>
+                            <FieldWrapper>
+                                <SliderInput
+                                    name="vehicleEngineCylinder"
+                                    suffix="cm3"
+                                    min={10}
+                                    max={1000}
+                                    step={10}
+                                    defaultValue={[1, 1000]}
+                                    errors={errors}
+                                    control={control}
+                                    onChange={e =>{
+                                        setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
+                                        return e
+                                    }}
+                                />
+                            </FieldWrapper>
+                            <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>10 cm3</label>
+                            <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>1000 cm3</label>
+                            
+                        </DropdownMenu>
+                    </ButtonDropdown>
+
+                      
+                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                        {DynamicFiltersComponent && (
+                            <DynamicFiltersComponent
+                                control={control}
+                                errors={errors}
+                                watch={watch}
+                                dynamicOnSubmit={onSubmit}
+                                dynamicHandleSubmit={handleSubmit}
+                            />
+                        )}
                     </div>
-                   
+                    
+                    <div className={clsx(!hiddenForm && classes.filtersHidden)}> 
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            transform: 'translate(25px, -44px)',
+                        }}> 
+                            <div style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
+                            <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()} style={{transform: 'translate(-25px, 0px)'}}>
+                                
+                                <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
+                                {/* <Typography variant="h4"> */}
+                                {t('filters:select-filters')}
+                                <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')}/>
+                                {/* <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-top' : 'is-bottom')}/> */}
+                                {/* </Typography> */}
+                            </div>
+                        </div>  
+                    </div>
+                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                            <div  onClick={() => toggleFilters()} style={{height:'20px'}}>
+                                {/* <i className={clsx('ml-2', 'arrow_nav', 'is-top' )}/> */}
+                                <label> ... </label>
+                            </div>
+                    </div>
                 </div>
             </form>
         </div>

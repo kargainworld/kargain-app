@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'30px',
+        marginTop:'20px',
     }, 
 }))
 
@@ -183,6 +183,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             />
             <Row>
                 <Col sm={12} md={12}>
+
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
 
                     <div className={clsx(classes.row)}>

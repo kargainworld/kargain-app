@@ -111,16 +111,37 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: '#666666',
-        padding: '4.5px 15px',
+        padding: '5.5px 9px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
-        fontSize: '16px',
+        fontSize: '13px',
+        fontWeight:'700',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
+        width:'119px',
+        height:'35px'
+    },
+    subscriptionbuttonblue:{
+        backgroundColor: 'white', /* Green */
+        border: 'none',
+        color: '#666666',
+        padding: '4.5px 9px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '13px',
+        fontWeight:'700',
+        margin: '4px 2px',
+        // cursor: 'pointer',
+        borderRadius: '17.5px',
+        border: '1px solid blue',
+        borderWidth: '1px',
+        width:'119px',
+        height:'35px'
     },
 }))
 
@@ -299,19 +320,9 @@ const Profile = () => {
                     <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
                 </div>
 
-                {profile.getAddressParts.fullAddress && (
-                    <a href={profile.buildAddressGoogleMapLink()}
-                        target="_blank"
-                        rel="noreferrer">
-                        <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
-                            {profile.buildAddressString()}  
-                        </p>
-                    </a>
-                )}
-
                 <div>
                     <div className="top-profile-name-btn">
-                        <div style={{display:'flex', justifyContent:'left', marginTop:'-25px'}}>
+                        <div style={{display:'flex', justifyContent:'left', marginTop:'-40px', width:'33.33%'}}>
                             {state.isSelf ? (
                                 <div className="mx-2">
                                     <Link href={profile.getProfileEditLink}>
@@ -348,7 +359,7 @@ const Profile = () => {
                             )}
                         </div>
 
-                        <div style={{textAlign:'center', marginTop:'25px'}} >
+                        <div style={{textAlign:'center', marginTop:'25px', width:'33.33%'}} >
                             <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
                                 {profile.getFullName}
                                 {(profile.getIsPro && profile.getIsActivated)}
@@ -357,25 +368,36 @@ const Profile = () => {
                             <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
                                <NewIcons.pigeon /> @ {profile.getUsername}
                             </p>
+
+                            {profile.getAddressParts.fullAddress && (
+                                <a href={profile.buildAddressGoogleMapLink()}
+                                    target="_blank"
+                                    rel="noreferrer">
+                                    <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                                        {profile.buildAddressString()}  
+                                    </p>
+                                </a>
+                            )}
                         </div>
 
-                        <div className={classes.subscriptionWrapper} style={{display:'flex', justifyContent:'right', marginTop:'-25px'}}>
-                            <div className={classes.subscriptionbutton} 
+                        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'33.33%'}}>
+                            <div 
                                 onClick={() => dispatchModalState({
                                     openModalFollowers: true,
                                     modalFollowersProfiles: profile.getFollowers,
                                     modalFollowersTitle: t('vehicles:followers'),
                                     isFollowing: false,                                
                                 })}
-                                style={{marginRight:'5px'}}>
+                                // style={{marginRight:'5px'}}
+                                >
                                 <div>
                                     {state.isSelf ? (
-                                        <span>
+                                        <span className={clsx("mx-1", classes.subscriptionbutton)}>
                                                 {t('vehicles:followers', { count: followerCounter })}
                                         </span>
                                     ) : (
                                         <>
-                                            <span className={clsx('mx-1', classes.followItem)} onClick={(e) => {
+                                            <span onClick={(e) => {
                                                 e.stopPropagation()
                                                 // handleFollowProfile()
                                             }}>
@@ -385,7 +407,7 @@ const Profile = () => {
                                                         <Button
                                                             variant="contained"
                                                             color="primary"
-                                                            className={classes.btnFollow}
+                                                            className={clsx(classes.subscriptionbuttonblue)}
                                                             onClick={() => handleFollowProfile()}>
                                                             {t('vehicles:un-subscriptions')}
                                                         </Button>
@@ -393,14 +415,14 @@ const Profile = () => {
                                                         <Button
                                                             variant="outlined"
                                                             color="primary"
-                                                            className={classes.btnFollow}
+                                                            className={clsx(classes.subscriptionbuttonblue)}
                                                             onClick={() => handleFollowProfile()}>
                                                             {t('vehicles:subscriptions')}
                                                         </Button>
                                                     // <StarSVG/>
                                                 }
                                             </span>
-                                            <span>
+                                            <span className={clsx(classes.subscriptionbutton)}>
                                                 {followerCounter} {t('vehicles:followers', { count: followerCounter })}
                                             </span>
                                         </>

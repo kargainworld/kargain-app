@@ -21,11 +21,15 @@ import card_message from './icon_message.svg';
 import card_heart from './icon_heart.svg';
 import card_location from './icon_location.svg';
 import share from './icon_share.svg';
-import modalclose from './Icon_modalclose.svg'
-import pigeon from './icon_pigeon.svg'
-import avatarcheck from './icon_avatarcheck.svg'
-import card_message_pink from './icon_message_pink.svg'
-import heart_blue from './icon_heart_blue.svg'
+import modalclose from './Icon_modalclose.svg';
+import pigeon from './icon_pigeon.svg';
+import avatarcheck from './icon_avatarcheck.svg';
+import card_message_pink from './icon_message_pink.svg';
+import heart_blue from './icon_heart_blue.svg';
+import pen from './icon_pen.svg';
+import save from './icon_save.svg';
+import sendicon from './icon_sendicon.svg';
+import sendbtn from './icon_sendbtn.svg';
 
 export const NewIcons = {
     message,
@@ -57,4 +61,8 @@ export const NewIcons = {
     avatarcheck,
     card_message_pink,
     heart_blue,
+    pen,
+    save,
+    sendicon,
+    sendbtn,
 }

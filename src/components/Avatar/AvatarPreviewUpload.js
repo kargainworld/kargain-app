@@ -4,6 +4,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { MessageContext } from '../../context/MessageContext';
 import { useAuth } from '../../context/AuthProvider';
 import UsersService from '../../services/UsersService';
+import { NewIcons } from 'assets/icons';
 
 const FileInput = ({ value, onChange = noop, ...rest }) => (
   <input
@@ -59,20 +60,20 @@ const AvatarPreviewUpload = () => {
   return (
     <div className="avatar-upload">
       {isAuthenticated && (
-        <div className="avatar-edit">
+        <div className="avatar-edit" style={{transform: 'translate(-30px, 0px)'}}>
           <FileInput onChange={onChangeFile} />
           {avatarLocation ? (
-            <label onClick={handleRemoveAvatar}>
+            <label onClick={handleRemoveAvatar} style={{backgroundColor:'#ED80EB' }}>
               <CloseOutlinedIcon />
             </label>
           ) : (
-            <label htmlFor="imageUpload">
-              <EditIcon />
+            <label htmlFor="imageUpload" style={{backgroundColor:'#ED80EB', borderColor:'#ED80EB'}}>
+              <NewIcons.pen />
             </label>
           )}
         </div>
       )}
-      <div className="avatar-preview" style={{ height: 160, width: 160 }}>
+      <div className="avatar-preview" style={{ height: 164, width: 164 }}>
         <div id="imagePreview" style={{ backgroundImage: `url(${avatarLocation || avatarUrl})` }} />
       </div>
     </div>
