@@ -89,8 +89,8 @@ const useStyles = makeStyles(() => ({
 const CarFilters = ({ control, watch, errors, ...props }) => {
     const classes = useStyles()
 
-    const [dropdownOpen, setOpen] = useState(false);
-    const toggle = () => setOpen(!dropdownOpen);
+    // const [dropdownOpen, setOpen] = useState(false);
+    // const toggle = () => setOpen(!dropdownOpen);
     const [dropdownOpen1, setOpen1] = useState(false);
     const toggle1 = () => setOpen1(!dropdownOpen1);
     const [dropdownOpen2, setOpen2] = useState(false);
@@ -99,8 +99,8 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     const toggle3 = () => setOpen3(!dropdownOpen3);
     const [dropdownOpen4, setOpen4] = useState(false);
     const toggle4 = () => setOpen4(!dropdownOpen4);
-    const [dropdownOpen5, setOpen5] = useState(false);
-    const toggle5 = () => setOpen5(!dropdownOpen5);
+    // const [dropdownOpen5, setOpen5] = useState(false);
+    // const toggle5 = () => setOpen5(!dropdownOpen5);
     const [dropdownOpen6, setOpen6] = useState(false);
     const toggle6 = () => setOpen6(!dropdownOpen6);
     const [dropdownOpen7, setOpen7] = useState(false);
@@ -173,7 +173,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
     return (
         <> 
-            <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+            {/* <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                 <DropdownToggle caret>
                     <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:price')}
@@ -203,9 +203,9 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                         <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
                         <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
                     </DropdownMenu>
-            </ButtonDropdown>
+            </ButtonDropdown> */}
 
-            <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
+            {/* <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
                 <DropdownToggle caret>
                     <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:cylinder')}
@@ -234,7 +234,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                     <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>1000 cm3</label>
                     
                 </DropdownMenu>
-            </ButtonDropdown>
+            </ButtonDropdown> */}
 
             <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                 <DropdownToggle caret>

@@ -60,14 +60,14 @@ const AvatarPreviewUpload = () => {
   return (
     <div className="avatar-upload">
       {isAuthenticated && (
-        <div className="avatar-edit" style={{transform: 'translate(-30px, 5px)'}}>
+        <div className="avatar-edit" style={{transform: 'translate(-30px, 0px)'}}>
           <FileInput onChange={onChangeFile} />
           {avatarLocation ? (
             <label onClick={handleRemoveAvatar} style={{backgroundColor:'#ED80EB' }}>
               <CloseOutlinedIcon />
             </label>
           ) : (
-            <label htmlFor="imageUpload" style={{backgroundColor:'#ED80EB', borderColor:'#999999'}}>
+            <label htmlFor="imageUpload" style={{backgroundColor:'#ED80EB', borderColor:'#ED80EB'}}>
               <NewIcons.pen />
             </label>
           )}
