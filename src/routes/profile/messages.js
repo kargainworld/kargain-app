@@ -17,6 +17,7 @@ import ValidationError from '../../components/Form/Validations/ValidationError';
 import { useSocket } from '../../context/SocketContext';
 import { Avatar } from '../../components/AnnounceCard/components';
 import { Container } from 'reactstrap';
+import { NewIcons } from 'assets/icons';
 
 const Messages = () => {
   const theme = useTheme();
@@ -48,6 +49,12 @@ const Messages = () => {
       dispatchModalError({ err });
     }
   };
+  const newDate = new Date()
+  const time = newDate.getHours();
+  const min = newDate.getMinutes();
+  const currenthour = time + ':' + min;
+
+  
 
   const onEnterPress = (e) => {
     e.persist()
@@ -137,7 +144,6 @@ const Messages = () => {
       contentRef.current.scrollTop = contentRef.current?.scrollHeight;
     }
   }, [contentRef.current?.scrollHeight, selectedRecipient]);
-
   return (
     <Container style={{marginTop:'30px'}}>
       <h2 style={{fontSize:'28px', marginLeft:'15px'}}>{t('vehicles:messaging')}</h2>     
@@ -169,6 +175,7 @@ const Messages = () => {
                           />
                         </div>
                         <div className={classes.itemDetails} style={{width:'100%'}}>
+                          
                           <p className="mt-0" style={{fontSize:'16px', fontWeight:'normal', color:'black'}}>{recipient.getFullName} | <span className="mx-2">{conversation.announce.title}</span></p>
                           <p className={classes.itemDetailsPreview} style={{color:'#999999', fontSize:'14px'}}>
                             {format(parseISO(conversation.createdAt), 'MM/dd/yyyy')}
@@ -191,7 +198,7 @@ const Messages = () => {
             className={clsx(classes.conversation, !openedConversation && classes.conversationCloseMobile)}
             style={{ width: '68%', marginLeft:'2%' }}
           >
-            <div className={classes.conversationHeader}>
+            <div style={{ margin: '1px 0px 10px -27px'}}>
               <div className={classes.headerUsername}>
                 <div style={{ maxWidth: '70%', display: "-webkit-inline-box" }}>
                   <Link href={selectedRecipient.getProfileLink} prefetch={false}>
@@ -226,13 +233,24 @@ const Messages = () => {
             </div>
             <div className={classes.conversationContent} ref={contentRef}>
               <div className={classes.messageContainer}>
-                {selectedConversation.createdAt && format(parseISO(selectedConversation.createdAt), 'MM/dd/yyyy')}
+                {/* {selectedConversation.createdAt && format(parseISO(selectedConversation.createdAt), 'MM/dd/yyyy')} */}
                 {selectedConversation?.messages.map((message, index) => {
                   if (authenticatedUser.getID === message?.from) {
+                    var time;
+                    if(message?.createdAt ){
+                        time = format(parseISO(message?.createdAt), 'hh:mm');
+                    }else{
+                        time = currenthour;
+                    }
                     return (
                       <div key={index} className={classes.textJustifiedEnd}>
+              
                         <div className={classes.basicMessage}>
-                          <div className={classes.messageBubble}>{message?.content}</div>
+                          <div className={classes.messageBubble}>
+                            
+                            <label style={{fontSize:'12px', marginRight:'10px', marginTop:'10px'}}>{time}</label>
+                            <label> {message?.content} </label>
+                          </div>
                           <img
                             className="dropdown-toggler rounded-circle mx-2"
                             width="30"
@@ -245,6 +263,11 @@ const Messages = () => {
                       </div>
                     );
                   } else {
+                    if(message?.createdAt ){
+                      time = format(parseISO(message?.createdAt), 'hh:mm');
+                    }else{
+                      time = currenthour;
+                    }
                     return (
                       <div key={index} className={classes.textJustifiedStart}>
                         <div className={classes.basicMessage}>
@@ -256,7 +279,12 @@ const Messages = () => {
                             title={selectedRecipient.getFullName}
                             alt={selectedRecipient.getUsername}
                           />
-                          <div className={classes.messageBubbleLeft}>{message?.content}</div>
+                          <div className={classes.messageBubbleLeft}>
+                              <label> {message?.content} </label>
+                              <label style={{fontSize:'12px', marginLeft:'10px', marginTop:'10px'}}>{time}</label>
+                              
+                          </div>
+                          
                         </div>
                       </div>
                     );
@@ -266,7 +294,7 @@ const Messages = () => {
             </div>
             <div className={classes.conversationFooter}>
               <form className={classes.conversationForm} onSubmit={handleSubmit(onSubmitMessage)}>
-                <textarea
+                <input
                   className={classes.conversationTextarea}
                   name="message"
                   ref={register({ required: t('form_validations:required') })}
@@ -276,8 +304,12 @@ const Messages = () => {
                   onKeyDown={onEnterPress} 
                 />
                 {errors && <ValidationError errors={errors} name={name} />}
+                <div className={classes.conversationInputButton} style={{marginLeft:'10px'}}>
+                    <NewIcons.sendicon />
+                </div>
+
                 <button className={classes.conversationInputButton} type="submit">
-                  {t('vehicles:send')}
+                     <NewIcons.sendbtn /> 
                 </button>
               </form>
             </div>

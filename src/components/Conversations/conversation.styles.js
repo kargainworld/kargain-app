@@ -129,7 +129,8 @@ export default makeStyles(theme => ({
         height: 'calc(60vh - 1rem)',
         display: 'block',
         overflowY: 'auto',
-        backgroundColor: 'gainsboro',
+        border: '1px solid #EAEAEA',
+        // backgroundColor: 'gainsboro',
         padding : '.5rem'
     },
 
@@ -182,27 +183,29 @@ export default makeStyles(theme => ({
     },
 
     messageBubble: {
-        borderRadius: '10px',
+        borderRadius: '25px',
         textAlign: 'left',
         whiteSpace: 'pre-line',
-        padding: '.5rem',
+        padding: '.5rem 2rem',
         margin: '.5rem',
         // backgroundColor: '#d9e6f7',
-        backgroundColor: '#0070F3',
+        backgroundColor: '#A291F3',
         // color: '#369',
         color: '#fff',
-        fontWeight: 400
+        fontWeight: 400,
+        fontSize:'16px',
     },
 
     messageBubbleLeft: {
-        borderRadius: '10px',
+        borderRadius: '25px',
         textAlign: 'left',
         whiteSpace: 'pre-line',
-        padding: '.5rem',
-        margin: '.5rem',
+        padding: '.5rem 2rem',
+        margin: '.5rem ',
         fontWeight: 400,
-        background: '#1BB747',
-        color: '#fff'
+        backgroundColor: '#EAEAEA',
+        color: '#000000',
+        fontSize:'16px',
     },
 
     conversationFooter: {
@@ -211,7 +214,8 @@ export default makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
-        borderTop: '1px solid #e6ebef'
+        // borderTop: '1px solid #e6ebef',
+        marginTop:'15px'
     },
 
     conversationForm: {
@@ -224,9 +228,10 @@ export default makeStyles(theme => ({
     },
 
     conversationTextarea: {
+        height:'40px',
         margin: 0,
         minWidth: 'unset',
-        width: '100%'
+        width: '87%'
     },
 
     conversationInputButton: {
@@ -234,7 +239,10 @@ export default makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         width: 'auto',
-        padding: '1rem',
-        textDecoration: 'none'
-    }
+        padding: '10px',
+        textDecoration: 'none',
+        border:'1px solid white',
+        marginTop:'-5px',
+    },
+
 }))
