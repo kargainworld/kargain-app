@@ -204,7 +204,7 @@ export default makeStyles(theme => ({
         margin: '.5rem ',
         fontWeight: 400,
         backgroundColor: '#EAEAEA',
-        color: '#000000',
+        color: '#999999',
         fontSize:'16px',
     },
 
