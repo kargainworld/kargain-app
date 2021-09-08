@@ -27,6 +27,8 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 import { Emoji } from 'react-apple-emojis'
 import customColors from '../../../theme/palette'
 import { NewIcons } from '../../../assets/icons'
+// import Link from 'next/dist/client/link'
+import Link from 'next-translate/Link'
 
 const useStyles = makeStyles(() => ({
 
@@ -167,7 +169,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: '100rem',
         padding: '1rem',
         fontSize: '14px',        
-        padding: '5px 30px',
+        padding: '10px 30px 2px',
         boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
@@ -178,7 +180,7 @@ const useStyles = makeStyles(() => ({
             backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
         },
         
-        '& span':{
+        '& label':{
         
             background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
             backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
@@ -507,13 +509,19 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         resetFilter={onResetFilter}
                         dynamicHandleSubmit={handleSubmit}
                     />
-
-                    <CTALink
+                    <Link href="/advanced-search">
+                        <a className={clsx(classes.bordergradientbtn)} style={{textTransform: 'uppercase'}}>
+                            <NewIcons.home_color style={{marginRight:'10px', marginBottom:'5px'}}/>
+                            <label> {t('layout:news_feed')} </label>   
+                        </a>
+                    </Link>
+                    {/* <CTALink
                         className={clsx(classes.bordergradientbtn)}
-                        icon={StorefrontIcon}
+                        // icon={{<NewIcons.home_color />}}
                         title={t('layout:news_feed')}
                         href="/advanced-search">
-                    </CTALink>
+                        
+                    </CTALink> */}
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
@@ -753,10 +761,9 @@ const ControlButtons = ({...props}) => {
        
             <Button
                 className={ clsx(classes.button)}
-                
                 variant="contained"
                 color="primary"
-                startIcon={<FilterListIcon/>}
+                startIcon={<NewIcons.recycle_white style={{marginBottom:'3px'}}/>}
                 type="button"
                 onClick={e =>{ props.resetFilter(e)}}
             >
