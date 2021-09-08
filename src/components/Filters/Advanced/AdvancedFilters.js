@@ -27,6 +27,8 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 import { Emoji } from 'react-apple-emojis'
 import customColors from '../../../theme/palette'
 import { NewIcons } from '../../../assets/icons'
+// import Link from 'next/dist/client/link'
+import Link from 'next-translate/Link'
 
 const useStyles = makeStyles(() => ({
 
@@ -163,6 +165,30 @@ const useStyles = makeStyles(() => ({
 
         padding: '15px 10px 20px',
     }, 
+    bordergradientbtn:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontSize: '14px',        
+        padding: '10px 30px 2px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset', 
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
+        
+        '& label':{
+        
+            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+            backgroundClip: 'text',
+            color: 'transparent'
+            
+        }        
+    },
 }))
 
 
@@ -214,7 +240,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const { isAuthReady, authenticatedUser } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { dispatchModalError } = useContext(MessageContext)
-    const [hiddenForm, hideForm] = useState(true)
+    const [hiddenForm, hideForm] = useState(false)
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const defaultValues = {
@@ -478,16 +504,24 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
-                    <CTALink
-                        className={clsx(classes.button)}
-                        icon={StorefrontIcon}
-                        title={t('layout:news_feed')}
-                        href="/advanced-search">
-                    </CTALink>
+                    
                     <ControlButtons 
                         resetFilter={onResetFilter}
                         dynamicHandleSubmit={handleSubmit}
                     />
+                    <Link href="/advanced-search">
+                        <a className={clsx(classes.bordergradientbtn)} style={{textTransform: 'uppercase'}}>
+                            <NewIcons.home_color style={{marginRight:'10px', marginBottom:'5px'}}/>
+                            <label> {t('layout:news_feed')} </label>   
+                        </a>
+                    </Link>
+                    {/* <CTALink
+                        className={clsx(classes.bordergradientbtn)}
+                        // icon={{<NewIcons.home_color />}}
+                        title={t('layout:news_feed')}
+                        href="/advanced-search">
+                        
+                    </CTALink> */}
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
@@ -677,7 +711,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     </ButtonDropdown>
 
                       
-                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    <div className={clsx(hiddenForm && classes.filtersHidden)} >
                         {DynamicFiltersComponent && (
                             <DynamicFiltersComponent
                                 control={control}
@@ -727,10 +761,9 @@ const ControlButtons = ({...props}) => {
        
             <Button
                 className={ clsx(classes.button)}
-                
                 variant="contained"
                 color="primary"
-                startIcon={<FilterListIcon/>}
+                startIcon={<NewIcons.recycle_white style={{marginBottom:'3px'}}/>}
                 type="button"
                 onClick={e =>{ props.resetFilter(e)}}
             >
