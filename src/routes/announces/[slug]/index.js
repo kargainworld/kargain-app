@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, {  useContext, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
@@ -36,7 +36,8 @@ import Box from '@material-ui/core/Box'
 import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
-import { compareDesc } from 'date-fns'
+
+
 
 const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
@@ -73,7 +74,6 @@ const useStyles = makeStyles(() => ({
 const Announce = () => {
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
-    const [bnbBalanceWei, setBalanceWei] = useState()
     const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
@@ -104,64 +104,6 @@ const Announce = () => {
         waitTransactionToBeConfirmed
     } = useKargainContract()
 
-    const handleMakeOffer = useCallback(() => {
-        setIsConfirmed(false)
-        setError(null)
-
-        const task = makeOffer(state?.announce?.getTokenId, tokenPrice)
-        task.then(() => {
-            setIsConfirmed(true)
-            setIsMinted(true)
-            dispatchModal({ msg: t('vehicles:offerConfirmed') })
-        }).catch((error) => {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        })
-
-    }, [state?.announce, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
-
-    const handleAcceptOffer = useCallback(() => {
-        try {
-            if (!isContractReady || !state?.announce || !tokenPrice)
-                return 
-
-            setIsConfirmed(false)
-            setError(null)
-
-            const task = acceptOffer(announce.getTokenId)
-            task.then(() => {
-                setIsConfirmed(true)
-                dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
-            }).catch((error) => {
-                console.error(error)
-                setError(error)
-                setIsConfirmed(true)
-            })
-        }
-        catch(error) {
-            console.log(console.error())
-        }    
-
-    }, [state?.announce, tokenPrice,  isContractReady, acceptOffer])
-
-    const handleRejectOffer = useCallback(() => {
-        const tokenId = state?.announce.getTokenId
-        setIsConfirmed(false)
-        setError(null)
-
-        const task = rejectOffer(tokenId)
-        task.then(() => {
-            setIsConfirmed(true)
-            dispatchModal({ msg: t('vehicles:rejectedOffer') })
-        }).catch((error) => {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        })
-
-    }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
-
     const [state, setState] = useState({
         err: null,
         stateReady: false,
@@ -174,7 +116,6 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     useEffect(() => {
-        //console.log(authenticatedUser)
         if (!isContractReady)
             return
 
@@ -187,7 +128,6 @@ const Announce = () => {
                     if (!stale) {
                         let ethBalance = web3.utils.fromWei(balance, 'ether')
                         setBalance(ethBalance)
-                        setBalanceWei(balance)
                     }
                 })
                 .catch(() => {
@@ -205,8 +145,6 @@ const Announce = () => {
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
-            console.log("isAuthorized", isAuthorized)
-
             if (isAuthorized) {
                 activate(injected, undefined, true).then(() =>{
                     fetchTokenPrice(state?.announce?.getTokenId)
@@ -243,30 +181,197 @@ const Announce = () => {
 
     const [transactions, setTransactions] = useState([])
 
-    const something = transactions.sort((a, b) => compareDesc(a.createdAt, b.createdAt))
-    console.log("something", transactions, something)
+    const transactionsOrdered = transactions.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    const tokenMinted = transactionsOrdered
+        .find(x => x.action === "TokenMinted")
+    
+    const offerAccepted = transactionsOrdered
+        .filter(x => x.action === "OfferAccepted")
+    const offerRejected = transactionsOrdered
+        .filter(x => x.action === "OfferRejected")
+
+    const newOfferCreated = transactionsOrdered
+        .find(x => 
+            x.action === "OfferCreated" && 
+            !offerAccepted.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status)) &&
+            !offerRejected.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
+        )
+
+    console.log({
+        tokenMinted,
+        newOfferCreated,
+        offerAccepted,
+        offerRejected
+    })
+
+    const handleApplyPriceChange = async () => {
+        const tokenId = state?.announce?.getTokenId
+        const announceId = state?.announce?.getID
+
+        setIsConfirmed(false)
+        setError(null)
+
+        try {
+            const task = !isMinted ?
+                mintToken(tokenId, +tokenPrice) :
+                updateTokenPrince(tokenId, +tokenPrice)
+
+            const hashTx = await task
+
+            const result = await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
+
+            console.log("result", result)
+
+            setTransactions(prev => [...prev, result])
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+    }
+
+    const handleMakeOffer = async () => {
+        if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+            return 
+                
+        const announceId = state?.announce?.getID
+
+        try {
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = makeOffer(state?.announce?.getTokenId, tokenPrice)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: authenticatedUser.getWallet, action: "OfferCreated" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+
+    }
+
+    const handleAcceptOffer = (offerHashTx) => async () => {
+        try {
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return 
+
+            const announceId = state?.announce?.getID
+
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = acceptOffer(announce.getTokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferAccepted" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+            
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
+        }
+        catch(error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }    
+
+    }
+
+    const handleRejectOffer = async (offerHashTx) => {
+        try {
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return 
+
+            const announceId = state?.announce?.getID
+                
+            const tokenId = state?.announce.getTokenId
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = rejectOffer(tokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferRejected" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:rejectedOffer') })
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+
+    }
 
     useEffect(() => {
-
-        if (!announce) return
+        if (!announce && transactions.length === 0) return
 
         const action = async () => {
 
             const transactions = await TransactionsService.getTransactionsByAnnounceId(announce.getID)
 
             setTransactions(transactions)
+        }
 
+        action()
+
+    }, [announce, transactions.length])
+
+    useEffect(() => {
+
+        if (!announce) return
+
+        const action = async () => {
             const transactionsPending = transactions.filter(x=>x.status === "Pending")
 
             for (const tx of transactionsPending) {
                 try {
                     await waitTransactionToBeConfirmed(tx.hashTx)
 
-                    await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Approved" })
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Approved" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
+
                 } catch (error) {
                     console.log("TransactionsService", error)
 
-                    await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Rejected" })
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Rejected" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
                 }
             }
 
@@ -274,7 +379,7 @@ const Announce = () => {
 
         action()
 
-    }, [announce, waitTransactionToBeConfirmed])
+    }, [announce, transactions, waitTransactionToBeConfirmed])
 
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
@@ -409,35 +514,6 @@ const Announce = () => {
     if (state.err) return <Error statusCode={state.err?.statusCode} />
 
 
-    const handleApplyPriceChange = async () => {
-        const tokenId = state?.announce?.getTokenId
-        const announceId = state?.announce?.getID
-
-        setIsConfirmed(false)
-        setError(null)
-
-        try {
-            const task = !isMinted ?
-                mintToken(tokenId, +tokenPrice) :
-                updateTokenPrince(tokenId, +tokenPrice)
-
-            const hashTx = await task
-
-            await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
-
-            await waitTransactionToBeConfirmed(hashTx)
-
-            setIsConfirmed(true)
-            setIsMinted(true)
-            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
-
-        } catch (error) {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        }
-    }
-
     return (
         <Container>
             <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
@@ -467,14 +543,14 @@ const Announce = () => {
                                     <Col sm={4}>
                                         <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
                                     </Col>
-                                    {!isOwn && isMinted && !walletPayer && (
+                                    {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
-                                    {isOwn && isMinted && walletPayer && (
+                                    {isOwn && isMinted && newOfferCreated && (
                                         <Row>
                                             <Col sm={5}>
                                                 <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
