@@ -240,7 +240,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const { isAuthReady, authenticatedUser } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { dispatchModalError } = useContext(MessageContext)
-    const [hiddenForm, hideForm] = useState(true)
+    const [hiddenForm, hideForm] = useState(false)
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const defaultValues = {
@@ -711,7 +711,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     </ButtonDropdown>
 
                       
-                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                    <div className={clsx(hiddenForm && classes.filtersHidden)} >
                         {DynamicFiltersComponent && (
                             <DynamicFiltersComponent
                                 control={control}
