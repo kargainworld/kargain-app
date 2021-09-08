@@ -307,11 +307,11 @@ const Profile = () => {
                     title={`${profile.getFullName} - Kargain`}
                 />
 
-                {state.isAdmin && (
-                    <Alert severity="info" className="mb-2">
+                {/* {state.isAdmin && ( */}
+                    {/* <Alert severity="info" className="mb-2">
                         Connected as Admin
-                    </Alert>
-                )}
+                    </Alert> */}
+                {/* )} */}
 
                 <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
