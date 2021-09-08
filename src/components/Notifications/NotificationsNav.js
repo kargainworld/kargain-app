@@ -53,7 +53,7 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     top: '12px',
     right: '10px',
-    width: '10.73px',
+    width: '12px',
     height: '12px',
     borderRadius: '50%',
     backgroundColor: '#A291F3',
@@ -64,7 +64,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    fontSize: 8,
+    fontSize: '8px',
   },
 }));
 

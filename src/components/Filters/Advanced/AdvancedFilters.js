@@ -163,6 +163,30 @@ const useStyles = makeStyles(() => ({
 
         padding: '15px 10px 20px',
     }, 
+    bordergradientbtn:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontSize: '14px',        
+        padding: '5px 30px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset', 
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
+        
+        '& span':{
+        
+            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
+            backgroundClip: 'text',
+            color: 'transparent'
+            
+        }        
+    },
 }))
 
 
@@ -478,16 +502,18 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
                 <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
-                    <CTALink
-                        className={clsx(classes.button)}
-                        icon={StorefrontIcon}
-                        title={t('layout:news_feed')}
-                        href="/advanced-search">
-                    </CTALink>
+                    
                     <ControlButtons 
                         resetFilter={onResetFilter}
                         dynamicHandleSubmit={handleSubmit}
                     />
+
+                    <CTALink
+                        className={clsx(classes.bordergradientbtn)}
+                        icon={StorefrontIcon}
+                        title={t('layout:news_feed')}
+                        href="/advanced-search">
+                    </CTALink>
                 </div>
                 
                 <div className={clsx(classes.rowbuttons)}>
