@@ -30,6 +30,8 @@ import pen from './icon_pen.svg';
 import save from './icon_save.svg';
 import sendicon from './icon_sendicon.svg';
 import sendbtn from './icon_sendbtn.svg';
+import recycle_white from './icon_recycle_white.svg';
+import home_color from './icon_home_color.svg';
 
 export const NewIcons = {
     message,
@@ -65,4 +67,6 @@ export const NewIcons = {
     save,
     sendicon,
     sendbtn,
+    recycle_white,
+    home_color,
 }
