@@ -269,28 +269,6 @@ const Announce = () => {
     }, [account, library, chainId, isContractReady]) //
 
     useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                    fetchTokenPrice(state.announce.getTokenId)
-                        .then((price) => {
-                            setTokenPrice(price)
-                            setIsLoading(false)
-                            setIsMinted(price ? true : false)
-                        })
-                        .catch(() => {
-                            setIsLoading(false)
-                        })
-                }).catch(() => {
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
-    }, [])
-
-    useEffect(() => {
         if (!tried && active) {
             setTried(true)
         }
@@ -581,7 +559,7 @@ const Announce = () => {
                                             modalMessagingProfile: announce.getAuthor,
                                             modalMessaginAnnounce: announce
                                         })
-                                        }
+                                    }
                                     }
                                     style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
                                 >
