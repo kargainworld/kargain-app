@@ -8,7 +8,9 @@ import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 import Button from '@material-ui/core/Button'
+import LanguageIcon from '@material-ui/icons/Language'
 import AddIcon from '@material-ui/icons/Add'
+import { Emoji } from 'react-apple-emojis'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ChatIcon from '@material-ui/icons/Chat'
@@ -22,7 +24,6 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import FaceIcon from '@material-ui/icons/Face'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
-import { getLogo } from '../libs/utils'
 import { useAuth } from '../context/AuthProvider'
 import NotificationsNav from '../components/Notifications/NotificationsNav'
 import CTALink from './CTALink'
@@ -32,8 +33,11 @@ import { ClickAwayListener } from "@material-ui/core"
 import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
 import Metamask from './Wallet/Metamask'
 
+import { NewIcons } from '../assets/icons';
+
 const Root = styled.header`
   position: sticky;
+  padding: 10px 0 12px 0;
 `
 
 const SearchInput = styled(Input)(({ theme }) => `
@@ -71,7 +75,7 @@ const NavbarClient = () => {
             <Container>
                 <Navbar light expand="md" className="navbar position-relative">
                     <NavbarBrand href="/">
-                        <img src={getLogo()} width="150" alt="logo"/>
+                        <NewIcons.logo width="150" alt="logo" />
                     </NavbarBrand>
 
                     <NavbarToggler
@@ -107,6 +111,14 @@ const NavbarClient = () => {
                     <NavItem className="p-2" style={{ listStyle: 'none' }}>
                         <NewAdButtonCTAStyled isDesktop={!isMobile}/>
                     </NavItem>
+                    
+                    <Link
+                        href="https://kargain.world"
+                        prefetch={false}>
+                        <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
+                            <Emoji name="globe-with-meridians" width={16} />
+                        </a>
+                    </Link>
                 </Navbar>
             </Container>
         </Root>
@@ -121,6 +133,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
+            style={{ borderRadius: 25, height: 33, fontWeight: "bold", fontFamily: "Roboto", fontSize: 14, lineHeight: "150%", fontStyle: "normal", padding: '6px 16px 5px 16px' }}
             variant="contained"
             color="primary"
         />
@@ -128,15 +141,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
 }
 
 const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
-  border-radius: 5px;
-  border: 1px solid #000 !important;
-  background-color: #000;
-  color: #fff;
-
-  .header &:hover {
-    background-color: #fff;
-    color: #000 !important;
-  }
+border-radius: 20px;
 `
 
 const NavbarAction = ({ vertical }) => {
@@ -179,7 +184,7 @@ const NavbarAction = ({ vertical }) => {
                     <button
                         type="submit"
                         className="search-button">
-                        <SearchIcon/>
+                        <SearchIcon />
                     </button>
                 </form>
             </NavItem>
@@ -199,7 +204,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 aria-haspopup="true"
                 aria-expanded="true"
                 onClick={() => toggle(keyName)}>
-                <PermIdentityIcon/>
+                <NewIcons.navuser />
             </IconButton>
 
             <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
@@ -211,17 +216,8 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     </li>
                 )}
                 <li className="px-0 dropdown-item">
-                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                        <a className="nav-link text-left"><BookmarkIcon/>
-                            <span className="m-1">
-                                {t('layoutC:favorites')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
-                        <a className="nav-link text-left"><FaceIcon/>
+                        <a className="nav-link text-left"><NewIcons.user />
                             <span className="m-1">
                                 {t('layoutC:my-profile')}
                             </span>
@@ -229,8 +225,17 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     </Link>
                 </li>
                 <li className="px-0 dropdown-item">
+                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
+                        <a className="nav-link text-left"><NewIcons.favorite />
+                            <span className="m-1">
+                                {t('layoutC:favorites')}
+                            </span>
+                        </a>
+                    </Link>
+                </li>
+                <li className="px-0 dropdown-item">
                     <Link href="/profile/messages" prefetch={false}>
-                        <a className="nav-link text-left"><ChatIcon/>
+                        <a className="nav-link text-left"><NewIcons.message />
                             <span className="m-1">
                                 {t('layoutC:messaging')}
                             </span>
@@ -239,7 +244,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 </li>
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
-                        <a className="nav-link text-left"><SettingsIcon/>
+                        <a className="nav-link text-left"><NewIcons.setting />
                             <span className="m-1">
                                 {t('layoutC:settings')}
                             </span>
@@ -252,7 +257,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             router.push('/')
                             logout()
                         }}>
-                            <ExitToAppIcon/>
+                            <NewIcons.signout />
                             <span className="m-1">
                                 {t('layoutC:logout')}
                             </span>
@@ -295,7 +300,7 @@ const LoggedInUserNav = ({ vertical }) => {
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <HomeIcon/>
+                                    <NewIcons.home />
                                 </IconButton>
                             </a>
                         </Link>
@@ -315,14 +320,14 @@ const VisitorNav = ({ vertical }) => {
         <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
             <NavItem className="p-2">
                 <Link href="/auth/login" prefetch={false}>
-                    <a className="nav-link py-0">
+                    <a className="nav-link py-0" style={{ color: "#666666" }}>
                         {t('layoutC:login')}
                     </a>
                 </Link>
             </NavItem>
             <NavItem className="p-2">
                 <Link href="/auth/register" prefetch={false}>
-                    <a className="nav-link py-0">
+                    <a className="nav-link py-0" style={{ color: "#666666" }}>
                         {t('layoutC:register')}
                     </a>
                 </Link>

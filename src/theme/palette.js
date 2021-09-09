@@ -14,15 +14,27 @@ export default {
     white,
     primary: {
         contrastText: white,
-        light: "#999999",
-        main: "#111111",
-        dark: "#000000"
+        light: "#2060FF",
+        main: "#2C65F6",
+        dark: "#2060FF"
     },
     secondary: {
         contrastText: white,
         dark: colors.grey[900],
-        main: '#444444',
+        main: '#FE73F1',
         light: colors.grey['A400']
+    },
+    customgray: {
+        contrastText: white,
+        dark: "#999999",
+        main: '#EAEAEA',
+        light: '#FBFBFB'
+    },
+    gradient: {
+        contrastText: white,
+        dark: "linear-gradient(180deg, #DB00FF 0%, #5200FF 100%)",
+        main: "linear-gradient(94.54deg, rgba(44, 101, 246, 0.69) 6.32%, rgba(105, 158, 248, 0.87) 31.3%, #A291F3 57.1%, rgba(237, 128, 235, 0.81) 83.75%)",
+        light: "linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%)"
     },
     success: {
         contrastText: white,
@@ -54,7 +66,7 @@ export default {
         link: colors.blue[600]
     },
     background: {
-        default: '#F4F6F8',
+        default: '#F4F4F4',
         paper: white
     },
     icon: colors.blueGrey[600],

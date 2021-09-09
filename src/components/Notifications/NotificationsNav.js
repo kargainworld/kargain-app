@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsIcon from '../../assets/icons/HeaderNotification.svg';
 import { CircularProgress } from '@material-ui/core';
 import { fetchNotifications, removeNotification } from '../../services/NotificationsService';
 import { makeStyles } from '@material-ui/styles';
@@ -51,19 +51,20 @@ const useStyles = makeStyles(() => ({
   },
   badge: {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 20,
-    height: 20,
+    top: '12px',
+    right: '10px',
+    width: '12px',
+    height: '12px',
     borderRadius: '50%',
-    background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
+    backgroundColor: '#A291F3',
+    // background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
   },
   counts: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    fontSize: 14,
+    fontSize: '8px',
   },
 }));
 

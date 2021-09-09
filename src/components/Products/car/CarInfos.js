@@ -14,11 +14,12 @@ const useStyles = makeStyles(() => ({
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
-
+        marginTop:'8px',
         '& span': {
             fontWeight: 700
         }
-    }
+    },
+    
 }))
 
 const CarInfos = ({ announce, enableThirdColumn }) => {

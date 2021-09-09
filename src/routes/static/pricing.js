@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { Container } from 'reactstrap'
 import { useAuth } from '../../context/AuthProvider'
 import Offers from '../../components/Stripe/Offers'
@@ -6,13 +7,19 @@ import useIsMounted from '../../hooks/useIsMounted'
 
 
 const Index = () => {
-    const { isAuthenticated, setForceLoginModal } = useAuth()
+    const { isAuthenticated } = useAuth()
+    const router = useRouter()
     const isMounted = useIsMounted()
 
     useEffect(()=> {
         if(isMounted){
-            if (!isAuthenticated) return setForceLoginModal(true)
-            setForceLoginModal(false)
+            if (!isAuthenticated) {
+                router.push({
+                    pathname: '/auth/login',
+                    query: { redirect: router.asPath },
+                });
+                return
+            }
         }
     },[isMounted, isAuthenticated])
 

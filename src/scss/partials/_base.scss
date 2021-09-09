@@ -98,7 +98,7 @@ a {
 main {
     display: block;
     margin: 0 auto;
-    padding: .5rem .5rem 0;
+    // padding: .5rem .5rem 0;
     position: relative;
     min-height: calc(80vh - 1rem);
 }
@@ -174,7 +174,7 @@ main {
     span {
         padding: 1rem;
         margin: 0 auto;
-        background-color: $grey;
+        background-color: white;
     }
 }
 
@@ -244,11 +244,11 @@ main {
 
 .breadcrumb-item.active {
     a {
-        background-color: $grey;
+        background-color: #fff;
         padding: 0 1rem;
         border-radius: 10px;
         //text-decoration: underline;
-        color: $white
+        color: #ED80EB;
     }
 }
 

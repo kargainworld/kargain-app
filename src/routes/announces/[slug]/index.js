@@ -29,11 +29,16 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
+
+
 import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import ObjectID from 'bson-objectid'
+import { NewIcons } from 'assets/icons'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 import UsersService from '../../../services/UsersService'
+import ObjectID from 'bson-objectid'
 import Web3 from "web3"
 
 const toBN = Web3.utils.toBN
@@ -48,8 +53,6 @@ const useStyles = makeStyles(() => ({
             flex: 1
         }
     },
-
-
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -61,14 +64,55 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         margin: '15px 0',
-        borderBottom: '1px solid'
+        borderBottom: '1px solid #999999'
     },
     wysiwyg: {
         margin: '1rem'
+    },
+    buttonblue:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '6px 50px',
+
+        background: '#2C65F6',
+        borderRadius: '25px',
+
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '150%',
+        color:'white',
+        
+        marginTop:'20px',
+    },
+
+    filtersHidden: {
+        display: 'none'
+    },
+    textfield:{
+        '& .MuiInputBase-root':{
+            height:'40px'
+        },
+        '& input:disabled': {
+            backgroundColor: '#d5d8db',
+            height: '5px'
+        }
     }
 }))
 
 const Announce = () => {
+    const isMobile = useMediaQuery('(max-width:768px)')
+    const [hiddenForm, hideForm] = useState(true)
+
+    const toggleFilters = () => {
+        hideForm((hiddenForm) => !hiddenForm);
+    };
+
+    useEffect(()=>{
+        toggleFilters()
+    },[isMobile])
+
     const { library, chainId, account, activate, active } = useWeb3React()
     const [bnbBalance, setBalance] = useState()
     const [bnbBalanceWei, setBalanceWei] = useState()
@@ -77,7 +121,7 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t, lang } = useTranslation()
-    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
+    const { isAuthenticated, authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
@@ -189,8 +233,7 @@ const Announce = () => {
         stateReady: false,
         isSelf: false,
         isAdmin: false,
-        announce: new AnnounceModel(),
-        likesCounter: 0
+        announce: new AnnounceModel()
     })
 
     const [tried, setTried] = useState(false)
@@ -268,6 +311,13 @@ const Announce = () => {
 
     const [like, setLike] = useState(alreadyLikeCurrentUser)
 
+    const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
+    
+    useEffect(() => {
+        setLike(alreadyLikeCurrentUser)
+        setLikesCounter(state?.announce?.getCountLikes)
+    }, [announce])
+
     const isOwn = authenticatedUser?.raw?._id === announce?.raw?.user?._id
 
     const toggleVisibility = () => {
@@ -278,25 +328,26 @@ const Announce = () => {
 
     const handleClickLikeButton = async () => {
         if(isOwn) return
-        if (!isAuthenticated) return setForceLoginModal(true)
-        let counter = state.likesCounter
+        if (!isAuthenticated) {
+            router.push({
+                pathname: '/auth/login',
+                query: { redirect: router.asPath },
+            });
+            return
+        }
         if(isLiking) return
         setIsLiking(true)
         try {
+            console.log(like);
             if (like) {
+                setLike(false)
+                setLikesCounter((likesCounter) => likesCounter - 1)
                 await AnnounceService.removeLikeLoggedInUser(announce.getID)
-                setState((state) => ({
-                    ...state,
-                    likesCounter: Math.max(0, counter - 1)
-                }))
             } else {
+                setLike(true)
+                setLikesCounter((likesCounter) => likesCounter + 1)
                 await AnnounceService.addLikeLoggedInUser(announce.getID)
-                setState((state) => ({
-                    ...state,
-                    likesCounter: counter + 1
-                }))
             }
-            setLike(!like)
             setIsLiking(false)
         } catch (err) {
             dispatchModalError({ err })
@@ -360,6 +411,7 @@ const Announce = () => {
 
     return (
         <Container>
+
             <NextSeo title={`${announce.getTitle} - Kargain`} description={announce.getTheExcerpt()} />
 
             {state.isAdmin && (
@@ -369,6 +421,8 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
+                    
+
                 {!announce.getIsActivated && (
                     <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
                 )}
@@ -377,15 +431,71 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top">
-                            <Typography as="h2" variant="h2">
+                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                            <Row >
+                                <div className="pic">
+                                    <Avatar
+                                        className="img-profile-wrapper avatar-preview"
+                                        src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                        isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                        alt={announce.getTitle}
+                                        style={{ width: 120, height: 120 }}
+                                    />
+                                </div>
+
+                                <div style={{marginLeft: '10px'}}>
+                                    <Link href={`/profile/${announce.getAuthor.getUsername}`}>
+                                        <a>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                                {announce.getAuthor.getFullName}
+                                            </Typography>
+                                        </a>
+                                    </Link>
+
+                                    {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                        <div className="top-profile-location">
+                                            <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
+                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                    {announce.getAdOrAuthorCustomAddress()}
+                                                </span>
+                                            </a>
+                                        </div>
+                                    )}
+                                    {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
+                                </div>
+                            </Row>
+                        </div>
+
+                        <div className="pics">
+                            {announce.getCountImages > 0 && (
+                                <>
+                                    <GalleryViewer images={announce.getImages} ref={refImg} />
+                                    {/* {isDesktop && (
+                    <GalleryImgsLazy
+                        images={announce.getImages}
+                        handleCLickImg={handleCLickImg}
+                    />
+                  )} */}
+                                </>
+                            )}
+                        </div>
+                    </Col>
+
+                    <Col sm={12} md={6}>
+                        <div style={{marginTop:'25px'}}>
+                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
                                 {announce.getAnnounceTitle}
                             </Typography>
 
-                            <div  style={{ width: '100%' }}>
+                            <div  style={{ width: '100%',marginTop:'10px' }}>
                                 <Box mb={2} display="flex" flexDirection="row">
-                                    <Col sm={4}>
-                                        <h4 variant="h2">€ {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                    
+                                    <Col sm={7}>
+                                        <Row>
+                                            <p style={{fontSize:'22px'}}>€  </p>
+                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
+                                        </Row>
                                     </Col>
                                     {!isOwn && isMinted && !walletPayer && (
                                         <Col sm={5}>
@@ -416,70 +526,23 @@ const Announce = () => {
                                                 modalShareAnnounce: announce
                                             })
                                         }
+                                        style={{display:'flex', justifyContent: 'flex-end'}}
                                     >
-                                        <small className="mx-2"> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
-
-
+                                <div>
+                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="pics">
-                            {announce.getCountImages > 0 && (
-                                <>
-                                    <GalleryViewer images={announce.getImages} ref={refImg} />
-                                    {/* {isDesktop && (
-                    <GalleryImgsLazy
-                        images={announce.getImages}
-                        handleCLickImg={handleCLickImg}
-                    />
-                  )} */}
-                                </>
-                            )}
-                        </div>
-                    </Col>
-
-                    <Col sm={12} md={6}>
-                        <div className={classes.formRow}>
-                            <div className="pic" style={{ flex: 1 }}>
-                                <Avatar
-                                    className="img-profile-wrapper avatar-preview"
-                                    src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                                    isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                                    alt={announce.getTitle}
-                                    style={{ width: 80, height: 80 }}
-                                />
-                            </div>
-
-                            <div style={{ flex: 4 }}>
-                                <Link href={`/profile/${announce.getAuthor.getUsername}`}>
-                                    <a>
-                                        <Typography variant="h3" component="h2" style={{ paddingLeft: 4 }}>
-                                            {announce.getAuthor.getFullName}
-                                        </Typography>
-                                    </a>
-                                </Link>
-
-                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <div className="top-profile-location">
-                                        <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                            <span className="top-profile-location">
-                                                <RoomOutlinedIcon />
-                                                {announce.getAdOrAuthorCustomAddress()}
-                                            </span>
-                                        </a>
-                                    </div>
-                                )}
-                                {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getAuthor.getPhone} </span>}
-                            </div>
+                        
                         </div>
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
-                            <div className="icons-profile-wrapper">
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
+                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -489,17 +552,18 @@ const Announce = () => {
                                 <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
                                     <i.BookmarkBorder
                                         style={{
-                                            color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
+                                            color: like ? '#444444' : '#444444',
+                                            marginRight: '8px'
                                         }}
                                     />
-                                    <span>{state.likesCounter}</span>
+                                    <span style={{color:'#444444'}}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
-                                    style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
+                                    style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -519,9 +583,11 @@ const Announce = () => {
                                         })
                                         }
                                     }
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1 }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
                                 </Action>
+
 
                                 {(state.isAdmin || state.isSelf) && (
                                     <div style={{ display: "flex", gap: 5 }}>
@@ -529,9 +595,22 @@ const Announce = () => {
                                     </div>
                                 )}
                             </div>
+
+                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                                <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
+                            </div>
                         </div>
+
+                        {(!isOwn) && (
+                            <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                <Comments announceRaw={announce.getRaw} />
+                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                            </div>
+                        )}
+                        
+
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
@@ -566,7 +645,9 @@ const Announce = () => {
                                                     setError(error)
                                                     setIsConfirmed(true)
                                                 })
-                                            }}>
+                                                
+                                            }}
+                                            style={{height:'40px', marginTop:'30px'}}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
@@ -575,49 +656,49 @@ const Announce = () => {
                                 </div>
                             </div>
                         )}
-                        <Comments announceRaw={announce.getRaw} />
                     </Col>
                 </Row>
+                <div style={{marginTop:'50px'}}>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:vehicle-data')}
+                        </Typography>
+                        <CarInfos announce={announce} enableThirdColumn />
+                    </section>
 
-                <section className="my-2">
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:vehicle-data')}
-                    </Typography>
-                    <CarInfos announce={announce} enableThirdColumn />
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:equipments')}
+                        </Typography>
+                        <Row>
+                            {announce.getVehicleEquipments.map((equipment, index) => {
+                                return (
+                                    <Col sm={6} md={3} key={index}>
+                                        <div className="equipment m-3">
+                                            <Typography>{equipment.label}</Typography>
+                                        </div>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
+                    </section>
 
-                <section className="my-2">
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:equipments')}
-                    </Typography>
-                    <Row>
-                        {announce.getVehicleEquipments.map((equipment, index) => {
-                            return (
-                                <Col sm={6} md={3} key={index}>
-                                    <div className="equipment m-3">
-                                        <Typography>{equipment.label}</Typography>
-                                    </div>
-                                </Col>
-                            )
-                        })}
-                    </Row>
-                </section>
+                    <section className="my-2" style={{marginTop:'15px'}}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:description')}
+                        </Typography>
+                        <div className={classes.wysiwyg}>
+                            <Typography>{announce.getDescription}</Typography>
+                        </div>
+                    </section>
 
-                <section className="my-2">
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:description')}
-                    </Typography>
-                    <div className={classes.wysiwyg}>
-                        <Typography>{announce.getDescription}</Typography>
-                    </div>
-                </section>
-
-                <section className="my-2">
+                    <section className="my-2" style={{marginTop:'15px'}}>
                     <Typography component="h3" variant="h3">
                         {t('vehicles:data-sheet')}
                     </Typography>
                     <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
                 </section>
+                </div>
             </div>
         </Container>
     )

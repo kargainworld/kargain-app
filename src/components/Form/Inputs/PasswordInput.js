@@ -4,6 +4,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import { NewIcons } from '../../../assets/icons';
 
 const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
     const [hidden, setHidden] = useState(true)
@@ -22,7 +23,7 @@ const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
                     disabled={props.disabled}
                 />
                 <span className="password__show" onClick={() => setHidden(!hidden)}>
-                    {hidden ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                    {hidden ? <NewIcons.eye alt="eye"/> : <NewIcons.eyeslash alt="eyeslash"/>}
                 </span>
             </div>
             {errors && <ValidationError errors={errors} name={name}/>}

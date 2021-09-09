@@ -8,25 +8,25 @@ import { withStyles } from '@material-ui/core/styles';
 
 const StyledOnlineBadge = withStyles((theme) => ({
   badge: {
-    right: '25%',
-    bottom: '20%',
-    width: 12,
-    height: 12,
-    borderRadius: '50%',
-    backgroundColor: '#44b700',
-    color: '#44b700',
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    '&::after': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: '$ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
-      content: '""',
-    },
+    // right: '25%',
+    // bottom: '20%',
+    // width: 12,
+    // height: 12,
+    // borderRadius: '50%',
+    // backgroundColor: '#44b700',
+    // color: '#44b700',
+    // boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    // '&::after': {
+    //   position: 'absolute',
+    //   top: 0,
+    //   left: 0,
+    //   width: '100%',
+    //   height: '100%',
+    //   borderRadius: '50%',
+    //   animation: '$ripple 1.2s infinite ease-in-out',
+    //   border: '1px solid currentColor',
+    //   content: '""',
+    // },
   },
   '@keyframes ripple': {
     '0%': {
@@ -42,25 +42,25 @@ const StyledOnlineBadge = withStyles((theme) => ({
 
 const StyledOfflineBadge = withStyles((theme) => ({
   badge: {
-    right: '25%',
-    bottom: '20%',
-    width: 12,
-    height: 12,
-    borderRadius: '50%',
-    backgroundColor: 'red',
-    color: 'red',
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    '&::after': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: '$ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
-      content: '""',
-    },
+    // right: '25%',
+    // bottom: '20%',
+    // width: 12,
+    // height: 12,
+    // borderRadius: '50%',
+    // backgroundColor: 'red',
+    // color: 'red',
+    // boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    // '&::after': {
+    //   position: 'absolute',
+    //   top: 0,
+    //   left: 0,
+    //   width: '100%',
+    //   height: '100%',
+    //   borderRadius: '50%',
+    //   animation: '$ripple 1.2s infinite ease-in-out',
+    //   border: '1px solid currentColor',
+    //   content: '""',
+    // },
   },
   '@keyframes ripple': {
     '0%': {
@@ -79,7 +79,7 @@ export const Avatar = (props) => {
 
   return isonline === 'true' ? (
     <StyledOnlineBadge
-      overlap="circle"
+      overlap="circular"
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
@@ -90,7 +90,7 @@ export const Avatar = (props) => {
     </StyledOnlineBadge>
   ) : (
     <StyledOfflineBadge
-      overlap="circle"
+      overlap="circular"
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
@@ -121,7 +121,7 @@ export const Info = styled.div`
 `;
 
 export const AuthorName = styled(Link)`
-  font-size: 16px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,8 +131,8 @@ export const Location = styled(Link)`
   margin-top: 4px !important;
   display: flex !important;
   align-items: center !important;
-  font-size: 16px !important;
-  color: ${({ theme: { palette } }) => palette.primary.light} !important;
+  font-size: 13px !important;
+  color: #99999 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -221,7 +221,8 @@ export const ImageCounter = styled.span`
 
 export const Title = styled.h3`
   margin-top: ${({ theme }) => theme.spacing(3)}px;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: 17.4674px !important;
   font-weight: 500;
   color: ${({ theme: { palette } }) => palette.primary.main};
 `;

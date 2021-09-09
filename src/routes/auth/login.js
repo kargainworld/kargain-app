@@ -15,6 +15,23 @@ import AuthService from '../../services/AuthService'
 import { useAuth } from '../../context/AuthProvider'
 import UserModel from '../../models/user.model'
 import useSocket from '../../hooks/useSocket'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import clsx from 'clsx'
+import customColors from '../../theme/palette'
+
+const useStyles = makeStyles(()=>({
+
+	button: {
+		border: "none !important",
+		padding: '6px 2rem',
+		borderRadius: '20px',
+		color: 'white',
+		fontSize: '14px',
+		fontWeight: 'bold',
+		background: customColors.gradient.main
+	},
+
+}))
 
 export default ({ forceLogout }) => {
 	const router = useRouter()
@@ -22,6 +39,8 @@ export default ({ forceLogout }) => {
 	const { t } = useTranslation()
 	const { initializeAuth } = useAuth()
 	useSocket()
+	const classes = useStyles()
+        
 	const { redirect } = router.query
 	const { dispatchModalError } = useContext(MessageContext)
 	const { control, errors, handleSubmit } = useForm({
@@ -63,7 +82,7 @@ export default ({ forceLogout }) => {
 
 	return (
 		<Container>
-			<h1>{t('vehicles:login')}</h1>
+			<h3 style={{textAlign:"center", fontSize:"24px", marginTop:'40px'}}>{t('vehicles:login')}</h3>
 			<Row>
 				<Col className="m-auto" sm="12" md="10">
 					{/* <SSOProviders/> */}
@@ -87,6 +106,7 @@ export default ({ forceLogout }) => {
 
 						<FieldWrapper label={t('vehicles:password')}>
 							<PasswordInput
+								className = {clsx('txt', classes.text)}
 								name="password"
 								errors={errors}
 								control={control}
@@ -98,19 +118,20 @@ export default ({ forceLogout }) => {
 											min: 4, max: 16
 										})
 									}
-								}
-								}
+								}}
 							/>
 						</FieldWrapper>
 
 						<div className="text-right">
 							<Link href="/auth/forgotten">
-								<a className="">{t('vehicles:password-forgotten')} </a>
+								<a className="" style={{fontSize: "14px"}}>{t('vehicles:password-forgotten')} </a>
 							</Link>
 						</div>
 
 						<div className="submit">
 							<CTAButton
+								
+								className={clsx('btn', classes.button)}
 								title={t('vehicles:login')}
 								submit
 							/>

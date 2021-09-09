@@ -17,13 +17,20 @@ import UserModel from '../../models/user.model'
 import Loading from '../../components/Loading'
 import Error from '../_error'
 
+import customColors from '../../theme/palette'
+
 const path = require('path')
 
 const useStyles = makeStyles(() => ({
-    button: {
-        padding: '1rem',
-        border: '1px solid'
-    }
+	button: {
+		border: "none !important",
+		padding: '6px 2rem',
+		borderRadius: '20px',
+		color: 'white',
+		fontSize: '14px',
+		fontWeight: 'bold',
+		background: customColors.gradient.main
+	},
 }))
 
 const Page = () => {
@@ -52,6 +59,12 @@ const Page = () => {
     }
 
     const onSubmit = (data) => {
+        if (!isAuthenticated) {
+            router.push({
+                pathname: '/auth/login',
+                query: { redirect: router.asPath },
+            });
+        }
         dispatchFormClear();
         const { adType, vehicleType} = data
         const route = `${vehicleType.toLowerCase()}`
@@ -92,8 +105,8 @@ const Page = () => {
         <Container className="annonce1-wrapper-container">
             <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 
-                <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
-                <Row className="justify-content-center">
+                <Typography style={{fontSize:"20px", marginTop:"40px"}} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
+                <Row className="justify-content-center" style={{marginTop:"30px"}}>
                     {vehicleTypes() && vehicleTypes().map((tab, index) => {
                         return (
                             <Col key={index} xs={6} sm={6} md={3} lg={3}>
@@ -118,8 +131,8 @@ const Page = () => {
                     })}
                 </Row>
 
-                <Typography component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
-                <Row className="justify-content-center">
+                <Typography style={{fontSize:"20px", fontWeight:"500", marginTop:"30px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
+                <Row className="justify-content-center" style={{fontSize:"14px"}}>
                     {announceTypes() && announceTypes()
                         .filter(type => {
                             if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
@@ -145,6 +158,7 @@ const Page = () => {
 
                 <Row className="justify-content-center">
                     <button className={clsx('btn', classes.button)}
+                        className={clsx("btn"), classes.button}
                         type="submit"
                         disabled={!formState.isValid}>
                         {t('vehicles:next')}

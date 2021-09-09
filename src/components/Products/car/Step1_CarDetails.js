@@ -11,7 +11,7 @@ import { FormContext } from '../../../context/FormContext'
 import { MessageContext } from '../../../context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
-import Header from '../../Header'
+import { Emoji } from 'react-apple-emojis'
 
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -102,10 +102,10 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 <Col sm={12} md={6}>
                     <Row>
                         <Col>
-                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
-                                <NumberInput
-                                    name="mileage"
-                                    placeholder={`20000 ${mileageType?.value}`}
+                            <FieldWrapper label={t('vehicles:type')}>
+                                <SelectInput
+                                    name="mileageType"
+                                    options={formData.mileageType}
                                     control={control}
                                     errors={errors}
                                     rules={{ required: t('form_validations:required') }}
@@ -113,13 +113,13 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             </FieldWrapper>
                         </Col>
                         <Col>
-                            <FieldWrapper label={t('vehicles:type')}>
-                                <SelectInput
-                                    name="mileageType"
-                                    options={formData.mileageType}
+                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                <NumberInput
+                                    name="mileage"
+                                    placeholder={`20000 ${mileageType?.value}`}
                                     control={control}
                                     errors={errors}
-                                    selected={'km'}
+                                    rules={{ required: t('form_validations:required') }}
                                 />
                             </FieldWrapper>
                         </Col>
@@ -193,7 +193,12 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header strong text={t('vehicles:consumption')} />
+            {/* <Header strong text={t('vehicles:consumption')} /> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="fuel-pump" width={18} />
+                {t('vehicles:consumption')} 
+            </h3>
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={`${t('vehicles:consumption')} mixt`}>
@@ -251,7 +256,12 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
 
-            <Header text={t('vehicles:vehicle-informations')} />
+            {/* <Header text={t('vehicles:vehicle-informations')} /> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
+                {t('vehicles:vehicle-informations')}
+            </h3>
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:doors_quantity')}>

@@ -5,13 +5,13 @@ import Typography from "@material-ui/core/Typography";
 const VehicleTypesWrapper = styled.div`
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   cursor: pointer;
   user-select: none;
 `
 
 const VehicleTypeContainer = styled.div`
-  border: 1px solid ${({ selected, theme: { palette: { primary } } }) => selected ? primary.main : primary.light};
+  border: 1px solid ${({ selected, theme: { palette: { customgray, background } } }) => selected ? background.paper : customgray.main};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
                     <Typography
                         variant="h3"
                         style={{
-                            color: isActive ? '#000' : '#999',
+                            color: isActive ? '#3291FF' : '#999999',
                             marginTop: 20
                         }}
                     >

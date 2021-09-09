@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 import { MessageContext } from '../../context/MessageContext'
 import AnnounceService from '../../services/AnnounceService'
 import { useAuth } from '../../context/AuthProvider'
-import TagsList from '../Tags/TagsList'
-import CTALink from '../CTALink'
 import { ModalContext } from '../../context/ModalContext'
 import AnnounceModel from '../../models/announce.model'
 import { getTimeAgo } from '../../libs/utils'
@@ -23,6 +21,14 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import GalleryViewer from '../Gallery/GalleryViewer'
 import { useSocket } from '../../context/SocketContext'
 import usePriceTracker from 'hooks/usePriceTracker'
+import { Row } from 'reactstrap'
+
+import { NewIcons } from '../../assets/icons'
+import clsx from 'clsx'
+import { Emoji } from 'react-apple-emojis'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
+import customColors from '../../theme/palette'
+import CTALink from '../CTALink'
 
 const useStyles = makeStyles(() => ({
     buttonRemove: {
@@ -31,10 +37,94 @@ const useStyles = makeStyles(() => ({
         "&:hover" : {
             backgroundColor : themeColors.red
         }
+    },
+
+    image:{
+       
+        '& .image-gallery-image':{
+            width:'100% !important',
+            height: '240px !important',
+            objectFit: 'fill !important',
+        }
+    },
+    a_coin:{
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: '12.2272px',
+        lineHeight: '150%',
+        color: '#999999',
+    },
+    a_info:{
+        marginTop: '5px',
+        fontWeight: 'bold',
+        fontSize: '17.4674px !important',
+        fontWeight: '500',
+        color: '#2C65F6',
+    },
+    filterbutton:{
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontFamily: 'Avenir Next',
+        fontSize: '14px',
+        fontWeight: '700',
+        padding: '6px 16px',
+        color: '$color-black',
+        boxShadow: '0 0 6px 0 #f0eeee',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(179deg, #2C65F6, #ED80EB)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #f0eeee inset',
+        baclgroundColor: '#F0EEEE !important',
+        transform: 'translate(10%, -15%)',
+    },
+    avatar:{
+        '& svg':{
+            marginLeft:'1px !important',
+        }
+    },
+    row:{
+        display: '-webkit-flex',
+        display: '-moz-box',
+        display: 'flex, -webkitFlex-wrap: wrap',
+        flexWrap: 'wrap',
+        marginRight: '-15px'
+    },
+    share:{
+        '&:hover':{
+            backgroundColor:'#ececec !important',
+        }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white !important',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        width: "157px",
+        hegiht: "33px",
+        textAlign:'center',
+        background: customColors.gradient.main
+    },
+    modalcontent:{
+        '& .modal-content':{
+            borderRadius: '5px',
+        }
+    },
+    gear:{
+        marginTop:'-55px',
+        marginLeft:"95%",
+        '&:hover':{
+            width:'20px',
+        }
     }
 }))
 
 const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogRemove, onSelectSlug }) => {
+    
+    const [modalOpen, setModalOpen] = React.useState(false);
     const classes = useStyles()
     const refImg = useRef()
     const router = useRouter()
@@ -42,11 +132,10 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     const [priceBNB, setPrice] = useState(0)
     const { t, lang } = useTranslation()
     const announce = new AnnounceModel(announceRaw)
-    const [refWidth, { width }] = useDimensions()
     const { dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const [likesCounter, setLikesCounter] = useState(announce.getCountLikes)
-    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
+    const { isAuthenticated, authenticatedUser } = useAuth()
     const isAuthor = isAuthenticated && authenticatedUser.getID === announce.getAuthor?.getID
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
@@ -62,16 +151,22 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
     const handleClickLikeButton = async () => {
         if(isOwn) return
-        if (!isAuthenticated) return setForceLoginModal(true)
+        if (!isAuthenticated) {
+            router.push({
+                pathname: '/auth/login',
+                query: { redirect: router.asPath },
+            });
+            return
+        }
         try {
             if (!liked) {
-                await AnnounceService.addLikeLoggedInUser(announce.getID)
                 setLikesCounter((likesCount) => likesCount + 1)
                 setLiked(true)
+                await AnnounceService.addLikeLoggedInUser(announce.getID)
             } else {
-                await AnnounceService.removeLikeLoggedInUser(announce.getID)
                 setLikesCounter((likesCount) => Math.max(likesCount - 1))
                 setLiked(false)
+                await AnnounceService.removeLikeLoggedInUser(announce.getID)
             }
         } catch (err) {
             dispatchModalError({ err })
@@ -104,157 +199,184 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
     }, [state])
 
+    var str = announce.getAnnounceTitle;
+    const tempArr = str.split("|");
+    var temp1 = tempArr[0]+'|'+tempArr[1]
+    var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
+
+    var strmaile = announce.getMileage;
+    var strlength = strmaile.length;
+    var strkm = '';
+    if(strlength/3 < 0.4){
+        strkm = '0.00'+strmaile;
+    }else if(0.4 < strlength/3 < 0.7){
+        strkm = '0.0'+strmaile;
+    }else if(strlength/3 == 1){
+        strkm = '0.'+ strmaile;
+    }else{
+        var m = strlength % 3;
+        strkm = strmaile.slice(strlength-3, strlength);
+        strkm = strmaile.slice(0, m) + '.' +strkm;
+    }
+    
     return (
-        <Root>
+        <div className={clsx(classes.row)}>
+            <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', height:'520px'}}>
+            
+                <CardContent>
+                    <Body>
+                        <Meta className={clsx(classes.share)} style={{marginTop: '-5px', marginRight: '2px', marginBottom: '-27px', width:'25px', height:'25px', backgroundColor: '#ffffff', borderRadius: '50%'}}> 
+                            <NewIcons.share
+                                onClick={() =>
+                                    dispatchModalState({
+                                        openModalShare: true,
+                                        modalShareAnnounce: announce
+                                    })
 
-            <CardContent>
-                <User>
-                    <Avatar
-                        src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
-                        size="medium"
-                        isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                        style={{ width: 52, height: 52, marginRight: 10 }}
-                    />
-
-                    <Info>
-                        <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
-
-                        {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                            <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                <i.RoomOutlined size={18} />
-                                {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
-                            </Location>
-                        )}
-                    </Info>
-
-                    <Meta>
-                        <CreationDate>
-                            <i.AccessTime />
-
-                            {getTimeAgo(announce.getCreationDate.raw, lang)}
-                        </CreationDate>
-
-                        <ShareIcon
-                            onClick={() =>
-                                dispatchModalState({
-                                    openModalShare: true,
-                                    modalShareAnnounce: announce
-                                })
-                            }
-                            src="/images/share.png"
-                            alt=""
-                        />
-                    </Meta>
-                </User>
-
-                <SubHeader>
-                    {isOwn && (
-                        <Action onClick={toggleVisibility}>
-                            {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                        </Action>
-                    )}
-
-                    {!isAuthor && (
-                        <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                            <i.BookmarkBorder
-                                style={{
-                                    color: alreadyLikeCurrentUser ? '#DB00FF' : '#444444'
-                                }}
+                                }
+                                alt="share"
+                                style={{marginTop: '11px',
+                                    marginRight: '3px'}}
                             />
-                            <span>{likesCounter}</span>
-                        </Action>
-                    )}
+                        </Meta>
+                        
+                        <ImageWrapper className={clsx(classes.image)}>
+                            {announce.getImages.length > 0 && (
+                                <GalleryViewer
+                                    images={announce.getImages}
+                                    ref={refImg}
+                                    handleClick={handleImageClick}
+                                    isAnnounceCard={true}
+                                />
+                            )}
 
-                    <Action
-                        title={t('vehicles:comment_plural')}
-                        style={{ color: announce.getCountComments > 0 ? '#29BC98' : '#444444' }}
-                        onClick={() => handleImageClick()}
-                    >
-                        <i.ChatBubbleOutline style={{ width: 23, marginRight: 4 }} />
-                        <span>{announce.getCountComments}</span>
-                    </Action>
+                            {!announce.getFeaturedImg && (
+                                <ImagePlaceholder>
+                                    <i.CameraAlt fontSize="large" />
+                                </ImagePlaceholder>
+                            )}
 
-                    <Action
-                        onClick={() => {
-                            if (!isAuthenticated) {
-                                router.push({
-                                    pathname: '/auth/login',
-                                    query: { redirect: router.asPath },
-                                });
-                                return
-                            }
-                            dispatchModalState({
-                                openModalMessaging: true,
-                                modalMessagingProfile: announce.getAuthor,
-                                modalMessaginAnnounce: announce
-                            })
-                            }
-                        }
-                    >
-                        <i.MailOutline style={{ position: 'relative', top: -1 }} />
-                    </Action>
+                            {announce.getFeaturedImg && (
+                                <ImageCounter>
+                                    <i.CameraAlt />
+                                    {announce.getCountImages}
+                                </ImageCounter>
+                            )}
+                            <div style={{display: 'flex', justifyContent: 'flex-end', marginTop:'-5%'}}> 
+                                <div className={'btn btn-primary', classes.filterbutton}>
+                                    € {announce.getPrice}
+                                </div>
+                            </div>
+                        </ImageWrapper>
 
-                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
-                </SubHeader>
-
-                <Body>
-                    <ImageWrapper>
-                        {announce.getImages.length > 0 && (
-                            <GalleryViewer
-                                images={announce.getImages}
-                                ref={refImg}
-                                handleClick={handleImageClick}
-                                isAnnounceCard={true}
+                        <User>
+                            <Avatar
+                                src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
+                                size="medium"
+                                isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
+                                style={{ width: 45, height: 45, marginRight: 10 }}
                             />
-                        )}
 
-                        {!announce.getFeaturedImg && (
-                            <ImagePlaceholder>
-                                <i.CameraAlt fontSize="large" />
-                            </ImagePlaceholder>
-                        )}
+                            <Info style={{width:'55%', marginTop:'-5px'}}>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'6px'}}>{announce.getAuthor.getFullName}</AuthorName>
 
-                        {announce.getFeaturedImg && (
-                            <ImageCounter>
-                                <i.CameraAlt />
-                                {announce.getCountImages}
-                            </ImageCounter>
-                        )}
-                    </ImageWrapper>
+                                {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
+                                        {/* <i.RoomOutlined size={5.24} /> */}
+                                        <NewIcons.card_location/>
+                                        {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                                    </Location>
+                                )}
+                            </Info>
 
-                    <Link href={announce.getAnnounceLink}>
-                        <a>
-                            <Title>{announce.getAnnounceTitle}</Title>
-                        </a>
-                    </Link>
+                            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+                                <SubHeader style={{marginTop:'20px !important'}}>
+                                    {isOwn && (
+                                        <Action onClick={toggleVisibility}>
+                                            {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                        </Action>
+                                    )}
 
-                    {announce.getTags?.length > 0 && <TagsList tags={announce.getTags} />}
+                                    {!isAuthor && (
+                                        <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                            <NewIcons.card_heart style={{marginRight:'7px'}}/>
+                                            <span style={{color:'#999999'}}>{likesCounter}</span>
+                                        </Action>
+                                    )}
 
-                    {announce.getCountComments > 0 && (
-                        <CommentListStyled
-                            comments={announce.getComments.reverse().slice(0, 1)}
-                            moreLink={announce.getCountComments > 1 ? <Link href={announce.getAnnounceLink}>more</Link> : null}
-                        />
-                    )}
-                </Body>
-            </CardContent>
+                                    <Action
+                                        title={t('vehicles:comment_plural')}
+                                        style={{ color: announce.getCountComments > 0 ? '#999999' : '#999999' }}
+                                        onClick={() => handleImageClick()}
+                                    >
+                                        <NewIcons.card_message style={{marginLeft:'10px', marginRight:'7px'}}/>
+                                        <span>{announce.getCountComments}</span>
+                                    </Action>
 
-            <Footer>
-                {(isAuthor && typeof onhandleOpenDialogRemove === "function" && typeof onSelectSlug === "function")? (
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.buttonRemove}
-                        startIcon={<DeleteIcon/>}
-                        onClick={e => {
-                            onSelectSlug(announce.getSlug)
-                            onhandleOpenDialogRemove()
-                        }}>
-                        {t('vehicles:remove-announce')}
-                    </Button>) : (<CTALink title={t('vehicles:see-announce')} href={announce.getAnnounceLink} />)}
-                {isAuthor && <CTALink title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />}
-            </Footer>
-        </Root>
+                                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
+                                </SubHeader>
+
+                            </div>
+                            
+                        </User>
+
+                        <div style={{marginLeft:'5px', marginTop:'15px'}}>
+                            <a className={clsx(classes.a_coin)}>#1212</a>
+                        </div>
+
+                        <Link href={announce.getAnnounceLink}>
+                            <a > 
+                                <h3 className={clsx(classes.a_info)}>
+                                    <p style={{color:'black'}}> {temp1} </p>
+                                    <p> {temp2}  </p>
+                                </h3>
+                            </a>
+                        </Link>
+                        
+                        <div style={{marginLeft:'5px ', marginBottom:'-15px '}}>
+                            <h6 style={{fontsSize:'16px ', textAlign:'left'}}> 
+                                {strkm} Km 
+                            </h6>
+                            
+                            <Emoji  name="gear" width="18" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
+                            
+                            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen} className={clsx(classes.modalcontent)} style={{borderRadius:'5px', marginTop:'15%', width:'400px'}}>
+                                
+                                <button
+                                    aria-label="Close"
+                                    className=" close"
+                                    type="button"
+                                    onClick={() => setModalOpen(!modalOpen)}
+                                    style={{display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        margin: '15px 15px'}}
+                                >
+                                    <NewIcons.modalclose />
+                                </button>
+
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px'}}>
+                                    <div
+                                        className={clsx(classes.button)}
+                                        onClick={e => {
+                                            onSelectSlug(announce.getSlug)
+                                            onhandleOpenDialogRemove()
+                                        }}>
+                                        {t('vehicles:remove-announce')}
+                                    </div>
+                                </div>
+                                
+                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px', marginBottom:'50px'}}>
+                                    
+                                    <CTALink className={clsx(classes.button)} title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />
+                                </div>
+                                
+                            </Modal> 
+                        </div>
+                    </Body>
+ 
+                </CardContent>
+            </Root>
+        </div>
     )
 }
 

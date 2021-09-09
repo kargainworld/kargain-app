@@ -6,6 +6,7 @@ import NumberInput from '../Form/Inputs/NumberInput'
 import TelInput from  '../Form/Inputs/TelInput'
 import SelectCountryFlags from '../Form/Inputs/SelectCountryFlags'
 import CheckboxMUI from '../Form/Inputs/CheckboxMUI'
+import BCheckBoxInput from '../Form/Inputs/BCheckBoxInput'
 import TextareaInput from '../Form/Inputs/TextareaInput'
 import StepNavigation from '../Form/StepNavigation'
 import FieldWrapper from '../Form/FieldWrapper'
@@ -17,8 +18,22 @@ import TagsControlled from '../Tags/TagsControlled'
 import Header from '../Header'
 import SelectInput from "../Form/Inputs/SelectInput";
 import {SelectOptionsUtils} from "../../libs/formFieldsUtils";
+import { Emoji } from 'react-apple-emojis'
+
+import clsx from 'clsx'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+    delete:{
+        '& .special-label':{
+            display:'none',
+        }
+    }
+	}))
+
 
 const Step = ({ handleSubmitForm, prevStep }) => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
@@ -56,7 +71,12 @@ const Step = ({ handleSubmitForm, prevStep }) => {
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
-            <Header text={t('vehicles:publish-my-ad-now')}/>
+            {/* <Header text={t('vehicles:publish-my-ad-now')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="page-facing-up" width={18} />
+                {t('vehicles:publish-my-ad-now')}
+            </h3>
             <Row>
                 {/*<Col sm={12} md={6}>*/}
                 {/*    <FieldWrapper label={t('vehicles:announce-title')}>*/}
@@ -102,6 +122,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                             label={t('vehicles:vat')}
                             control={control}
                             errors={errors}
+                            stye={{fontSize:'14px', fontWeight:'nomarl'}}
                         />
                     </FieldWrapper>
                 </Col>
@@ -160,7 +181,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 />
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:country')}>
+            <FieldWrapper label={t('vehicles:country')} >
                 <SelectCountryFlags
                     name="countrySelect"
                     errors={errors}
@@ -178,19 +199,29 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 </SearchLocationInput>
             </FieldWrapper>
 
-            <FieldWrapper label={t('vehicles:phone')}>
-                <TelInput
-                    name="phone"
-                    errors={errors}
-                    control={control}
-                    innerProps={{
-                        country: 'fr'
-                    }}
-                />
+            <FieldWrapper label={t('vehicles:phone')} >
+                <div className={clsx(classes.delete)}>
+                    <TelInput
+                        className={clsx(classes.delete)}
+                        name="phone"
+                        errors={errors}
+                        control={control}
+                        innerProps={{
+                            country: 'fr'
+                        }}
+                        
+                    />
+                </div>
             </FieldWrapper>
 
-            <Header text={t('vehicles:pictures')}/>
+            {/* <Header text={t('vehicles:pictures')}/> */}
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+                {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
+                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="paperclip" width={18} />
+                {t('vehicles:pictures')}
+            </h3>
             <UploadDropZone
+                
                 initialFiles={initialImagesRef.current}
                 maxFiles={15}
                 getFiles={getFiles}
@@ -199,12 +230,25 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             />
 
             <FieldWrapper>
-                <CheckboxMUI
+                {/* <CheckboxMUI
                     name="visible"
                     label={t('vehicles:create-and-publish')}
                     control={control}
                     errors={errors}
-                />
+                /> */}
+                <BCheckBoxInput
+                    style={{marginBottom:'3px !important'}}
+                    // name="confirm"
+                    // label={t('vehicles:accept-cgu')}
+                    // errors={errors}
+                    // control={control}
+                    // rules={{ required: t('form_validations:required') }}
+                    name="vat"
+                    label={t('vehicles:accept-cgu')}
+                    control={control}
+                    errors={errors}
+                    stye={{fontSize:'14px', fontWeight:'nomarl'}}
+                    />
             </FieldWrapper>
 
             <StepNavigation prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>

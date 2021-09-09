@@ -8,11 +8,14 @@ import Header from '../Header'
 import DamagesNavResponsive from './DamagesNavResponsive'
 import toggleVehicleDamagesTabs from './ToggleVehicleDamagesTabs'
 
+import { NewIcons } from 'assets/icons'
+import { Emoji } from 'react-apple-emojis'
+
 const useStyles = makeStyles(() => ({
     annoInputs: {
-        backgroundColor: '#e9ecef',
-        border: '1px solid gainsboro',
-        textAlign: 'center',
+        backgroundColor: '#ffffff00',
+        // border: '1px solid gainsboro',
+        textAlign: 'left',
         marginTop: '2rem',
         overflowX: 'auto'
     },
@@ -52,7 +55,7 @@ const useStyles = makeStyles(() => ({
     },
 
     annoNumber: {
-        backgroundColor: '#dc3545',
+        backgroundColor: '#A291F3',
         color: '#fff',
         fontSize: '.8rem',
         lineHeight: '1.4rem',
@@ -64,7 +67,9 @@ const useStyles = makeStyles(() => ({
         display: 'inline-block'
     },
 
-    annoInputField: {}
+    annoInputField: {
+        backgroundColor:'#ffffff00 !important',
+    }
 }))
 
 const DamageViewerTabs = ({ vehicleType, tabs }) => {
@@ -142,25 +147,24 @@ const DamagesList = ({ tab }) => {
     const { t } = useTranslation()
     return (
         <div className={clsx(classes.annoInputs)}>
-            <Header h3> {t('vehicles:damages')} :</Header>
+            
+            <h5 style={{fontSize:'16px !important', marginLeft:'10px'}}><Emoji style={{marginRight:"10px", marginBottom:"3px"}} name="cross-mark" width={12} />  {t('vehicles:damages')} :</h5>
             {tab.stages && tab.stages.map((stage, index) => {
                 return (
                     <div key={index} className={classes.annoInput}>
-                        <div style={{ flex: 1 }}>
+                        <div style={{width: '90px'}}>
+                            <NewIcons.recycle style={{marginRight:'15px', with:"18px"}}/>
                             <span className={clsx(classes.annoNumber)}>{index + 1}</span>
                         </div>
-                        <div style={{
-                            margin: 'auto',
-                            flex: 3
-                        }}>
-                            <input type="text"
-                                readOnly
-                                value={stage.text}
-                                className={clsx(classes.annoInputField, 'form-control form-control-sm')}
-                                name={`annotation_${index + 1}`}
-                                placeholder={t('vehicles:damages-{number}-description', { number : index + 1})}
-                            />
-                        </div>
+                        
+                        <input type="text"
+                            readOnly
+                            value={stage.text}
+                            className={clsx(classes.annoInputField, 'form-control form-control-sm')}
+                            name={`annotation_${index + 1}`}
+                            placeholder={t('vehicles:damages-{number}-description', { number : index + 1})}
+
+                        />
                     </div>
                 )
             })}
