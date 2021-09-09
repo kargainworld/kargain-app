@@ -25,7 +25,7 @@ import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+
 import * as i from '@material-ui/icons'
 import useKargainContract from '../../../hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
@@ -86,7 +86,7 @@ const useStyles = makeStyles(() => ({
         lineHeight: '150%',
         color:'white',
         
-        marginTop:'20px',
+        marginTop:'20px'
     },
 
     filtersHidden: {
@@ -108,8 +108,8 @@ const Announce = () => {
     const [hiddenForm, hideForm] = useState(true)
 
     const toggleFilters = () => {
-        hideForm((hiddenForm) => !hiddenForm);
-    };
+        hideForm((hiddenForm) => !hiddenForm)
+    }
 
     useEffect(()=>{
         toggleFilters()
@@ -453,14 +453,14 @@ const Announce = () => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         if(isLiking) return
         setIsLiking(true)
         try {
-            console.log(like);
+            console.log(like)
             if (like) {
                 setLike(false)
                 setLikesCounter((likesCounter) => likesCounter - 1)
@@ -586,7 +586,7 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                        <div className="top" style={{ marginTop: '25px', marginBottom: '65px', marginLeft:'15px' }}>
                             <Row >
                                 <div className="pic">
                                     <Avatar
@@ -598,10 +598,10 @@ const Announce = () => {
                                     />
                                 </div>
 
-                                <div style={{marginLeft: '10px'}}>
+                                <div style={{ marginLeft: '10px' }}>
                                     <Link href={`/profile/${announce.getAuthor.getUsername}`}>
                                         <a>
-                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
                                                 {announce.getAuthor.getFullName}
                                             </Typography>
                                         </a>
@@ -610,8 +610,8 @@ const Announce = () => {
                                     {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                         <div className="top-profile-location">
                                             <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
-                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                    <NewIcons.card_location style={{ marginRight:'5px' }}/>
                                                     {announce.getAdOrAuthorCustomAddress()}
                                                 </span>
                                             </a>
@@ -638,8 +638,8 @@ const Announce = () => {
                     </Col>
 
                     <Col sm={12} md={6}>
-                        <div style={{marginTop:'25px'}}>
-                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
+                        <div style={{ marginTop:'25px' }}>
+                            <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
                                 {announce.getAnnounceTitle}
                             </Typography>
 
@@ -648,8 +648,8 @@ const Announce = () => {
                                     
                                     <Col sm={7}>
                                         <Row>
-                                            <p style={{fontSize:'22px'}}>€  </p>
-                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
+                                            <p style={{ fontSize:'22px' }}>€  </p>
+                                            <p style={{ fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px' }}>{(tokenPrice * priceBNB).toFixed(2)}</p>
                                         </Row>
                                     </Col>
                                     {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
@@ -681,14 +681,14 @@ const Announce = () => {
                                                 modalShareAnnounce: announce
                                             })
                                         }
-                                        style={{display:'flex', justifyContent: 'flex-end'}}
+                                        style={{ display:'flex', justifyContent: 'flex-end' }}
                                     >
-                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
                                 <div>
-                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                    <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>    
                                 </div>
                             </div>
                         
@@ -696,8 +696,8 @@ const Announce = () => {
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
-                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
+                            <div className="icons-profile-wrapper" style={{ width:'90%' }}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -711,14 +711,14 @@ const Announce = () => {
                                             marginRight: '8px'
                                         }}
                                     />
-                                    <span style={{color:'#444444'}}>{likesCounter}</span>
+                                    <span style={{ color:'#444444' }}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -738,9 +738,9 @@ const Announce = () => {
                                         })
                                     }
                                     }
-                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1  }} />
                                 </Action>
 
 
@@ -751,7 +751,7 @@ const Announce = () => {
                                 )}
                             </div>
 
-                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                            <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
                                 <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
                             </div>
                         </div>
@@ -759,18 +759,18 @@ const Announce = () => {
                         {(!isOwn) && (
                             <div className={clsx(hiddenForm && classes.filtersHidden)}>
                                 <Comments announceRaw={announce.getRaw} />
-                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                                <button onClick={handleMakeOffer} className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
                             </div>
                         )}
                         
 
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5, width:'95%'}}>
-                                            <div style={{width:'80%'}}> 
+                                        <div style={{ display: "flex", gap: 5, width:'95%' }}>
+                                            <div style={{ width:'80%' }}> 
                                                 <div>
                                                     <label style={{
                                                         fontWeight: 'normal',
@@ -779,6 +779,7 @@ const Announce = () => {
                                                         color: '#999999'
                                                     }}>Token price :</label>
                                                 </div>
+                                            </div>
                                             <TextField
                                                 label={t('vehicles:tokenPrice')}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
@@ -801,15 +802,15 @@ const Announce = () => {
                         )}
                     </Col>
                 </Row>
-                <div style={{marginTop:'50px'}}>
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                <div style={{ marginTop:'50px' }}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:vehicle-data')}
                         </Typography>
                         <CarInfos announce={announce} enableThirdColumn />
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:equipments')}
                         </Typography>
@@ -826,7 +827,7 @@ const Announce = () => {
                         </Row>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:description')}
                         </Typography>
@@ -835,12 +836,12 @@ const Announce = () => {
                         </div>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:data-sheet')}
-                    </Typography>
-                    <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
-                </section>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:data-sheet')}
+                        </Typography>
+                        <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
+                    </section>
                 </div>
             </div>
         </Container>
