@@ -230,7 +230,7 @@ export default function ModalShare () {
                 <div className={classes.paper}>
                     <div style={{ display:'flex', justifyContent: 'flex-end'}}>
                         <NewIcons.close_color onClick={handleClose}/>                     
-                        <NewIcons.inclose_color style={{transform: 'translate(-15.7px, 8.3px)'}} />
+                        <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
                     </div>
                     <div className={clsx(classes.share)}>
                         Partager

@@ -352,7 +352,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                         margin: '15px 15px'}}
                                 >
                                     <NewIcons.close_color />
-                                    <NewIcons.inclose_color style={{transform: 'translate(-15.7px, 8.3px)'}} />
+                                    <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
                                 </button>
 
                                 <div style={{display:'flex', justifyContent: 'center', marginTop: '10px'}}>

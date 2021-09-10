@@ -84,7 +84,7 @@ export default function ModalFollowers() {
 
           <div className={classes.pointerClose} style={{marginTop:'10px', marginRight:'10px'}} onClick={handleClose}>
             <NewIcons.close_color />
-            <NewIcons.inclose_color style={{transform: 'translate(-15.7px, 0.3px)'}} />
+            <NewIcons.inclose_color style={{transform: 'translate(-14.7px, 0.3px)'}} />
           </div>
           <div className="my-2" style={{marginLeft: '-20px'}}>
             <ul className={classes.list}>
