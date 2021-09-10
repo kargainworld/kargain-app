@@ -13,6 +13,10 @@ export default class UserModel {
         return this.raw?.id
     }
 
+    get getWallet () {
+        return this.raw?.wallet
+    }
+
     get getRole () {
         return this.raw?.role
     }
