@@ -237,13 +237,12 @@ const Announce = () => {
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
-    const handleAcceptOffer = (offerHashTx) => async () => {
+    const handleAcceptOffer = useCallback( async (offerHashTx) => {
         try {
             if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
                 return
 
             const announceId = state?.announce?.getID
-
             setIsConfirmed(false)
             setError(null)
 
@@ -263,7 +262,7 @@ const Announce = () => {
             setIsConfirmed(true)
         }
 
-    }
+    }, [state?.announce?.getTokenId, isContractReady, authenticatedUser.getWallet])
 
     const handleRejectOffer = async (offerHashTx) => {
         try {
@@ -295,34 +294,35 @@ const Announce = () => {
 
 
     const fetchProfile = useCallback(async () => {
-        try {
-            if (!walletPayer || !isContractReady || !tokenId)
-                return
-            const result = await UsersService.getUsernameByWallet(walletPayer)
-            console.log(result)
-            return result
+        if (!isContractReady || !walletPayer)
+            return
 
+        try {
+            const result = await UsersService.getUsernameByWallet(walletPayer)
+            console.log({ payerProfile: result })
+            return result
         }
         catch (e) {
             console.log(e)
         }
 
-    },[walletPayer, isContractReady, tokenId])
+    },[walletPayer, isContractReady, isContractReady])
 
     const handleOfferReceived = useCallback(async () => {
-        if (!isContractReady || !tokenId)
+        if (!isContractReady || !state?.announce.getTokenId)
             return
-        const task = watchOfferEvent(tokenId)
-        task.then((data) => {
-            console.log(data)
+        console.log('entro')
+        try {
+            const data = await watchOfferEvent(state?.announce.getTokenId)
+
+            console.log({ payerAddress: data })
+
             setWalletPayer(data)
-
-        }).catch((error) => {
-            //console.error(error)
+        } catch (error) {
             setError(error)
-        })
+        }
 
-    }, [tokenId, isContractReady, watchOfferEvent])
+    }, [tokenId, isContractReady, watchOfferEvent, state?.announce])
 
     const [state, setState] = useState({
         err: null,
@@ -513,6 +513,9 @@ const Announce = () => {
 
 
     useEffect(() => {
+        if (!isContractReady || !state?.announce.getTokenId)
+            return
+
         fetchAnnounce()
         handleOfferReceived()
         if (walletPayer) {
@@ -634,14 +637,14 @@ const Announce = () => {
                                             <p style={{ fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px' }}>{(tokenPrice * priceBNB).toFixed(2)}</p>
                                         </Row>
                                     </Col>
-                                    {!isOwn && isMinted && !walletPayer && (
+                                    {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                                         <Col sm={5}>
                                             <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
                                                 <h4>{t('vehicles:makeOffer')}</h4>
                                             </button>
                                         </Col>
                                     )}
-                                    {isOwn && isMinted && walletPayer && (
+                                    {isOwn && isMinted && newOfferCreated && (
                                         <Row>
                                             <Col sm={5}>
                                                 <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
