@@ -25,21 +25,21 @@ import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 
-
-import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import UsersService from '../../../services/UsersService'
-import ObjectID from 'bson-objectid'
 import Web3 from "web3"
+import TransactionsService from '../../../services/TransactionsService'
+
+
 
 const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
@@ -84,7 +84,7 @@ const useStyles = makeStyles(() => ({
         lineHeight: '150%',
         color:'white',
         
-        marginTop:'20px',
+        marginTop:'20px'
     },
 
     filtersHidden: {
@@ -106,8 +106,8 @@ const Announce = () => {
     const [hiddenForm, hideForm] = useState(true)
 
     const toggleFilters = () => {
-        hideForm((hiddenForm) => !hiddenForm);
-    };
+        hideForm((hiddenForm) => !hiddenForm)
+    }
 
     useEffect(()=>{
         toggleFilters()
@@ -121,7 +121,7 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t, lang } = useTranslation()
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
@@ -136,23 +136,34 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, watchOfferRejected, watchOfferAccepted, acceptOffer, rejectOffer } = useKargainContract()
+    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, watchOfferRejected, watchOfferAccepted, acceptOffer, rejectOffer, waitTransactionToBeConfirmed } = useKargainContract()
 
-    const handleMakeOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
+    const handleMakeOffer = useCallback(async () => {
+        console.log(authenticatedUser.getWallet, 'get wallet')
+        if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+            return
         setIsConfirmed(false)
         setError(null)
+        const announceId = state?.announce?.getID
+        try {
+            setIsConfirmed(false)
+            setError(null)
 
-        const task = makeOffer(tokenId, tokenPrice)
-        task.then(() => {
+            const task = makeOffer(state?.announce?.getTokenId, tokenPrice)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: authenticatedUser.getWallet, action: "OfferCreated" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
             setIsConfirmed(true)
-            setIsMinted(true)
-            dispatchModal({ msg: t('vehicles:offerConfirmed') })
-        }).catch((error) => {
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+        }
+        catch(error) {
             console.error(error)
             setError(error)
             setIsConfirmed(true)
-        })
+        }
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
@@ -202,9 +213,9 @@ const Announce = () => {
         try {
             if (!walletPayer || !isContractReady || !tokenId)
                 return
-                const result = await UsersService.getUsernameByWallet(walletPayer)
-                console.log(result)
-                return result
+            const result = await UsersService.getUsernameByWallet(walletPayer)
+            console.log(result)
+            return result
 
         }
         catch (e) {
@@ -279,6 +290,67 @@ const Announce = () => {
 
     const { announce } = state
 
+    console.log({ announceId: announce?.getID, isMinted })
+
+    const [transactions, setTransactions] = useState([])
+
+    const transactionsOrdered = transactions.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    const tokenMinted = transactionsOrdered
+        .find(x => x.action === "TokenMinted")
+
+    const offerAccepted = transactionsOrdered
+        .filter(x => x.action === "OfferAccepted")
+    const offerRejected = transactionsOrdered
+        .filter(x => x.action === "OfferRejected")
+
+    const newOfferCreated = transactionsOrdered
+        .find(x =>
+            x.action === "OfferCreated" &&
+            !offerAccepted.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status)) &&
+            !offerRejected.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
+        )
+
+    console.log({
+        tokenMinted,
+        newOfferCreated,
+        offerAccepted,
+        offerRejected
+    })
+
+    const handleApplyPriceChange = async () => {
+        const tokenId = state?.announce?.getTokenId
+        const announceId = state?.announce?.getID
+
+        setIsConfirmed(false)
+        setError(null)
+
+        try {
+            const task = !isMinted ?
+                mintToken(tokenId, +tokenPrice) :
+                updateTokenPrince(tokenId, +tokenPrice)
+
+            const hashTx = await task
+
+            const result = await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
+
+            console.log("result", result)
+
+            setTransactions(prev => [...prev, result])
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+    }
+
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
         const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID)
@@ -309,14 +381,14 @@ const Announce = () => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         if(isLiking) return
         setIsLiking(true)
         try {
-            console.log(like);
+            console.log(like)
             if (like) {
                 setLike(false)
                 setLikesCounter((likesCounter) => likesCounter - 1)
@@ -409,7 +481,7 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                        <div className="top" style={{ marginTop: '25px', marginBottom: '65px', marginLeft:'15px' }}>
                             <Row >
                                 <div className="pic">
                                     <Avatar
@@ -421,10 +493,10 @@ const Announce = () => {
                                     />
                                 </div>
 
-                                <div style={{marginLeft: '10px'}}>
+                                <div style={{ marginLeft: '10px' }}>
                                     <Link href={`/profile/${announce.getAuthor.getUsername}`}>
                                         <a>
-                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
                                                 {announce.getAuthor.getFullName}
                                             </Typography>
                                         </a>
@@ -433,8 +505,8 @@ const Announce = () => {
                                     {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                         <div className="top-profile-location">
                                             <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
-                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                    <NewIcons.card_location style={{ marginRight:'5px' }}/>
                                                     {announce.getAdOrAuthorCustomAddress()}
                                                 </span>
                                             </a>
@@ -461,8 +533,8 @@ const Announce = () => {
                     </Col>
 
                     <Col sm={12} md={6}>
-                        <div style={{marginTop:'25px'}}>
-                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
+                        <div style={{ marginTop:'25px' }}>
+                            <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
                                 {announce.getAnnounceTitle}
                             </Typography>
 
@@ -471,8 +543,8 @@ const Announce = () => {
                                     
                                     <Col sm={7}>
                                         <Row>
-                                            <p style={{fontSize:'22px'}}>€  </p>
-                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
+                                            <p style={{ fontSize:'22px' }}>€  </p>
+                                            <p style={{ fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px' }}>{(tokenPrice * priceBNB).toFixed(2)}</p>
                                         </Row>
                                     </Col>
                                     {!isOwn && isMinted && !walletPayer && (
@@ -504,14 +576,14 @@ const Announce = () => {
                                                 modalShareAnnounce: announce
                                             })
                                         }
-                                        style={{display:'flex', justifyContent: 'flex-end'}}
+                                        style={{ display:'flex', justifyContent: 'flex-end' }}
                                     >
-                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
                                 <div>
-                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                    <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>    
                                 </div>
                             </div>
                         
@@ -519,8 +591,8 @@ const Announce = () => {
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
-                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
+                            <div className="icons-profile-wrapper" style={{ width:'90%' }}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -534,14 +606,14 @@ const Announce = () => {
                                             marginRight: '8px'
                                         }}
                                     />
-                                    <span style={{color:'#444444'}}>{likesCounter}</span>
+                                    <span style={{ color:'#444444' }}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -550,8 +622,8 @@ const Announce = () => {
                                         if (!isAuthenticated) {
                                             router.push({
                                                 pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                            });
+                                                query: { redirect: router.asPath }
+                                            })
                                             return
                                         }
                                         dispatchModalState({
@@ -561,9 +633,9 @@ const Announce = () => {
                                         })
                                     }
                                     }
-                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1  }} />
                                 </Action>
 
 
@@ -574,7 +646,7 @@ const Announce = () => {
                                 )}
                             </div>
 
-                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                            <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
                                 <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
                             </div>
                         </div>
@@ -588,7 +660,7 @@ const Announce = () => {
                         
 
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
@@ -604,28 +676,7 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
-                                                const tokenId = state.announce.getTokenId
-
-                                                setIsConfirmed(false)
-                                                setError(null)
-
-                                                const task = !isMinted ?
-                                                    mintToken(tokenId, +tokenPrice) :
-                                                    updateTokenPrince(tokenId, +tokenPrice)
-
-                                                task.then(() => {
-                                                    setIsConfirmed(true)
-                                                    setIsMinted(true)
-                                                    dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
-                                                }).catch((error) => {
-                                                    console.error(error)
-                                                    setError(error)
-                                                    setIsConfirmed(true)
-                                                })
-                                                
-                                            }}
-                                            style={{height:'40px', marginTop:'30px'}}>
+                                            <button style={{ height:'40px', marginTop:'30px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
@@ -636,15 +687,15 @@ const Announce = () => {
                         )}
                     </Col>
                 </Row>
-                <div style={{marginTop:'50px'}}>
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                <div style={{ marginTop:'50px' }}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:vehicle-data')}
                         </Typography>
                         <CarInfos announce={announce} enableThirdColumn />
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:equipments')}
                         </Typography>
@@ -661,7 +712,7 @@ const Announce = () => {
                         </Row>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:description')}
                         </Typography>
@@ -670,12 +721,12 @@ const Announce = () => {
                         </div>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:data-sheet')}
-                    </Typography>
-                    <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
-                </section>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:data-sheet')}
+                        </Typography>
+                        <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
+                    </section>
                 </div>
             </div>
         </Container>
