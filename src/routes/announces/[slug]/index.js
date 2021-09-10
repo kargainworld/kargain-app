@@ -25,11 +25,11 @@ import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
-
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
-
+import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
@@ -83,7 +83,7 @@ const useStyles = makeStyles(() => ({
         fontSize: '14px',
         lineHeight: '150%',
         color:'white',
-        
+
         marginTop:'20px'
     },
 
@@ -136,7 +136,77 @@ const Announce = () => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady, watchOfferEvent, watchOfferRejected, watchOfferAccepted, acceptOffer, rejectOffer, waitTransactionToBeConfirmed } = useKargainContract()
+    const {
+        fetchTokenPrice,
+        mintToken,
+        updateTokenPrince,
+        makeOffer,
+        isContractReady,
+        watchOfferEvent,
+        acceptOffer,
+        rejectOffer,
+        waitTransactionToBeConfirmed
+    } = useKargainContract()
+
+    useEffect(() => {
+        if (!announce && transactions.length === 0) return
+
+        const action = async () => {
+
+            const transactions = await TransactionsService.getTransactionsByAnnounceId(announce.getID)
+
+            setTransactions(transactions)
+        }
+
+        action()
+
+    }, [announce, transactions?.length])
+
+    useEffect(() => {
+
+        if (!announce) return
+
+        const action = async () => {
+            const transactionsPending = transactions.filter(x=>x.status === "Pending")
+
+            for (const tx of transactionsPending) {
+                try {
+                    await waitTransactionToBeConfirmed(tx.hashTx)
+
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Approved" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
+
+                } catch (error) {
+                    console.log("TransactionsService", error)
+
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Rejected" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
+                }
+            }
+
+        }
+
+        action()
+
+    }, [announce, transactions, waitTransactionToBeConfirmed])
 
     const handleMakeOffer = useCallback(async () => {
         console.log(authenticatedUser.getWallet, 'get wallet')
@@ -167,47 +237,62 @@ const Announce = () => {
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
 
-    const handleAcceptOffer = useCallback(() => {
+    const handleAcceptOffer = (offerHashTx) => async () => {
         try {
-            if (!isContractReady || !tokenIdBN || !tokenPrice)
-                return 
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return
 
+            const announceId = state?.announce?.getID
 
             setIsConfirmed(false)
             setError(null)
 
-            const task = acceptOffer(tokenIdBN)
-            task.then(() => {
-                setIsConfirmed(true)
-                dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
-            }).catch((error) => {
-                console.error(error)
-                setError(error)
-                setIsConfirmed(true)
-            })
+            const task = acceptOffer(announce.getTokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferAccepted" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
         }
         catch(error) {
-            console.log(console.error())
-        }    
-
-    }, [state?.announce?.getTokenId, tokenPrice,  isContractReady, acceptOffer])
-
-    const handleRejectOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
-        setIsConfirmed(false)
-        setError(null)
-
-        const task = rejectOffer(tokenId)
-        task.then(() => {
-            setIsConfirmed(true)
-            dispatchModal({ msg: t('vehicles:rejectedOffer') })
-        }).catch((error) => {
             console.error(error)
             setError(error)
             setIsConfirmed(true)
-        })
+        }
 
-    }, [state?.announce?.getTokenId, isContractReady, acceptOffer])
+    }
+
+    const handleRejectOffer = async (offerHashTx) => {
+        try {
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return
+
+            const announceId = state?.announce?.getID
+
+            const tokenId = state?.announce.getTokenId
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = rejectOffer(tokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferRejected" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:rejectedOffer') })
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+
+    }
+
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -362,7 +447,7 @@ const Announce = () => {
     const [like, setLike] = useState(alreadyLikeCurrentUser)
 
     const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
-    
+
     useEffect(() => {
         setLike(alreadyLikeCurrentUser)
         setLikesCounter(state?.announce?.getCountLikes)
@@ -425,6 +510,8 @@ const Announce = () => {
         }
     }, [slug])
 
+
+
     useEffect(() => {
         fetchAnnounce()
         handleOfferReceived()
@@ -471,7 +558,7 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
-                    
+
 
                 {!announce.getIsActivated && (
                     <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
@@ -540,7 +627,7 @@ const Announce = () => {
 
                             <div  style={{ width: '100%',marginTop:'10px' }}>
                                 <Box mb={2} display="flex" flexDirection="row">
-                                    
+
                                     <Col sm={7}>
                                         <Row>
                                             <p style={{ fontSize:'22px' }}>€  </p>
@@ -583,10 +670,10 @@ const Announce = () => {
                                     </Col>
                                 </Box>
                                 <div>
-                                    <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>    
+                                    <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>
                                 </div>
                             </div>
-                        
+
                         </div>
 
                         <TagsList tags={announce.getTags} />
@@ -657,7 +744,7 @@ const Announce = () => {
                                 <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
                             </div>
                         )}
-                        
+
 
                         {(isOwn) && (
                             <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
