@@ -82,10 +82,10 @@ export default function ModalFollowers() {
             {modalStateContext.modalFollowersTitle} ({modalStateContext.modalFollowersProfiles.length})
           </Typography>
 
-          <IconButton className={classes.pointerClose} onClick={handleClose}>
-            <NewIcons.modalclose />
-          </IconButton>
-
+          <div className={classes.pointerClose} style={{marginTop:'10px', marginRight:'10px'}} onClick={handleClose}>
+            <NewIcons.close_color />
+            <NewIcons.inclose_color style={{transform: 'translate(-15.7px, 0.3px)'}} />
+          </div>
           <div className="my-2" style={{marginLeft: '-20px'}}>
             <ul className={classes.list}>
               {modalStateContext.modalFollowersProfiles.map((user, index) => {

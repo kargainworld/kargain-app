@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
         }
     },
     filtersHidden: {
-        display: 'none'
+        display: 'none !important'
     },
     buttondropdown:{
         '& button':{
@@ -709,8 +709,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             
                         </DropdownMenu>
                     </ButtonDropdown>
-
-                      
+ 
                     <div className={clsx(hiddenForm && classes.filtersHidden)} >
                         {DynamicFiltersComponent && (
                             <DynamicFiltersComponent
@@ -723,14 +722,17 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         )}
                     </div>
                     
-                    <div className={clsx(!hiddenForm && classes.filtersHidden)}> 
-                        <div style={{
+                    <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{width:'100%', display:'flex'}}>
+                        <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{width:'70.5%'}}> </div>
+                        <div 
+                        style={{
                             display: 'flex',
                             justifyContent: 'flex-end',
                             transform: 'translate(25px, -44px)',
+                            width:"29.5%"
                         }}> 
-                            <div style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
-                            <div className={'btn btn-primary', classes.filterbutton} onClick={() => toggleFilters()} style={{transform: 'translate(-25px, 0px)'}}>
+                            <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
+                            <div className={clsx(!hiddenForm && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFilters()} style={{transform: 'translate(-25px, 0px)'}}>
                                 
                                 <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
                                 {/* <Typography variant="h4"> */}
@@ -741,11 +743,12 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             </div>
                         </div>  
                     </div>
+
                     <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                            <div  onClick={() => toggleFilters()} style={{height:'20px'}}>
-                                {/* <i className={clsx('ml-2', 'arrow_nav', 'is-top' )}/> */}
-                                <label> ... </label>
-                            </div>
+                        <div  onClick={() => toggleFilters()} style={{height:'20px'}}>
+                            {/* <i className={clsx('ml-2', 'arrow_nav', 'is-top' )}/> */}
+                            <label> ... </label>
+                        </div>
                     </div>
                 </div>
             </form>

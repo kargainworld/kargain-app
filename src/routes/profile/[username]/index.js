@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        fontWeight:'500',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        fontWeight:'500',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
@@ -381,6 +381,7 @@ const Profile = () => {
                         <div style={{ width:'33.33%'}}> </div>
                        
                     </div>
+                    
                     <div style={{width:'100%', display:'flex'}}>
                         <div style={{width:'50%'}}></div>
                         <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)'}}>
