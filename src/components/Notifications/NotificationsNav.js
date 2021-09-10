@@ -121,7 +121,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
           id="dropdownMenu2"
           onClick={() => toggle(keyName)}
         >
-          <NotificationsIcon />
+          <NotificationsIcon style={{width:'16px', height:'16px'}}/>
           {!isNotificationChecked && !isOpen && notificationCounts > 0 && (
             <span className={classes.badge}>
               <div className={classes.counts}>{notificationCounts}</div>

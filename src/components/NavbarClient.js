@@ -204,7 +204,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 aria-haspopup="true"
                 aria-expanded="true"
                 onClick={() => toggle(keyName)}>
-                <NewIcons.navuser />
+                <NewIcons.navuser style={{width:'16px', height:'16px'}}/>
             </IconButton>
 
             <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
@@ -300,7 +300,7 @@ const LoggedInUserNav = ({ vertical }) => {
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <NewIcons.home />
+                                    <NewIcons.home style={{width:'16px', height:'16px'}}/>
                                 </IconButton>
                             </a>
                         </Link>
