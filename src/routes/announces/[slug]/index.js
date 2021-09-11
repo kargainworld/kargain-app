@@ -12,7 +12,7 @@ import useTranslation from 'next-translate/useTranslation'
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
-
+import Comments from '../../../components/Comments/Comments'
 import TagsList from '../../../components/Tags/TagsList'
 import CTALink from '../../../components/CTALink'
 import { Action } from '../../../components/AnnounceCard/components'
@@ -319,21 +319,6 @@ const Announce = () => {
 
     },[walletPayer, isContractReady, isContractReady])
 
-    const handleOfferReceived = useCallback(async () => {
-        if (!isContractReady || !state?.announce.getTokenId)
-            return
-        console.log('entro')
-        try {
-            const data = await watchOfferEvent(state?.announce.getTokenId)
-
-            console.log({ payerAddress: data })
-
-            setWalletPayer(data)
-        } catch (error) {
-            setError(error)
-        }
-
-    }, [tokenId, isContractReady, watchOfferEvent, state?.announce])
 
     const [state, setState] = useState({
         err: null,
@@ -522,18 +507,33 @@ const Announce = () => {
         }
     }, [slug])
 
+    useEffect(() => {
+        if (!isContractReady || !state?.announce.getTokenId)
+            return
 
+        const handleOfferReceived = async () => {
+            try {
+                const data = await watchOfferEvent(state?.announce.getTokenId)
+
+
+                setWalletPayer(data)
+            } catch (error) {
+                setError(error)
+            }
+        }
+
+        handleOfferReceived()
+    }, [isContractReady, state?.announce, watchOfferEvent])
 
     useEffect(() => {
         if (!isContractReady || !state?.announce.getTokenId)
             return
 
         fetchAnnounce()
-        handleOfferReceived()
         if (walletPayer) {
             fetchProfile()
         }
-    }, [fetchAnnounce, handleOfferReceived, fetchProfile])
+    }, [fetchAnnounce, fetchProfile])
 
     useEffect(() => {
         if (!state.stateReady) return
@@ -749,6 +749,7 @@ const Announce = () => {
 
                         {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                             <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                <Comments announceRaw={announce.getRaw} />
                                 <button className={clsx(classes.buttonblue)}
                                     disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
                                     onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
