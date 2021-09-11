@@ -12,7 +12,7 @@ import useTranslation from 'next-translate/useTranslation'
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
-import Comments from '../../../components/Comments/Comments'
+
 import TagsList from '../../../components/Tags/TagsList'
 import CTALink from '../../../components/CTALink'
 import { Action } from '../../../components/AnnounceCard/components'
@@ -582,7 +582,7 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top" style={{ marginTop: '25px', marginBottom: '65px', marginLeft:'15px' }}>
+                        <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
                             <Row >
                                 <div className="pic">
                                     <Avatar
@@ -638,30 +638,8 @@ const Announce = () => {
                             <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
                                 {announce.getAnnounceTitle}
                             </Typography>
-
                             <div  style={{ width: '100%',marginTop:'10px' }}>
-                                <Box mb={2} display="flex" flexDirection="row">
-
-                                    <Col sm={7}>
-                                        <Row>
-                                            <p style={{ fontSize:'22px' }}>€  </p>
-                                            <p style={{ fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px' }}>{(tokenPrice * priceBNB).toFixed(2)}</p>
-                                        </Row>
-                                    </Col>
-                                    {isOwn && isMinted && newOfferCreated && (
-                                        <Row>
-                                            <Col sm={5}>
-                                                <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
-                                                    <h5>{t('vehicles:acceptOffer')}</h5>
-                                                </button>
-                                            </Col>
-                                            <Col sm={5}>
-                                                <button disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
-                                                    <h5>{t('vehicles:rejectOffer')}</h5>
-                                                </button>
-                                            </Col>
-                                        </Row>
-                                    )}
+                                <Box mb={2} display="flex" flexDirection="row-reverse">
                                     <Col sm={3}
                                         className="icons-star-prof"
                                         onClick={() =>
@@ -675,6 +653,30 @@ const Announce = () => {
                                         <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
+                                </Box>
+                            </div>
+                            <div  style={{ width: '100%',marginTop:'10px' }}>
+                                <Box mb={2} display="flex" flexDirection="row">
+
+                                    <Col sm={3}>
+                                        <Row style={{ marginTop:'10px' }}>
+                                            <h4>€  {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                        </Row>
+                                    </Col>
+                                    {isOwn && isMinted && newOfferCreated && (
+                                        <Row>
+                                            <Col sm={5}>
+                                                <button className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
+                                                    {t('vehicles:acceptOffer')}
+                                                </button>
+                                            </Col>
+                                            <Col sm={5}>
+                                                <button  className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
+                                                    {t('vehicles:rejectOffer')}
+                                                </button>
+                                            </Col>
+                                        </Row>
+                                    )}
                                 </Box>
                                 <div>
                                     <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>
@@ -771,7 +773,7 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button style={{ height:'40px', marginTop:'30px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                            <button style={{ height:'55px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
