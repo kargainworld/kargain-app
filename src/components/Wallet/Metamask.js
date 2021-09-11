@@ -10,7 +10,7 @@ import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3
 import { Button } from '@material-ui/core'
 
 import { injected } from '../../connectors'
-import { useEagerConnect, useInactiveListener } from '../../hooks/useBlockchain'
+import { useEagerConnect, useInactiveListener } from '../../hooks/useMetamask'
 import { Spinner } from '../Spinner'
 
 const connectorsByName = {
@@ -34,7 +34,7 @@ function getErrorMessage(error) {
     }
 }
 
-const Blockchain = () => {
+const Metamask = () => {
     const context = useWeb3React()
     const { connector, library, chainId, account, activate, deactivate, active, error } = context
 
@@ -109,4 +109,4 @@ const Blockchain = () => {
     )
 };
 
-export default Blockchain
+export default Metamask

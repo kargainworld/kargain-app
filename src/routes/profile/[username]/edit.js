@@ -364,7 +364,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                         {...{
                             control,
                             watch,
-                            isAdmin, 
+                            isAdmin,
                             errors
                         }}
                     />

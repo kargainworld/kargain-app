@@ -25,19 +25,20 @@ import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
-
-
-import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { injected } from "../../../connectors"
 
+import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
+import TransactionsService from '../../../services/TransactionsService'
+
+
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -80,8 +81,8 @@ const useStyles = makeStyles(() => ({
         fontSize: '14px',
         lineHeight: '150%',
         color:'white',
-        
-        marginTop:'20px',
+
+        marginTop:'20px'
     },
 
     filtersHidden: {
@@ -103,8 +104,8 @@ const Announce = () => {
     const [hiddenForm, hideForm] = useState(true)
 
     const toggleFilters = () => {
-        hideForm((hiddenForm) => !hiddenForm);
-    };
+        hideForm((hiddenForm) => !hiddenForm)
+    }
 
     useEffect(()=>{
         toggleFilters()
@@ -118,37 +119,219 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t, lang } = useTranslation()
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
+    const [tokenId, setTokenId] = useState(null)
+    const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
 
-    const { fetchTokenPrice, mintToken, updateTokenPrince, makeOffer, isContractReady } = useKargainContract()
+    const {
+        fetchTokenPrice,
+        mintToken,
+        updateTokenPrince,
+        makeOffer,
+        isContractReady,
+        watchOfferEvent,
+        acceptOffer,
+        rejectOffer,
+        waitTransactionToBeConfirmed
+    } = useKargainContract()
 
-    const handleMakeOffer = useCallback(() => {
-        const tokenId = state.announce.getTokenId
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if (!announce && transactions.length === 0) return
+
+        const action = async () => {
+            const transactions = await TransactionsService.getTransactionsByAnnounceId(announce.getID)
+            setTransactions(transactions)
+        }
+
+        action()
+
+    }, [announce, transactions?.length])
+
+    useEffect(() => {
+
+        if (!announce) return
+
+        const action = async () => {
+            const transactionsPending = transactions.filter(x=>x.status === "Pending")
+
+            for (const tx of transactionsPending) {
+                try {
+                    await waitTransactionToBeConfirmed(tx.hashTx)
+
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Approved" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
+
+                } catch (error) {
+                    console.log("TransactionsService", error)
+
+                    const newTx = await TransactionsService.updateTransaction(announce.getID, { hashTx:tx.hashTx, status: "Rejected" })
+
+                    setTransactions(prev => {
+
+                        const result = prev.filter(x=>x.hashTx === tx.hashTx)
+
+                        result.push(newTx)
+
+                        return result
+
+                    })
+                }
+            }
+
+        }
+
+        action()
+
+    }, [announce, transactions, waitTransactionToBeConfirmed])
+
+    const handleMakeOffer = useCallback(async () => {
+        console.log(authenticatedUser.getWallet, 'get wallet')
+        if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+            return
         setIsConfirmed(false)
         setError(null)
-        
-        const task = makeOffer(tokenId, tokenPrice)
-        task.then(() => {
+        const announceId = state?.announce?.getID
+        try {
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = makeOffer(state?.announce?.getTokenId, tokenPrice)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: authenticatedUser.getWallet, action: "OfferCreated" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
             setIsConfirmed(true)
-            setIsMinted(true)
-            dispatchModal({ msg: 'Offer confirmed!' })
-        }).catch((error) => {
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+        }
+        catch(error) {
             console.error(error)
             setError(error)
             setIsConfirmed(true)
-        })
+        }
 
     }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer])
+
+    const handleAcceptOffer = useCallback( async (offerHashTx) => {
+        try {
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return
+            console.log('entro')
+            console.log(newOfferCreated.user,'usuario que hace la oferta')
+            console.log(announce.getAuthor, 'usuario propietario')
+            console.log(announce.getID, 'idd de anuncio')
+            console.log(announce.getSlug, 'slug del anuncio')
+            // eslint-disable-next-line react/display-name,no-debugger
+            debugger
+            console.log('entro')
+            const announceId = state?.announce?.getID
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = acceptOffer(announce.getTokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferAccepted" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+            let announceUpdate = new AnnounceModel(announce)
+            announceUpdate.user = newOfferCreated.raw.user
+            AnnounceService.updateAnnounce(announce.getSlug, announceUpdate).then(() =>
+                window.location.reload()
+            )
+            // eslint-disable-next-line react/display-name,no-debugger
+            debugger
+
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
+        }
+        catch(error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+
+    }, [state?.announce?.getTokenId, isContractReady, authenticatedUser.getWallet, newOfferCreated?.user, AnnounceService])
+
+    const handleRejectOffer = async (offerHashTx) => {
+        try {
+            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
+                return
+
+            const announceId = state?.announce?.getID
+
+            const tokenId = state?.announce.getTokenId
+            setIsConfirmed(false)
+            setError(null)
+
+            const task = rejectOffer(tokenId)
+            const hashTx = await task
+
+            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferRejected" })
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            dispatchModal({ msg: t('vehicles:rejectedOffer') })
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+
+    }
+
+
+    const fetchProfile = useCallback(async () => {
+        if (!isContractReady || !walletPayer)
+            return
+
+        try {
+            const result = await UsersService.getUsernameByWallet(walletPayer)
+            console.log({ payerProfile: result })
+            return result
+        }
+        catch (e) {
+            console.log(e)
+        }
+
+    },[walletPayer, isContractReady, isContractReady])
+
 
     const [state, setState] = useState({
         err: null,
@@ -161,6 +344,7 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     useEffect(() => {
+        //console.log(authenticatedUser)
         if (!isContractReady)
             return
 
@@ -190,28 +374,6 @@ const Announce = () => {
     }, [account, library, chainId, isContractReady]) //
 
     useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                    fetchTokenPrice(state.announce.getTokenId)
-                        .then((price) => {
-                            setTokenPrice(price)
-                            setIsLoading(false)
-                            setIsMinted(price ? true : false)
-                        })
-                        .catch(() => {
-                            setIsLoading(false)
-                        })
-                }).catch(() => {
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
-    }, [])
-
-    useEffect(() => {
         if (!tried && active) {
             setTried(true)
         }
@@ -221,6 +383,68 @@ const Announce = () => {
     const [isLiking, setIsLiking] = useState(false)
 
     const { announce } = state
+
+    // console.log({ announceId: announce?.getID, isMinted })
+
+    const [transactions, setTransactions] = useState([])
+
+    const transactionsOrdered = transactions.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    const tokenMinted = transactionsOrdered
+        .find(x => x.action === "TokenMinted")
+
+    const offerAccepted = transactionsOrdered
+        .filter(x => x.action === "OfferAccepted")
+    const offerRejected = transactionsOrdered
+        .filter(x => x.action === "OfferRejected")
+
+    const newOfferCreated = transactionsOrdered
+        .find(x =>
+            x.action === "OfferCreated" &&
+            !offerAccepted.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status)) &&
+            !offerRejected.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
+        )
+
+    console.log({
+        // tokenMinted,
+        newOfferCreated
+        // offerAccepted,
+        // offerRejected
+    })
+    console.log(newOfferCreated, 'existe?')
+
+    const handleApplyPriceChange = async () => {
+        const tokenId = state?.announce?.getTokenId
+        const announceId = state?.announce?.getID
+
+        setIsConfirmed(false)
+        setError(null)
+
+        try {
+            const task = !isMinted ?
+                mintToken(tokenId, +tokenPrice) :
+                updateTokenPrince(tokenId, +tokenPrice)
+
+            const hashTx = await task
+
+            const result = await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
+
+            console.log("result", result)
+
+            setTransactions(prev => [...prev, result])
+
+            await waitTransactionToBeConfirmed(hashTx)
+
+            setIsConfirmed(true)
+            setIsMinted(true)
+            dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
+
+        } catch (error) {
+            console.error(error)
+            setError(error)
+            setIsConfirmed(true)
+        }
+    }
 
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === announce.getID)
@@ -233,7 +457,7 @@ const Announce = () => {
     const [like, setLike] = useState(alreadyLikeCurrentUser)
 
     const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
-    
+
     useEffect(() => {
         setLike(alreadyLikeCurrentUser)
         setLikesCounter(state?.announce?.getCountLikes)
@@ -252,14 +476,14 @@ const Announce = () => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         if(isLiking) return
         setIsLiking(true)
         try {
-            console.log(like);
+            console.log(like)
             if (like) {
                 setLike(false)
                 setLikesCounter((likesCounter) => likesCounter - 1)
@@ -274,7 +498,7 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-    
+
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
@@ -297,8 +521,31 @@ const Announce = () => {
     }, [slug])
 
     useEffect(() => {
+        if (!isContractReady || !state?.announce.getTokenId)
+            return
+
+        const handleOfferReceived = async () => {
+            try {
+                const data = await watchOfferEvent(state?.announce.getTokenId)
+
+                setWalletPayer(data)
+            } catch (error) {
+                setError(error)
+            }
+        }
+
+        handleOfferReceived()
+    }, [isContractReady, state?.announce, watchOfferEvent])
+
+    useEffect(() => {
+        if (!isContractReady || !state?.announce.getTokenId)
+            return
+
         fetchAnnounce()
-    }, [fetchAnnounce])
+        if (walletPayer) {
+            fetchProfile()
+        }
+    }, [fetchAnnounce, fetchProfile])
 
     useEffect(() => {
         if (!state.stateReady) return
@@ -306,6 +553,7 @@ const Announce = () => {
         setIsLoading(true)
 
         const tokenId = state.announce.getTokenId
+        setTokenId(state.announce.getID)
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
@@ -336,7 +584,7 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
-                    
+
 
                 {!announce.getIsActivated && (
                     <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
@@ -346,7 +594,7 @@ const Announce = () => {
 
                 <Row>
                     <Col sm={12} md={6}>
-                        <div className="top" style={{marginTop: '25px', marginBottom: '65px', marginLeft:'15px'}}>
+                        <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
                             <Row >
                                 <div className="pic">
                                     <Avatar
@@ -358,10 +606,10 @@ const Announce = () => {
                                     />
                                 </div>
 
-                                <div style={{marginLeft: '10px'}}>
+                                <div style={{ marginLeft: '10px' }}>
                                     <Link href={`/profile/${announce.getAuthor.getUsername}`}>
                                         <a>
-                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
                                                 {announce.getAuthor.getFullName}
                                             </Typography>
                                         </a>
@@ -370,8 +618,8 @@ const Announce = () => {
                                     {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                         <div className="top-profile-location">
                                             <a href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                                <span className="top-profile-location" style={{fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999'}}>
-                                                    <NewIcons.card_location style={{marginRight:'5px'}}/>
+                                                <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                    <NewIcons.card_location style={{ marginRight:'5px' }}/>
                                                     {announce.getAdOrAuthorCustomAddress()}
                                                 </span>
                                             </a>
@@ -398,28 +646,13 @@ const Announce = () => {
                     </Col>
 
                     <Col sm={12} md={6}>
-                        <div style={{marginTop:'25px'}}>
-                            <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
+                        <div style={{ marginTop:'25px' }}>
+                            <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
                                 {announce.getAnnounceTitle}
                             </Typography>
-
                             <div  style={{ width: '100%',marginTop:'10px' }}>
-                                <Box mb={2} display="flex" flexDirection="row">
-                                    
-                                    <Col sm={7}>
-                                        <Row>
-                                            <p style={{fontSize:'22px'}}>€  </p>
-                                            <p style={{fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px'}}>{(tokenPrice * priceBNB).toFixed(2)}</p>
-                                        </Row>
-                                    </Col>
-                                    {/* {!isOwn && (
-                                        <Col sm={5}>
-                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
-                                                <h4>{t('vehicles:makeOffer')}</h4>
-                                            </button>
-                                        </Col>
-                                    )} */}
-                                    <Col sm={5}
+                                <Box mb={2} display="flex" flexDirection="row-reverse">
+                                    <Col sm={3}
                                         className="icons-star-prof"
                                         onClick={() =>
                                             dispatchModalState({
@@ -427,23 +660,47 @@ const Announce = () => {
                                                 modalShareAnnounce: announce
                                             })
                                         }
-                                        style={{display:'flex', justifyContent: 'flex-end'}}
+                                        style={{ display:'flex', justifyContent: 'flex-end' }}
                                     >
-                                        <small className="mx-3" style={{fontSize:'16px'}}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
+                                        <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(announce.getCreationDate.raw, lang)}</small>
                                         <img src="/images/share.png" alt="" />
                                     </Col>
                                 </Box>
+                            </div>
+                            <div  style={{ width: '100%',marginTop:'10px' }}>
+                                <Box mb={2} display="flex" flexDirection="row">
+
+                                    <Col sm={3}>
+                                        <Row style={{ marginTop:'10px' }}>
+                                            <h4>€  {(tokenPrice * priceBNB).toFixed(2)}</h4>
+                                        </Row>
+                                    </Col>
+                                    {isOwn && isMinted && newOfferCreated && (
+                                        <Row>
+                                            <Col sm={5}>
+                                                <button className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
+                                                    {t('vehicles:acceptOffer')}
+                                                </button>
+                                            </Col>
+                                            <Col sm={5}>
+                                                <button  className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
+                                                    {t('vehicles:rejectOffer')}
+                                                </button>
+                                            </Col>
+                                        </Row>
+                                    )}
+                                </Box>
                                 <div>
-                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                    <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>
                                 </div>
                             </div>
-                        
+
                         </div>
 
                         <TagsList tags={announce.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
-                            <div className="icons-profile-wrapper" style={{width:'90%'}}>
+                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
+                            <div className="icons-profile-wrapper" style={{ width:'90%' }}>
 
                                 {isOwn && (
                                     <Action onClick={toggleVisibility}>
@@ -457,14 +714,14 @@ const Announce = () => {
                                             marginRight: '8px'
                                         }}
                                     />
-                                    <span style={{color:'#444444'}}>{likesCounter}</span>
+                                    <span style={{ color:'#444444' }}>{likesCounter}</span>
                                 </Action>
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
                                     style={{ color: announce.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
+                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
                                     <span>{announce.getCountComments}</span>
                                 </Action>
 
@@ -473,8 +730,8 @@ const Announce = () => {
                                         if (!isAuthenticated) {
                                             router.push({
                                                 pathname: '/auth/login',
-                                                query: { redirect: router.asPath },
-                                            });
+                                                query: { redirect: router.asPath }
+                                            })
                                             return
                                         }
                                         dispatchModalState({
@@ -482,11 +739,11 @@ const Announce = () => {
                                             modalMessagingProfile: announce.getAuthor,
                                             modalMessaginAnnounce: announce
                                         })
-                                        }
                                     }
-                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
+                                    }
+                                    style={{ color: announce.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
                                 >
-                                    <i.MailOutline style={{ position: 'relative', top: -1,  }} />
+                                    <i.MailOutline style={{ position: 'relative', top: -1  }} />
                                 </Action>
 
 
@@ -497,70 +754,39 @@ const Announce = () => {
                                 )}
                             </div>
 
-                            <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px'}}>
+                            <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
                                 <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
                             </div>
                         </div>
 
-                        {(!isOwn) && (
+                        {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                             <div className={clsx(hiddenForm && classes.filtersHidden)}>
                                 <Comments announceRaw={announce.getRaw} />
-                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                                <button className={clsx(classes.buttonblue)}
+                                    disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
+                                    onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
                             </div>
                         )}
-                        
+
 
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{borderBottom: '1px solid #ffffff'}}>
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
                                 <div className="icons-profile-wrapper">
 
                                     {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5, width:'95%'}}>
-                                            <div style={{width:'80%'}}> 
-                                                <div>
-                                                    <label style={{
-                                                        fontWeight: 'normal',
-                                                        fontSize: '12px',
-                                                        lineHeight: '150%',
-                                                        color: '#999999'
-                                                    }}>Token price :</label>
-                                                </div>
-                                                <TextField
-                                                    // label="Token price"
-                                                    className={clsx(classes.textfield)}
-                                                    onChange={(event) => setTokenPrice(event.target.value)}
-                                                    value={tokenPrice}
-                                                    type="number"
-                                                    InputLabelProps={{ shrink: true }}
-                                                    error={!!error}
-                                                    helperText={error ? error.message : (!isConfirmed && "Waiting confirmation")}
-                                                    disabled={!isConfirmed || !active}
-                                                    variant="outlined"
-                                                    style={{height:'40px', width:'100%'}}
-                                                />
-                                            </div>
-                                            <button className={clsx(classes.buttonblue)} disabled={!isConfirmed || !tokenPrice || !active} onClick={() => {
-                                                const tokenId = state.announce.getTokenId
-
-                                                setIsConfirmed(false)
-                                                setError(null)
-
-                                                const task = !isMinted ?
-                                                    mintToken(tokenId, +tokenPrice) :
-                                                    updateTokenPrince(tokenId, +tokenPrice)
-
-                                                task.then(() => {
-                                                    setIsConfirmed(true)
-                                                    setIsMinted(true)
-                                                    dispatchModal({ msg: 'Token price confirmed!' })
-                                                }).catch((error) => {
-                                                    console.error(error)
-                                                    setError(error)
-                                                    setIsConfirmed(true)
-                                                })
-                                                
-                                            }}
-                                            style={{height:'40px', marginTop:'30px'}}>
+                                        <div style={{ display: "flex", gap: 5 }}>
+                                            <TextField
+                                                label={t('vehicles:tokenPrice')}
+                                                onChange={(event) => setTokenPrice(event.target.value)}
+                                                value={tokenPrice}
+                                                type="number"
+                                                InputLabelProps={{ shrink: true }}
+                                                error={!!error}
+                                                helperText={error ? error.message : (!isConfirmed && t('vehicles:waitingConfirmation'))}
+                                                disabled={!isConfirmed || !active}
+                                                variant="outlined"
+                                            />
+                                            <button style={{ height:'55px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
@@ -571,15 +797,15 @@ const Announce = () => {
                         )}
                     </Col>
                 </Row>
-                <div style={{marginTop:'50px'}}>
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                <div style={{ marginTop:'50px' }}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:vehicle-data')}
                         </Typography>
                         <CarInfos announce={announce} enableThirdColumn />
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:equipments')}
                         </Typography>
@@ -596,7 +822,7 @@ const Announce = () => {
                         </Row>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
                         <Typography component="h3" variant="h3">
                             {t('vehicles:description')}
                         </Typography>
@@ -605,12 +831,12 @@ const Announce = () => {
                         </div>
                     </section>
 
-                    <section className="my-2" style={{marginTop:'15px'}}>
-                    <Typography component="h3" variant="h3">
-                        {t('vehicles:data-sheet')}
-                    </Typography>
-                    <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
-                </section>
+                    <section className="my-2" style={{ marginTop:'15px' }}>
+                        <Typography component="h3" variant="h3">
+                            {t('vehicles:data-sheet')}
+                        </Typography>
+                        <DamageViewerTabs tabs={announce.getDamagesTabs} vehicleType={announce.getVehicleType} />
+                    </section>
                 </div>
             </div>
         </Container>
