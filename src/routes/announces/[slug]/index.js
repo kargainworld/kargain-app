@@ -256,7 +256,7 @@ const Announce = () => {
             console.log(announce.getID, 'idd de anuncio')
             console.log(announce.getSlug, 'slug del anuncio')
             // eslint-disable-next-line react/display-name,no-debugger
-            debugger
+            // debugger
             console.log('entro')
             const announceId = state?.announce?.getID
             setIsConfirmed(false)
@@ -274,7 +274,7 @@ const Announce = () => {
                 window.location.reload()
             )
             // eslint-disable-next-line react/display-name,no-debugger
-            debugger
+            // debugger
 
 
             setIsConfirmed(true)
