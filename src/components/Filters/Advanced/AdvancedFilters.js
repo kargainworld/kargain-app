@@ -121,6 +121,7 @@ const useStyles = makeStyles(() => ({
         fontSize: '14px',
         fontWeight: "bold",
         marginRight: "5px",
+        height: '39px',
         background: customColors.gradient.main
     },
     filterbutton:{
@@ -167,10 +168,11 @@ const useStyles = makeStyles(() => ({
         padding: '15px 10px 20px',
     }, 
     bordergradientbtn:{
+        height:'39px',
         borderRadius: '100rem',
         padding: '1rem',
         fontSize: '14px',        
-        padding: '10px 30px 2px',
+        padding: '8px 30px 2px',
         boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
@@ -504,7 +506,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
-                <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
+                <div id="new_feed" style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px', marginBottom:'30px'}}>
                     
                     <ControlButtons 
                         resetFilter={onResetFilter}
