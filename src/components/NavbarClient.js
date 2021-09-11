@@ -211,14 +211,14 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 {authenticatedUser.getIsAdmin && (
                     <li className="px-0 dropdown-item">
                         <Link href={`/admin/ads`} prefetch={false}>
-                            <a className="nav-link text-left"><DashboardIcon/><span className="m-1">Admin</span></a>
+                            <a className="nav-link text-left"><DashboardIcon style={{width:'16px', height:'17px'}}/><span className="m-2" style={{marginLeft:'10px'}}>Admin</span></a>
                         </Link>
                     </li>
                 )}
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.user />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:my-profile')}
                             </span>
                         </a>
@@ -227,7 +227,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.favorite />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:favorites')}
                             </span>
                         </a>
@@ -236,7 +236,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href="/profile/messages" prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.message />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:messaging')}
                             </span>
                         </a>
@@ -245,7 +245,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.setting />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:settings')}
                             </span>
                         </a>
@@ -258,7 +258,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             logout()
                         }}>
                             <NewIcons.signout />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:logout')}
                             </span>
                         </a>
