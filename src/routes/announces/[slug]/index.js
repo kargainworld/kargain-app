@@ -163,9 +163,7 @@ const Announce = () => {
         if (!announce && transactions.length === 0) return
 
         const action = async () => {
-
             const transactions = await TransactionsService.getTransactionsByAnnounceId(announce.getID)
-
             setTransactions(transactions)
         }
 
@@ -252,7 +250,14 @@ const Announce = () => {
         try {
             if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
                 return
-
+            console.log('entro')
+            console.log(newOfferCreated.user,'usuario que hace la oferta')
+            console.log(announce.getAuthor, 'usuario propietario')
+            console.log(announce.getID, 'idd de anuncio')
+            console.log(announce.getSlug, 'slug del anuncio')
+            // eslint-disable-next-line react/display-name,no-debugger
+            debugger
+            console.log('entro')
             const announceId = state?.announce?.getID
             setIsConfirmed(false)
             setError(null)
@@ -263,6 +268,14 @@ const Announce = () => {
             await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferAccepted" })
 
             await waitTransactionToBeConfirmed(hashTx)
+            let announceUpdate = new AnnounceModel(announce)
+            announceUpdate.user = newOfferCreated.raw.user
+            AnnounceService.updateAnnounce(announce.getSlug, announceUpdate).then(() =>
+                window.location.reload()
+            )
+            // eslint-disable-next-line react/display-name,no-debugger
+            debugger
+
 
             setIsConfirmed(true)
             dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
@@ -273,7 +286,7 @@ const Announce = () => {
             setIsConfirmed(true)
         }
 
-    }, [state?.announce?.getTokenId, isContractReady, authenticatedUser.getWallet])
+    }, [state?.announce?.getTokenId, isContractReady, authenticatedUser.getWallet, newOfferCreated?.user, AnnounceService])
 
     const handleRejectOffer = async (offerHashTx) => {
         try {
@@ -371,7 +384,7 @@ const Announce = () => {
 
     const { announce } = state
 
-    console.log({ announceId: announce?.getID, isMinted })
+    // console.log({ announceId: announce?.getID, isMinted })
 
     const [transactions, setTransactions] = useState([])
 
@@ -393,10 +406,10 @@ const Announce = () => {
         )
 
     console.log({
-        tokenMinted,
-        newOfferCreated,
-        offerAccepted,
-        offerRejected
+        // tokenMinted,
+        newOfferCreated
+        // offerAccepted,
+        // offerRejected
     })
     console.log(newOfferCreated, 'existe?')
 
@@ -514,7 +527,6 @@ const Announce = () => {
         const handleOfferReceived = async () => {
             try {
                 const data = await watchOfferEvent(state?.announce.getTokenId)
-
 
                 setWalletPayer(data)
             } catch (error) {
