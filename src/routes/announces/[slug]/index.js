@@ -25,15 +25,14 @@ import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import { Avatar } from '../../../components/AnnounceCard/components'
 import { useSocket } from '../../../context/SocketContext'
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
-import { injected } from "../../../connectors"
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { injected } from "../../../connectors"
 
 import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
@@ -41,7 +40,6 @@ import TransactionsService from '../../../services/TransactionsService'
 
 
 
-const toBN = Web3.utils.toBN
 const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
@@ -127,7 +125,6 @@ const Announce = () => {
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
-    const [tokenIdBN, setTokenIdBN] = useState(null)
     const [tokenId, setTokenId] = useState(null)
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -147,6 +144,20 @@ const Announce = () => {
         rejectOffer,
         waitTransactionToBeConfirmed
     } = useKargainContract()
+
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
 
     useEffect(() => {
         if (!announce && transactions.length === 0) return
@@ -402,6 +413,7 @@ const Announce = () => {
         offerAccepted,
         offerRejected
     })
+    console.log(newOfferCreated, 'existe?')
 
     const handleApplyPriceChange = async () => {
         const tokenId = state?.announce?.getTokenId
@@ -530,7 +542,6 @@ const Announce = () => {
 
         const tokenId = state.announce.getTokenId
         setTokenId(state.announce.getID)
-        setTokenIdBN(state.announce.getTokenId)
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
@@ -637,13 +648,6 @@ const Announce = () => {
                                             <p style={{ fontWeight: 'normal', fontSize: '16px !important', lineHeight: '150%', marginTop: '10px' }}>{(tokenPrice * priceBNB).toFixed(2)}</p>
                                         </Row>
                                     </Col>
-                                    {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
-                                        <Col sm={5}>
-                                            <button disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice} onClick={handleMakeOffer}>
-                                                <h4>{t('vehicles:makeOffer')}</h4>
-                                            </button>
-                                        </Col>
-                                    )}
                                     {isOwn && isMinted && newOfferCreated && (
                                         <Row>
                                             <Col sm={5}>
@@ -741,10 +745,11 @@ const Announce = () => {
                             </div>
                         </div>
 
-                        {(!isOwn) && (
+                        {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                             <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                                <Comments announceRaw={announce.getRaw} />
-                                <button className={clsx(classes.buttonblue)}> buy for {(tokenPrice * priceBNB).toFixed(2)}</button>
+                                <button className={clsx(classes.buttonblue)}
+                                    disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
+                                    onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
                             </div>
                         )}
 
