@@ -116,7 +116,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <Emoji name="globe-with-meridians" width={16} />
+                            <Emoji name="globe-with-meridians" width={24} style={{marginLeft:'10px'}} />
                         </a>
                     </Link>
                 </Navbar>
@@ -204,7 +204,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 aria-haspopup="true"
                 aria-expanded="true"
                 onClick={() => toggle(keyName)}>
-                <NewIcons.navuser style={{width:'16px', height:'16px'}}/>
+                <NewIcons.navuser style={{width:'21px', height:'21px'}}/>
             </IconButton>
 
             <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
@@ -300,7 +300,7 @@ const LoggedInUserNav = ({ vertical }) => {
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <NewIcons.home style={{width:'16px', height:'16px'}}/>
+                                    <NewIcons.home style={{width:'21px', height:'21px'}}/>
                                 </IconButton>
                             </a>
                         </Link>
