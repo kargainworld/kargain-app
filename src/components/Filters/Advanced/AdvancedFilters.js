@@ -527,7 +527,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                 <div className={clsx(classes.rowbuttons)}>
                     <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_1">
-                            <Emoji name="automobile" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="automobile" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:vehicle-type')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenu)} >
@@ -552,7 +552,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                     <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
                         <DropdownToggle caret id="button_2">
-                            <Emoji name="page-facing-up" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="page-facing-up" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:announce-type')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
@@ -575,7 +575,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                     <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_3">
-                            <Emoji name="wrench" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="wrench" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:make')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
@@ -596,7 +596,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     
                     <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_4">
-                            <Emoji name="two-oclock" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="two-oclock" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:model')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
@@ -618,7 +618,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     
                     <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret id="button_5">
-                            <Emoji name="calendar" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="calendar" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:year')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenuslide)} id="button_5">
@@ -649,7 +649,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                      
                     <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret>
-                            <Emoji name="dollar-banknote" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="dollar-banknote" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:price')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
@@ -681,7 +681,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                     <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
                         <DropdownToggle caret>
-                            <Emoji name="nut-and-bolt" width="12" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                            <Emoji name="nut-and-bolt" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                             {t('vehicles:cylinder')}
                         </DropdownToggle>
                         <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
