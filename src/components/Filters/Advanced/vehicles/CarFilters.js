@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
                 color: 'black !important',
                 cursor: 'pointer',
                 fontSize:"17.1707px !important",
-                marginRight: '10px !important',
+                marginRight: '6px !important',
                 marginTop: '5px !important',
                 '& button:clicked': {
                     borderRadius: '25px !important',
@@ -33,17 +33,18 @@ const useStyles = makeStyles(() => ({
                     color: 'black !important',
                     fontSize:"17.1707px !important",
                 },
-                '& button:after': {
-                    FONTVARIANT: 'JIS83 !important',
-                    display: 'inline-block !important',
-                    marginLeft: '0.355em !important',
-                    verticalAlign: '0.255em !important',
-                    content: " !important",
-                    borderTop: '0.4em solid !important',
-                    borderRight: '0.4em solid transparent !important',
-                    borderBottom: '0 !important',
-                    borderLeft:' 0.4em solid transparent !important',
-                    marginLeft:'5px !important',
+                '&::after': {
+                    display: 'none'
+                    // FONTVARIANT: 'JIS83 !important',
+                    // display: 'inline-block !important',
+                    // marginLeft: '0.355em !important',
+                    // verticalAlign: '0.255em !important',
+                    // content: " !important",
+                    // borderTop: '0.4em solid !important',
+                    // borderRight: '0.4em solid transparent !important',
+                    // borderBottom: '0 !important',
+                    // borderLeft:' 0.4em solid transparent !important',
+                    // marginLeft:'5px !important',
                 }
             }
         },
@@ -177,7 +178,8 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="dollar-banknote" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:price')}
-                </DropdownToggle>
+                <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                        </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     
                     <label className={clsx(classes.label)}>
@@ -209,7 +211,8 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="nut-and-bolt" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:cylinder')}
-                </DropdownToggle>
+                <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                        </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     <label className={clsx(classes.label)}>
                         {t('vehicles:cylinder')}
@@ -240,6 +243,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="joystick" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:gear-box')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -261,6 +265,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="stopwatch" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:power')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     <label className={clsx(classes.label)}>
@@ -291,6 +296,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="globe-showing-americas" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:country')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -311,6 +317,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="house" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:address')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -333,6 +340,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="globe-showing-americas" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:class_emission')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -354,6 +362,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="oncoming-automobile" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:equipments')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper >
@@ -378,6 +387,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="alarm-clock" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:co2-consumption')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     <label className={clsx(classes.label)}>
@@ -408,6 +418,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="sport-utility-vehicle" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:doors_quantity')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     <label className={clsx(classes.label)}>
@@ -437,6 +448,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="seat" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:seats_quantity')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
                     <label className={clsx(classes.label)}>
@@ -466,6 +478,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="artist-palette" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:paint')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -488,6 +501,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="artist-palette" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:external_color')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -509,6 +523,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="artist-palette" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:internal_color')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
@@ -530,6 +545,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
                 <DropdownToggle caret>
                     <Emoji name="card-index" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
                     {t('vehicles:vehicle-state')}
+                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                 </DropdownToggle>
                 <DropdownMenu className={clsx(classes.dropdownmenu)}>
                     <FieldWrapper>
