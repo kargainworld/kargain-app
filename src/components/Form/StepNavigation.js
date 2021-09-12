@@ -36,7 +36,7 @@ const StepNavigation = ({ prev, prevLabel, next, nextLabel, submit, submitLabel,
         <>
             {isMobile ? (
                 <Row className="form_navigation justify-content-around" style={{ marginTop: 30 }}>
-                    <div style={{width:'80%'}}>
+                    <div id="btnwidth" style={{width:'80%'}}>
                         {prev && (
                             <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={() => prev()}>
                                 {prevLabel || t(`vehicles:${defaultPrevLabel}`)}

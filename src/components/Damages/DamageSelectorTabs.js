@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
     },
 
     annoNumber: {
-        backgroundColor: '#dc3545',
+        backgroundColor: '#A291F3',
         color: '#fff',
         fontSize: '.8rem',
         lineHeight: '1.4rem',
