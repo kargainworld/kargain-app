@@ -116,7 +116,7 @@ const NavbarClient = () => {
                         href="https://kargain.world"
                         prefetch={false}>
                         <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                            <Emoji name="globe-with-meridians" width={16} />
+                            <Emoji name="globe-with-meridians" width={24} style={{marginLeft:'10px'}} />
                         </a>
                     </Link>
                 </Navbar>
@@ -204,21 +204,21 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 aria-haspopup="true"
                 aria-expanded="true"
                 onClick={() => toggle(keyName)}>
-                <NewIcons.navuser />
+                <NewIcons.navuser style={{width:'21px', height:'21px'}}/>
             </IconButton>
 
             <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
                 {authenticatedUser.getIsAdmin && (
                     <li className="px-0 dropdown-item">
                         <Link href={`/admin/ads`} prefetch={false}>
-                            <a className="nav-link text-left"><DashboardIcon/><span className="m-1">Admin</span></a>
+                            <a className="nav-link text-left"><DashboardIcon style={{width:'16px', height:'17px'}}/><span className="m-2" style={{marginLeft:'10px'}}>Admin</span></a>
                         </Link>
                     </li>
                 )}
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileLink} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.user />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:my-profile')}
                             </span>
                         </a>
@@ -227,7 +227,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.favorite />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:favorites')}
                             </span>
                         </a>
@@ -236,7 +236,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href="/profile/messages" prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.message />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:messaging')}
                             </span>
                         </a>
@@ -245,7 +245,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <li className="px-0 dropdown-item">
                     <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
                         <a className="nav-link text-left"><NewIcons.setting />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:settings')}
                             </span>
                         </a>
@@ -258,7 +258,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             logout()
                         }}>
                             <NewIcons.signout />
-                            <span className="m-1">
+                            <span className="m-2" style={{marginLeft:'5px'}}>
                                 {t('layoutC:logout')}
                             </span>
                         </a>
@@ -300,7 +300,7 @@ const LoggedInUserNav = ({ vertical }) => {
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <NewIcons.home />
+                                    <NewIcons.home style={{width:'21px', height:'21px'}}/>
                                 </IconButton>
                             </a>
                         </Link>

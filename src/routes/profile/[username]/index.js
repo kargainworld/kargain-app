@@ -111,36 +111,34 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: '#666666',
-        padding: '5.5px 9px',
+        padding: '5.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
-        fontSize: '13px',
-        fontWeight:'700',
+        fontSize: '16px',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
-        width:'119px',
         height:'35px'
     },
     subscriptionbuttonblue:{
         backgroundColor: 'white', /* Green */
         border: 'none',
         color: '#666666',
-        padding: '4.5px 9px',
+        padding: '4.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
-        fontSize: '13px',
-        fontWeight:'700',
+        fontSize: '16px',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid blue',
         borderWidth: '1px',
-        width:'119px',
         height:'35px'
     },
 }))
@@ -309,11 +307,11 @@ const Profile = () => {
                     title={`${profile.getFullName} - Kargain`}
                 />
 
-                {state.isAdmin && (
-                    <Alert severity="info" className="mb-2">
+                {/* {state.isAdmin && ( */}
+                    {/* <Alert severity="info" className="mb-2">
                         Connected as Admin
-                    </Alert>
-                )}
+                    </Alert> */}
+                {/* )} */}
 
                 <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
@@ -379,8 +377,14 @@ const Profile = () => {
                                 </a>
                             )}
                         </div>
-
-                        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'33.33%'}}>
+                        
+                        <div style={{ width:'33.33%'}}> </div>
+                       
+                    </div>
+                    
+                    <div style={{width:'100%', display:'flex'}}>
+                        <div style={{width:'50%'}}></div>
+                        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)'}}>
                             <div 
                                 onClick={() => dispatchModalState({
                                     openModalFollowers: true,
@@ -465,7 +469,6 @@ const Profile = () => {
                                 {/*)}*/}
                             </div>
                         </div>
-
                     </div>
                     
                     {/* <p className="top-profile-desc">

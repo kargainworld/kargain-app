@@ -21,7 +21,6 @@ import card_message from './icon_message.svg';
 import card_heart from './icon_heart.svg';
 import card_location from './icon_location.svg';
 import share from './icon_share.svg';
-import modalclose from './Icon_modalclose.svg';
 import pigeon from './icon_pigeon.svg';
 import avatarcheck from './icon_avatarcheck.svg';
 import card_message_pink from './icon_message_pink.svg';
@@ -30,6 +29,10 @@ import pen from './icon_pen.svg';
 import save from './icon_save.svg';
 import sendicon from './icon_sendicon.svg';
 import sendbtn from './icon_sendbtn.svg';
+import recycle_white from './icon_recycle_white.svg';
+import home_color from './icon_home_color.svg';
+import close_color from './icon_close_color.svg';
+import inclose_color from './icon_inclose_color.svg'
 
 export const NewIcons = {
     message,
@@ -56,7 +59,6 @@ export const NewIcons = {
     card_heart,
     card_message,
     share,
-    modalclose,
     pigeon,
     avatarcheck,
     card_message_pink,
@@ -65,4 +67,8 @@ export const NewIcons = {
     save,
     sendicon,
     sendbtn,
+    recycle_white,
+    home_color,
+    close_color,
+    inclose_color,
 }
