@@ -65,6 +65,7 @@ const useStyles = makeStyles(() => ({
                     backgroundColor: '#c4c4c447 !important',
                     color: 'black !important',
                     fontSize:"17.1707px !important",
+
                 },
                 '&::after': {
                     display: 'none !important'
@@ -547,7 +548,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
                                         return e
                                     }}
-
+                                   
                                 />
                             </FieldWrapper>
                         
@@ -563,6 +564,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
                             <FieldWrapper >
                                 <SelectInput
+                                    
                                     name="adType"
                                     control={control}
                                     errors={errors}
@@ -573,6 +575,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                         setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
                                         return selected
                                     }}
+                                    
                                 />
                             </FieldWrapper>
                         </DropdownMenu>
