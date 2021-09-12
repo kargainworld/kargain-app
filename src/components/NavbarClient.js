@@ -31,7 +31,7 @@ import CTALink from './CTALink'
 import { SearchContext } from '../context/SearchContext'
 import { ClickAwayListener } from "@material-ui/core"
 import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
-import Blockchain from './Blockchain/blockchain'
+import Metamask from './Wallet/Metamask'
 
 import { NewIcons } from '../assets/icons';
 
@@ -77,7 +77,7 @@ const NavbarClient = () => {
                     <NavbarBrand href="/">
                         <NewIcons.logo width="150" alt="logo" />
                     </NavbarBrand>
-                    
+
                     <NavbarToggler
                         className="m-2"
                         onClick={toggleNavbar}
@@ -95,12 +95,12 @@ const NavbarClient = () => {
                                         </div>
                                         <AutocompleteDropdown />
                                         {isAuthenticated ? <LoggedInUserNav vertical/> : <VisitorNav vertical/>}
-                                        {isAuthenticated && <Blockchain />}
+                                        {isAuthenticated && <Metamask />}
                                     </div>
                                 ) : (
                                     <div className={clsx("d-flex", "navbar-menu")}>
                                         <AutocompleteDropdown />
-                                        {isAuthenticated && <Blockchain />}
+                                        {isAuthenticated && <Metamask />}
                                         {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
                                     </div>
                                 )}

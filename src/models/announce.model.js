@@ -8,7 +8,7 @@ import Web3 from 'web3'
 const toBN = Web3.utils.toBN
 
 export default class AnnounceModel {
-    
+
     constructor (ad) {
         this.raw = ad ?? {}
     }
@@ -20,6 +20,10 @@ export default class AnnounceModel {
 
     get getID () {
         return this.raw?.id
+    }
+
+    get getWallet() {
+        return this.raw?.wallet
     }
 
     get getTokenId () {
@@ -37,7 +41,7 @@ export default class AnnounceModel {
     get getAnnounceLink () {
         return this.getSlug ? `/announces/${this.getSlug}` : '/'
     }
-    
+
     get getAnnounceShareLink () {
         return this.getSlug ? `https://kargain.com/announces/${this.getSlug}` : null
     }
@@ -57,7 +61,7 @@ export default class AnnounceModel {
     get getPriceHT () {
         return this.raw?.priceHT ? Number(this.raw?.priceHT) : 0
     }
-    
+
     get getManufacturer () {
         const make = this.raw?.manufacturer?.make?.['make'] ?? null
         const model = this.raw?.manufacturer?.model?.['model'] ?? null
