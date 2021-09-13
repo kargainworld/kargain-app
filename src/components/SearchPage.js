@@ -24,6 +24,8 @@ import Switch from '@material-ui/core/Switch'
 import PaginateResults from './PaginateResults'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 const useStyles = makeStyles(() => ({
     row:{
         position: 'relative',
@@ -36,6 +38,7 @@ const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const classes = useStyles()
+    const isMobile = useMediaQuery('(max-width:768px)')
 
     const { getPriceTracker } = usePriceTracker()
     const { fetchTokenPrice, isContractReady } = useKargainContract()
@@ -184,23 +187,43 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 <Col sm={12} md={12}>
 
                     <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
+                    { isMobile ? (
+                        <div>
+                            <h3 style={{fontSize: '20px', fontWeight: '500'}}>
+                                {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                            </h3>
 
-                    <div className={clsx(classes.row)}>
-
-                        <h3 style={{fontSize: '20px', fontWeight: '500'}}>
-                            {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
-                        </h3>
-                    
-                        <div  style={{ marginTop: '-60px'}}>
-                            <Sorters updateSorter={updateSorter} />
-                            <FormControlLabel
-                                style={{ margin:0 }}
-                                control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
-                                label={t('vehicles:showOnlyMinted')}
-                            />
-                        </div>
+                            <div >
+                                <Sorters updateSorter={updateSorter} />
+                                <FormControlLabel
+                                    style={{ margin:0 }}
+                                    control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
+                                    label={t('vehicles:showOnlyMinted')}
+                                />
+                            </div>
                         
-                    </div>
+                        </div>
+
+                    ) : (
+                        <div className={clsx(classes.row)}>
+
+                            <h3 style={{fontSize: '20px', fontWeight: '500'}}>
+                                {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
+                            </h3>
+                        
+                            <div  style={{ marginTop: '-60px'}}>
+                                <Sorters updateSorter={updateSorter} />
+                                <FormControlLabel
+                                    style={{ margin:0 }}
+                                    control={<Switch checked={onlyMinted} onChange={() => setOnlyMinted(prev => !prev)} name="show-only-minted" />}
+                                    label={t('vehicles:showOnlyMinted')}
+                                />
+                            </div>
+                            
+                        </div>
+                
+                    )}
+                   
                 </Col>
 
                 <Col sm={12} md={12}>
