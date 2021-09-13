@@ -26,10 +26,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
     row:{
-
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'20px',
+        marginTop:'10px',
     }, 
 }))
 
