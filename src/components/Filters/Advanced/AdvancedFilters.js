@@ -59,7 +59,7 @@ const useStyles = makeStyles(() => ({
                 backgroundColor: '#c4c4c400 !important',
                 color: 'black !important',
                 cursor: 'pointer',
-                fontSize:"17.1707px !important",
+                fontSize:"17.1707px",
                 marginRight: '6px !important',
                 marginTop: '5px !important',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
                 '& button:clicked': {
@@ -195,6 +195,14 @@ const useStyles = makeStyles(() => ({
             
         }        
     },
+    btnfontsize:{
+        '& button':{
+            fontSize:'15.15px !important',
+        },
+        '& img':{
+            width:'11px',
+        }
+    }
 }))
 
 
@@ -541,10 +549,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         
                         <div className={clsx(classes.rowbuttons)}>
                             <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_1">
-                                    <Emoji name="automobile" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                <DropdownToggle caret id="button_1" style={{fontSize: '15.15px'}}>
+                                    <Emoji name="automobile" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                     {t('vehicles:vehicle-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                 </DropdownToggle>
                                 <DropdownMenu className={clsx(classes.dropdownmenu)} >
                                     <FieldWrapper>
@@ -567,11 +575,11 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             </ButtonDropdown>
                             {limitwidth ? (
                                 <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                        <DropdownToggle caret id="button_2">
-                                            <Emoji name="page-facing-up" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}   >
+                                        <DropdownToggle caret id="button_2" style={{fontSize:'15.15px'}}>
+                                            <Emoji name="page-facing-up" width="11" style={{marginLeft: '5px', marginRight: '10px'}}/>
                                             {t('vehicles:announce-type')}
-                                            <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                            <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                         </DropdownToggle>
                                         <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
                                             <FieldWrapper >
@@ -595,10 +603,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </div>
                             ) : (
                                 <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                    <DropdownToggle caret id="button_2">
-                                        <Emoji name="page-facing-up" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <DropdownToggle caret id="button_2" style={{fontSize: '15.15px'}}>
+                                        <Emoji name="page-facing-up" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                         {t('vehicles:announce-type')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                     </DropdownToggle>
                                     <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
                                         <FieldWrapper >
@@ -623,10 +631,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                 <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_3">
-                                        <Emoji name="wrench" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <DropdownToggle caret id="button_3" style={{fontSize: '15.15px'}}>
+                                        <Emoji name="wrench" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                         {t('vehicles:make')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                     </DropdownToggle>
                                     <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
                                         <FieldWrapper >
@@ -645,10 +653,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </ButtonDropdown>
                                 
                                 <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_4">
-                                        <Emoji name="two-oclock" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <DropdownToggle caret id="button_4" style={{fontSize: '15.15px'}}>
+                                        <Emoji name="two-oclock" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                         {t('vehicles:model')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                     </DropdownToggle>
                                     <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
                                         <FieldWrapper >
@@ -668,10 +676,10 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </ButtonDropdown>
                                 
                                 <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_5">
-                                        <Emoji name="calendar" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <DropdownToggle caret id="button_5" style={{fontSize: '15.15px'}}>
+                                        <Emoji name="calendar" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                         {t('vehicles:year')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
+                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'8.82px', height:'5px', marginBottom:'5px'}}/>
                                     </DropdownToggle>
                                     <DropdownMenu className={clsx(classes.dropdownmenuslide)} id="button_5">
                                         <label className={clsx(classes.label)}>
@@ -700,8 +708,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </ButtonDropdown>
                                 
                                 <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret>
-                                        <Emoji name="dollar-banknote" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                    <DropdownToggle caret style={{fontSize: '15.15px'}}>
+                                        <Emoji name="dollar-banknote" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                         {t('vehicles:price')}
                                         <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                                     </DropdownToggle>
@@ -733,8 +741,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </ButtonDropdown>
 
                                 <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret>
-                                    <Emoji name="nut-and-bolt" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
+                                <DropdownToggle caret style={{fontSize: '15.15px'}}>
+                                    <Emoji name="nut-and-bolt" width="11" style={{marginLeft: '5px', marginRight: '10px',}}/>
                                     {t('vehicles:cylinder')}
                                     <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
                                 </DropdownToggle>
@@ -763,16 +771,18 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                     
                                 </DropdownMenu>
                             </ButtonDropdown>
-        
-                                {DynamicFiltersComponent && (
-                                    <DynamicFiltersComponent
-                                        control={control}
-                                        errors={errors}
-                                        watch={watch}
-                                        dynamicOnSubmit={onSubmit}
-                                        dynamicHandleSubmit={handleSubmit}
-                                    />
-                                )}
+                                <div className={clsx(classes.btnfontsize)}>
+                                    {DynamicFiltersComponent && (
+                                        <DynamicFiltersComponent
+                                            control={control}
+                                            errors={errors}
+                                            watch={watch}
+                                            dynamicOnSubmit={onSubmit}
+                                            dynamicHandleSubmit={handleSubmit}
+                                            
+                                        />
+                                    )}
+                                </div>
                             </div>
                             
                             <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{width:'100%', display:'flex'}}>
