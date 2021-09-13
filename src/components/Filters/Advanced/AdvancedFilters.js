@@ -788,15 +788,14 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{width:'100%', display:'flex'}}>
                                 <Col className={clsx(!hiddenFormMobile && classes.filtersHidden)}sm={5} xs={1}> </Col>
                                 <Col 
-                                sm={7} xs={11}
                                 style={{
                                     display: 'flex',
                                     justifyContent: 'flex-end',
-                                    transform: 'translate(45px, -44px)',
+                                    transform: 'translate(25px, -44px)',
                                     
                                 }}> 
                                     <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
-                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFiltersMobile()} style={{transform: 'translate(-25px, 0px)'}}>
+                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFiltersMobile()} style={{transform: 'translate(-25px, 0px)', width: '232px'}}>
                                         
                                         <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
                                         {/* <Typography variant="h4"> */}
