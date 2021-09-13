@@ -201,6 +201,11 @@ const useStyles = makeStyles(() => ({
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
     
     // const [dropdownOpen, setOpen] = new Array();
+    const [hiddenFormMobile, hideFormMobile] = useState(true)
+    const toggleFiltersMobile = () => {
+            hideFormMobile((hiddenFormMobile) => !hiddenFormMobile);
+        };
+
 
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
@@ -561,7 +566,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </DropdownMenu>
                             </ButtonDropdown>
                             {limitwidth ? (
-                                <div className={clsx(hiddenForm && classes.filtersHidden)} >
+                                <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                     <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
                                         <DropdownToggle caret id="button_2">
                                             <Emoji name="page-facing-up" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
@@ -616,7 +621,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </ButtonDropdown>
                             )}
                             
-                            <div className={clsx(hiddenForm && classes.filtersHidden)} >
+                            <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                 <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
                                     <DropdownToggle caret id="button_3">
                                         <Emoji name="wrench" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
@@ -770,8 +775,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 )}
                             </div>
                             
-                            <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{width:'100%', display:'flex'}}>
-                                <Col className={clsx(!hiddenForm && classes.filtersHidden)}sm={5} xs={1}> </Col>
+                            <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{width:'100%', display:'flex'}}>
+                                <Col className={clsx(!hiddenFormMobile && classes.filtersHidden)}sm={5} xs={1}> </Col>
                                 <Col 
                                 sm={7} xs={11}
                                 style={{
@@ -780,8 +785,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                     transform: 'translate(45px, -44px)',
                                     
                                 }}> 
-                                    <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
-                                    <div className={clsx(!hiddenForm && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFilters()} style={{transform: 'translate(-25px, 0px)'}}>
+                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{ backgroundColor:'#ffffffeb', width:'40px'}}></div>
+                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFiltersMobile()} style={{transform: 'translate(-25px, 0px)'}}>
                                         
                                         <NewIcons.filter alt='filter' style={{marginRight:'10px'}} />
                                         {/* <Typography variant="h4"> */}
@@ -793,8 +798,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 </Col>  
                             </div>
 
-                            <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                                <div  onClick={() => toggleFilters()} style={{height:'20px'}}>
+                            <div className={clsx(hiddenFormMobile && classes.filtersHidden)}>
+                                <div  onClick={() => toggleFiltersMobile()} style={{height:'20px'}}>
                                     {/* <i className={clsx('ml-2', 'arrow_nav', 'is-top' )}/> */}
                                     <label> ... </label>
                                 </div>
