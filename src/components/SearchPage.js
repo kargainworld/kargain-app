@@ -264,15 +264,15 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length !== 0 ? (
                                     <>
                                         {isMobile ? (
-                                            <Row className="my-2 d-flex justify-content-center">
+                                            <div style={{marginLeft:'15px'}}>
                                                 {state.announces.map((announceRaw, index) => {
                                                     const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
                                                     // if (!onlyMinted || announceMinted) {
                                                         return (
                                                     
-                                                            <>
+                                                            <div key={index}>
                                                                 {index > '2' ? (
-                                                                    <div style={{width:'100%', marginLeft:'20px'}}> 
+                                                                    <div>
                                                                         {index == '3' &&
                                                                             <div style={{display: 'flex', justifyContent: 'center', marginLeft: '-20px'}}>
                                                                                 <div className={clsx(!hiddenFormMore && classes.filtersHidden)} style={{width:'142px'}}>
@@ -282,7 +282,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                                         }
                                                                         
                                                                        
-                                                                        <div key={index} className={clsx(hiddenFormMore && classes.filtersHidden)}>
+                                                                        <div className={clsx(hiddenFormMore && classes.filtersHidden)}>
                                                                             <div style={{width:'90%', marginTop: '20px'}} >
                                                                                 <AnnounceCard
                                                                                     announceRaw={announceRaw}
@@ -293,22 +293,22 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                                                         </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <div style={{width:'100%', marginLeft:'20px'}}>
-                                                                        <div key={index} style={{width:'90%', marginTop: '20px'}}>
+                                                                    // <div style={{width:'100%', marginLeft:'20px'}}>
+                                                                        <div  style={{width:'90%', marginTop: '20px'}}>
                                                                             <AnnounceCard
                                                                                 announceRaw={announceRaw}
                                                                                 tokenPrice={announceMinted?.tokenPrice}
                                                                                 detailsFontSize={'13px'}
                                                                             />
                                                                         </div>
-                                                                    </div> 
+                                                                    // </div> 
                                                                 )}
-                                                            </>
+                                                            </div>
                                                              
                                                         )
                                                     // }
                                                 })}
-                                            </Row>
+                                            </div>
                                         ) : (
                                             <Row className="my-2 d-flex justify-content-center">
                                                 {state.announces.map((announceRaw, index) => {
