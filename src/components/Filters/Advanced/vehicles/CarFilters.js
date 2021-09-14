@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
                 backgroundColor: '#c4c4c400 !important',
                 color: 'black !important',
                 cursor: 'pointer',
-                fontSize:"17.1707px !important",
+                fontSize:"17.1707px",
                 marginRight: '6px !important',
                 marginTop: '5px !important',
                 '& button:clicked': {

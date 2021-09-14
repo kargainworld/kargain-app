@@ -16,6 +16,7 @@ import ro from 'date-fns/locale/ro/index.js'
 import customColors from '../theme/palette'
 import clsx from 'clsx'
 import { NewIcons } from '../assets/icons';
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -218,7 +219,8 @@ export default function ModalShare () {
         //     })
         // }
     },[modalStateContext.openModalShare, isAuthenticated])
-    
+
+    const isMobile = useMediaQuery('(max-width:768px)')
     // if(!isAuthenticated) return null
     
     return (
@@ -227,24 +229,48 @@ export default function ModalShare () {
             open={modalStateContext.openModalShare}
             onClose={handleClose}>
             <Fade in={modalStateContext.openModalShare}>
-                <div className={classes.paper}>
-                    <div style={{ display:'flex', justifyContent: 'flex-end'}}>
-                        <NewIcons.close_color onClick={handleClose}/>                     
-                        <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
-                    </div>
-                    <div className={clsx(classes.share)}>
-                        Partager
-                    </div>
-                    
-                    <div style={{display:'flex', justifyContent: 'center'}}>
-                        <div className={clsx(classes.button)}>
-                            {/*<Facebook/>*/}
-                            {/*<Messenger/>*/}
-                            {/* <Email/> */}
-                            <Clipboard/>
+                {isMobile ? (
+                    <div className={classes.paper} style={{width: '90%', borderColor:'white', marginLeft:'-20px'}}>
+                        <div style={{ display:'flex', justifyContent: 'flex-end'}}>
+                            <NewIcons.close_color onClick={handleClose}/>                     
+                            <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
+                        </div>
+                        <div className={clsx(classes.share)}>
+                            Partager
+                        </div>
+                        
+                        <div style={{display:'flex', justifyContent: 'center'}}>
+                            <div className={clsx(classes.button)}>
+                                {/*<Facebook/>*/}
+                                {/*<Messenger/>*/}
+                                {/* <Email/> */}
+                                <Clipboard/>
+                            </div>
                         </div>
                     </div>
-                </div>
+            
+                ):(
+<                   div className={classes.paper}>
+                        <div style={{ display:'flex', justifyContent: 'flex-end'}}>
+                            <NewIcons.close_color onClick={handleClose}/>                     
+                            <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
+                        </div>
+                        <div className={clsx(classes.share)}>
+                            Partager
+                        </div>
+                        
+                        <div style={{display:'flex', justifyContent: 'center'}}>
+                            <div className={clsx(classes.button)}>
+                                {/*<Facebook/>*/}
+                                {/*<Messenger/>*/}
+                                {/* <Email/> */}
+                                <Clipboard/>
+                            </div>
+                        </div>
+                    </div>
+            
+                )}
+                
             </Fade>
         </Modal>
     )

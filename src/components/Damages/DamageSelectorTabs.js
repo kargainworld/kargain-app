@@ -10,6 +10,7 @@ import DamagesNavResponsive from './DamagesNavResponsive'
 import Header from '../Header'
 import { NewIcons } from '../../assets/icons'
 import { Emoji } from 'react-apple-emojis'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(() => ({
     annoPickerContainer: {
@@ -56,7 +57,7 @@ const useStyles = makeStyles(() => ({
     },
 
     annoNumber: {
-        backgroundColor: '#dc3545',
+        backgroundColor: '#A291F3',
         color: '#fff',
         fontSize: '.8rem',
         lineHeight: '1.4rem',
@@ -71,6 +72,7 @@ const useStyles = makeStyles(() => ({
 
 const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFullWidth, ...props }) => {
     let annoRefs = []
+    const isMobile = useMediaQuery('(max-width:768px)')
     const classes = useStyles()
     const { t } = useTranslation()
     const warningDamageRef = useRef(null)
@@ -183,6 +185,62 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
 
                         return (
                             <TabPane key={indexTab} tabId={indexTab}>
+                            {isMobile ? (
+                                
+                                <Row>
+
+                                    <Col sm={12} md={col} lg={6}>
+                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
+                                            {/* <Header h3> {t('vehicles:damages')} :</Header> */}
+                                            {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
+                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '21px'}}>
+                                                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
+                                                {t('vehicles:click-image')}
+                                            </h4>}
+                                            {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
+                                            {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
+                                            {stages.map((stage, indexStage) => {
+                                                return (
+                                                    <div key={indexStage} className={classes.annoInput}>
+                                                        <div style={{ flex: 1 }}>
+                                                            <IconButton
+                                                                aria-label="delete"
+                                                                className={classes.margin}
+                                                                tabIndex="-1"
+                                                                onClick={() => rmStage(indexTab, indexStage)}>
+                                                                <NewIcons.recycle alt="recycle"/>
+                                                            </IconButton>
+                                                            <span style={{backgroundColor:"#A291F3"}}
+                                                                className={clsx(classes.annoNumber)} style={{width:'21px', height:'21px', backgroundColor:'#A291F3'}}>{indexStage + 1}</span>
+                                                        </div>
+                                                        <div style={{
+                                                            margin: 'auto',
+                                                            flex: 3.5
+                                                        }}>
+                                                            <input type="text"
+                                                                value={stage.text || ''}
+                                                                onChange={(e) => onInputStageChange(indexTab, indexStage, e.target.value)}
+                                                                className={clsx('form-control form-control-sm')}
+                                                                name={`annotation_${indexStage + 1}`}
+                                                                placeholder={t('vehicles:damages-{number}-description',{ number : indexStage + 1 })}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </Col>
+                                    <Col sm={12} md={col} lg={6}>
+                                        <DamagesPicker {...{
+                                            annoRefs,
+                                            indexTab,
+                                            damageTab,
+                                            getClick
+                                        }}/>
+                                    </Col>
+                                </Row>
+                                
+                            ) : (
                                 <Row>
                                     <Col sm={12} md={col} lg={6}>
                                         <DamagesPicker {...{
@@ -198,7 +256,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
                                             {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '21px'}}>
                                                 <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
-			                                    {t('vehicles:click-image')}
+                                                {t('vehicles:click-image')}
                                             </h4>}
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
@@ -234,6 +292,8 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         </div>
                                     </Col>
                                 </Row>
+                                
+                            )}
                             </TabPane>
                         )
                     })}

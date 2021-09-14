@@ -123,11 +123,11 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
           onClick={() => toggle(keyName)}
         >
           <NotificationsIcon style={{width:'21px', height:'21px'}}/>
-          {/* {!isNotificationChecked && !isOpen && notificationCounts > 0 && (
+          {!isNotificationChecked && !isOpen && notificationCounts > 0 && (
             <span className={classes.badge}>
               <div className={classes.counts}>{notificationCounts}</div>
             </span>
-          )} */}
+          )}
         </IconButton>
 
         <div id="dropdown-notifications" className={clsx('dropdown-menu', isOpen && 'show', classes.wrapper)}>
