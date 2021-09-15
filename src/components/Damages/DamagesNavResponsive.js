@@ -34,11 +34,11 @@ const DamagesNav = ({ activeTab, setActiveTab, damagesTabs }) => {
 
     return (
         <div className="annoNav">
-            {isUpTablet ? (
+            {/* {isUpTablet ? ( */}
                 <ul className="nav nav-tabs">
                     {damagesTabs.map((tab, indexTab) => {
                         return (
-                            <li key={indexTab} className={clsx('nav-item')} style={{width:'358px'}}>
+                            <li key={indexTab} className={clsx('nav-item')} style={{width:'33%'}}>
                                 <a className={clsx('nav-link', activeTab === indexTab && classes.navlink)}
                                     style={{fontSize:'16px', width: '100%'}}
                                     onClick={() => {
@@ -50,18 +50,18 @@ const DamagesNav = ({ activeTab, setActiveTab, damagesTabs }) => {
                         )
                     })}
                 </ul>
-            ) : (
-                <NiceSelect
-                    options={damagesTabs.map((tab, index) => ({
-                        value: index,
-                        label: `${t(`vehicles:${tab.key}`)} (${tab.countStages})`
-                    }))}
-                    onChange={({ value }) => {
-                        setActiveTab(value)
-                    }}
+            {/* // ) : (
+            //     <NiceSelect
+            //         options={damagesTabs.map((tab, index) => ({
+            //             value: index,
+            //             label: `${t(`vehicles:${tab.key}`)} (${tab.countStages})`
+            //         }))}
+            //         onChange={({ value }) => {
+            //             setActiveTab(value)
+            //         }}
 
-                />
-            )}
+            //     />
+            // )} */}
         </div>
     )
 }

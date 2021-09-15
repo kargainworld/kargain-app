@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthProvider'
 import StripePurchase from './StripePurchase'
 import OffersSelect from './OffersSelect'
 import CTAButton from '../CTAButton'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const OffersPurchaseForm = ({ offer: defaultOffer }) => {
     const { t } = useTranslation()
@@ -12,6 +13,7 @@ const OffersPurchaseForm = ({ offer: defaultOffer }) => {
     const [selectedOffer, setSelectedOffer] = useState(null)
     const [isSelectedOffer, setIsSelectedOffer] = useState(false)
     const [enableSubscribe, setEnableSubscribe] = useState(true)
+	const isMobile = useMediaQuery('(max-width:768px)')
 
     return (
 	<Container>
@@ -35,20 +37,40 @@ const OffersPurchaseForm = ({ offer: defaultOffer }) => {
 			    <p>Vous n'avez le droit d'avoir que 2 annonces publiées en simultanée.</p>
 			    <p>Vous pouvez souscrire à une des offres ci dessous : </p>
 
-				<div style={{marginTop:'15px', width:"60%"}}>
-					<OffersSelect {...{
-					defaultOffer,
-					setSelectedOffer,
-					setIsSelectedOffer
-					}} />
+				{isMobile ? (
+					<div style={{marginTop:'15px'}}>
+						<OffersSelect {...{
+						defaultOffer,
+						setSelectedOffer,
+						setIsSelectedOffer
+						}} />
 
-					{isSelectedOffer && (
-					<StripePurchase
-						disabled={!isSelectedOffer}
-						offer={selectedOffer}
-					/>
-					)}
-				</div>
+						{isSelectedOffer && (
+						<StripePurchase
+							disabled={!isSelectedOffer}
+							offer={selectedOffer}
+						/>
+						)}
+					</div>
+			
+				):(
+					<div style={{marginTop:'15px', width:"60%"}}>
+						<OffersSelect {...{
+						defaultOffer,
+						setSelectedOffer,
+						setIsSelectedOffer
+						}} />
+
+						{isSelectedOffer && (
+						<StripePurchase
+							disabled={!isSelectedOffer}
+							offer={selectedOffer}
+						/>
+						)}
+					</div>
+			
+				)}
+				
 			</div>
 		    )}
 		</div>

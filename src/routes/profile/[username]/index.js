@@ -34,6 +34,7 @@ import customColors from '../../../theme/palette'
 import { NewIcons } from '../../../assets/icons'
 import Sorters from '../../../components/Sorters/Sorters'
 
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -116,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        fontWeight:'500',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
@@ -133,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        fontWeight:'500',
+        // fontWeight:'500',
         margin: '4px 2px',
         // cursor: 'pointer',
         borderRadius: '17.5px',
@@ -144,6 +145,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Profile = () => {
+
+    const isMobile = useMediaQuery('(max-width:768px)')
+
     const classes = useStyles()
     const { t } = useTranslation()
     const router = useRouter()
@@ -299,8 +303,12 @@ const Profile = () => {
     // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
         <>
-            <div className={clsx(classes.pagetopdiv)}></div>
-
+            {isMobile ? (
+                <div className={clsx(classes.pagetopdiv)} style={{marginTop:'25px'}}></div>
+            ) : (
+                <div className={clsx(classes.pagetopdiv)}></div>
+            )}
+            
             <Container style={{ marginTop: 25 }}>
 
                 <NextSeo
@@ -312,78 +320,44 @@ const Profile = () => {
                         Connected as Admin
                     </Alert> */}
                 {/* )} */}
-
-                <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
-                    <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
-                    <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
-                </div>
-
-                <div>
-                    <div className="top-profile-name-btn">
-                        <div style={{display:'flex', justifyContent:'left', marginTop:'-40px', width:'33.33%'}}>
-                            {state.isSelf ? (
-                                <div className="mx-2">
-                                    <Link href={profile.getProfileEditLink}>
-                                        <Button component="a" variant="outlined" className={clsx(classes.button)}>
-                                            {t('vehicles:edit-my-profile')}
-                                        </Button>
-                                    </Link>
-                                </div>
-                            ) : (
-                                <div className="mx-2">
-                                    <Button
-                                        className={clsx(classes.button)}
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<ChatIcon />}
-                                        onClick={ () => {
-                                                if(!isAuthenticated){
-                                                    console.log(router.asPath);
-                                                    router.push({
-                                                    pathname: '/auth/login',
-                                                    query: { redirect: router.asPath },
-                                                    });
-                                                } else {
-                                                    dispatchModalState({
-                                                        openModalMessaging: true,
-                                                        modalMessagingProfile: profile
-                                                    })
-                                                }
-                                            }
-                                        }>
-                                        {t('vehicles:contact')}
-                                    </Button>
-                                </div>
-                            )}
+                {isMobile ? (
+                    <div style={{display: 'flex', justifyContent: 'center', color:'#666666', marginLeft:'20px'}}>
+                        <div style={{display:'flex'}}>
+                            <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
+                            <NewIcons.avatarcheck style={{width:'24px', height:'24px', transform: 'translate(-40px, 150px)'}}/>
                         </div>
-
-                        <div style={{textAlign:'center', marginTop:'25px', width:'33.33%'}} >
-                            <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
+                    </div>
+                ):(
+                    <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
+                        <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
+                        <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
+                    </div>
+                )}
+                
+                {isMobile ? (
+                    <div>
+                        <div style={{textAlign:'center', marginTop:'25px', width:'100%'}} >
+                            <h2 style={{fontSize:'22px', fontWeight:'bold', lineHeight: '150%'}}>
                                 {profile.getFullName}
                                 {(profile.getIsPro && profile.getIsActivated)}
                             </h2>
 
-                            <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
-                               <NewIcons.pigeon /> @ {profile.getUsername}
+                            <p className={classes.userName} style={{fontSize:'14px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
+                            <NewIcons.pigeon /> @ {profile.getUsername}
                             </p>
 
                             {profile.getAddressParts.fullAddress && (
                                 <a href={profile.buildAddressGoogleMapLink()}
                                     target="_blank"
                                     rel="noreferrer">
-                                    <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                                    <p style={{fontSize:'10px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
                                         {profile.buildAddressString()}  
                                     </p>
                                 </a>
                             )}
                         </div>
-                        
-                        <div style={{ width:'33.33%'}}> </div>
-                       
-                    </div>
-                    <div style={{width:'100%', display:'flex'}}>
-                        <div style={{width:'50%'}}></div>
-                        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)'}}>
+
+                        <div style={{display:'flex', justifyContent:'center', width:'100%', marginTop:'5px'}}>
                             <div 
                                 onClick={() => dispatchModalState({
                                     openModalFollowers: true,
@@ -447,34 +421,211 @@ const Profile = () => {
                                     {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
                                 </span>
 
-                                {/*{profile.getCountFollowings !== 0 && (*/}
-                                {/*    <div className="my-2">*/}
-                                {/*        <ul className="d-flex align-items-center list-style-none">*/}
-                                {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
-                                {/*                return (*/}
-                                {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
-                                {/*                        <img className="dropdown-toggler rounded-circle"*/}
-                                {/*                             width="30"*/}
-                                {/*                             height="30"*/}
-                                {/*                             src={user.getAvatar}*/}
-                                {/*                             title={user.getFullName}*/}
-                                {/*                             alt={user.getUsername}*/}
-                                {/*                        />*/}
-                                {/*                    </li>*/}
-                                {/*                )*/}
-                                {/*            })}*/}
-                                {/*        </ul>*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
                             </div>
                         </div>
-                    </div>
                     
-                    {/* <p className="top-profile-desc">
-                        {profile.getDescription}
-                    </p> */}
+                        <div style={{display:'flex', justifyContent:'center', marginTop:'30px', marginBottom:'20px', marginLeft:'5px', width:'100%'}}>
+                            {state.isSelf ? (
+                                <div className="mx-2">
+                                    <Link href={profile.getProfileEditLink}>
+                                        <Button component="a" variant="outlined" className={clsx(classes.button)}>
+                                            {t('vehicles:edit-my-profile')}
+                                        </Button>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="mx-2">
+                                    <Button
+                                        className={clsx(classes.button)}
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<ChatIcon />}
+                                        onClick={ () => {
+                                                if(!isAuthenticated){
+                                                    console.log(router.asPath);
+                                                    router.push({
+                                                    pathname: '/auth/login',
+                                                    query: { redirect: router.asPath },
+                                                    });
+                                                } else {
+                                                    dispatchModalState({
+                                                        openModalMessaging: true,
+                                                        modalMessagingProfile: profile
+                                                    })
+                                                }
+                                            }
+                                        }>
+                                        {t('vehicles:contact')}
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
 
-                </div>
+                    </div>
+                
+                ) : (
+                    <div>
+                        <div className="top-profile-name-btn">
+                            <div style={{display:'flex', justifyContent:'left', marginTop:'-40px', width:'33.33%'}}>
+                                {state.isSelf ? (
+                                    <div className="mx-2">
+                                        <Link href={profile.getProfileEditLink}>
+                                            <Button component="a" variant="outlined" className={clsx(classes.button)}>
+                                                {t('vehicles:edit-my-profile')}
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className="mx-2">
+                                        <Button
+                                            className={clsx(classes.button)}
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<ChatIcon />}
+                                            onClick={ () => {
+                                                    if(!isAuthenticated){
+                                                        console.log(router.asPath);
+                                                        router.push({
+                                                        pathname: '/auth/login',
+                                                        query: { redirect: router.asPath },
+                                                        });
+                                                    } else {
+                                                        dispatchModalState({
+                                                            openModalMessaging: true,
+                                                            modalMessagingProfile: profile
+                                                        })
+                                                    }
+                                                }
+                                            }>
+                                            {t('vehicles:contact')}
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div style={{textAlign:'center', marginTop:'25px', width:'33.33%'}} >
+                                <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
+                                    {profile.getFullName}
+                                    {(profile.getIsPro && profile.getIsActivated)}
+                                </h2>
+
+                                <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
+                                <NewIcons.pigeon /> @ {profile.getUsername}
+                                </p>
+
+                                {profile.getAddressParts.fullAddress && (
+                                    <a href={profile.buildAddressGoogleMapLink()}
+                                        target="_blank"
+                                        rel="noreferrer">
+                                        <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                                            {profile.buildAddressString()}  
+                                        </p>
+                                    </a>
+                                )}
+                            </div>
+                            
+                            <div style={{ width:'33.33%'}}> </div>
+                        
+                        </div>
+                        
+                        <div style={{width:'100%', display:'flex'}}>
+                            <div style={{width:'50%'}}></div>
+                            <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)'}}>
+                                <div 
+                                    onClick={() => dispatchModalState({
+                                        openModalFollowers: true,
+                                        modalFollowersProfiles: profile.getFollowers,
+                                        modalFollowersTitle: t('vehicles:followers'),
+                                        isFollowing: false,                                
+                                    })}
+                                    // style={{marginRight:'5px'}}
+                                    >
+                                    <div>
+                                        {state.isSelf ? (
+                                            <span className={clsx("mx-1", classes.subscriptionbutton)}>
+                                                    {t('vehicles:followers', { count: followerCounter })}
+                                            </span>
+                                        ) : (
+                                            <>
+                                                <span onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    // handleFollowProfile()
+                                                }}>
+                                                    {
+                                                        alreadyFollowProfile ?
+                                                            // <StarSVGYellow/>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="primary"
+                                                                className={clsx(classes.subscriptionbuttonblue)}
+                                                                onClick={() => handleFollowProfile()}>
+                                                                {t('vehicles:un-subscriptions')}
+                                                            </Button>
+                                                            :
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="primary"
+                                                                className={clsx(classes.subscriptionbuttonblue)}
+                                                                onClick={() => handleFollowProfile()}>
+                                                                {t('vehicles:subscriptions')}
+                                                            </Button>
+                                                        // <StarSVG/>
+                                                    }
+                                                </span>
+                                                <span className={clsx(classes.subscriptionbutton)}>
+                                                    {followerCounter} {t('vehicles:followers', { count: followerCounter })}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className={classes.subscriptionbutton}
+                                    onClick={() => dispatchModalState({
+                                        openModalFollowers: true,
+                                        modalFollowersProfiles: profile.getFollowings,
+                                        modalFollowersTitle: t('vehicles:subscriptions'),
+                                        isFollowing: true,
+                                        isOwner: profile.getID === authenticatedUser.getID,
+                                        handleUnSubscription: handleUnSubscription
+                                    })}>
+
+                                    <span>
+                                        {profile.getCountFollowings} {t('vehicles:subscriptions', { count: profile.getCountFollowings })}
+                                    </span>
+
+                                    {/*{profile.getCountFollowings !== 0 && (*/}
+                                    {/*    <div className="my-2">*/}
+                                    {/*        <ul className="d-flex align-items-center list-style-none">*/}
+                                    {/*            {profile.getFollowings.slice(0, 3).map((user, index) => {*/}
+                                    {/*                return (*/}
+                                    {/*                    <li key={index} className="nav-item navbar-dropdown p-1">*/}
+                                    {/*                        <img className="dropdown-toggler rounded-circle"*/}
+                                    {/*                             width="30"*/}
+                                    {/*                             height="30"*/}
+                                    {/*                             src={user.getAvatar}*/}
+                                    {/*                             title={user.getFullName}*/}
+                                    {/*                             alt={user.getUsername}*/}
+                                    {/*                        />*/}
+                                    {/*                    </li>*/}
+                                    {/*                )*/}
+                                    {/*            })}*/}
+                                    {/*        </ul>*/}
+                                    {/*    </div>*/}
+                                    {/*)}*/}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* <p className="top-profile-desc">
+                            {profile.getDescription}
+                        </p> */}
+
+                    </div>
+                
+                )}
+
+                
                 <TabsContainer {...{
                     state,
                     filterState,
@@ -503,6 +654,9 @@ const getParams = () => {
 }
 
 const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
+
     const router = useRouter()
     const classes = useStyles()
     const { t } = useTranslation()
@@ -562,76 +716,136 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
             <Row>
                 <div style={{width:'103%'}}>
                     
-                         
                     <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}} >      
                        
                         <Tabs.Item id="home-tab" title="Vitrine">
                             
-                            <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                <Row className="my-2 d-flex justify-content-center">
-                                    
-                                    {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}>  
-                                            <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                        </div>
-                                    )) : (
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            {/*{profile.getCountGarage !== 0? */}
-                                            {/*    profile?.getCountGarage : */}
-                                            {/*    (*/}
-                                            <p>{t('vehicles:no-found-announces')}</p>
-                                            {/*     )*/}
-                                            {/* }*/}
-                                            {/* <CTALink
-                                                title={t('vehicles:create-my-first-ad')}
-                                                href="/deposer-une-annonce"
-                                                className="cta_nav_link my-2"
-                                            />
+                            {isMobile ? (
+                                <div style={{width:'100%'}}>
+                                    <section className={filtersOpened ? 'filter-is-visible' : ''}>
+                                        <Row className="my-2 d-flex justify-content-center">
+                                            
+                                            {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
+                                                <div key={index} style={{width: '90%', marginTop:'20px', marginLeft:'-15px'}}>  
+                                                    <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
+                                                </div>
+                                            )) : (
+                                                <div className="d-flex flex-column align-items-center smy-2">
+                                                
+                                                    <p>{t('vehicles:no-found-announces')}</p>
+                                                
+                                                </div>
+                                            )}
+                                        </Row>
+                                    </section>
+                                </div>
+                       
+                            ):(
+                                <section className={filtersOpened ? 'filter-is-visible' : ''}>
+                                    <Row className="my-2 d-flex justify-content-center">
+                                        
+                                        {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
+                                            <div key={index} style={{width: '31%', marginRight:'2.1%'}}>  
+                                                <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
+                                            </div>
+                                        )) : (
+                                            <div className="d-flex flex-column align-items-center smy-2">
+                                                {/*{profile.getCountGarage !== 0? */}
+                                                {/*    profile?.getCountGarage : */}
+                                                {/*    (*/}
+                                                <p>{t('vehicles:no-found-announces')}</p>
+                                                {/*     )*/}
+                                                {/* }*/}
+                                                {/* <CTALink
+                                                    title={t('vehicles:create-my-first-ad')}
+                                                    href="/deposer-une-annonce"
+                                                    className="cta_nav_link my-2"
+                                                />
 
-                                            <CTALink
-                                                title={t('vehicles:explore-ads')}
-                                                href={isAuthenticated ? '/feed' : '/'}
-                                                className="cta_nav_link my-2"
-                                            /> */}
-                                        </div>
-                                    )}
-                                </Row>
-                            </section>
+                                                <CTALink
+                                                    title={t('vehicles:explore-ads')}
+                                                    href={isAuthenticated ? '/feed' : '/'}
+                                                    className="cta_nav_link my-2"
+                                                /> */}
+                                            </div>
+                                        )}
+                                    </Row>
+                                </section>
+                       
+                            )}
+                            
                         </Tabs.Item>
                                    
                         {isSelf && (
-                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
+                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')}>
+                                {isMobile ? (
+                                    <div style={{width:'100%'}}>
+                                        <Row className="my-2 d-flex justify-content-center">
+                                            {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
+                                                // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                                <div key={index} style={{width: '90%', marginTop:'20px', marginLeft:'-15px'}}> 
+                                                    <AnnounceCard announceRaw={announceRaw} />
+                                                </div>
+                                                // </Col>
+                                            )) : (
+                                                <div className="d-flex flex-column align-items-center smy-2">
+                                                    <p>{t('vehicles:no-hidden-announces')}</p>
+                                                </div>
+                                            )}
+                                        </Row>
+                                    </div>
+                                ) : (
+                                    <Row className="my-2 d-flex justify-content-center">
+                                        {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
+                                            // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
+                                            <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
+                                                <AnnounceCard announceRaw={announceRaw} />
+                                            </div>
+                                            // </Col>
+                                        )) : (
+                                            <div className="d-flex flex-column align-items-center smy-2">
+                                                <p>{t('vehicles:no-hidden-announces')}</p>
+                                            </div>
+                                        )}
+                                    </Row>
+
+                                )}
                                 
-                                <Row className="my-2 d-flex justify-content-center">
-                                    {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                        // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
-                                            <AnnounceCard announceRaw={announceRaw} />
-                                        </div>
-                                        // </Col>
-                                    )) : (
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            <p>{t('vehicles:no-hidden-announces')}</p>
-                                        </div>
-                                    )}
-                                </Row>
                             </Tabs.Item>
                         )}
 
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{maxWidth:'33%'}}>
-                                 
-                                <Row className="my-2 d-flex justify-content-center">
-                                    {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
-                                            <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                        </div>
-                                    )) : (
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                        </div>
-                                    )}
-                                </Row>
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                                 {isMobile ? (
+                                     <div style={{width:'100%'}}>
+                                        <Row className="my-2 d-flex justify-content-center">
+                                            {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
+                                                <div key={index} style={{width: '90%', marginLeft:'-15px', marginTop:'20px'}}> 
+                                                    <AnnounceCard announceRaw={announceRaw.getRaw} />
+                                                </div>
+                                            )) : (
+                                                <div className="d-flex flex-column align-items-center smy-2">
+                                                    <p>{(t('vehicles:no-favorite-announces'))}</p>
+                                                </div>
+                                            )}
+                                        </Row>
+                                    </div>
+                            
+                                 ):(
+                                    <Row className="my-2 d-flex justify-content-center">
+                                        {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
+                                            <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
+                                                <AnnounceCard announceRaw={announceRaw.getRaw} />
+                                            </div>
+                                        )) : (
+                                            <div className="d-flex flex-column align-items-center smy-2">
+                                                <p>{(t('vehicles:no-favorite-announces'))}</p>
+                                            </div>
+                                        )}
+                                    </Row>
+                            
+                                 )}
+                                
                             </Tabs.Item>
                         )}
                     </Tabs>

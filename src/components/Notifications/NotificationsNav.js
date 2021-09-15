@@ -51,10 +51,11 @@ const useStyles = makeStyles(() => ({
   },
   badge: {
     position: 'absolute',
-    top: '12px',
-    right: '10px',
-    width: '12px',
+    top: '11px',
+    right: '11px',
+    width: '10.75px',
     height: '12px',
+    // padding: '0px 3px',
     borderRadius: '50%',
     backgroundColor: '#A291F3',
     // background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
@@ -121,7 +122,7 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
           id="dropdownMenu2"
           onClick={() => toggle(keyName)}
         >
-          <NotificationsIcon />
+          <NotificationsIcon style={{width:'21px', height:'21px'}}/>
           {!isNotificationChecked && !isOpen && notificationCounts > 0 && (
             <span className={classes.badge}>
               <div className={classes.counts}>{notificationCounts}</div>

@@ -22,11 +22,17 @@ import { Emoji } from 'react-apple-emojis'
 
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import TextInput from 'components/Form/Inputs/TextInput'
 
 const useStyles = makeStyles(() => ({
     delete:{
         '& .special-label':{
             display:'none',
+        }
+    },
+    div:{
+        '& #btnwidth':{
+            width:'96% !important'
         }
     }
 	}))
@@ -72,7 +78,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
             {/* <Header text={t('vehicles:publish-my-ad-now')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black'}}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
                 <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="page-facing-up" width={18} />
                 {t('vehicles:publish-my-ad-now')}
@@ -122,7 +128,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                             label={t('vehicles:vat')}
                             control={control}
                             errors={errors}
-                            stye={{fontSize:'14px', fontWeight:'nomarl'}}
+                            stye={{fontSize:'14px !important', fontWeight:'nomarl'}}
                         />
                     </FieldWrapper>
                 </Col>
@@ -174,7 +180,12 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:tags')}>
-                <TagsControlled
+                {/* <TagsControlled
+                    name="tags"
+                    control={control}
+                    errors={errors}
+                /> */}
+                <TextInput
                     name="tags"
                     control={control}
                     errors={errors}
@@ -215,7 +226,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:pictures')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black'}}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
                 <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="paperclip" width={18} />
                 {t('vehicles:pictures')}
@@ -250,8 +261,9 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     stye={{fontSize:'14px', fontWeight:'nomarl'}}
                     />
             </FieldWrapper>
-
-            <StepNavigation prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>
+            <div className={clsx(classes.div)}>
+                <StepNavigation  prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>
+            </div>
         </form>
     )
 }
