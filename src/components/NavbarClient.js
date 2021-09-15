@@ -182,14 +182,15 @@ const NavbarClient = () => {
                         <>
                         {isMobile && (
                             <div className={clsx(isSOpen && classes.SearchHidden)}>
-                                <div className={clsx("sidebar", isSOpen && 'open')} style={{display:'flex', width:'80%', height:'auto', marginRight:'20px', borderColor:'white'}}>
-                                    
-                                    <SearchIcon style={{color:'#2C65F6', width:'24px', height:'24px', marginTop:'8px', marginLeft:'15px'}}/>
-                                    <div className={clsx(classes.Searchcustom)} style={{marginTop:'-7px', marginBottom:'12px'}}>
-                                        <AutocompleteDropdown />
+                                <div className={clsx("sidebar", isSOpen && 'open')} style={{display:'flex', width:'100%', height:'auto', borderColor:'white'}}>
+                                    <div style={{width:'90%', display:'flex'}}>
+                                        <SearchIcon style={{ color:'#2C65F6', width:'24px', height:'24px', marginTop:'8px', marginLeft:'15px'}}/>
+                                        <div className={clsx(classes.Searchcustom)} style={{marginTop:'-7px', marginBottom:'12px'}}>
+                                            <AutocompleteDropdown />
+                                        </div>
                                     </div>
-                                    <div className="sidebar_controls">
-                                        <div className={clsx(classes.btnClose)} onClick={() => toggleSearch()} style={{marginTop:'9px', marginLeft:'10px'}}>
+                                    <div className="sidebar_controls" style={{width:'10%'}}>
+                                        <div className={clsx(classes.btnClose)} onClick={() => toggleSearch()} style={{marginTop:'9px', marginRight:'15px'}}>
                                             <CloseIcon style={{color:'white', width:'15px', height:'15px', marginTop:'-5.55px', marginLeft:'2px'}}/>
                                         </div>
                                     </div>
@@ -291,11 +292,34 @@ const NavbarClient = () => {
                                                 </>
                                             
                                             ) : (
-                                                <>
-                                                    <VisitorNav vertical/>
-                                            
+                                                <div className={clsx(classes.removeMark)} style={{display:'flex', justifyContent:'center'}}>                                                   
+                                                    <NavItem className="p-2">
+                                                        <Link href="/auth/login" prefetch={false}>
+                                                            <a className="nav-link py-0" style={{ color: "#666666" }} onClick={toggleNavbar}>
+                                                               Login {/* {t('layoutC:login')} */}
+                                                            </a>
+                                                        </Link>
+                                                    </NavItem>
+                                                    <NavItem className="p-2">
+                                                        <Link href="/auth/register" prefetch={false}>
+                                                            <a className="nav-link py-0" style={{ color: "#666666" }} onClick={toggleNavbar}>
+                                                                Sign up {/* {t('layoutC:register')} */}
+                                                            </a>
+                                                        </Link>
+                                                    </NavItem>
+                                                    <div onClick={toggleNavbar}> 
+                                                        <CTALink
+                                                            // title={t('layoutC:create-announce')}
+                                                            title="CREATE AN ANNOUNCE"
+                                                            href="/deposer-une-annonce"
+                                                            style={{marginTop:'2px', borderRadius: 25, height: 33, fontWeight: "bold", fontFamily: "Roboto", fontSize: 14, lineHeight: "150%", fontStyle: "normal", padding: '6px 16px 5px 16px' }}
+                                                            variant="contained"
+                                                            color="primary"
+                                                        />
+                                                    </div>
                                                     
-                                                </>
+                                                    {/* <VisitorNav vertical/> */}
+                                                </div>
                                             ) 
                                             
                                             
