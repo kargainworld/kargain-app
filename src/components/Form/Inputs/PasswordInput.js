@@ -1,12 +1,10 @@
 import React, { memo, useState } from 'react'
 import ValidationError from '../Validations/ValidationError'
-
-
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { NewIcons } from '../../../assets/icons'
 
-const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
+const PasswordInput = ({ name, control, rules, errors, ...props }) => {
     const [hidden, setHidden] = useState(true)
 
     if (!control) return null
@@ -29,7 +27,7 @@ const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
             {errors && <ValidationError errors={errors} name={name}/>}
         </>
     )
-})
+}
 
 PasswordInput.propTypes = {
     control: PropTypes.any.isRequired
@@ -42,4 +40,4 @@ PasswordInput.defaultProps = {
     display: 'col'
 }
 
-export default PasswordInput
+export default memo(PasswordInput)

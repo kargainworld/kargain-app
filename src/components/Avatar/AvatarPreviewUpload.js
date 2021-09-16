@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthProvider'
 import UsersService from '../../services/UsersService'
 import { NewIcons } from 'assets/icons'
 
-const FileInput = ({ value, onChange = noop, ...rest }) => (
+const FileInput = ({ onChange , ...rest }) => (
     <input
         {...rest}
         // style={{ display: "none" }}

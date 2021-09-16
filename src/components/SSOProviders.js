@@ -19,18 +19,18 @@ const SSOProviders = ({ col }) => {
     const startAuth = async (provider, data) => {
         setIsLoading(true)
         AuthService.SSOAuthLogin(provider, data)
-	    .then(user => {
+            .then(user => {
                 setIsLoading(false)
                 if (redirect) {
-		    router.push(redirect)
+                    router.push(redirect)
                 } else {
-		    router.push(`/auth/callback?redirect=/profile/${user?.username}`)
+                    router.push(`/auth/callback?redirect=/profile/${user?.username}`)
                 }
-	    }).catch(err => {
+            }).catch(err => {
                 setIsLoading(false)
                 dispatchModalError({ err })
                 if (redirect) router.push(redirect)
-	    })
+            })
     }
 
     const responseGoogle = (response) => {
@@ -38,14 +38,14 @@ const SSOProviders = ({ col }) => {
         const { googleId, email, familyName, givenName, imageUrl } = profileObj
 
         startAuth('google', {
-	    email,
-	    firstname: givenName,
-	    lastname: familyName,
-	    avatarUrl: imageUrl,
-	    googleProvider: {
+            email,
+            firstname: givenName,
+            lastname: familyName,
+            avatarUrl: imageUrl,
+            googleProvider: {
                 id: googleId,
                 token: accessToken
-	    }
+            }
         })
     }
 
@@ -83,7 +83,7 @@ const SSOProviders = ({ col }) => {
                         {t('layout:login-google')}
                     </button>
                 )}
-	    />
+            />
 
             {/*    <FacebookLogin*/}
             {/*        appId={config.facebook.sso.APP_ID}*/}

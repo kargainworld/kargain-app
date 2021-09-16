@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     share:{
         color:'#212121',
         fontSize: '24px',
-        marginTop: '10px',
+        //marginTop: '10px',
         fontFamily: 'Droid Sans,-apple-system,Helvetica Neue,sans-serif',
         fontWeight: '500',
         textAlign: 'center',

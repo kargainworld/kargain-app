@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { NewIcons } from '../../../assets/icons'
 
-const RPasswordInput = memo(({ name, control, rules, errors, ...props }) => {
+const RPasswordInput = ({ name, control, rules, errors, ...props }) => {
     const [hidden, setHidden] = useState(true)
 
     if (!control) return null
@@ -29,7 +29,7 @@ const RPasswordInput = memo(({ name, control, rules, errors, ...props }) => {
             {errors && <ValidationError errors={errors} name={name}/>}
         </>
     )
-})
+}
 
 RPasswordInput.propTypes = {
     control: PropTypes.any.isRequired
@@ -42,4 +42,4 @@ RPasswordInput.defaultProps = {
     display: 'col'
 }
 
-export default RPasswordInput
+export default memo(RPasswordInput)

@@ -37,7 +37,7 @@ export default function appWithI18n (AppToTranslate, config = {}) {
 
         let defaultLanguage = ctx.req
             ? getDefaultLang(ctx.req, config)
-            : __NEXT_DATA__.props.defaultLanguage
+            : window.__NEXT_DATA__.props.defaultLanguage
 
         const lang = getLang(ctx, {
             ...config,

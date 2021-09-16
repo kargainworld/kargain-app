@@ -56,20 +56,20 @@ const useStyles = makeStyles(() => ({
     },
     a_info:{
         marginTop: '5px',
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
         fontSize: '17.4674px !important',
         fontWeight: '500',
         color: '#2C65F6'
     },
     filterbutton:{
         borderRadius: '100rem',
-        padding: '1rem',
+        //padding: '1rem',
         fontFamily: 'Avenir Next',
         fontSize: '14px',
         fontWeight: '700',
         padding: '6px 16px',
         color: '$color-black',
-        boxShadow: '0 0 6px 0 #f0eeee',
+        //boxShadow: '0 0 6px 0 #f0eeee',
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(179deg, #2C65F6, #ED80EB)',
         backgroundOrigin: 'border-box',
@@ -84,8 +84,8 @@ const useStyles = makeStyles(() => ({
         }
     },
     row:{
-        display: '-webkit-flex',
-        display: '-moz-box',
+        //display: '-webkit-flex',
+        //display: '-moz-box',
         display: 'flex, -webkitFlex-wrap: wrap',
         flexWrap: 'wrap',
         marginRight: '-15px'
