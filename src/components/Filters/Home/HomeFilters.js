@@ -1,35 +1,35 @@
-import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
-import { Col, Container, Row } from 'reactstrap'
+import React, { useState, useContext, useRef } from 'react'
+import { Col,  Row } from 'reactstrap'
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
 import { FormContext } from '../../../context/FormContext'
-import { useRouter, withRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import customColors, { themeColors } from '../../../theme/palette'
+import customColors from '../../../theme/palette'
 import Alert from '@material-ui/lab/Alert'
-import filterProps from '../../../libs/filterProps'
+
 import vehicleTypes from '../../../business/vehicleTypes.js'
 import announceTypes from '../../../business/announceTypes.js'
 import { useAuth } from '../../../context/AuthProvider'
-import CTAButton from '../../CTAButton'
-import CTALink from '../../CTALink'
-import AnnounceTypeRadioButton from "../../AnnounceTypeRadioButton";
-import VehicleTypeSelect from "../../VehicleTypeSelect";
+
+
+import AnnounceTypeRadioButton from "../../AnnounceTypeRadioButton"
+import VehicleTypeSelect from "../../VehicleTypeSelect"
 
 const path = require('path')
 
 const useStyles = makeStyles(() => ({
     button: {
         width: 110, 
-		border: "none !important",
-		padding: '6px 2rem',
-		borderRadius: '20px',
-		color: 'white',
-		fontSize: '14px',
-		fontWeight: 'bold',
-		background: customColors.gradient.main
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        background: customColors.gradient.main
     }
 }))
 
@@ -54,8 +54,8 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     const { errors, register, handleSubmit } = methods
 
     const onSubmit = (data) => {
-        dispatchFormClear();
-        const { adType} = data
+        dispatchFormClear()
+        const { adType } = data
         const route = `advanced-search` 
         dispatchFormUpdate({ adType, vehicleType })
         router.push({
@@ -63,7 +63,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             query: {
                 adType: adType,
                 vehicleType: vehicleType
-            },
+            }
         })
     }
 
@@ -136,7 +136,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                         </form>
                     </Col>
                 </Row>
-                ) : (
+            ) : (
                 <Row>
                     <Col md={4}>
                         <img src="/images/MainCar.png" width="100%" height="100%" />
@@ -203,7 +203,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                         </form>
                     </Col>
                 </Row>
-                )
+            )
             }
         </>
     )

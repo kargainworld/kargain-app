@@ -7,8 +7,8 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+
+
 
 
 import { useAuth } from '../../context/AuthProvider'
@@ -16,7 +16,7 @@ import { MessageContext } from '../../context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import clsx from "clsx"
 import { Avatar } from '../AnnounceCard/components'
-import { Row } from 'reactstrap'
+
 import AnnounceModel from '../../models/announce.model'
 import { useSocket } from '../../context/SocketContext'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
         /* Handle */
         '& ::-webkit-scrollbar-thumb': {
             background: 'red', 
-            borderRadius: '10px',
+            borderRadius: '10px'
         },
         
         /* Handle on hover */
@@ -107,10 +107,10 @@ const CommentsList = ({ comments, moreLink, className }) => {
             />
 
             <ul
-                    style={{listStyleType: 'none',
-                        margin: '1rem 0',
-                        height: '300px',
-                        overflowY: 'scroll'}}>
+                style={{ listStyleType: 'none',
+                    margin: '1rem 0',
+                    height: '300px',
+                    overflowY: 'scroll' }}>
                 {comments && comments.filter(filterComments).map((comment, index) => {
                     const isOwn = authenticatedUser.getID === comment.getAuthor?.getID
 
@@ -122,9 +122,9 @@ const CommentsList = ({ comments, moreLink, className }) => {
 
                     return (
                         <li key={index} >
-                        {/* <li key={index} className="d-flex"> */}
+                            {/* <li key={index} className="d-flex"> */}
                             <div className="d-flex align-items-top my-2">
-                                <div style={{display:'flex', width:'80%', wordWrap: 'break-word'}}>
+                                <div style={{ display:'flex', width:'80%', wordWrap: 'break-word' }}>
                                     {!isOwn && (
                                         <div onClick={() => complain(comment.getID)}
                                             style={{
@@ -132,7 +132,7 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                                 display: '-webkit-flex',
                                                 display: '-moz-box',
                                                 display: 'flex',
-                                                alignItems: 'flex-start'}}
+                                                alignItems: 'flex-start' }}
                                         >
                                             <Avatar
                                                 className="img-profile-wrapper avatar-preview"
@@ -161,15 +161,15 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                                 src={comment.getAuthor?.getAvatar || comment.getAuthor?.getAvatarUrl}
                                                 isonline={getOnlineStatusByUserId(comment.getAuthor?.getID)}
                                                 alt={comment.getTitle}
-                                                style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '10px'}}
+                                                style={{ width: '29.99px', height: '29.99px', marginLeft:'40px', marginRight: '10px' }}
                                             />
                                         </span>
                                     )}
                                     <div>
-                                        <div style={{display:'flex'}}>
+                                        <div style={{ display:'flex' }}>
                                             <label>
-                                                <Link href={comment.getAuthor?.getProfileLink} style={{width:'30%'}}>
-                                                    <a style={{fontSize:'16.575px'}}>
+                                                <Link href={comment.getAuthor?.getProfileLink} style={{ width:'30%' }}>
+                                                    <a style={{ fontSize:'16.575px' }}>
                                                         <strong>{comment.getAuthor?.getFullName} : </strong>
                                                     
                                                     </a>
@@ -178,21 +178,21 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                             </label>
                                             {moreLink}
                                         </div>
-                                        <div style={{fontSize:'14px', color:'#999999', width:'100%', marginTop:'5px', marginBottom:'10px'}}>
-                                            <label style={{marginRight:'10px'}}>2d</label>
-                                            <label style={{marginRight:'10px'}}>1 like</label>
+                                        <div style={{ fontSize:'14px', color:'#999999', width:'100%', marginTop:'5px', marginBottom:'10px' }}>
+                                            <label style={{ marginRight:'10px' }}>2d</label>
+                                            <label style={{ marginRight:'10px' }}>1 like</label>
                                             <label>Reply</label>
                                         </div>
                                     </div>
                                 </div>
                                 {!isOwn && (
-                                    <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
-                                        <NewIcons.card_heart style={{width:'15px', height:'15px'}}/>
+                                    <div style={{ width: '20%', display:'flex', justifyContent: 'center' }}>
+                                        <NewIcons.card_heart style={{ width:'15px', height:'15px' }}/>
                                     </div>
                                 )}
 
                                 {isOwn && (
-                                    <div style={{width: '20%', display:'flex', justifyContent: 'center'}}>
+                                    <div style={{ width: '20%', display:'flex', justifyContent: 'center' }}>
                                         <NewIcons.heart_blue />
                                     </div>
                                 )}

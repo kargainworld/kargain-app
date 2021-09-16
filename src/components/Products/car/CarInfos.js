@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
         '& span': {
             fontWeight: 700
         }
-    },
+    }
     
 }))
 
@@ -26,7 +26,7 @@ const CarInfos = ({ announce, enableThirdColumn }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const cols = enableThirdColumn ? 4 : 6
-    const mileageType = announce.getMileageType;
+    const mileageType = announce.getMileageType
     return (
         <Row className="specs my-2 p-2">
             <Col sm={12} md={cols}>

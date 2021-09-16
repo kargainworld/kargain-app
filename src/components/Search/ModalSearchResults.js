@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Link from 'next/link'
 import { Col } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'

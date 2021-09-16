@@ -20,7 +20,7 @@ const reducer = (state, action) => ({
     ...action.payload
 })
 
-const SearchContextProvider = ({children}) => {
+const SearchContextProvider = ({ children }) => {
     const { dispatchModalError } = useContext(MessageContext)
     const [searchStateContext, setSearchStateContext] = useReducer(reducer, defaultValues)
     

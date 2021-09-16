@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react'
 import ValidationError from '../Validations/ValidationError'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
+
+
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { NewIcons } from '../../../assets/icons';
+import { NewIcons } from '../../../assets/icons'
 
 const PasswordInput = memo(({ name, control, rules, errors, ...props }) => {
     const [hidden, setHidden] = useState(true)

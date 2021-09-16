@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const SearchFiltersAdvanced = ({query, updateFilters}) => {
+const SearchFiltersAdvanced = ({ query, updateFilters }) => {
     const classes = useStyles()
     const [vehicleType, setVehicleType] = useState(vehicleTypes[0]?.value)
 

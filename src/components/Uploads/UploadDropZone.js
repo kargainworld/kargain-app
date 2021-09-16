@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
         //     color: '#FE74F1 !important',
         // },
         '& label':{
-            color:'#FE74F1 !important',
+            color:'#FE74F1 !important'
         }
     },
     img: {

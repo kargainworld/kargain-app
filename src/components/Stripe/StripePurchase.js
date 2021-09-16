@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { loadStripe } from '@stripe/stripe-js'
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
@@ -185,7 +185,7 @@ const CARD_OPTIONS = {
 
 const StripeCard = ({ offer }) => {
     const classes = useStyles()
-    const router = useRouter();
+    const router = useRouter()
     const stripe = useStripe()
     const elements = useElements()
     const [error, setError] = useState(null)
@@ -226,8 +226,8 @@ const StripeCard = ({ offer }) => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         if (cardComplete) setProcessing(true)

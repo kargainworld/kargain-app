@@ -38,7 +38,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                 if (Array.isArray(address_components)) {
 
                     const types = {
-                        'street_number' : { type : 'number', key : 'housenumber'},
+                        'street_number' : { type : 'number', key : 'housenumber' },
                         'route' : { key : 'street' },
                         'locality' : { key : 'city' },
                         'postal_code' : { key : 'postCode' },
@@ -103,7 +103,7 @@ SearchLocationInput.defaultProps = {
     rules: {},
     country: 'fr',
     types: ['address'],
-    onChange: {},
+    onChange: {}
 }
 
 export default SearchLocationInput

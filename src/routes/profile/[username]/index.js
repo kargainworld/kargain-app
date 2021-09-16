@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Col, Container, Row } from 'reactstrap'
-import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
+import {  Container, Row } from 'reactstrap'
+
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import ChatIcon from '@material-ui/icons/Chat'
-import Typography from '@material-ui/core/Typography'
+
 import Button from '@material-ui/core/Button'
-import Alert from '@material-ui/lab/Alert'
+
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -21,10 +21,10 @@ import AnnounceService from '../../../services/AnnounceService'
 import UserModel from '../../../models/user.model'
 import AvatarPreview from '../../../components/Avatar/AvatarPreview'
 import AnnounceCard from '../../../components/AnnounceCard'
-import CTALink from '../../../components/CTALink'
+
 import Tabs from '../../../components/Tabs/Tabs'
 import Loading from '../../../components/Loading'
-import AdvancedFilters from '../../../components/Filters/Advanced/AdvancedFilters'
+
 
 
 import Error from '../../_error'
@@ -32,7 +32,7 @@ import { makeStyles } from "@material-ui/styles"
 import clsx from "clsx"
 import customColors from '../../../theme/palette'
 import { NewIcons } from '../../../assets/icons'
-import Sorters from '../../../components/Sorters/Sorters'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
     followItem: {
         display: "block",
-        lineHeight: 1,
+        lineHeight: 1
         //
         // '& svg': {
         //     width: 16
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
             marginLeft: '0 !important'
         },
         '& #new_feed':{
-            display: 'none !important',
+            display: 'none !important'
         }
 
     },
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
         height: '126px',
         left: '0px',
         top: '-25px',
-        background: '#EAEAEA',
+        background: '#EAEAEA'
     },
     button: {
         border: "none !important",
@@ -140,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid blue',
         borderWidth: '1px',
         height:'35px'
-    },
+    }
 }))
 
 const Profile = () => {
@@ -175,8 +175,8 @@ const Profile = () => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         try {
@@ -195,15 +195,15 @@ const Profile = () => {
     }
 
     const handleUnSubscription = async (userId) => {
-        await UsersService.unFollowUser(userId);
-        fetchProfile();
+        await UsersService.unFollowUser(userId)
+        fetchProfile()
         //remove current user in following to show in modal
 
         dispatchModalState({
             modalFollowersProfiles: profile.getFollowings.filter(following => following.getID !== userId)
         })
         
-        return true;
+        return true
     }
 
     const fetchProfile = useCallback(async () => {
@@ -308,19 +308,19 @@ const Profile = () => {
                 />
 
                 {/* {state.isAdmin && ( */}
-                    {/* <Alert severity="info" className="mb-2">
+                {/* <Alert severity="info" className="mb-2">
                         Connected as Admin
                     </Alert> */}
                 {/* )} */}
 
-                <div style={{display: 'flex', justifyContent: 'center', color:'#666666'}}>
+                <div style={{ display: 'flex', justifyContent: 'center', color:'#666666' }}>
                     <AvatarPreview src={profile.getAvatar || profile.getAvatarUrl} />
-                    <NewIcons.avatarcheck style={{transform: 'translate(-40px, 150px)'}}/>
+                    <NewIcons.avatarcheck style={{ transform: 'translate(-40px, 150px)' }}/>
                 </div>
 
                 <div>
                     <div className="top-profile-name-btn">
-                        <div style={{display:'flex', justifyContent:'left', marginTop:'-40px', width:'33.33%'}}>
+                        <div style={{ display:'flex', justifyContent:'left', marginTop:'-40px', width:'33.33%' }}>
                             {state.isSelf ? (
                                 <div className="mx-2">
                                     <Link href={profile.getProfileEditLink}>
@@ -337,19 +337,19 @@ const Profile = () => {
                                         color="primary"
                                         startIcon={<ChatIcon />}
                                         onClick={ () => {
-                                                if(!isAuthenticated){
-                                                    console.log(router.asPath);
-                                                    router.push({
+                                            if(!isAuthenticated){
+                                                console.log(router.asPath)
+                                                router.push({
                                                     pathname: '/auth/login',
-                                                    query: { redirect: router.asPath },
-                                                    });
-                                                } else {
-                                                    dispatchModalState({
-                                                        openModalMessaging: true,
-                                                        modalMessagingProfile: profile
-                                                    })
-                                                }
+                                                    query: { redirect: router.asPath }
+                                                })
+                                            } else {
+                                                dispatchModalState({
+                                                    openModalMessaging: true,
+                                                    modalMessagingProfile: profile
+                                                })
                                             }
+                                        }
                                         }>
                                         {t('vehicles:contact')}
                                     </Button>
@@ -357,47 +357,47 @@ const Profile = () => {
                             )}
                         </div>
 
-                        <div style={{textAlign:'center', marginTop:'25px', width:'33.33%'}} >
-                            <h2 style={{fontSize:'36px', fontWeight:'bold', lineHeight: '150%'}}>
+                        <div style={{ textAlign:'center', marginTop:'25px', width:'33.33%' }} >
+                            <h2 style={{ fontSize:'36px', fontWeight:'bold', lineHeight: '150%' }}>
                                 {profile.getFullName}
                                 {(profile.getIsPro && profile.getIsActivated)}
                             </h2>
 
-                            <p className={classes.userName} style={{fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black'}}>
-                               <NewIcons.pigeon /> @ {profile.getUsername}
+                            <p className={classes.userName} style={{ fontSize:'16px', fontWeight:'normal', lineHeight:'150%', color:'black' }}>
+                                <NewIcons.pigeon /> @ {profile.getUsername}
                             </p>
 
                             {profile.getAddressParts.fullAddress && (
                                 <a href={profile.buildAddressGoogleMapLink()}
                                     target="_blank"
                                     rel="noreferrer">
-                                    <p style={{fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999'}}>
+                                    <p style={{ fontSize:'12px', fontWeight:'normal', lineHeight:'150%', color:'#999999' }}>
                                         {profile.buildAddressString()}  
                                     </p>
                                 </a>
                             )}
                         </div>
                         
-                        <div style={{ width:'33.33%'}}> </div>
+                        <div style={{ width:'33.33%' }}> </div>
                        
                     </div>
                     
-                    <div style={{width:'100%', display:'flex'}}>
-                        <div style={{width:'50%'}}></div>
-                        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)'}}>
+                    <div style={{ width:'100%', display:'flex' }}>
+                        <div style={{ width:'50%' }}></div>
+                        <div style={{ display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)' }}>
                             <div 
                                 onClick={() => dispatchModalState({
                                     openModalFollowers: true,
                                     modalFollowersProfiles: profile.getFollowers,
                                     modalFollowersTitle: t('vehicles:followers'),
-                                    isFollowing: false,                                
+                                    isFollowing: false                                
                                 })}
                                 // style={{marginRight:'5px'}}
-                                >
+                            >
                                 <div>
                                     {state.isSelf ? (
                                         <span className={clsx("mx-1", classes.subscriptionbutton)}>
-                                                {t('vehicles:followers', { count: followerCounter })}
+                                            {t('vehicles:followers', { count: followerCounter })}
                                         </span>
                                     ) : (
                                         <>
@@ -538,12 +538,12 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     }
 
     const handleRemove = () => {
-		AnnounceService.removeAnnounce(selectedSlug)
-			.then(() => {
-				dispatchModal({ msg: 'Announce successfully removed' })
+        AnnounceService.removeAnnounce(selectedSlug)
+            .then(() => {
+                dispatchModal({ msg: 'Announce successfully removed' })
                 window.location.reload() 
-			}).catch(err => {
-				dispatchModalError({ err })
+            }).catch(err => {
+                dispatchModalError({ err })
 	    })
     }
 
@@ -561,10 +561,10 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     return (
         <Container>
             <Row>
-                <div style={{width:'103%'}}>
+                <div style={{ width:'103%' }}>
                     
                          
-                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{width:'101%'}} >      
+                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >      
                        
                         <Tabs.Item id="home-tab" title="Vitrine">
                             
@@ -572,7 +572,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 <Row className="my-2 d-flex justify-content-center">
                                     
                                     {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}>  
+                                        <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>  
                                             <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
                                         </div>
                                     )) : (
@@ -601,12 +601,12 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         </Tabs.Item>
                                    
                         {isSelf && (
-                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')} style={{maxWidth:'33%'}}>
+                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')} style={{ maxWidth:'33%' }}>
                                 
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
                                         // <Col key={index} sm={12} md={12} lg={6} xl={6} className="my-2">
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
+                                        <div key={index} style={{ width: '31%', marginRight:'2.1%' }}> 
                                             <AnnounceCard announceRaw={announceRaw} />
                                         </div>
                                         // </Col>
@@ -620,11 +620,11 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         )}
 
                         {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{maxWidth:'33%'}}>
+                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')} style={{ maxWidth:'33%' }}>
                                  
                                 <Row className="my-2 d-flex justify-content-center">
                                     {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                        <div key={index} style={{width: '31%', marginRight:'2.1%'}}> 
+                                        <div key={index} style={{ width: '31%', marginRight:'2.1%' }}> 
                                             <AnnounceCard announceRaw={announceRaw.getRaw} />
                                         </div>
                                     )) : (
@@ -643,21 +643,21 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
             <Dialog
                 open={openDialogRemove}
                 onClose={handleCloseDialogRemove}
-                >
+            >
                 <DialogTitle id="alert-dialog-title" disableTypography>
                     {t('vehicles:confirm-suppression')}
                 </DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>
-                    {t('vehicles:cancel')}
+                        {t('vehicles:cancel')}
                     </Button>
                     <Button
-                    variant="contained"
-                    color="secondary"
-                    className={classes.button}
-                    startIcon={<DeleteIcon/>}
-                    onClick={handleRemove} >
-                    {t('vehicles:remove-announce')}
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        startIcon={<DeleteIcon/>}
+                        onClick={handleRemove} >
+                        {t('vehicles:remove-announce')}
                     </Button>
                 </DialogActions>
             </Dialog>

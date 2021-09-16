@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { useAuth } from '../../context/AuthProvider'
 import StripePurchase from './StripePurchase'
 import OffersSelect from './OffersSelect'
-import CTAButton from '../CTAButton'
+
 
 const OffersPurchaseForm = ({ offer: defaultOffer }) => {
     const { t } = useTranslation()
@@ -14,46 +14,46 @@ const OffersPurchaseForm = ({ offer: defaultOffer }) => {
     const [enableSubscribe, setEnableSubscribe] = useState(true)
 
     return (
-	<Container>
-	    <div className="row">
-		<div className="col-12">
-			<div style={{fontSize:'24px', margintLeft:'15px'}}>
-				{(authenticatedUser.getHasProPlan) 
+        <Container>
+            <div className="row">
+                <div className="col-12">
+                    <div style={{ fontSize:'24px', margintLeft:'15px' }}>
+                        {(authenticatedUser.getHasProPlan) 
 				&& (
-				<div className="my-2">
-					{/* 
+				    <div className="my-2">
+    {/* 
 					*/}
 
-				</div>
+				    </div>
 				)}
-			</div>
+                    </div>
 
-		    {enableSubscribe && (
-			<div style={{marginLeft:'-15px'}}>
-			    <h4 className="step-title" style={{fontSize:'20px', color:'black'}}>Souscrire à une offre</h4>
-			    <p className="concept-name">Vous ne disposez d'aucune offre.</p>
-			    <p>Vous n'avez le droit d'avoir que 2 annonces publiées en simultanée.</p>
-			    <p>Vous pouvez souscrire à une des offres ci dessous : </p>
+                    {enableSubscribe && (
+                        <div style={{ marginLeft:'-15px' }}>
+                            <h4 className="step-title" style={{ fontSize:'20px', color:'black' }}>Souscrire à une offre</h4>
+                            <p className="concept-name">Vous ne disposez d'aucune offre.</p>
+                            <p>Vous n'avez le droit d'avoir que 2 annonces publiées en simultanée.</p>
+                            <p>Vous pouvez souscrire à une des offres ci dessous : </p>
 
-				<div style={{marginTop:'15px', width:"60%"}}>
-					<OffersSelect {...{
-					defaultOffer,
-					setSelectedOffer,
-					setIsSelectedOffer
-					}} />
+                            <div style={{ marginTop:'15px', width:"60%" }}>
+                                <OffersSelect {...{
+                                    defaultOffer,
+                                    setSelectedOffer,
+                                    setIsSelectedOffer
+                                }} />
 
-					{isSelectedOffer && (
-					<StripePurchase
-						disabled={!isSelectedOffer}
-						offer={selectedOffer}
-					/>
-					)}
-				</div>
-			</div>
+                                {isSelectedOffer && (
+                                    <StripePurchase
+                                        disabled={!isSelectedOffer}
+                                        offer={selectedOffer}
+                                    />
+                                )}
+                            </div>
+                        </div>
 		    )}
-		</div>
-	    </div>
-	</Container>
+                </div>
+            </div>
+        </Container>
     )
 }
 

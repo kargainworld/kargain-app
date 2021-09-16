@@ -33,7 +33,7 @@ const MotoFilters = ({ control, watch, errors }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.moto, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 

@@ -5,7 +5,7 @@ function getStyle(el, styleName) {
 }
 
 function getOffset(el) {
-    if (!el) return {top: 0, left: 0}
+    if (!el) return { top: 0, left: 0 }
 
     const rect = el.getBoundingClientRect()
     const doc = el.ownerDocument
@@ -26,10 +26,10 @@ function getOffset(el) {
 }
 
 function getPosition(el) {
-    if (!el) return {top: 0, left: 0 }
+    if (!el) return { top: 0, left: 0 }
 
     let offset = getOffset(el)
-    let parentOffset = {top: 0, left: 0 }
+    let parentOffset = { top: 0, left: 0 }
     const marginTop = parseInt(getStyle(el, 'marginTop')) || 0
     const marginLeft = parseInt(getStyle(el, 'marginLeft')) || 0
 

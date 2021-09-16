@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useReducer, useRef} from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import _ from 'lodash'
 
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -117,7 +117,7 @@ const FormContextProvider = ({ formKey, children }) => {
         <FormContext.Provider value={{
             formDataContext,
             dispatchFormUpdate,
-            dispatchFormClear,
+            dispatchFormClear
             // registerInterceptor
         }}>
             {children}

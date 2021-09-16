@@ -58,8 +58,8 @@ const ActivatedBullet = ({ username, value }) => {
         icon: <BulletPoint color={option.color}/>
     }))
 
-    const wrapperRef = useRef(null);
-    useOutsideClicked(wrapperRef);
+    const wrapperRef = useRef(null)
+    useOutsideClicked(wrapperRef)
     
     function useOutsideClicked(ref) {
         useEffect(() => {
@@ -69,11 +69,11 @@ const ActivatedBullet = ({ username, value }) => {
                     setClicked(false)
                 }
             }
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside)
             return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
+                document.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [ref])
     }
     
     const handleUpdate = async () => {

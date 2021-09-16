@@ -1,6 +1,6 @@
 import handleResponse from '../libs/handleResponse'
 import config from '../config/config'
-import {buildUrl} from '../libs/utils'
+import { buildUrl } from '../libs/utils'
 
 const baseRoute = `${config.api}/announces`
 

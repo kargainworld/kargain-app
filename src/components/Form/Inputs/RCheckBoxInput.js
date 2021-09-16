@@ -12,11 +12,11 @@ const RCheckBoxInput = ({ name, rules, control, errors, ...props }) => {
                 <label className="pl-1" htmlFor={name} >
                     
                     <Checkbox 
-                        style={{width:"13.5px", height:"13.5px", fontSize:"14px", marginTop:"-4px", marginRight:"5px"}}
+                        style={{ width:"13.5px", height:"13.5px", fontSize:"14px", marginTop:"-4px", marginRight:"5px" }}
                         id={name}
                         name={name}                        
                         ref={control.register(rules)}
-                        inputProps = {{ 'aria-label': 'uncontrolled-checkbox'}} 
+                        inputProps = {{ 'aria-label': 'uncontrolled-checkbox' }} 
                     />
                     
 

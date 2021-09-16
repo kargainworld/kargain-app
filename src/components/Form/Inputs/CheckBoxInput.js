@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import ValidationError from '../Validations/ValidationError'
-import Checkbox from '@material-ui/core/Checkbox'
+
 
 const CheckBoxInput = ({ name, rules, control, errors, ...props }) => {
      

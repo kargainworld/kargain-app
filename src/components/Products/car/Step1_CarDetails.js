@@ -28,7 +28,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -77,7 +77,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
     
     return (
@@ -194,9 +194,9 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header strong text={t('vehicles:consumption')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
                 {/* <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="fuel-pump" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="fuel-pump" width={18} />
                 {t('vehicles:consumption')} 
             </h3>
             <Row>
@@ -257,9 +257,9 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header text={t('vehicles:vehicle-informations')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="page-facing-up" width={18} />
                 {t('vehicles:vehicle-informations')}
             </h3>
             <Row>

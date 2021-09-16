@@ -28,7 +28,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     dispatchFormUpdate(watch(), { compare: true })
     
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -58,7 +58,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
     
@@ -78,7 +78,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
 
     return (

@@ -1,7 +1,7 @@
 import queryString from 'querystring'
 import handleResponse from '../libs/handleResponse'
 import config from '../config/config'
-import {buildUrl} from '../libs/utils'
+import { buildUrl } from '../libs/utils'
 
 function generatePutUrl (Key, ContentType) {
     const requestOptions = {

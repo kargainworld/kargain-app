@@ -22,13 +22,13 @@ const useStyles = makeStyles(() => ({
         border: 'solid 3px transparent', /* !importanté */
         borderRadius: 20,
         '&:before': {
-                content: '',
-                position: "absolute",
-                top: 0, right: 0, bottom: 0, left: 0,
-                zIndex: -1,
-                margin: -3, /* !importanté */
-                borderRadius: "inherit", /* !importanté */
-                background: customColors.gradient.main
+            content: '',
+            position: "absolute",
+            top: 0, right: 0, bottom: 0, left: 0,
+            zIndex: -1,
+            margin: -3, /* !importanté */
+            borderRadius: "inherit", /* !importanté */
+            background: customColors.gradient.main
         }
     },
     button: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
         fontStyle: "normal",
 
         background: customColors.gradient.main
-    },
+    }
     
 }))
 
@@ -60,7 +60,7 @@ const ForgottenForm = () => {
         AuthService.forgotPassword(form.email)
             .then(() => {
                 dispatchModal({
-                    msg: t('vehicles:email_had_been_sent_to_{email}', {email : form.email}),
+                    msg: t('vehicles:email_had_been_sent_to_{email}', { email : form.email }),
                     persist: true
                 })
             }).catch(err => {
@@ -70,7 +70,7 @@ const ForgottenForm = () => {
 
     return (
         <main>
-            <h3 style={{textAlign: "center", fontSize:"24px", marginTop:"40px"}}>{t('vehicles:password-forgotten')}</h3>
+            <h3 style={{ textAlign: "center", fontSize:"24px", marginTop:"40px" }}>{t('vehicles:password-forgotten')}</h3>
             <form className="mt-3 mx-auto"
                 onSubmit={handleSubmit(onSubmit)}
                 style={{ maxWidth: '400px' }}>
@@ -80,7 +80,7 @@ const ForgottenForm = () => {
                         name="email"
                         errors={errors}
                         control={control}
-                        rules={{ required: t('form_validations:required')}}
+                        rules={{ required: t('form_validations:required') }}
                     />
                 </FieldWrapper>
 

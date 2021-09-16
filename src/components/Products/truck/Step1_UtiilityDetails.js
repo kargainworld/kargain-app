@@ -28,7 +28,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -57,7 +57,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 
@@ -77,7 +77,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
     
     return (
@@ -181,16 +181,16 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
             <Row>
-            <Col sm={12} md={6}>
-                <FieldWrapper label={t('vehicles:function_hour')}>
-                    <NumberInput
-                        name="functionHour"
-                        control={control}
-                        errors={errors}
-                    />
-                </FieldWrapper>
-            </Col>
-            <Col sm={12} md={6}>
+                <Col sm={12} md={6}>
+                    <FieldWrapper label={t('vehicles:function_hour')}>
+                        <NumberInput
+                            name="functionHour"
+                            control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
+                <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:class_emission')}>
                         <SelectInput
                             name="emission"

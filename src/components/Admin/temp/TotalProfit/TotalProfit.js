@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import {Avatar, Card, CardContent, Grid, Typography} from "@material-ui/core"
-import {makeStyles} from "@material-ui/styles"
+import { Avatar, Card, CardContent, Grid, Typography } from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
 
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const TotalProfit = props => {
 
-    const {className, ...rest} = props
+    const { className, ...rest } = props
 
     const classes = useStyles()
 

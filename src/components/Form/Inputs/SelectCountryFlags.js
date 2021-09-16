@@ -55,12 +55,12 @@ const SelectCountryFlags = ({ name, rules, control, errors, ...props }) => {
                         if(e)
                             control.setValue(name, {
                                 value: e.value,
-                                label: e.label,
+                                label: e.label
                             })
                         else
                             control.setValue(name, {
                                 value: null,
-                                label: '',
+                                label: ''
                             })
                         if(props.onChange) return props.onChange(e)
                         return e

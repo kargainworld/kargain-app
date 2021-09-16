@@ -49,7 +49,7 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
             const data = await localeDataHelper.getLocaleData(vehicleType, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang, vehicleType])
     

@@ -21,7 +21,7 @@ import Web3 from 'web3'
 import ObjectID from 'bson-objectid'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import PaginateResults from './PaginateResults'
+
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
@@ -29,8 +29,8 @@ const useStyles = makeStyles(() => ({
 
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'20px',
-    }, 
+        marginTop:'20px'
+    } 
 }))
 
 const toBN = Web3.utils.toBN
@@ -62,7 +62,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
-        let nextPage = 1;
+        let nextPage = 1
         if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
         if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
         if(state.isScrollLoding) nextPage = page
@@ -188,11 +188,11 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
                     <div className={clsx(classes.row)}>
 
-                        <h3 style={{fontSize: '20px', fontWeight: '500'}}>
+                        <h3 style={{ fontSize: '20px', fontWeight: '500' }}>
                             {t('vehicles:{count}_results_search', { count: onlyMinted ? state.announcesMinted.length : state.announces.length })}
                         </h3>
                     
-                        <div  style={{ marginTop: '-60px'}}>
+                        <div  style={{ marginTop: '-60px' }}>
                             <Sorters updateSorter={updateSorter} />
                             <FormControlLabel
                                 style={{ margin:0 }}
@@ -205,7 +205,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 </Col>
 
                 <Col sm={12} md={12}>
-                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{padding:'10px 1% !important'}}>
+                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{ padding:'10px 1% !important' }}>
                         <InfiniteScroll
                             throttle={100}
                             threshold={300}
@@ -220,17 +220,17 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                             const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
 
                                             // if (!onlyMinted || announceMinted) {
-                                                return (
-                                                    // <Col key={index} className='my-3 d-flex justify-content-center'>
-                                                    <div key={index} style={{width:'30%', marginRight:'3%', marginTop: '2%'}}>
-                                                        <AnnounceCard
-                                                            announceRaw={announceRaw}
-                                                            tokenPrice={announceMinted?.tokenPrice}
-                                                            detailsFontSize={'13px'}
-                                                        />
-                                                    </div>    
-                                                    // </Col>
-                                                )
+                                            return (
+                                            // <Col key={index} className='my-3 d-flex justify-content-center'>
+                                                <div key={index} style={{ width:'30%', marginRight:'3%', marginTop: '2%' }}>
+                                                    <AnnounceCard
+                                                        announceRaw={announceRaw}
+                                                        tokenPrice={announceMinted?.tokenPrice}
+                                                        detailsFontSize={'13px'}
+                                                    />
+                                                </div>    
+                                            // </Col>
+                                            )
                                             // }
                                         })}
                                     </Row>

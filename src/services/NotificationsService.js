@@ -6,7 +6,7 @@ const baseRoute = `${config.api}/announces`
 export function fetchNotifications() {
     const requestOptions = {
         method: 'GET',
-        credentials: 'include',
+        credentials: 'include'
     }
 
     return fetch(`${config.api}/notifications`, requestOptions)
@@ -20,7 +20,7 @@ export function fetchNotifications() {
 export function removeNotification (pingId) {
     const requestOptions = {
         method: 'DELETE',
-        credentials: 'include',
+        credentials: 'include'
     }
 
     return fetch(`${config.api}/notifications/${pingId}`, requestOptions)

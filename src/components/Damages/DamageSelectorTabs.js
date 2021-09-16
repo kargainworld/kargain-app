@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import useTranslation from 'next-translate/useTranslation'
 import { Col, Row, TabContent, TabPane } from 'reactstrap'
-import DeleteIcon from '@material-ui/icons/Delete'
+
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
 import DamagesNavResponsive from './DamagesNavResponsive'
@@ -193,12 +193,12 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                         }}/>
                                     </Col>
                                     <Col sm={12} md={col} lg={6}>
-                                        <div className={clsx(classes.annoInputs)} style={{backgroundColor:"white", border: '0px', textAlign:'left'}}>
+                                        <div className={clsx(classes.annoInputs)} style={{ backgroundColor:"white", border: '0px', textAlign:'left' }}>
                                             {/* <Header h3> {t('vehicles:damages')} :</Header> */}
                                             {stages.length === 0 && <Header h3> {t('vehicles:damages')} :</Header>}
-                                            {stages.length !== 0 && <h4 style={{fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '21px'}}>
-                                                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="cross-mark" width={12} />
-			                                    {t('vehicles:click-image')}
+                                            {stages.length !== 0 && <h4 style={{ fontSize:"16px", fontWeight:"bold", textAlign:'left', marginLeft: '21px' }}>
+                                                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="cross-mark" width={12} />
+                                                {t('vehicles:click-image')}
                                             </h4>}
                                             {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
                                             {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
@@ -213,7 +213,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                                 onClick={() => rmStage(indexTab, indexStage)}>
                                                                 <NewIcons.recycle alt="recycle"/>
                                                             </IconButton>
-                                                            <span style={{backgroundColor:"#A291F3"}}
+                                                            <span style={{ backgroundColor:"#A291F3" }}
                                                                 className={clsx(classes.annoNumber)}>{indexStage + 1}</span>
                                                         </div>
                                                         <div style={{

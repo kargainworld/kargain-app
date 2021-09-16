@@ -28,7 +28,7 @@ const reducer = (state, action) => ({
     ...action.payload
 })
 
-const ModalContextProvider = ({children}) => {
+const ModalContextProvider = ({ children }) => {
     const [modalStateContext, setModalStateContext] = useReducer(reducer, defaultValues)
     
     const dispatchModalState = (updates) => {

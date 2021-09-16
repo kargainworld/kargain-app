@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next-translate/Link'
 import { Button } from '@material-ui/core'
-import { NewIcons } from '../assets/icons'
+
 
 const CTALink = ({ href, icon: Icon, title, id, className, variant, color, style }) => (
     <Link href={href} prefetch={false} passHref>

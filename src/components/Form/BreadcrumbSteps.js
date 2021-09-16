@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import clsx from 'clsx'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import customColors from '../../theme/palette'
+
 
 const useStyles = makeStyles(()=>({
     breadcrumb: {
@@ -10,16 +10,16 @@ const useStyles = makeStyles(()=>({
             backgroundColor: "#fff",
             marginTop: '10px',
             '& li + li::before': {    
-                content: "'|' !important",
+                content: "'|' !important"
             }
-        },
-    },
+        }
+    }
   
 }))
 
 const BreadcrumbSteps = ({ steps, activeStepIndex, maxActiveStep, setStep }) => {
     
-	const classes = useStyles()
+    const classes = useStyles()
     return (
         <section id="header">
             <Breadcrumb id="breadcrumb" className={clsx('navigation-bar', classes.breadcrumb)} > 

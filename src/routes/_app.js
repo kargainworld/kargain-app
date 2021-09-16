@@ -19,7 +19,7 @@ import ModalMessaging from '../components/ModalMessaging'
 import ModalFollowers from '../components/ModalFollowers'
 import NextProgress from '../components/NextProgress'
 import PopupAlert from '../components/PopupAlert'
-import PopupLogin from '../components/PopupLogin'
+
 import ModalShare from '../components/ModalShare'
 import Layout from '../components/Layout'
 import Forbidden403Page from './403'
@@ -29,7 +29,7 @@ import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
 import { Web3ReactProvider } from '@web3-react/core'
 import Web3 from 'web3'
-import { EmojiProvider, Emoji } from 'react-apple-emojis'
+import { EmojiProvider } from 'react-apple-emojis'
 import emojiData from 'react-apple-emojis/lib/data.json'
 
 function getLibrary(provider) {

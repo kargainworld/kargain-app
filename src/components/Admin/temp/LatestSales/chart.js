@@ -20,7 +20,7 @@ export const options = {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    legend: {display: false},
+    legend: { display: false },
     cornerRadius: 20,
     tooltips: {
         enabled: true,
@@ -32,7 +32,7 @@ export const options = {
         bodyFontColor: palette.text.secondary,
         footerFontColor: palette.text.secondary
     },
-    layout: {padding: 0},
+    layout: { padding: 0 },
     scales: {
         xAxes: [
             {

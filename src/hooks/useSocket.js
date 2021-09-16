@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { api } from '../config/config'
-import io from 'socket.io-client'
+
 import { useAuth } from '../context/AuthProvider'
 const server = api.slice(0, -3)
 const socketIo = null
@@ -10,7 +10,7 @@ function useSocket(cb) {
 
     useEffect(() => {
 
-        if ((socket && socket.connected) || !socketIo || !isAuthenticated) return;
+        if ((socket && socket.connected) || !socketIo || !isAuthenticated) return
         // socketIo.auth = { userId: authenticatedUser.getID }
         // socketIo.connect()
 
@@ -19,7 +19,7 @@ function useSocket(cb) {
 
         return function cleanup() {
             console.log('CleanUP')
-            socketIo.off("connect_error");
+            socketIo.off("connect_error")
         }
 
     }, [socket, isAuthenticated])

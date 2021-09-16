@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import {makeStyles} from "@material-ui/styles"
-import {Avatar, Card, CardContent, Grid, LinearProgress, Typography} from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { Avatar, Card, CardContent, Grid, LinearProgress, Typography } from "@material-ui/core"
 
 import InsertChartIcon from '@material-ui/icons/InsertChartOutlined'
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const TaskProgress = props => {
-    const {className, ...rest} = props
+    const { className, ...rest } = props
 
     const classes = useStyles()
 
