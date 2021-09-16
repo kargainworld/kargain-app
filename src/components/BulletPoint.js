@@ -26,7 +26,7 @@ const switchColor = color => {
     }
 }
 
-const BulletPoint = ({width, bordered, color, tooltipHelper, onClick}) => {
+const BulletPoint = ({ width, bordered, color, tooltipHelper, onClick }) => {
     const Color = switchColor(color)
 
     return (

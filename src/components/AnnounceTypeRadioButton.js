@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
+import React from "react"
+import styled from "styled-components"
+import Typography from "@material-ui/core/Typography"
 
 const AnnounceTypeRadioButtonContainer = styled.div`
   flex: 1;

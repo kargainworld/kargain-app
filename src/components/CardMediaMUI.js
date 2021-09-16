@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     }
 })
 
-const CardMediaMUI = ({src, title}) => {
+const CardMediaMUI = ({ src, title }) => {
     const classes = useStyles()
 
     return (
