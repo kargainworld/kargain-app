@@ -33,12 +33,9 @@ import Box from '@material-ui/core/Box'
 import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { injected } from "../../../connectors"
-
 import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
-
-
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -131,10 +128,7 @@ const Announce = () => {
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
     const [isMinted, setIsMinted] = useState(false)
-
     const tokenPriceInEuros = (+tokenPrice * priceBNB).toFixed(2)
-
-    console.log("priceBNB", priceBNB, tokenPrice, tokenPriceInEuros)
 
     const {
         fetchTokenPrice,
@@ -393,21 +387,6 @@ const Announce = () => {
             !offerRejected.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
         )
 
-    // WARNING: reset newOfferCreated in the backend, 'reset-tx' must be unique
-    // useEffect(() => {
-    //     if (!state.stateReady || !newOfferCreated) return
-
-    //     const announceId = state?.announce?.getID
-
-    //     const action = async () => {
-            
-    //         await TransactionsService.addTransaction({ announceId, hashTx: "reset-tx-2", data: newOfferCreated?.hashTx, action: "OfferRejected" })
-        
-    //         console.log("reset done")
-    //     }
-    //     action()
-    // }, [newOfferCreated?.hashTx, state?.announce?.getID, state.stateReady])
-
     console.log({
         tokenMinted,
         newOfferCreated,
@@ -503,9 +482,7 @@ const Announce = () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
             const { announce, isAdmin, isSelf } = result
-
             const newAnnounce = new AnnounceModel(announce)
-
             const transactions = await TransactionsService.getTransactionsByAnnounceId(newAnnounce.getID)
 
             setTransactions(transactions)
@@ -590,14 +567,6 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
-
-
-                {!state?.announce?.getIsActivated && (
-                    <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
-                )}
-
-                {!state?.announce?.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
-
                 <Row>
                     <Col sm={12} md={6}>
                         <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
