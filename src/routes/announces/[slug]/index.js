@@ -65,26 +65,27 @@ const useStyles = makeStyles(() => ({
         margin: '1rem'
     },
     buttonblue:{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '6px 50px',
+        display: 'flex !important',
+        flexDirection: 'row !important',
+        justifyContent: 'center !important',
+        alignItems: 'center !important',
+        padding: '6px 50px !important',
 
-        background: '#2C65F6',
-        borderRadius: '25px',
+        background: '#2C65F6 !important',
+        borderRadius: '25px !important',
 
-        fontWeight: 'bold',
-        fontSize: '14px',
-        lineHeight: '150%',
-        color:'white',
+        fontWeight: 'bold !important',
+        fontSize: '14px !important',
+        lineHeight: '150% !important',
+        color:'white !important',
 
-        marginTop:'20px'
+        marginTop:'25px !important'
     },
 
     filtersHidden: {
         display: 'none'
     },
+    
     textfield:{
         '& .MuiInputBase-root':{
             height:'40px'
@@ -93,7 +94,44 @@ const useStyles = makeStyles(() => ({
             backgroundColor: '#d5d8db',
             height: '5px'
         }
-    }
+    },
+
+    bordergradientbtn:{
+        height:'39px',
+        borderRadius: '100rem',
+        padding: '1rem',
+        fontSize: '14px',        
+        padding: '8px 30px 2px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(176deg, #0046f9, #ff08fa);',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset', 
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
+        
+        '& label':{
+        
+            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+            backgroundImage: 'linear-gradient(91deg, #084dff, #ff0afb)',
+            backgroundClip: 'text',
+            color: 'transparent'
+            
+        }        
+    },
+    textfieldcustom:{
+        '& span':{
+            display:'none',
+        },
+        '& fieldset':{
+            borderColor:'#999999 !important'
+        },
+        '& .MuiInputBase-root':{
+            height:'30px'
+        }
+    },
 }))
 
 const Announce = () => {
@@ -568,214 +606,444 @@ const Announce = () => {
 
             <div className="objava-wrapper">
                 <Row>
-                    <Col sm={12} md={6}>
-                        <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
-                            <Row >
-                                <div className="pic">
-                                    <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
-                                        isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
-                                        alt={state?.announce?.getTitle}
-                                        style={{ width: 120, height: 120 }}
-                                    />
-                                </div>
-
-                                <div style={{ marginLeft: '10px' }}>
-                                    <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
-                                        <a>
-                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
-                                                {state?.announce?.getAuthor.getFullName}
-                                            </Typography>
-                                        </a>
-                                    </Link>
-
-                                    {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                        <div className="top-profile-location">
-                                            <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                                <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
-                                                    <NewIcons.card_location style={{ marginRight:'5px' }}/>
-                                                    {state?.announce?.getAdOrAuthorCustomAddress()}
-                                                </span>
-                                            </a>
+                    {isMobile ?(
+                        <>
+                            <Col sm={12} md={6}>
+                                <div className="top" style={{marginTop: '25px', marginBottom: '15px', marginLeft:'15px', display:'flex'}}>
+                                    <Row >
+                                        <div className="pic" style={{width:'32%'}}>
+                                            <Avatar
+                                                className="img-profile-wrapper avatar-preview"
+                                                src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
+                                                isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
+                                                alt={state?.announce?.getTitle}
+                                                style={{ width: 120, height: 120 }}
+                                            />
                                         </div>
-                                    )}
-                                    {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
+
+                                        <div style={{marginLeft: '10px', width:'65%'}}>
+                                            <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
+                                                <a>
+                                                    <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%'}}>
+                                                        {state?.announce?.getAuthor.getFullName}
+                                                    </Typography>
+                                                </a>
+                                            </Link>
+
+                                            {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                                <div className="top-profile-location">
+                                                    <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                                        <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                            <NewIcons.card_location style={{ marginRight:'5px' }}/>
+                                                            {state?.announce?.getAdOrAuthorCustomAddress()}
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Row>
                                 </div>
-                            </Row>
-                        </div>
+                                
+                                <div>
+                                    <Typography as="h2" variant="h2" style={{fontWeight: '500', fontSize: '24px', lineHeight: '150%'}}>
+                                        {state?.announce?.getAnnounceTitle}
+                                    </Typography>
+                                        
+                                    <div  style={{ width: '100%',marginTop:'10px', display:'flex', justifyContent: 'space-between' }}>
+                                        
+                                        <Box mb={2} display="flex" flexDirection="row">
 
-                        <div className="pics">
-                            {state?.announce?.getCountImages > 0 && (
-                                <>
-                                    <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
-                                    {/* {isDesktop && (
-                    <GalleryImgsLazy
-                        images={announce.getImages}
-                        handleCLickImg={handleCLickImg}
-                    />
-                  )} */}
-                                </>
-                            )}
-                        </div>
-                    </Col>
-
-                    <Col sm={12} md={6}>
-                        <div style={{ marginTop:'25px' }}>
-                            <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
-                                {state?.announce?.getAnnounceTitle}
-                            </Typography>
-                            <div  style={{ width: '100%',marginTop:'10px' }}>
-                                <Box mb={2} display="flex" flexDirection="row-reverse">
-                                    <Col sm={3}
-                                        className="icons-star-prof"
-                                        onClick={() =>
-                                            dispatchModalState({
-                                                openModalShare: true,
-                                                modalShareAnnounce: state?.announce
-                                            })
-                                        }
-                                        style={{ display:'flex', justifyContent: 'flex-end' }}
-                                    >
-                                        <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(state?.announce?.getCreationDate.raw, lang)}</small>
-                                        <img src="/images/share.png" alt="" />
-                                    </Col>
-                                </Box>
-                            </div>
-                            <div  style={{ width: '100%',marginTop:'10px' }}>
-                                <Box mb={2} display="flex" flexDirection="row">
-
-                                    <Col sm={3}>
-                                        <Row style={{ marginTop:'10px' }}>
-                                            <h4 key={`price-${tokenPriceInEuros}`}>€ {tokenPriceInEuros}</h4>
-                                        </Row>
-                                    </Col>
-                                    {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
-                                    
-                                    {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
-                                        <Row>
-                                            <Col sm={5}>
-                                                <button className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
-                                                    {t('vehicles:acceptOffer')}
-                                                </button>
+                                            <Col sm={3}>
+                                                <Row style={{ marginTop:'10px' }}>
+                                                    <label key={`price-${tokenPriceInEuros}`} style={{fontSize: 20, color:'#444444' }}>€ <label style={{ fontSize: 14, color:'#444444'}}>{tokenPriceInEuros}</label></label>
+                                                </Row>
                                             </Col>
-                                            <Col sm={5}>
-                                                <button  className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
-                                                    {t('vehicles:rejectOffer')}
-                                                </button>
+        
+                                        </Box>
+                                        
+                                        <Box mb={2} display="flex" flexDirection="row-reverse">
+                                            <Col sm={3}
+                                                className="icons-star-prof"
+                                                onClick={() =>
+                                                    dispatchModalState({
+                                                        openModalShare: true,
+                                                        modalShareAnnounce: state?.announce
+                                                    })
+                                                }
+                                                style={{ display:'flex', justifyContent: 'flex-end' }}
+                                            >
+                                                <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(state?.announce?.getCreationDate.raw, lang)}</small>
+                                                <img src="/images/share.png" alt="" />
                                             </Col>
-                                        </Row>
+                                        </Box>
+                                   
+                                    </div>
+
+                                    <div>
+                                        <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>
+                                    </div>
+                                
+                                </div>
+
+                                <div className="pics">
+                                    {state?.announce?.getCountImages > 0 && (
+                        
+                                            <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
+                                            // {/* {isDesktop && (
+                                            //     <GalleryImgsLazy
+                                            //         images={announce.getImages}
+                                            //         handleCLickImg={handleCLickImg}
+                                            //     />
+                                            // )} */}
                                     )}
-                                </Box>
+                                </div>
+                                
+                                {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
+                                            
+                                {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
+                                    <Row style={{justifyContent: 'center', marginTop: '30px' }}>
+                                        <div style={{ marginRight: '15px'}}>
+                                            <button className={clsx(classes.bordergradientbtn)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
+                                                <label>{t('vehicles:acceptOffer')}</label>
+                                            </button>
+                                        </div>
+                                        <div >
+                                            <button  className={clsx(classes.bordergradientbtn)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
+                                                <label>{t('vehicles:rejectOffer')}</label>
+                                            </button>
+                                        </div>
+                                    </Row>
+                                )}
+
+                                {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
+                                    <div style={{ display:'flex', justifyContent:'center' }}>
+                                        <button className={clsx(classes.buttonblue)}
+                                            disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
+                                            onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
+                                        {/* <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                            <Comments announceRaw={state?.announce?.getRaw} />
+                                        </div> */}
+                                    </div>
+                                )}
+
+
+                                <div style={{marginTop:'25px'}}>
+                                    <p style={{fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%'}}>#1212</p>    
+                                </div>
+
+                                <TagsList tags={state?.announce?.getTags} />
+
+
+                                <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{marginTop:'-15px'}}>
+                                    <div style={{width:'90%', display:'flex', marginBottom: 10}}>
+
+                                        {isOwn && (
+                                            <Action onClick={toggleVisibility}>
+                                                {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                            </Action>
+                                        )}
+                                        <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                            <i.BookmarkBorder
+                                                style={{
+                                                    color: like ? '#444444' : '#444444',
+                                                    marginRight: '8px'
+                                                }}
+                                            />
+                                            <span style={{color:'#444444'}}>{likesCounter}</span>
+                                        </Action>
+
+                                        <Action
+                                            title={t('vehicles:comment_plural')}
+                                            style={{ color: state?.announce?.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
+                                        >
+                                            <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px'}} />
+                                            <span>{state?.announce?.getCountComments}</span>
+                                        </Action>
+
+                                        <Action
+                                            onClick={() => {
+                                                if (!isAuthenticated) {
+                                                    router.push({
+                                                        pathname: '/auth/login',
+                                                        query: { redirect: router.asPath },
+                                                    });
+                                                    return
+                                                }
+                                                dispatchModalState({
+                                                    openModalMessaging: true,
+                                                    modalMessagingProfile: state?.announce?.getAuthor,
+                                                    modalMessaginAnnounce: state.announce
+                                                })
+                                                }
+                                            }
+                                            style={{ color: state?.announce?.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px'}}
+                                        >
+                                            <i.MailOutline style={{ position: 'relative', top: -1,  }} />
+                                        </Action>
+                                        
+
+
+                                        {(state.isAdmin || state.isSelf) && (
+                                            <div style={{ display: "flex", gap: 5 }}>
+                                                <CTALink href={state?.announce?.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div onClick={() => toggleFilters()} style={{width:'10%', display:'flex', justifyContent:'flex-end'}}>
+                                        <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
+                                    </div>
+                                </div>
+
+                                {(!isOwn) && (
+                                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                        <Comments announceRaw={state?.announce?.getRaw} />
+                                        
+                                    </div>
+                                )}
+
+                                {(isOwn) && (
+                                    <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
+                                        
+                                        <div >
+                                            {!isLoading && (
+                                                <div style={{display:'flex'}}>
+                                                    <div className={clsx(classes.textfieldcustom)}>
+                                                        <p style={{ fontSize:'12px', color:'#999999', marginBottom:'10px'}}>{t('vehicles:tokenPrice')} : </p>
+                                                        <TextField
+                                                            onChange={(event) => setTokenPrice(event.target.value)}
+                                                            value={tokenPrice}
+                                                            type="number"
+                                                            InputLabelProps={{ shrink: true }}
+                                                            error={!!error}
+                                                            helperText={error ? error.message : (!isConfirmed && t('vehicles:waitingConfirmation'))}
+                                                            disabled={!isConfirmed || !active}
+                                                            variant="outlined"
+                                                        />
+                                                    </div>
+                                                    <button className={clsx(classes.buttonblue)} style={{ height:'40px', marginLeft:'10px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                                        {isMinted ? t('vehicles:save') : t('vehicles:mint')}
+                                                    </button>
+                                                </div>
+                                                
+                                            )}
+                                            
+                                        </div>
+                                    </div>  
+                                )}
+                                
+                            </Col>
+                        
+                        </> 
+                    ):(
+                        <>
+                        <Col sm={12} md={6}>
+                            <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
+                                <Row >
+                                    <div className="pic">
+                                        <Avatar
+                                            className="img-profile-wrapper avatar-preview"
+                                            src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
+                                            isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
+                                            alt={state?.announce?.getTitle}
+                                            style={{ width: 120, height: 120 }}
+                                        />
+                                    </div>
+
+                                    <div style={{ marginLeft: '10px' }}>
+                                        <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
+                                            <a>
+                                                <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
+                                                    {state?.announce?.getAuthor.getFullName}
+                                                </Typography>
+                                            </a>
+                                        </Link>
+
+                                        {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
+                                            <div className="top-profile-location">
+                                                <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                                    <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                        <NewIcons.card_location style={{ marginRight:'5px' }}/>
+                                                        {state?.announce?.getAdOrAuthorCustomAddress()}
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        )}
+                                        {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
+                                    </div>
+                                </Row>
+                            </div>
+
+                            <div className="pics">
+                                {state?.announce?.getCountImages > 0 && (
+                    
+                                        <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
+                                        // {/* {isDesktop && (
+                                        //     <GalleryImgsLazy
+                                        //         images={announce.getImages}
+                                        //         handleCLickImg={handleCLickImg}
+                                        //     />
+                                        // )} */}
+                                )}
+                            </div>
+                        </Col>
+
+                        <Col sm={12} md={6}>
+                            <div style={{ marginTop:'25px' }}>
+                                <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
+                                    {state?.announce?.getAnnounceTitle}
+                                </Typography>
+                                
+                                <div  style={{ width: '100%', marginTop:'10px' }}>
+                                    <div  style={{ width: '100%',marginTop:'10px', display:'flex', justifyContent: 'space-between' }}>
+                                        
+                                        <Box mb={2} display="flex" flexDirection="row">
+
+                                            <Col sm={5}>
+                                                <Row style={{ marginTop:'10px', width: '100%', marginTop:'-15px' }}>
+                                                    <label key={`price-${tokenPriceInEuros}`} style={{fontSize: 28, color:'#444444' }}>€ <label style={{ fontSize: 24, color:'#444444'}}>{tokenPriceInEuros}</label></label>
+                                                </Row>
+                                            </Col>
+        
+                                        </Box>
+                                        
+                                        <Box mb={5} display="flex" flexDirection="row-reverse">
+                                            <Col 
+                                                className="icons-star-prof"
+                                                onClick={() =>
+                                                    dispatchModalState({
+                                                        openModalShare: true,
+                                                        modalShareAnnounce: state?.announce
+                                                    })
+                                                }
+                                                style={{ display:'flex', justifyContent: 'flex-end' }}
+                                            >
+                                                <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(state?.announce?.getCreationDate.raw, lang)}</small>
+                                                <img src="/images/share.png" alt="" />
+                                            </Col>
+                                        </Box>
+                                   
+                                    </div>
+                                </div>  
+
                                 <div>
                                     <p style={{ fontStyle: 'normal', fontWeight: '500', fontSize: '14px', lineHeight: '150%' }}>#1212</p>
                                 </div>
+
                             </div>
 
-                        </div>
+                            <TagsList tags={state?.announce?.getTags} />
 
-                        <TagsList tags={state?.announce?.getTags} />
+                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
+                                <div className="icons-profile-wrapper" style={{ width:'90%' }}>
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
-                            <div className="icons-profile-wrapper" style={{ width:'90%' }}>
-
-                                {isOwn && (
-                                    <Action onClick={toggleVisibility}>
-                                        {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                    {isOwn && (
+                                        <Action onClick={toggleVisibility}>
+                                            {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
+                                        </Action>
+                                    )}
+                                    <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
+                                        <i.BookmarkBorder
+                                            style={{
+                                                color: like ? '#444444' : '#444444',
+                                                marginRight: '8px'
+                                            }}
+                                        />
+                                        <span style={{ color:'#444444' }}>{likesCounter}</span>
                                     </Action>
-                                )}
-                                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                    <i.BookmarkBorder
-                                        style={{
-                                            color: like ? '#444444' : '#444444',
-                                            marginRight: '8px'
-                                        }}
-                                    />
-                                    <span style={{ color:'#444444' }}>{likesCounter}</span>
-                                </Action>
 
-                                <Action
-                                    title={t('vehicles:comment_plural')}
-                                    style={{ color: state?.announce?.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
-                                >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
-                                    <span>{state?.announce?.getCountComments}</span>
-                                </Action>
+                                    <Action
+                                        title={t('vehicles:comment_plural')}
+                                        style={{ color: state?.announce?.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
+                                    >
+                                        <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
+                                        <span>{state?.announce?.getCountComments}</span>
+                                    </Action>
 
-                                <Action
-                                    onClick={() => {
-                                        if (!isAuthenticated) {
-                                            router.push({
-                                                pathname: '/auth/login',
-                                                query: { redirect: router.asPath }
+                                    <Action
+                                        onClick={() => {
+                                            if (!isAuthenticated) {
+                                                router.push({
+                                                    pathname: '/auth/login',
+                                                    query: { redirect: router.asPath }
+                                                })
+                                                return
+                                            }
+                                            dispatchModalState({
+                                                openModalMessaging: true,
+                                                modalMessagingProfile: state?.announce?.getAuthor,
+                                                modalMessaginAnnounce: state?.announce
                                             })
-                                            return
                                         }
-                                        dispatchModalState({
-                                            openModalMessaging: true,
-                                            modalMessagingProfile: state?.announce?.getAuthor,
-                                            modalMessaginAnnounce: state?.announce
-                                        })
-                                    }
-                                    }
-                                    style={{ color: state?.announce?.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
-                                >
-                                    <i.MailOutline style={{ position: 'relative', top: -1  }} />
-                                </Action>
+                                        }
+                                        style={{ color: state?.announce?.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
+                                    >
+                                        <i.MailOutline style={{ position: 'relative', top: -1  }} />
+                                    </Action>
 
 
-                                {(state.isAdmin || state.isSelf) && (
-                                    <div style={{ display: "flex", gap: 5 }}>
-                                        <CTALink href={state?.announce?.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
-                                <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
-                            </div>
-                        </div>
-
-                        {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
-                            <>
-                                <button className={clsx(classes.buttonblue)}
-                                    disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
-                                    onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
-                                <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                                    <Comments announceRaw={state?.announce?.getRaw} />
-                                
-                                </div>
-                            </>
-                        )}
-
-
-                        {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
-                                <div className="icons-profile-wrapper">
-
-                                    {!isLoading && (
+                                    {(state.isAdmin || state.isSelf) && (
                                         <div style={{ display: "flex", gap: 5 }}>
-                                            <TextField
-                                                label={t('vehicles:tokenPrice')}
-                                                onChange={(event) => setTokenPrice(event.target.value)}
-                                                value={tokenPrice}
-                                                type="number"
-                                                InputLabelProps={{ shrink: true }}
-                                                error={!!error}
-                                                helperText={error ? error.message : (!isConfirmed && t('vehicles:waitingConfirmation'))}
-                                                disabled={!isConfirmed || !active}
-                                                variant="outlined"
-                                            />
-                                            <button style={{ height:'55px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
-                                                {isMinted ? t('vehicles:save') : t('vehicles:mint')}
-                                            </button>
+                                            <CTALink href={state?.announce?.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
                                         </div>
                                     )}
+                                </div>
 
+                                <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
+                                    <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
                                 </div>
                             </div>
-                        )}
-                    </Col>
+
+                            {!isOwn &&(
+                                <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                    <Comments announceRaw={state?.announce?.getRaw} />
+                                </div>
+                            )}
+
+                            {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
+                                <>
+                                    <button className={clsx(classes.buttonblue)}
+                                        disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
+                                        onClick={handleMakeOffer}> {t('vehicles:makeOffer')} </button>
+                                    
+                                </>
+                            )}
+
+
+                            {(isOwn) && (
+                                    <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
+                                        
+                                        <div >
+                                            {!isLoading && (
+                                                <div style={{display:'flex'}}>
+                                                    <div className={clsx(classes.textfieldcustom)}>
+                                                        <p style={{ fontSize:'12px', color:'#999999', marginBottom:'10px'}}>{t('vehicles:tokenPrice')} : </p>
+                                                        <TextField
+                                                            onChange={(event) => setTokenPrice(event.target.value)}
+                                                            value={tokenPrice}
+                                                            type="number"
+                                                            InputLabelProps={{ shrink: true }}
+                                                            error={!!error}
+                                                            helperText={error ? error.message : (!isConfirmed && t('vehicles:waitingConfirmation'))}
+                                                            disabled={!isConfirmed || !active}
+                                                            variant="outlined"
+                                                        />
+                                                    </div>
+                                                    <button className={clsx(classes.buttonblue)} style={{ height:'40px', marginLeft:'10px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                                        {isMinted ? t('vehicles:save') : t('vehicles:mint')}
+                                                    </button>
+                                                </div>
+                                                
+                                            )}
+                                            
+                                        </div>
+                                    </div>  
+                                )}
+                        </Col>
+                
+                        </>
+                    )}
+                    
                 </Row>
                 <div style={{ marginTop:'50px' }}>
                     <section className="my-2" style={{ marginTop:'15px' }}>
@@ -815,7 +1083,14 @@ const Announce = () => {
                         <Typography component="h3" variant="h3">
                             {t('vehicles:data-sheet')}
                         </Typography>
-                        <DamageViewerTabs tabs={state?.announce?.getDamagesTabs} vehicleType={state?.announce?.getVehicleType} />
+                        {isMobile ? (
+                            <div style={{ marginTop: 40 }}>
+                                <DamageViewerTabs tabs={state?.announce?.getDamagesTabs} vehicleType={state?.announce?.getVehicleType} />
+                            </div>
+                        ):(
+                            <DamageViewerTabs tabs={state?.announce?.getDamagesTabs} vehicleType={state?.announce?.getVehicleType} />
+                        )}
+                        
                     </section>
                 </div>
             </div>
