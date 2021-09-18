@@ -590,14 +590,6 @@ const Announce = () => {
             )}
 
             <div className="objava-wrapper">
-
-
-                {!state?.announce?.getIsActivated && (
-                    <Alert severity="warning">{`Your announce is hidden from public & waiting for moderator activation`}</Alert>
-                )}
-
-                {!state?.announce?.getIsVisible && <Alert color="warning">Your announce is currently not published (draft mode)</Alert>}
-
                 <Row>
                     <Col sm={12} md={6}>
                         <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
