@@ -36,6 +36,7 @@ import { injected } from "../../../connectors"
 import UsersService from '../../../services/UsersService'
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
+import HandleOffer from "../../../Blockchain/HandleOffer"
 
 const web3 = new Web3(Web3.givenProvider)
 
@@ -653,18 +654,7 @@ const Announce = () => {
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
                                     
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
-                                        <Row>
-                                            <Col sm={5}>
-                                                <button className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
-                                                    {t('vehicles:acceptOffer')}
-                                                </button>
-                                            </Col>
-                                            <Col sm={5}>
-                                                <button  className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
-                                                    {t('vehicles:rejectOffer')}
-                                                </button>
-                                            </Col>
-                                        </Row>
+                                        <HandleOffer />
                                     )}
                                 </Box>
                                 <div>
