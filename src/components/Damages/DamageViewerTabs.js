@@ -4,12 +4,13 @@ import PropTypes from 'prop-types'
 import useTranslation from 'next-translate/useTranslation'
 import { Col, Row, TabContent, TabPane } from 'reactstrap'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import Header from '../Header'
 import DamagesNavResponsive from './DamagesNavResponsive'
 import toggleVehicleDamagesTabs from './ToggleVehicleDamagesTabs'
 
 import { NewIcons } from 'assets/icons'
 import { Emoji } from 'react-apple-emojis'
+
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(() => ({
     annoInputs: {
@@ -69,10 +70,29 @@ const useStyles = makeStyles(() => ({
 
     annoInputField: {
         backgroundColor:'#ffffff00 !important',
+    },
+
+    annoh5tag:{
+        '& h5':{
+            display:'none'
+        }
+    },
+
+    nav_fontcolor:{
+       '& nav-link':{
+           color: '#999999'
+       }
     }
+
+    
+
 }))
 
 const DamageViewerTabs = ({ vehicleType, tabs }) => {
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
+    const classes = useStyles()
+
     const warningDamageRef = useRef(null)
     const [activeTab, setActiveTab] = useState(0)
     const [damagesTabs, setDamagesTabs ] = useState([])
@@ -90,13 +110,27 @@ const DamageViewerTabs = ({ vehicleType, tabs }) => {
     
     return (
         <section className="anno">
-            <DamagesNavResponsive
-                {...{
-                    damagesTabs,
-                    activeTab,
-                    setActiveTab
-                }}
-            />
+
+            {isMobile ? (
+                <div className={clsx(classes.nav_fontcolor)}>
+                    <DamagesNavResponsive
+                        {...{
+                            damagesTabs,
+                            activeTab,
+                            setActiveTab
+                        }}
+                    />
+                </div>
+            ) : (
+                <DamagesNavResponsive
+                    {...{
+                        damagesTabs,
+                        activeTab,
+                        setActiveTab
+                    }}
+                />
+            )}
+            
 
             <TabContent ref={warningDamageRef} activeTab={activeTab}>
                 {Object.keys(tabs).map((key, index) => {
@@ -104,14 +138,26 @@ const DamageViewerTabs = ({ vehicleType, tabs }) => {
 
                     return (
                         <TabPane key={index} tabId={index}>
-                            <Row>
-                                <Col md={6}>
-                                    <DamagesMappedImg {...{index, tab, annoRefs}}/>
-                                </Col>
-                                <Col md={6}>
-                                    <DamagesList tab={tab}/>
-                                </Col>
-                            </Row>
+                            {isMobile ? (
+                                <Row>
+                                    <Col md={6} className={clsx(classes.annoh5tag)}>
+                                        <DamagesList tab={tab}/>
+                                    </Col>
+                                    <Col md={6}>
+                                        <DamagesMappedImg {...{index, tab, annoRefs}}/>
+                                    </Col>
+                                </Row>
+                            ):( 
+                                <Row>
+                                    <Col md={6}>
+                                        <DamagesMappedImg {...{index, tab, annoRefs}}/>
+                                    </Col>
+                                    <Col md={6}>
+                                        <DamagesList tab={tab}/>
+                                    </Col>
+                                </Row>
+                            )}
+                            
                         </TabPane>
                     )
                 })}
