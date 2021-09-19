@@ -11,8 +11,6 @@ import useTranslation from 'next-translate/useTranslation'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
 import TagsList from '../../../components/Tags/TagsList'
-import CTALink from '../../../components/CTALink'
-import { Action } from '../../../components/AnnounceCard/components'
 import AnnounceService from '../../../services/AnnounceService'
 import AnnounceModel from '../../../models/announce.model'
 import { MessageContext } from '../../../context/MessageContext'
@@ -20,22 +18,18 @@ import { ModalContext } from '../../../context/ModalContext'
 import { useAuth } from '../../../context/AuthProvider'
 import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
-
-import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import { NewIcons } from 'assets/icons'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { injected } from "../../../connectors"
 import UsersService from '../../../services/UsersService'
 import MakeOffer from "../../../components/Blockchain/MakeOffer"
 import HandleOffer from "../../../components/Blockchain/HandleOffer"
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
-import ClickLikeButton from "../../../components/Likes/ClickLikeButton"
-import CardInformation from "../../../components/AnnounceCard/CardInformation"
+import CarInformation from "../../../components/AnnounceCard/CarInformation"
+import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
 
 
 const useStyles = makeStyles(() => ({
@@ -61,17 +55,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Announce = () => {
-    const isMobile = useMediaQuery('(max-width:768px)')
-    const [hiddenForm, hideForm] = useState(true)
-
-    const toggleFilters = () => {
-        hideForm((hiddenForm) => !hiddenForm)
-    }
-
-    useEffect(()=>{
-        toggleFilters()
-    },[isMobile])
-
     const { library, chainId, account, activate, active } = useWeb3React()
     const classes = useStyles()
     const router = useRouter()
@@ -354,12 +337,6 @@ const Announce = () => {
 
     const isOwn = authenticatedUser?.raw?._id === state?.announce?.raw?.user?._id
 
-    const toggleVisibility = () => {
-        AnnounceService.updateAnnounce(state?.announce?.getSlug, { visible: !state?.announce?.raw?.visible }).then(() =>
-            window.location.reload()
-        )
-    }
-
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
 
@@ -378,7 +355,7 @@ const Announce = () => {
 
             <div className="objava-wrapper">
                 <Row>
-                    <CardInformation announce={state.announce} />
+                    <CarInformation announce={state.announce} />
                     <Col sm={12} md={6}>
                         <div style={{ marginTop:'25px' }}>
                             <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
@@ -424,57 +401,7 @@ const Announce = () => {
 
                         <TagsList tags={state?.announce?.getTags} />
 
-                        <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop:'-15px' }}>
-                            <div className="icons-profile-wrapper" style={{ width:'90%' }}>
-
-                                {isOwn && (
-                                    <Action onClick={toggleVisibility}>
-                                        {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
-                                    </Action>
-                                )}
-                                <ClickLikeButton authenticatedUser={authenticatedUser} announce={state.announce}  />
-
-                                <Action
-                                    title={t('vehicles:comment_plural')}
-                                    style={{ color: state?.announce?.getCountComments > 0 ? '#FE74F1' : '#444444', marginLeft:'10px' }}
-                                >
-                                    <NewIcons.card_message_pink style={{ width: 23, marginRight: '8px' }} />
-                                    <span>{state?.announce?.getCountComments}</span>
-                                </Action>
-
-                                <Action
-                                    onClick={() => {
-                                        if (!isAuthenticated) {
-                                            router.push({
-                                                pathname: '/auth/login',
-                                                query: { redirect: router.asPath }
-                                            })
-                                            return
-                                        }
-                                        dispatchModalState({
-                                            openModalMessaging: true,
-                                            modalMessagingProfile: state?.announce?.getAuthor,
-                                            modalMessaginAnnounce: state?.announce
-                                        })
-                                    }
-                                    }
-                                    style={{ color: state?.announce?.getCountComments > 0 ? '#444444' : '#444444', marginLeft:'10px' }}
-                                >
-                                    <i.MailOutline style={{ position: 'relative', top: -1  }} />
-                                </Action>
-
-
-                                {(state.isAdmin || state.isSelf) && (
-                                    <div style={{ display: "flex", gap: 5 }}>
-                                        <CTALink href={state?.announce?.getAnnounceEditLink} title={t('vehicles:edit-announce')} />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div onClick={() => toggleFilters()} style={{ width:'10%', display:'flex', justifyContent:'flex-end', marginTop:'20px' }}>
-                                <i className={clsx('ml-2', 'arrow_nav', hiddenForm ? 'is-left' : 'is-bottom')}/>
-                            </div>
-                        </div>
+                        <EditLikeAndComments announce={state.announce} />
 
                         {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                             <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
