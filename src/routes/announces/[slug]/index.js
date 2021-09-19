@@ -37,6 +37,7 @@ import MakeOffer from "../../../components/Blockchain/MakeOffer"
 import HandleOffer from "../../../components/Blockchain/HandleOffer"
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
+import ClickLikeButton from "../../../components/Likes/ClickLikeButton"
 
 
 const useStyles = makeStyles(() => ({
@@ -242,10 +243,7 @@ const Announce = () => {
         }
     }, [fetchAnnounce, fetchProfile])
 
-    useEffect(() => {
-        setLike(alreadyLikeCurrentUser)
-        setLikesCounter(state?.announce?.getCountLikes)
-    }, [state?.announce])
+
 
     useEffect(() => {
         if (!state.stateReady) return
@@ -274,8 +272,6 @@ const Announce = () => {
         }
 
     }, [tried, active])
-
-    const [isLiking, setIsLiking] = useState(false)
 
     const [transactions, setTransactions] = useState([])
 
@@ -331,17 +327,6 @@ const Announce = () => {
         }
     }
 
-    const checkIfAlreadyLike = () => {
-        const matchUserFavorite = authenticatedUser.getFavorites.find((favorite) => favorite.getID === state?.announce?.getID)
-        const matchAnnounceLike = state?.announce?.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID)
-        return !!matchUserFavorite || !!matchAnnounceLike
-    }
-
-    const alreadyLikeCurrentUser = checkIfAlreadyLike()
-
-    const [like, setLike] = useState(alreadyLikeCurrentUser)
-
-    const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
 
     useEffect(() => {
         if (!isContractReady)
@@ -378,34 +363,6 @@ const Announce = () => {
             window.location.reload()
         )
     }
-
-    const handleClickLikeButton = async () => {
-        if(isOwn) return
-        if (!isAuthenticated) {
-            router.push({
-                pathname: '/auth/login',
-                query: { redirect: router.asPath }
-            })
-            return
-        }
-        if(isLiking) return
-        setIsLiking(true)
-        try {
-            if (like) {
-                setLike(false)
-                setLikesCounter((likesCounter) => likesCounter - 1)
-                await AnnounceService.removeLikeLoggedInUser(state?.announce?.getID)
-            } else {
-                setLike(true)
-                setLikesCounter((likesCounter) => likesCounter + 1)
-                await AnnounceService.addLikeLoggedInUser(state?.announce?.getID)
-            }
-            setIsLiking(false)
-        } catch (err) {
-            dispatchModalError({ err })
-        }
-    }
-
 
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
@@ -524,15 +481,7 @@ const Announce = () => {
                                         {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
                                     </Action>
                                 )}
-                                <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                    <i.BookmarkBorder
-                                        style={{
-                                            color: like ? '#444444' : '#444444',
-                                            marginRight: '8px'
-                                        }}
-                                    />
-                                    <span style={{ color:'#444444' }}>{likesCounter}</span>
-                                </Action>
+                                <ClickLikeButton authenticatedUser={authenticatedUser} announce={state.announce}  />
 
                                 <Action
                                     title={t('vehicles:comment_plural')}
