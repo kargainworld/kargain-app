@@ -12,7 +12,6 @@ import useTranslation from 'next-translate/useTranslation'
 import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
-
 import TagsList from '../../../components/Tags/TagsList'
 import CTALink from '../../../components/CTALink'
 import { Action } from '../../../components/AnnounceCard/components'
@@ -34,26 +33,13 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { injected } from "../../../connectors"
 import UsersService from '../../../services/UsersService'
-
-import TransactionsService from '../../../services/TransactionsService'
 import MakeOffer from "../../../components/Blockchain/MakeOffer"
+import HandleOffer from "../../../components/Blockchain/HandleOffer"
+import Web3 from "web3"
+import TransactionsService from '../../../services/TransactionsService'
 
 
 const useStyles = makeStyles(() => ({
-    formRow: {
-        display: 'flex',
-
-        '& > div': {
-            margin: '1rem',
-            flex: 1
-        }
-    },
-    cardTopInfos: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        margin: '1rem 0'
-    },
-
     priceStarsWrapper: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -63,27 +49,6 @@ const useStyles = makeStyles(() => ({
     },
     wysiwyg: {
         margin: '1rem'
-    },
-    buttonblue:{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '6px 50px',
-
-        background: '#2C65F6',
-        borderRadius: '25px',
-
-        fontWeight: 'bold',
-        fontSize: '14px',
-        lineHeight: '150%',
-        color:'white',
-
-        marginTop:'20px'
-    },
-
-    filtersHidden: {
-        display: 'none'
     },
     textfield:{
         '& .MuiInputBase-root':{
@@ -120,6 +85,7 @@ const Announce = () => {
     const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
+    const [bnbBalance, setBalance] = useState()
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState(null)
@@ -128,14 +94,14 @@ const Announce = () => {
     const [isMinted, setIsMinted] = useState(false)
     const tokenPriceInEuros = (+tokenPrice * priceBNB).toFixed(2)
 
+
+    const web3 = new Web3(Web3.givenProvider)
     const {
         fetchTokenPrice,
         mintToken,
         updateTokenPrince,
         isContractReady,
         watchOfferEvent,
-        acceptOffer,
-        rejectOffer,
         waitTransactionToBeConfirmed
     } = useKargainContract()
 
@@ -173,7 +139,6 @@ const Announce = () => {
 
         const action = async () => {
             const transactionsPending = transactions.filter(x=>x.status === "Pending")
-
             console.log("transactionsPending", transactionsPending)
 
             for (const tx of transactionsPending) {
@@ -182,95 +147,24 @@ const Announce = () => {
                     const newTx = await TransactionsService.updateTransaction(state?.announce?.getID, { hashTx:tx.hashTx, status: "Approved" })
 
                     setTransactions(prev => {
-
                         const result = prev.filter(x=>x.hashTx === tx.hashTx)
-
                         result.push(newTx)
-
                         return result
-
                     })
 
                 } catch (error) {
-
                     const newTx = await TransactionsService.updateTransaction(state?.announce?.getID, { hashTx:tx.hashTx, status: "Rejected" })
-
                     setTransactions(prev => {
-
                         const result = prev.filter(x=>x.hashTx === tx.hashTx)
-
                         result.push(newTx)
-
                         return result
-
                     })
                 }
             }
-
         }
-
         action()
 
     }, [state, transactions, waitTransactionToBeConfirmed])
-
-    const handleAcceptOffer = useCallback( async (offerHashTx) => {
-        try {
-            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
-                return
-
-            const announceId = state?.announce?.getID
-            setIsConfirmed(false)
-            setError(null)
-
-            const task = acceptOffer(state?.announce?.getTokenId)
-            const hashTx = await task
-
-            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferAccepted" })
-
-            await waitTransactionToBeConfirmed(hashTx)
-
-            AnnounceService.updateAnnounce(state?.announce.getSlug, { user: newOfferCreated?.user }).then(() =>
-                window.location.reload()
-            )
-
-            setIsConfirmed(true)
-            dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') })
-        }
-        catch(error) {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        }
-
-    }, [isContractReady, state?.announce, tokenPrice, authenticatedUser.getWallet, acceptOffer, waitTransactionToBeConfirmed, newOfferCreated?.user, dispatchModal, t])
-
-    const handleRejectOffer = async (offerHashTx) => {
-        try {
-            if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet)
-                return
-
-            const announceId = state?.announce?.getID
-
-            const tokenId = state?.announce.getTokenId
-            setIsConfirmed(false)
-            setError(null)
-
-            const task = rejectOffer(tokenId)
-            const hashTx = await task
-
-            await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: "OfferRejected" })
-
-            await waitTransactionToBeConfirmed(hashTx)
-
-            setIsConfirmed(true)
-            dispatchModal({ msg: t('vehicles:rejectedOffer') })
-        } catch (error) {
-            console.error(error)
-            setError(error)
-            setIsConfirmed(true)
-        }
-
-    }
 
 
     const fetchProfile = useCallback(async () => {
@@ -329,7 +223,6 @@ const Announce = () => {
         const handleOfferReceived = async () => {
             try {
                 const data = await watchOfferEvent(state?.announce.getTokenId)
-
                 setWalletPayer(data)
             } catch (error) {
                 setError(error)
@@ -424,13 +317,9 @@ const Announce = () => {
                 updateTokenPrince(tokenId, +tokenPrice)
 
             const hashTx = await task
-
             const result = await TransactionsService.addTransaction({ announceId, hashTx, data: tokenPrice, action: "TokenMinted" })
-
             setTransactions(prev => [...prev, result])
-
             await waitTransactionToBeConfirmed(hashTx)
-
             setIsConfirmed(true)
             setIsMinted(true)
             dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') })
@@ -454,7 +343,33 @@ const Announce = () => {
 
     const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes)
 
+    useEffect(() => {
+        if (!isContractReady)
+            return
 
+        if (!!account && !!library) {
+            let stale = false
+
+            web3.eth
+                .getBalance(account)
+                .then((balance) => {
+                    if (!stale) {
+                        let ethBalance = web3.utils.fromWei(balance, 'ether')
+                        setBalance(ethBalance)
+                    }
+                })
+                .catch(() => {
+                    if (!stale) {
+                        setBalance(null)
+                    }
+                })
+
+            return () => {
+                stale = true
+                setBalance(undefined)
+            }
+        }
+    }, [account, library, chainId, isContractReady]) //
 
     const isOwn = authenticatedUser?.raw?._id === state?.announce?.raw?.user?._id
 
@@ -490,7 +405,6 @@ const Announce = () => {
             dispatchModalError({ err })
         }
     }
-
 
 
     if (!state.stateReady) return null
@@ -552,12 +466,6 @@ const Announce = () => {
                             {state?.announce?.getCountImages > 0 && (
                                 <>
                                     <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
-                                    {/* {isDesktop && (
-                    <GalleryImgsLazy
-                        images={announce.getImages}
-                        handleCLickImg={handleCLickImg}
-                    />
-                  )} */}
                                 </>
                             )}
                         </div>
@@ -596,18 +504,7 @@ const Announce = () => {
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
                                     
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
-                                        <Row>
-                                            <Col sm={5}>
-                                                <button className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleAcceptOffer}>
-                                                    {t('vehicles:acceptOffer')}
-                                                </button>
-                                            </Col>
-                                            <Col sm={5}>
-                                                <button  className={clsx(classes.buttonblue)} disabled={!isContractReady || !isConfirmed || tokenPrice === null } onClick={handleRejectOffer}>
-                                                    {t('vehicles:rejectOffer')}
-                                                </button>
-                                            </Col>
-                                        </Row>
+                                        <HandleOffer newOfferCreated={newOfferCreated} announce={state.announce} tokenPrice={tokenPrice} />
                                     )}
                                 </Box>
                                 <div>
@@ -680,7 +577,7 @@ const Announce = () => {
                         </div>
 
                         {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
-                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce}/>
+                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
                         )}
 
 
