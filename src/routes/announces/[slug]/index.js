@@ -8,8 +8,6 @@ import { useWeb3React } from "@web3-react/core"
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
-import CarInfos from '../../../components/Products/car/CarInfos'
 import TagsList from '../../../components/Tags/TagsList'
 import AnnounceService from '../../../services/AnnounceService'
 import AnnounceModel from '../../../models/announce.model'
@@ -30,6 +28,7 @@ import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
 import CarInformation from "../../../components/AnnounceCard/CarInformation"
 import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
+import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
 
 
 const useStyles = makeStyles(() => ({
@@ -39,9 +38,6 @@ const useStyles = makeStyles(() => ({
         alignItems: 'flex-start',
         margin: '15px 0',
         borderBottom: '1px solid #999999'
-    },
-    wysiwyg: {
-        margin: '1rem'
     },
     textfield:{
         '& .MuiInputBase-root':{
@@ -61,7 +57,7 @@ const Announce = () => {
     const { slug } = router.query
     const { t, lang } = useTranslation()
     const { isAuthenticated, authenticatedUser } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
@@ -436,47 +432,7 @@ const Announce = () => {
                         )}
                     </Col>
                 </Row>
-                <div style={{ marginTop:'50px' }}>
-                    <section className="my-2" style={{ marginTop:'15px' }}>
-                        <Typography component="h3" variant="h3">
-                            {t('vehicles:vehicle-data')}
-                        </Typography>
-                        <CarInfos announce={state?.announce} enableThirdColumn />
-                    </section>
-
-                    <section className="my-2" style={{ marginTop:'15px' }}>
-                        <Typography component="h3" variant="h3">
-                            {t('vehicles:equipments')}
-                        </Typography>
-                        <Row>
-                            {state?.announce?.getVehicleEquipments.map((equipment, index) => {
-                                return (
-                                    <Col sm={6} md={3} key={index}>
-                                        <div className="equipment m-3">
-                                            <Typography>{equipment.label}</Typography>
-                                        </div>
-                                    </Col>
-                                )
-                            })}
-                        </Row>
-                    </section>
-
-                    <section className="my-2" style={{ marginTop:'15px' }}>
-                        <Typography component="h3" variant="h3">
-                            {t('vehicles:description')}
-                        </Typography>
-                        <div className={classes.wysiwyg}>
-                            <Typography>{state?.announce?.getDescription}</Typography>
-                        </div>
-                    </section>
-
-                    <section className="my-2" style={{ marginTop:'15px' }}>
-                        <Typography component="h3" variant="h3">
-                            {t('vehicles:data-sheet')}
-                        </Typography>
-                        <DamageViewerTabs tabs={state?.announce?.getDamagesTabs} vehicleType={state?.announce?.getVehicleType} />
-                    </section>
-                </div>
+                <VehicleEquipments announce={state.announce} />
             </div>
         </Container>
     )
