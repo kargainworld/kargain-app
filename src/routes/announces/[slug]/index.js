@@ -966,6 +966,46 @@ const Announce = () => {
                   </div>
                 </div>
 
+                {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Pending' && (
+                  <div>offer pending, wait a few minutes to be confirmed.</div>
+                )}
+
+                {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Approved' && (
+                  <Row style={{ justifyContent: 'center', marginTop: '30px' }}>
+                    <div style={{ marginRight: '15px' }}>
+                      <button
+                        className={clsx(classes.bordergradientbtn)}
+                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
+                        onClick={handleAcceptOffer}
+                      >
+                        <label>{t('vehicles:acceptOffer')}</label>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        className={clsx(classes.bordergradientbtn)}
+                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
+                        onClick={handleRejectOffer}
+                      >
+                        <label>{t('vehicles:rejectOffer')}</label>
+                      </button>
+                    </div>
+                  </Row>
+                )}
+
+                {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <button
+                      className={clsx(classes.buttonblue)}
+                      disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
+                      onClick={handleMakeOffer}
+                    >
+                      {' '}
+                      {t('vehicles:makeOffer')}{' '}
+                    </button>
+                  </div>
+                )}
+
                 <TagsList tags={state?.announce?.getTags} />
 
                 <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ marginTop: '-15px' }}>
@@ -1038,19 +1078,6 @@ const Announce = () => {
                   <div className={clsx(hiddenForm && classes.filtersHidden)}>
                     <Comments announceRaw={state?.announce?.getRaw} />
                   </div>
-                )}
-
-                {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
-                  <>
-                    <button
-                      className={clsx(classes.buttonblue)}
-                      disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
-                      onClick={handleMakeOffer}
-                    >
-                      {' '}
-                      {t('vehicles:makeOffer')}{' '}
-                    </button>
-                  </>
                 )}
 
                 {isOwn && (
