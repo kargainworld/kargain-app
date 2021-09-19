@@ -5,16 +5,13 @@ import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import Alert from '@material-ui/lab/Alert'
 import { useWeb3React } from "@web3-react/core"
-import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
 import TagsList from '../../../components/Tags/TagsList'
 import AnnounceService from '../../../services/AnnounceService'
 import AnnounceModel from '../../../models/announce.model'
 import { MessageContext } from '../../../context/MessageContext'
-import { ModalContext } from '../../../context/ModalContext'
 import { useAuth } from '../../../context/AuthProvider'
-import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
@@ -29,6 +26,7 @@ import TransactionsService from '../../../services/TransactionsService'
 import CarInformation from "../../../components/AnnounceCard/CarInformation"
 import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
 import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
+import SharedURL from "../../../components/AnnounceCard/SharedURL"
 
 
 const useStyles = makeStyles(() => ({
@@ -55,10 +53,9 @@ const Announce = () => {
     const classes = useStyles()
     const router = useRouter()
     const { slug } = router.query
-    const { t, lang } = useTranslation()
+    const { t } = useTranslation()
     const { isAuthenticated, authenticatedUser } = useAuth()
     const { dispatchModal } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
     const [bnbBalance, setBalance] = useState()
@@ -354,26 +351,7 @@ const Announce = () => {
                     <CarInformation announce={state.announce} />
                     <Col sm={12} md={6}>
                         <div style={{ marginTop:'25px' }}>
-                            <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
-                                {state?.announce?.getAnnounceTitle}
-                            </Typography>
-                            <div  style={{ width: '100%',marginTop:'10px' }}>
-                                <Box mb={2} display="flex" flexDirection="row-reverse">
-                                    <Col sm={3}
-                                        className="icons-star-prof"
-                                        onClick={() =>
-                                            dispatchModalState({
-                                                openModalShare: true,
-                                                modalShareAnnounce: state?.announce
-                                            })
-                                        }
-                                        style={{ display:'flex', justifyContent: 'flex-end' }}
-                                    >
-                                        <small className="mx-3" style={{ fontSize:'16px' }}> {getTimeAgo(state?.announce?.getCreationDate.raw, lang)}</small>
-                                        <img src="/images/share.png" alt="" />
-                                    </Col>
-                                </Box>
-                            </div>
+                            <SharedURL announce={state.announce} />
                             <div  style={{ width: '100%',marginTop:'10px' }}>
                                 <Box mb={2} display="flex" flexDirection="row">
 
