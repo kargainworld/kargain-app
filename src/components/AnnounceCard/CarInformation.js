@@ -8,7 +8,7 @@ import React, { useRef } from "react"
 import { useSocket } from "../../context/SocketContext"
 
 
-const CardInformation = (props) => {
+const CarInformation = (props) => {
     const { getOnlineStatusByUserId } = useSocket()
     const refImg = useRef()
 
@@ -61,4 +61,4 @@ const CardInformation = (props) => {
     )
 }
 
-export default CardInformation
+export default CarInformation
