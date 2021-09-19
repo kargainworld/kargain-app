@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect,  useState } from 'react'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
-import Link from 'next-translate/Link'
 import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import Alert from '@material-ui/lab/Alert'
@@ -9,7 +8,6 @@ import { useWeb3React } from "@web3-react/core"
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs'
 import CarInfos from '../../../components/Products/car/CarInfos'
 import TagsList from '../../../components/Tags/TagsList'
@@ -22,8 +20,7 @@ import { ModalContext } from '../../../context/ModalContext'
 import { useAuth } from '../../../context/AuthProvider'
 import { getTimeAgo } from '../../../libs/utils'
 import Error from '../../_error'
-import { Avatar } from '../../../components/AnnounceCard/components'
-import { useSocket } from '../../../context/SocketContext'
+
 import * as i from '@material-ui/icons'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
@@ -38,6 +35,7 @@ import HandleOffer from "../../../components/Blockchain/HandleOffer"
 import Web3 from "web3"
 import TransactionsService from '../../../services/TransactionsService'
 import ClickLikeButton from "../../../components/Likes/ClickLikeButton"
+import CardInformation from "../../../components/AnnounceCard/CardInformation"
 
 
 const useStyles = makeStyles(() => ({
@@ -75,7 +73,6 @@ const Announce = () => {
     },[isMobile])
 
     const { library, chainId, account, activate, active } = useWeb3React()
-    const refImg = useRef()
     const classes = useStyles()
     const router = useRouter()
     const { slug } = router.query
@@ -83,7 +80,6 @@ const Announce = () => {
     const { isAuthenticated, authenticatedUser } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
-    const { getOnlineStatusByUserId } = useSocket()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
     const [bnbBalance, setBalance] = useState()
@@ -382,52 +378,7 @@ const Announce = () => {
 
             <div className="objava-wrapper">
                 <Row>
-                    <Col sm={12} md={6}>
-                        <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
-                            <Row >
-                                <div className="pic">
-                                    <Avatar
-                                        className="img-profile-wrapper avatar-preview"
-                                        src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
-                                        isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
-                                        alt={state?.announce?.getTitle}
-                                        style={{ width: 120, height: 120 }}
-                                    />
-                                </div>
-
-                                <div style={{ marginLeft: '10px' }}>
-                                    <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
-                                        <a>
-                                            <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
-                                                {state?.announce?.getAuthor.getFullName}
-                                            </Typography>
-                                        </a>
-                                    </Link>
-
-                                    {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                        <div className="top-profile-location">
-                                            <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                                <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
-                                                    <NewIcons.card_location style={{ marginRight:'5px' }}/>
-                                                    {state?.announce?.getAdOrAuthorCustomAddress()}
-                                                </span>
-                                            </a>
-                                        </div>
-                                    )}
-                                    {/* {announce.showCellPhone && <span style={{ paddingLeft: 6 }}> {announce.getPhone} </span>} */}
-                                </div>
-                            </Row>
-                        </div>
-
-                        <div className="pics">
-                            {state?.announce?.getCountImages > 0 && (
-                                <>
-                                    <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
-                                </>
-                            )}
-                        </div>
-                    </Col>
-
+                    <CardInformation announce={state.announce} />
                     <Col sm={12} md={6}>
                         <div style={{ marginTop:'25px' }}>
                             <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
