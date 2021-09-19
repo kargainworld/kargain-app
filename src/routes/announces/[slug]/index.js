@@ -655,7 +655,7 @@ const Announce = () => {
 
                                             <Col sm={3}>
                                                 <Row style={{ marginTop:'10px' }}>
-                                                    <label key={`price-${tokenPriceInEuros}`} style={{fontSize: 20, color:'#444444' }}>€ <label style={{ fontSize: 14, color:'#444444'}}>{tokenPriceInEuros}</label></label>
+                                                    <label key={`price-${tokenPriceInEuros}`} style={{fontSize: 16, color:'#444444' }}>€ <label style={{ fontSize: 14, color:'#444444'}}>{tokenPriceInEuros}</label></label>
                                                 </Row>
                                             </Col>
         
@@ -900,7 +900,7 @@ const Announce = () => {
                                         <Box mb={2} display="flex" flexDirection="row">
 
                                             <Col sm={5}>
-                                                <Row style={{ marginTop:'10px', width: '100%', marginTop:'-15px' }}>
+                                                <Row style={{ marginTop:'10px', marginTop:'-15px' }}>
                                                     <label key={`price-${tokenPriceInEuros}`} style={{fontSize: 28, color:'#444444' }}>€ <label style={{ fontSize: 24, color:'#444444'}}>{tokenPriceInEuros}</label></label>
                                                 </Row>
                                             </Col>
