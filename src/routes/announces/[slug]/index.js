@@ -36,24 +36,13 @@ import { injected } from '../../../connectors';
 import UsersService from '../../../services/UsersService';
 import Web3 from 'web3';
 import TransactionsService from '../../../services/TransactionsService';
+import MakeOffer from "../../../components/Blockchain/MakeOffer"
+import HandleOffer from "../../../components/Blockchain/HandleOffer"
+import ClickLikeButton from "../../../components/Likes/ClickLikeButton"
 
 const web3 = new Web3(Web3.givenProvider);
 
 const useStyles = makeStyles(() => ({
-  formRow: {
-    display: 'flex',
-
-    '& > div': {
-      margin: '1rem',
-      flex: 1,
-    },
-  },
-  cardTopInfos: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '1rem 0',
-  },
-
   priceStarsWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -95,33 +84,6 @@ const useStyles = makeStyles(() => ({
       height: '5px',
     },
   },
-
-  bordergradientbtn: {
-    height: '39px',
-    borderRadius: '100rem',
-    padding: '1rem',
-    fontSize: '14px',
-    padding: '8px 30px 2px',
-    boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
-    border: 'solid 2px transparent',
-    backgroundImage:
-      'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(176deg, #0046f9, #ff08fa);',
-    backgroundOrigin: 'border-box',
-    backgroundClip: 'content-box, border-box',
-    boxShadow: '2px 1000px 1px #fff inset',
-    '&:hover': {
-      backgroundImage:
-        'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
-    },
-
-    '& label': {
-      background:
-        '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
-      backgroundImage: 'linear-gradient(91deg, #084dff, #ff0afb)',
-      backgroundClip: 'text',
-      color: 'transparent',
-    },
-  },
   textfieldcustom: {
     '& span': {
       display: 'none',
@@ -161,6 +123,7 @@ const Announce = () => {
   const { getOnlineStatusByUserId } = useSocket();
   const { getPriceTracker } = usePriceTracker();
   const [priceBNB, setPrice] = useState(0);
+//   const [bnbBalance, setBalance] = useState()
   const [walletPayer, setWalletPayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [tokenPrice, setTokenPrice] = useState(null);
@@ -169,6 +132,7 @@ const Announce = () => {
   const [isMinted, setIsMinted] = useState(false);
   const tokenPriceInEuros = (+tokenPrice * priceBNB).toFixed(2);
 
+  const web3 = new Web3(Web3.givenProvider)
   const {
     fetchTokenPrice,
     mintToken,
@@ -252,103 +216,6 @@ const Announce = () => {
     action();
   }, [state, transactions, waitTransactionToBeConfirmed]);
 
-  const handleMakeOffer = useCallback(async () => {
-    if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet) return;
-    setIsConfirmed(false);
-    setError(null);
-    const announceId = state?.announce?.getID;
-    try {
-      setIsConfirmed(false);
-      setError(null);
-
-      const task = makeOffer(state?.announce?.getTokenId, tokenPrice);
-      const hashTx = await task;
-
-      await TransactionsService.addTransaction({
-        announceId,
-        hashTx,
-        data: authenticatedUser.getWallet,
-        action: 'OfferCreated',
-      });
-
-      await waitTransactionToBeConfirmed(hashTx);
-
-      setIsConfirmed(true);
-      dispatchModal({ msg: t('vehicles:tokenPriceConfirmed') });
-    } catch (error) {
-      console.error(error);
-      setError(error);
-      setIsConfirmed(true);
-    }
-  }, [state?.announce?.getTokenId, isContractReady, bnbBalanceWei, tokenPrice, makeOffer]);
-
-  const handleAcceptOffer = useCallback(
-    async (offerHashTx) => {
-      try {
-        if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet) return;
-
-        const announceId = state?.announce?.getID;
-        setIsConfirmed(false);
-        setError(null);
-
-        const task = acceptOffer(state?.announce?.getTokenId);
-        const hashTx = await task;
-
-        await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: 'OfferAccepted' });
-
-        await waitTransactionToBeConfirmed(hashTx);
-
-        AnnounceService.updateAnnounce(state?.announce.getSlug, { user: newOfferCreated?.user }).then(() =>
-          window.location.reload()
-        );
-
-        setIsConfirmed(true);
-        dispatchModal({ msg: t('vehicles:offerAcceptedConfirmed') });
-      } catch (error) {
-        console.error(error);
-        setError(error);
-        setIsConfirmed(true);
-      }
-    },
-    [
-      isContractReady,
-      state?.announce,
-      tokenPrice,
-      authenticatedUser.getWallet,
-      acceptOffer,
-      waitTransactionToBeConfirmed,
-      newOfferCreated?.user,
-      dispatchModal,
-      t,
-    ]
-  );
-
-  const handleRejectOffer = async (offerHashTx) => {
-    try {
-      if (!isContractReady || !state?.announce || !tokenPrice || !authenticatedUser.getWallet) return;
-
-      const announceId = state?.announce?.getID;
-
-      const tokenId = state?.announce.getTokenId;
-      setIsConfirmed(false);
-      setError(null);
-
-      const task = rejectOffer(tokenId);
-      const hashTx = await task;
-
-      await TransactionsService.addTransaction({ announceId, hashTx, data: offerHashTx, action: 'OfferRejected' });
-
-      await waitTransactionToBeConfirmed(hashTx);
-
-      setIsConfirmed(true);
-      dispatchModal({ msg: t('vehicles:rejectedOffer') });
-    } catch (error) {
-      console.error(error);
-      setError(error);
-      setIsConfirmed(true);
-    }
-  };
-
   const fetchProfile = useCallback(async () => {
     if (!isContractReady || !walletPayer) return;
 
@@ -403,8 +270,6 @@ const Announce = () => {
       setTried(true);
     }
   }, [tried, active]);
-
-  const [isLiking, setIsLiking] = useState(false);
 
   const [transactions, setTransactions] = useState([]);
 
@@ -465,26 +330,33 @@ const Announce = () => {
     }
   };
 
-  const checkIfAlreadyLike = () => {
-    const matchUserFavorite = authenticatedUser.getFavorites.find(
-      (favorite) => favorite.getID === state?.announce?.getID
-    );
-    const matchAnnounceLike = state?.announce?.getLikes.find(
-      (like) => like.getAuthor.getID === authenticatedUser.getID
-    );
-    return !!matchUserFavorite || !!matchAnnounceLike;
-  };
-
-  const alreadyLikeCurrentUser = checkIfAlreadyLike();
-
-  const [like, setLike] = useState(alreadyLikeCurrentUser);
-
-  const [likesCounter, setLikesCounter] = useState(state?.announce?.getCountLikes);
-
   useEffect(() => {
-    setLike(alreadyLikeCurrentUser);
-    setLikesCounter(state?.announce?.getCountLikes);
-  }, [state?.announce]);
+    if (!isContractReady)
+        return
+
+    if (!!account && !!library) {
+        let stale = false
+
+        web3.eth
+            .getBalance(account)
+            .then((balance) => {
+                if (!stale) {
+                    let ethBalance = web3.utils.fromWei(balance, 'ether')
+                    setBalance(ethBalance)
+                }
+            })
+            .catch(() => {
+                if (!stale) {
+                    setBalance(null)
+                }
+            })
+
+        return () => {
+            stale = true
+            setBalance(undefined)
+        }
+    }
+}, [account, library, chainId, isContractReady])
 
   const isOwn = authenticatedUser?.raw?._id === state?.announce?.raw?.user?._id;
 
@@ -492,33 +364,6 @@ const Announce = () => {
     AnnounceService.updateAnnounce(state?.announce?.getSlug, { visible: !state?.announce?.raw?.visible }).then(() =>
       window.location.reload()
     );
-  };
-
-  const handleClickLikeButton = async () => {
-    if (isOwn) return;
-    if (!isAuthenticated) {
-      router.push({
-        pathname: '/auth/login',
-        query: { redirect: router.asPath },
-      });
-      return;
-    }
-    if (isLiking) return;
-    setIsLiking(true);
-    try {
-      if (like) {
-        setLike(false);
-        setLikesCounter((likesCounter) => likesCounter - 1);
-        await AnnounceService.removeLikeLoggedInUser(state?.announce?.getID);
-      } else {
-        setLike(true);
-        setLikesCounter((likesCounter) => likesCounter + 1);
-        await AnnounceService.addLikeLoggedInUser(state?.announce?.getID);
-      }
-      setIsLiking(false);
-    } catch (err) {
-      dispatchModalError({ err });
-    }
   };
 
   const fetchAnnounce = useCallback(async () => {
@@ -715,37 +560,13 @@ const Announce = () => {
 
                 {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Approved' && (
                   <Row style={{ justifyContent: 'center', marginTop: '30px' }}>
-                    <div style={{ marginRight: '15px' }}>
-                      <button
-                        className={clsx(classes.bordergradientbtn)}
-                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
-                        onClick={handleAcceptOffer}
-                      >
-                        <label>{t('vehicles:acceptOffer')}</label>
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        className={clsx(classes.bordergradientbtn)}
-                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
-                        onClick={handleRejectOffer}
-                      >
-                        <label>{t('vehicles:rejectOffer')}</label>
-                      </button>
-                    </div>
+                    <HandleOffer newOfferCreated={newOfferCreated} announce={state.announce} tokenPrice={tokenPrice} />
                   </Row>
                 )}
 
                 {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <button
-                      className={clsx(classes.buttonblue)}
-                      disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
-                      onClick={handleMakeOffer}
-                    >
-                      {' '}
-                      {t('vehicles:makeOffer')}{' '}
-                    </button>
+                    <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
                   </div>
                 )}
 
@@ -762,15 +583,8 @@ const Announce = () => {
                         {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
                       </Action>
                     )}
-                    <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                      <i.BookmarkBorder
-                        style={{
-                          color: like ? '#444444' : '#444444',
-                          marginRight: '8px',
-                        }}
-                      />
-                      <span style={{ color: '#444444' }}>{likesCounter}</span>
-                    </Action>
+
+                    <ClickLikeButton authenticatedUser={authenticatedUser} announce={state.announce}  />
 
                     <Action
                       title={t('vehicles:comment_plural')}
@@ -972,37 +786,13 @@ const Announce = () => {
 
                 {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Approved' && (
                   <Row style={{ justifyContent: 'center', marginTop: '30px' }}>
-                    <div style={{ marginRight: '15px' }}>
-                      <button
-                        className={clsx(classes.bordergradientbtn)}
-                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
-                        onClick={handleAcceptOffer}
-                      >
-                        <label>{t('vehicles:acceptOffer')}</label>
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        className={clsx(classes.bordergradientbtn)}
-                        disabled={!isContractReady || !isConfirmed || tokenPrice === null}
-                        onClick={handleRejectOffer}
-                      >
-                        <label>{t('vehicles:rejectOffer')}</label>
-                      </button>
-                    </div>
+                     <HandleOffer newOfferCreated={newOfferCreated} announce={state.announce} tokenPrice={tokenPrice} />
                   </Row>
                 )}
 
                 {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <button
-                      className={clsx(classes.buttonblue)}
-                      disabled={!isContractReady || !isConfirmed || tokenPrice === null || +bnbBalance < +tokenPrice}
-                      onClick={handleMakeOffer}
-                    >
-                      {' '}
-                      {t('vehicles:makeOffer')}{' '}
-                    </button>
+                    <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
                   </div>
                 )}
 
@@ -1015,15 +805,8 @@ const Announce = () => {
                         {state?.announce?.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
                       </Action>
                     )}
-                    <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                      <i.BookmarkBorder
-                        style={{
-                          color: like ? '#444444' : '#444444',
-                          marginRight: '8px',
-                        }}
-                      />
-                      <span style={{ color: '#444444' }}>{likesCounter}</span>
-                    </Action>
+
+                    <ClickLikeButton authenticatedUser={authenticatedUser} announce={state.announce}  />
 
                     <Action
                       title={t('vehicles:comment_plural')}
