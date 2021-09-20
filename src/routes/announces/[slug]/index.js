@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { NextSeo } from 'next-seo';
-import Link from 'next-translate/Link';
 import { useRouter } from 'next/router';
 import { Col, Container, Row } from 'reactstrap';
 import Alert from '@material-ui/lab/Alert';
@@ -10,8 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useTranslation from 'next-translate/useTranslation';
 import GalleryViewer from '../../../components/Gallery/GalleryViewer';
-import DamageViewerTabs from '../../../components/Damages/DamageViewerTabs';
-import CarInfos from '../../../components/Products/car/CarInfos';
 import Comments from '../../../components/Comments/Comments';
 import TagsList from '../../../components/Tags/TagsList';
 import CTALink from '../../../components/CTALink';
@@ -23,8 +20,6 @@ import { ModalContext } from '../../../context/ModalContext';
 import { useAuth } from '../../../context/AuthProvider';
 import { getTimeAgo } from '../../../libs/utils';
 import Error from '../../_error';
-import { Avatar } from '../../../components/AnnounceCard/components';
-import { useSocket } from '../../../context/SocketContext';
 import * as i from '@material-ui/icons';
 import useKargainContract from 'hooks/useKargainContract';
 import TextField from '@material-ui/core/TextField';
@@ -36,9 +31,13 @@ import { injected } from '../../../connectors';
 import UsersService from '../../../services/UsersService';
 import Web3 from 'web3';
 import TransactionsService from '../../../services/TransactionsService';
-import MakeOffer from "../../../components/Blockchain/MakeOffer"
-import HandleOffer from "../../../components/Blockchain/HandleOffer"
-import ClickLikeButton from "../../../components/Likes/ClickLikeButton"
+import MakeOffer from "../../../components/Blockchain/MakeOffer";
+import HandleOffer from "../../../components/Blockchain/HandleOffer";
+import ClickLikeButton from "../../../components/Likes/ClickLikeButton";
+import SharedURL from "../../../components/AnnounceCard/SharedURL";
+import CardInformation from "../../../components/AnnounceCard/Carinformation";
+import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
+import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
 
 const web3 = new Web3(Web3.givenProvider);
 
@@ -120,7 +119,6 @@ const Announce = () => {
   const { isAuthenticated, authenticatedUser, setForceLoginModal } = useAuth();
   const { dispatchModal, dispatchModalError } = useContext(MessageContext);
   const { dispatchModalState } = useContext(ModalContext);
-  const { getOnlineStatusByUserId } = useSocket();
   const { getPriceTracker } = usePriceTracker();
   const [priceBNB, setPrice] = useState(0);
 //   const [bnbBalance, setBalance] = useState()
@@ -454,56 +452,8 @@ const Announce = () => {
       <div className="objava-wrapper">
         <Row>
           {isMobile ? (
-            <>
-              <Col sm={12} md={6}>
-                <div
-                  className="top"
-                  style={{ marginTop: '25px', marginBottom: '15px', marginLeft: '15px', display: 'flex' }}
-                >
-                  <Row>
-                    <div className="pic" style={{ width: '32%' }}>
-                      <Avatar
-                        className="img-profile-wrapper avatar-preview"
-                        src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
-                        isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
-                        alt={state?.announce?.getTitle}
-                        style={{ width: 120, height: 120 }}
-                      />
-                    </div>
-
-                    <div style={{ marginLeft: '10px', width: '65%' }}>
-                      <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
-                        <a>
-                          <Typography
-                            style={{
-                              paddingLeft: 4,
-                              fontWeight: '600',
-                              fontSize: '16px !important',
-                              lineHeight: '150%',
-                            }}
-                          >
-                            {state?.announce?.getAuthor.getFullName}
-                          </Typography>
-                        </a>
-                      </Link>
-
-                      {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                        <div className="top-profile-location">
-                          <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                            <span
-                              className="top-profile-location"
-                              style={{ fontWeight: 'normal', fontSize: '16px', lineHeight: '150%', color: '#999999' }}
-                            >
-                              <NewIcons.card_location style={{ marginRight: '5px' }} />
-                              {state?.announce?.getAdOrAuthorCustomAddress()}
-                            </span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </Row>
-                </div>
-
+            <Col sm={12} md={6}>
+                <CardInformation announce={state.announce} />
                 <div>
                   <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
                     {state?.announce?.getAnnounceTitle}
@@ -585,7 +535,6 @@ const Announce = () => {
                     )}
 
                     <ClickLikeButton authenticatedUser={authenticatedUser} announce={state.announce}  />
-
                     <Action
                       title={t('vehicles:comment_plural')}
                       style={{
@@ -677,63 +626,11 @@ const Announce = () => {
                     </div>
                   </div>
                 )}
-              </Col>
-            </>
+              
+            </Col>
           ) : (
             <>
-              <Col sm={12} md={6}>
-                <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft: '15px' }}>
-                  <Row>
-                    <div className="pic">
-                      <Avatar
-                        className="img-profile-wrapper avatar-preview"
-                        src={state?.announce?.getAuthor.getAvatar || state?.announce?.getAuthor.getAvatarUrl}
-                        isonline={getOnlineStatusByUserId(state?.announce?.getAuthor.getID)}
-                        alt={state?.announce?.getTitle}
-                        style={{ width: 120, height: 120 }}
-                      />
-                    </div>
-
-                    <div style={{ marginLeft: '10px' }}>
-                      <Link href={`/profile/${state?.announce?.getAuthor.getUsername}`}>
-                        <a>
-                          <Typography
-                            style={{
-                              paddingLeft: 4,
-                              fontWeight: '600',
-                              fontSize: '16px !important',
-                              lineHeight: '150%',
-                            }}
-                          >
-                            {state?.announce?.getAuthor.getFullName}
-                          </Typography>
-                        </a>
-                      </Link>
-
-                      {state?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                        <div className="top-profile-location">
-                          <a href={state?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                            <span
-                              className="top-profile-location"
-                              style={{ fontWeight: 'normal', fontSize: '16px', lineHeight: '150%', color: '#999999' }}
-                            >
-                              <NewIcons.card_location style={{ marginRight: '5px' }} />
-                              {state?.announce?.getAdOrAuthorCustomAddress()}
-                            </span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </Row>
-                </div>
-
-                <div className="pics">
-                  {state?.announce?.getCountImages > 0 && (
-                    <GalleryViewer images={state?.announce?.getImages} ref={refImg} />
-                  )}
-                </div>
-              </Col>
-
+              <CardInformation announce={state.announce} />
               <Col sm={12} md={6}>
                 <div style={{ marginTop: '25px' }}>
                   <Typography as="h2" variant="h2" style={{ fontWeight: '500', fontSize: '24px', lineHeight: '150%' }}>
@@ -903,56 +800,7 @@ const Announce = () => {
             </>
           )}
         </Row>
-        <div style={{ marginTop: '50px' }}>
-          <section className="my-2" style={{ marginTop: '15px' }}>
-            <Typography component="h3" variant="h3">
-              {t('vehicles:vehicle-data')}
-            </Typography>
-            <CarInfos announce={state?.announce} enableThirdColumn />
-          </section>
-
-          <section className="my-2" style={{ marginTop: '15px' }}>
-            <Typography component="h3" variant="h3">
-              {t('vehicles:equipments')}
-            </Typography>
-            <Row>
-              {state?.announce?.getVehicleEquipments.map((equipment, index) => {
-                return (
-                  <Col sm={6} md={3} key={index}>
-                    <div className="equipment m-3">
-                      <Typography>{equipment.label}</Typography>
-                    </div>
-                  </Col>
-                );
-              })}
-            </Row>
-          </section>
-
-          <section className="my-2" style={{ marginTop: '15px' }}>
-            <Typography component="h3" variant="h3">
-              {t('vehicles:description')}
-            </Typography>
-            <div className={classes.wysiwyg}>
-              <Typography>{state?.announce?.getDescription}</Typography>
-            </div>
-          </section>
-
-          <section className="my-2" style={{ marginTop: '15px' }}>
-            <Typography component="h3" variant="h3">
-              {t('vehicles:data-sheet')}
-            </Typography>
-            {isMobile ? (
-              <div style={{ marginTop: 40 }}>
-                <DamageViewerTabs
-                  tabs={state?.announce?.getDamagesTabs}
-                  vehicleType={state?.announce?.getVehicleType}
-                />
-              </div>
-            ) : (
-              <DamageViewerTabs tabs={state?.announce?.getDamagesTabs} vehicleType={state?.announce?.getVehicleType} />
-            )}
-          </section>
-        </div>
+        <VehicleEquipments announce={state.announce} />
       </div>
     </Container>
   );
