@@ -10,20 +10,32 @@ import { MessageContext } from "../../context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 
 const useStyles = makeStyles(() => ({
-    buttonBlue:{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '6px 50px',
-        background: '#2C65F6',
-        borderRadius: '25px',
-        fontWeight: 'bold',
+    bordergradientbtn: {
+        height: '39px',
+        borderRadius: '100rem',
+        padding: '1rem',
         fontSize: '14px',
-        lineHeight: '150%',
-        color:'white',
-        marginTop:'20px'
-    }
+        padding: '8px 30px 2px',
+        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        border: 'solid 2px transparent',
+        backgroundImage:
+          'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(176deg, #0046f9, #ff08fa);',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        boxShadow: '2px 1000px 1px #fff inset',
+        '&:hover': {
+          backgroundImage:
+            'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+        },
+    
+        '& label': {
+          background:
+            '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
+          backgroundImage: 'linear-gradient(91deg, #084dff, #ff0afb)',
+          backgroundClip: 'text',
+          color: 'transparent',
+        },
+      },
 }))
 
 const HandleOffer = (props) => {
@@ -94,16 +106,24 @@ const HandleOffer = (props) => {
 
     return (
         <Row>
-            <Col sm={5}>
-                <button className={clsx(classes.buttonBlue)} disabled={!isContractReady || !isConfirmed || props.tokenPrice === null } onClick={handleAcceptOffer}>
-                    {t('vehicles:acceptOffer')}
+            <div style={{ marginRight: '15px' }}>
+                <button
+                className={clsx(classes.bordergradientbtn)}
+                disabled={!isContractReady || !isConfirmed || props.tokenPrice === null}
+                onClick={handleAcceptOffer}
+                >
+                <label>{t('vehicles:acceptOffer')}</label>
                 </button>
-            </Col>
-            <Col sm={5}>
-                <button  className={clsx(classes.buttonBlue)} disabled={!isContractReady || !isConfirmed || props.tokenPrice === null } onClick={handleRejectOffer}>
-                    {t('vehicles:rejectOffer')}
+            </div>
+            <div>
+                <button
+                className={clsx(classes.bordergradientbtn)}
+                disabled={!isContractReady || !isConfirmed || props.tokenPrice === null}
+                onClick={handleRejectOffer}
+                >
+                <label>{t('vehicles:rejectOffer')}</label>
                 </button>
-            </Col>
+            </div>
         </Row>
     )
 }
