@@ -35,7 +35,7 @@ import MakeOffer from "../../../components/Blockchain/MakeOffer";
 import HandleOffer from "../../../components/Blockchain/HandleOffer";
 import ClickLikeButton from "../../../components/Likes/ClickLikeButton";
 import SharedURL from "../../../components/AnnounceCard/SharedURL";
-import CardInformation from "../../../components/AnnounceCard/Carinformation";
+import CardInformation from "../../../components/AnnounceCard/CarInformation";
 import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
 import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
 
