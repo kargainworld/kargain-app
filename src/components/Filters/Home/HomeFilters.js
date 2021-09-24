@@ -22,7 +22,7 @@ const path = require('path')
 
 const useStyles = makeStyles(() => ({
     button: {
-        width: 110, 
+        width: 110,
 		border: "none !important",
 		padding: '6px 2rem',
 		borderRadius: '20px',
@@ -56,7 +56,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
     const onSubmit = (data) => {
         dispatchFormClear();
         const { adType} = data
-        const route = `advanced-search` 
+        const route = `advanced-search`
         dispatchFormUpdate({ adType, vehicleType })
         router.push({
             pathname: route,
@@ -74,7 +74,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                     <Col md={12}>
                         <img src="/images/MainCar-mobile.png" width="100%" height="100%"/>
                     </Col>
-                    
+
                     <Col md={12}>
                         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)}>
                             <div
@@ -126,7 +126,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     marginTop: 45
                                 }}
                             >
-                                <div className="submit mx-2" style={{ marginTop: 0 }}>                    
+                                <div className="submit mx-2" style={{ marginTop: 0 }}>
                                     <button className={clsx('btn', classes.button)}
                                         type="submit">
                                         {<span style={{ color: 'white' }}>GO</span>}
@@ -139,9 +139,9 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 ) : (
                 <Row>
                     <Col md={4}>
-                        <img src="/images/MainCar.png" width="100%" height="100%" />
+                        <img src="/images/camaro.png" width="100%" height="45%" style={{ marginTop: '40%', marginLeft: '15%' }} />
                     </Col>
-                    
+
                     <Col md={8}>
                         <form className="form_wizard my-4" onSubmit={handleSubmit(onSubmit)} style={{ paddingTop: '9%' }}>
                             <div
@@ -166,7 +166,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                         />
                                     ))}
                             </div>
-    
+
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                                 <VehicleTypeSelect
                                     value={vehicleType}
@@ -176,13 +176,13 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     style={{ maxWidth: 720, width: "100%" }}
                                 />
                             </div>
-    
+
                             {Object.keys(errors).length !== 0 && (
                                 <Alert severity="warning" className="mb-2">
                                     {t('vehicles:correct-errors')}
                                 </Alert>
                             )}
-    
+
                             <div
                                 style={{
                                     width: "fitContent",
@@ -193,7 +193,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                                     marginTop: 45
                                 }}
                             >
-                                <div className="submit mx-2" style={{ marginTop: 0 }}>                    
+                                <div className="submit mx-2" style={{ marginTop: 0 }}>
                                     <button className={clsx('btn', classes.button)}
                                         type="submit">
                                         {<span style={{ color: 'white' }}>GO</span>}
