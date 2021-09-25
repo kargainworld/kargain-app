@@ -139,7 +139,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
                 ) : (
                 <Row>
                     <Col md={4}>
-                        <img src="/images/camaro.png" width="100%" height="45%" style={{ marginTop: '40%', marginLeft: '15%' }} />
+                        <img src="/images/MainCar.png" width="100%" height="100%" />
                     </Col>
 
                     <Col md={8}>

@@ -8,27 +8,27 @@ const vehicleTypesDefault = () => {
         {
             "value": "car",
             "label": t('vehicles:car'),
-            "img": "car-camaro.png",
-            "imgSelected": "car-camaro-blue.png"
+            "img": "tab-car.png",
+            "imgSelected": "tab-car-blue.png"
         },
         {
             "value": "motorcycle",
             "label": t('vehicles:moto'),
-            "img": "moto.png",
-            "imgSelected": "moto-blue.png"
+            "img": "tab-moto.png",
+            "imgSelected": "tab-moto-blue.png"
         },
         {
             "value": "truck",
             "label": t('vehicles:utility'),
-            "img": "utilitaire.png",
-            "imgSelected": "utilitaire-blue.png"
+            "img": "tab-gruz.png",
+            "imgSelected": "tab-gruz-blue.png"
 
         },
         {
             "value": "camper",
             "label": t('vehicles:camper'),
-            "img": "car-camping.png",
-            "imgSelected": "car-camping-blue.png"
+            "img": "tab-camper.png",
+            "imgSelected": "tab-camper-blue.png"
         }
     ]
 }
