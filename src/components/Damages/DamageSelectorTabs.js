@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import useTranslation from 'next-translate/useTranslation'
-import { Col, Row, TabContent, TabPane, Alert, Note } from 'reactstrap'
+import { Col, Row, TabContent, TabPane, Alert } from 'reactstrap'
 
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
@@ -199,7 +199,7 @@ const DamageSelectorTabs = ({ tabs, defaultMaxDamages, fireChanges, selectorFull
                                                     {t('vehicles:click-image')}
                                                 </h4>}
                                                 {stages.length === 0 && <Header p> {t('vehicles:click-image')}</Header>}
-                                                {stages.length >= max && <Note color="warning">Max {max} damages</Note>}
+                                                {stages.length >= max && <div color="warning">Max {max} damages</div>}
                                                 {stages.map((stage, indexStage) => {
                                                     return (
                                                         <div key={indexStage} className={classes.annoInput}>
