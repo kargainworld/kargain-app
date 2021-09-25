@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import Sorters from '../Sorters/Sorters'
 import useTranslation from 'next-translate/useTranslation'
 
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 const useStyles = makeStyles((theme) => ({
     slider:{
         border: "none",
@@ -110,6 +112,7 @@ const Tabs = ({ updateFilters, defaultActive, active, children, id, handleClickT
     const tabs = !Array.isArray(children) ? [children] : children
     const { t } = useTranslation()
 
+    const isMobile = useMediaQuery('(max-width:768px)')
 
     const [state1, setState] = useState({
         loading: true,
@@ -169,18 +172,35 @@ const Tabs = ({ updateFilters, defaultActive, active, children, id, handleClickT
                     )
                 })}
             </ul>
-
-            <Col sm={12} md={12} style={{ marginLeft: '-10px' }} id="section_1" style={{ transform:'translate(10px, 10px)' }}>
-                <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                <div style={{ marginTop:'35px' }}>
-                    <Typography component="p" variant="h3" style={{ fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px' }}>
-                        {t('vehicles:{count}_results_search', { count: filterState.total })}
-                    </Typography>
-                    <div  style={{ marginTop: '-40px' }}>
-                        <Sorters updateSorter={updateSorter} />
-                    </div>
-                </div>
-            </Col>    
+            <>
+                {isMobile ? (
+                    <Col sm={12} md={12}  id="section_1" style={{ transform:'translate(10px, 10px)', marginLeft: '-10px' }}>
+                        <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
+                        <div style={{ marginTop:'10px' }}>
+                            
+                            <Typography component="p" variant="h3" style={{ fontSize: '20px 1important', marginLeft:'5px' }}>
+                                {t('vehicles:{count}_results_search', { count: filterState.total })}
+                            </Typography>
+                            <div style={{ marginBottom:'20px' }}>
+                                <Sorters updateSorter={updateSorter} />
+                            </div>
+                            
+                        </div>
+                    </Col> 
+                ) : (
+                    <Col sm={12} md={12} id="section_1" style={{ transform:'translate(10px, 10px)',marginLeft: '-10px' }}>
+                        <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
+                        <div style={{ marginTop:'35px' }}>
+                            <Typography component="p" variant="h3" style={{ fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px' }}>
+                                {t('vehicles:{count}_results_search', { count: filterState.total })}
+                            </Typography>
+                            <div  style={{ marginTop: '-40px' }}>
+                                <Sorters updateSorter={updateSorter} />
+                            </div>
+                        </div>
+                    </Col> 
+                )}
+            </>
             
             <div className="tab-content">
                 {tabs && tabs.map((item, index) => {

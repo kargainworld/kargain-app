@@ -13,7 +13,12 @@ import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import { Emoji } from 'react-apple-emojis'
 
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
+
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
@@ -99,33 +104,64 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             <Row>
-                <Col sm={12} md={6}>
-                    <Row>
-                        <Col>
-                            <FieldWrapper label={t('vehicles:type')}>
-                                <SelectInput
-                                    name="mileageType"
-                                    options={formData.mileageType}
-                                    control={control}
-                                    errors={errors}
-                                    rules={{ required: t('form_validations:required') }}
-                                />
-                            </FieldWrapper>
-                        </Col>
-                        <Col>
-                            <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
-                                <NumberInput
-                                    name="mileage"
-                                    placeholder={`20000 ${mileageType?.value}`}
-                                    control={control}
-                                    errors={errors}
-                                    rules={{ required: t('form_validations:required') }}
-                                />
-                            </FieldWrapper>
-                        </Col>
-                    </Row>
-                    
-                </Col>
+                {isMobile ? (
+                    <Col sm={12} md={12}>
+                        <Row>
+                            <Col md={12}>
+                                <FieldWrapper label={t('vehicles:type')}>
+                                    <SelectInput
+                                        name="mileageType"
+                                        options={formData.mileageType}
+                                        control={control}
+                                        errors={errors}
+                                        rules={{ required: t('form_validations:required') }}
+                                    />
+                                </FieldWrapper>
+                            </Col>
+                            <Col md={12}>
+                                <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                    <NumberInput
+                                        name="mileage"
+                                        placeholder={`20000 ${mileageType?.value}`}
+                                        control={control}
+                                        errors={errors}
+                                        rules={{ required: t('form_validations:required') }}
+                                    />
+                                </FieldWrapper>
+                            </Col>
+                        </Row>
+                        
+                    </Col>
+                ):(
+                    <Col sm={12} md={6}>
+                        <Row>
+                            <Col>
+                                <FieldWrapper label={t('vehicles:type')}>
+                                    <SelectInput
+                                        name="mileageType"
+                                        options={formData.mileageType}
+                                        control={control}
+                                        errors={errors}
+                                        rules={{ required: t('form_validations:required') }}
+                                    />
+                                </FieldWrapper>
+                            </Col>
+                            <Col>
+                                <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
+                                    <NumberInput
+                                        name="mileage"
+                                        placeholder={`20000 ${mileageType?.value}`}
+                                        control={control}
+                                        errors={errors}
+                                        rules={{ required: t('form_validations:required') }}
+                                    />
+                                </FieldWrapper>
+                            </Col>
+                        </Row>
+                        
+                    </Col>
+                )}
+                
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>
                         <NumberInput

@@ -50,7 +50,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
     return (
         <form className="form_wizard" onSubmit={handleSubmit(onSubmitStep)}>
             
-            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black' }}>
                 <div></div>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
                 <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="oncoming-automobile" width={18} />
@@ -119,7 +119,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:data-sheet')}/> */}
-            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black' }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
                 <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="page-facing-up" width={18} />
                 {t('vehicles:data-sheet')}

@@ -3,8 +3,11 @@ import NiceSelect from 'react-select'
 import useTranslation from 'next-translate/useTranslation'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Col } from 'reactstrap'
 
 const Sorters = ({ updateSorter }) => {
+    const isMobile = useMediaQuery('(max-width:768px)')
     const { t } = useTranslation()
     const options = [
         {
@@ -88,22 +91,44 @@ const Sorters = ({ updateSorter }) => {
     )
 
     return (
-        <section style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end'
-        }}>
-            <span style={{ fontSize: '12px', fontWeight: 'normal', color:'#999999' }}>{t('vehicles:sort-by')}:</span>
-            <div className="sorter" style={{ fontSize: '14px' }}>
-                <NiceSelect
-                    name="sort"
-                    value={sorter}
-                    onChange={onHandleChange}
-                    components={{ SingleValue: customSingleValue }}
-                    options={options}
-                />
-            </div>
-        </section>
+        <>
+            {isMobile ? (
+                <Col md={6} sm={10} xs={12} style={{ marginLeft:'-15px' }}>
+                    <section style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <span style={{ fontSize: '12px', fontWeight: 'normal', color:'#999999' }}>{t('vehicles:sort-by')}:</span>
+                        <div className="sorter" style={{ fontSize: '14px' }}>
+                            <NiceSelect
+                                name="sort"
+                                value={sorter}
+                                onChange={onHandleChange}
+                                components={{ SingleValue: customSingleValue }}
+                                options={options}
+                            />
+                        </div>
+                    </section>
+                </Col>
+            ):(
+                <section style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }}>
+                    <span style={{ fontSize: '12px', fontWeight: 'normal', color:'#999999' }}>{t('vehicles:sort-by')}:</span>
+                    <div className="sorter" style={{ fontSize: '14px' }}>
+                        <NiceSelect
+                            name="sort"
+                            value={sorter}
+                            onChange={onHandleChange}
+                            components={{ SingleValue: customSingleValue }}
+                            options={options}
+                        />
+                    </div>
+                </section>
+            )}        
+        </>
     )
 }
 

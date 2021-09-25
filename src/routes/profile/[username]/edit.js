@@ -56,11 +56,7 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         boxShadow: '0 0.5rem 1rem rgba(0,0,0,0.15)',
         borderRadius: '20px'
-    },
-
-    button: {
-        margin: '1rem'
-    },
+    }, 
 
     navItem: {
         border: 'none',
@@ -70,7 +66,7 @@ const useStyles = makeStyles(() => ({
         textDecoration: 'none',
         transition: 'all .2s ease-in-out',
         cursor: 'pointer',
-
+        
         '&.active': {
             fontWeight: '700',
             border: 'none',
@@ -82,6 +78,27 @@ const useStyles = makeStyles(() => ({
 
         '&:last-child': {
             borderBottom: 'unset!important'
+        }
+    },
+    navItemMobile: {
+        border: 'none',
+        padding: '1rem',
+        borderRadius: 0,
+        textAlign: 'center',
+        textDecoration: 'none',
+        transition: 'all .2s ease-in-out',
+        cursor: 'pointer',
+        width: '33%',
+        borderBottom: `2px solid #999999`,
+        fontSize:'14px',
+        color: '#999999',
+        '&.active': {
+            fontWeight: '700',
+            border: 'none',
+            borderBottom: `4px solid #ED80EB`,
+            color: '#ED80EB',
+            textAlign: 'center',
+            background: 'none'
         }
     },
 
@@ -110,11 +127,9 @@ const useStyles = makeStyles(() => ({
     },
 
     bordergradientbtn:{
-        borderRadius: '100rem',
-        padding: '1rem',
+        borderRadius: '100rem',        
         fontSize: '14px',        
-        padding: '5px 30px',
-        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        padding: '5px 25px',        
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
         backgroundOrigin: 'border-box',
@@ -331,6 +346,9 @@ const Edit = () => {
 }
 
 const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink, isAdmin }) => {
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
+
     const theme = useTheme()
     const classes = useStyles()
     const { t } = useTranslation()
@@ -358,39 +376,81 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
     return(
         <form className="p-3 mx-auto" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
             {errors && <ValidationErrors errors={errors}/>}
-            <TabContent activeTab={activeTab}>
-                <TabPane tabId={0}>
-                    <ProfilePartialForm
-                        {...{
-                            control,
-                            watch,
-                            isAdmin,
-                            errors
-                        }}
-                    />
-                </TabPane>
-                <TabPane tabId={1}>
-                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                        {t('vehicles:payments-bills')}
-                    </Typography>
-                    <OffersPurchaseForm offer={offer} />
-                </TabPane>
-                <TabPane tabId={2}>
-                    <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                        {t('vehicles:confidentiality-security')}
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        endIcon={<DeleteIcon />}
-                        onClick={handleOpenDialogRemove}
-                        style={{ marginTop:'25px' }}
-                    >
-                        {t('vehicles:remove-profile')}
-                    </Button>
-                </TabPane>
-            </TabContent>
+            <>
+                {isMobile ?(
+                    <>
+                        <TabContent activeTab={activeTab}>
+                            <TabPane tabId={0} >
+                                <ProfilePartialForm
+                                    {...{
+                                        control,
+                                        watch,
+                                        isAdmin,
+                                        errors
+                                    }}
+                                />
+                            </TabPane>
+                            <TabPane tabId={1}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:payments-bills')}
+                                </Typography>
+                                <OffersPurchaseForm offer={offer} />
+                            </TabPane>
+                            <TabPane tabId={2}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:confidentiality-security')}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.button}
+                                    endIcon={<DeleteIcon />}
+                                    onClick={handleOpenDialogRemove}
+                                    style={{ marginTop:'25px' }}
+                                >
+                                    {t('vehicles:remove-profile')}
+                                </Button>
+                            </TabPane>
+                        </TabContent>
+                    </>
+                ) : (
+                    <>
+                        <TabContent activeTab={activeTab}>
+                            <TabPane tabId={0}>
+                                <ProfilePartialForm
+                                    {...{
+                                        control,
+                                        watch,
+                                        isAdmin,
+                                        errors
+                                    }}
+                                />
+                            </TabPane>
+                            <TabPane tabId={1}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:payments-bills')}
+                                </Typography>
+                                <OffersPurchaseForm offer={offer} />
+                            </TabPane>
+                            <TabPane tabId={2}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:confidentiality-security')}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.button}
+                                    endIcon={<DeleteIcon />}
+                                    onClick={handleOpenDialogRemove}
+                                    style={{ marginTop:'25px' }}
+                                >
+                                    {t('vehicles:remove-profile')}
+                                </Button>
+                            </TabPane>
+                        </TabContent>
+                    </>
+                )}
+            </>
 
             {!isDesktop && (
                 <Buttons {...{
@@ -406,31 +466,65 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const countrySelect = watch('countrySelect')
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
     return (
         <>
-            <Typography component="h2" variant="h2" gutterBottom className={clsx("text-left", classes.customize)}>
-                {t('vehicles:edit-my-profile')}
-            </Typography>
-            <AvatarPreviewUpload/>
-            <div className={classes.formRow}>
-                <FieldWrapper label={t('vehicles:firstname')}>
-                    <TextInput
-                        name="firstname"
-                        errors={errors}
-                        control={control}
-                        rules={{ required: t('form_validations:required') }}
-                    />
-                </FieldWrapper>
+            {isMobile ? (
+                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-center", classes.customize)} style={{ marginBottom:'10px' }}>
+                    {t('vehicles:edit-my-profile')}
+                </Typography>
+            ) : (
+                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-left", classes.customize)}>
+                    {t('vehicles:edit-my-profile')}
+                </Typography>
+            )}
+            
 
-                <FieldWrapper label={t('vehicles:lastname')}>
-                    <TextInput
-                        name="lastname"
-                        errors={errors}
-                        control={control}
-                        rules={{ required: t('form_validations:required') }}
-                    />
-                </FieldWrapper>
-            </div>
+            <AvatarPreviewUpload/>
+
+            {isMobile ? (
+                <>
+                    <FieldWrapper label={t('vehicles:firstname')}>
+                        <TextInput
+                            name="firstname"
+                            errors={errors}
+                            control={control}
+                            rules={{ required: t('form_validations:required') }}
+                        />
+                    </FieldWrapper>
+
+                    <FieldWrapper label={t('vehicles:lastname')}>
+                        <TextInput
+                            name="lastname"
+                            errors={errors}
+                            control={control}
+                            rules={{ required: t('form_validations:required') }}
+                        />
+                    </FieldWrapper>
+                </>
+            ):(
+                <div className={classes.formRow}>
+                    <FieldWrapper label={t('vehicles:firstname')}>
+                        <TextInput
+                            name="firstname"
+                            errors={errors}
+                            control={control}
+                            rules={{ required: t('form_validations:required') }}
+                        />
+                    </FieldWrapper>
+
+                    <FieldWrapper label={t('vehicles:lastname')}>
+                        <TextInput
+                            name="lastname"
+                            errors={errors}
+                            control={control}
+                            rules={{ required: t('form_validations:required') }}
+                        />
+                    </FieldWrapper>
+                </div>
+            )}
+           
 
             <FieldWrapper label="Email" className={clsx(classes.customize)}>
                 <EmailInput
@@ -526,6 +620,7 @@ const NavDesktop = ({ tabs, activeTab, toggleTab, triggerSubmit, profilePageLink
                             className={clsx(classes.navItem, activeTab === index && 'active')}
                             onClick={() => toggleTab(index)}>
                             {tab.title}
+                            
                         </NavItem>
                     ))}
                 </Nav>
@@ -547,7 +642,7 @@ const NavMobile = ({ tabs, activeTab, toggleTab }) => {
             {tabs && tabs.map((tab, index) => (
                 <NavItem
                     key={index}
-                    className={clsx(classes.navItem, activeTab === index && 'active')}
+                    className={clsx(classes.navItemMobile, activeTab === index && 'active')}
                     onClick={() => toggleTab(index)}>
                     {tab.title}
                 </NavItem>
@@ -559,25 +654,51 @@ const NavMobile = ({ tabs, activeTab, toggleTab }) => {
 const Buttons = ({ triggerSubmit, profilePageLink }) => {
     const classes = useStyles()
     const { t } = useTranslation()
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
     return (
-        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft:'30px' }}>
-            <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={clsx(classes.button)}
-                endIcon={<NewIcons.save style={{ marginLeft:'8px' }}/>}
-                type="submit"
-                style={{ height:'35px', width:'250px', marginLeft:'10px' }}
-                onClick={() => {
-                    triggerSubmit()
-                }}>
-                {t('vehicles:save')}
-                
-            </Button>
+        <>
+            {isMobile ? (
+                <div style={{ display:'flex', marginTop:'20px', marginLeft:'5px' }} >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className={clsx(classes.button)}
+                        endIcon={<NewIcons.save/>}
+                        type="submit"
+                        onClick={() => {
+                            triggerSubmit()
+                        }}>
+                        {/* {t('vehicles:save')} */}
+                        RECORD
+                    </Button>
 
-            <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px' }}/>
-        </div>
+                    <CTALink className={clsx(classes.bordergradientbtn)} title="BACK TO PROFILE" href={profilePageLink} />
+                    {/* <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} /> */}
+                </div>
+            ) : (
+                <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft:'30px' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className={clsx(classes.button)}
+                        endIcon={<NewIcons.save style={{ marginLeft:'8px' }}/>}
+                        type="submit"
+                        style={{ height:'35px', width:'250px', marginLeft:'10px' }}
+                        onClick={() => {
+                            triggerSubmit()
+                        }}>
+                        {t('vehicles:save')}
+                        
+                    </Button>
+
+                    <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px' }}/>
+                </div>
+            )}
+        </>
+        
     )
 }
 

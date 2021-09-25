@@ -31,20 +31,29 @@ const useStyles = makeStyles(() => ({
                 borderRadius: '25px !important',
                 backgroundColor: '#c4c4c447 !important',
                 color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none'
-                // FONTVARIANT: 'JIS83 !important',
-                // display: 'inline-block !important',
-                // marginLeft: '0.355em !important',
-                // verticalAlign: '0.255em !important',
-                // content: " !important",
-                // borderTop: '0.4em solid !important',
-                // borderRight: '0.4em solid transparent !important',
-                // borderBottom: '0 !important',
-                // borderLeft:' 0.4em solid transparent !important',
-                // marginLeft:'5px !important',
+                cursor: 'pointer',
+                fontSize:"17.1707px",
+                marginRight: '6px !important',
+                marginTop: '5px !important',
+                '& button:clicked': {
+                    borderRadius: '25px !important',
+                    backgroundColor: '#c4c4c447 !important',
+                    color: 'black !important',
+                    fontSize:"17.1707px !important"
+                },
+                '&::after': {
+                    display: 'none'
+                    // FONTVARIANT: 'JIS83 !important',
+                    // display: 'inline-block !important',
+                    // marginLeft: '0.355em !important',
+                    // verticalAlign: '0.255em !important',
+                    // content: " !important",
+                    // borderTop: '0.4em solid !important',
+                    // borderRight: '0.4em solid transparent !important',
+                    // borderBottom: '0 !important',
+                    // borderLeft:' 0.4em solid transparent !important',
+                    // marginLeft:'5px !important',
+                }
             }
         }
     },

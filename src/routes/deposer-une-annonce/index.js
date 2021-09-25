@@ -18,6 +18,7 @@ import Loading from '../../components/Loading'
 import Error from '../_error'
 
 import customColors from '../../theme/palette'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const path = require('path')
 
@@ -34,6 +35,10 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Page = () => {
+
+    
+    const isMobile = useMediaQuery('(max-width:768px)')
+
     const router = useRouter()
     const classes = useStyles()
     const formRef = useRef()
@@ -102,72 +107,141 @@ const Page = () => {
     }
 
     return (
-        <Container className="annonce1-wrapper-container">
-            <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+        <>
+            <Container className="annonce1-wrapper-container">
+                {isMobile ? (
+                    <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+                        <Typography style={{ fontSize:"19.9429px", marginTop:"40px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
+                        <Row className="justify-content-center" style={{ marginTop:"30px" }}>
+                            {vehicleTypes() && vehicleTypes().map((tab, index) => {
+                                return (
+                                    <Col key={index} xs={12} sm={12} md={12} lg={12}>
+                                        <div className="form-check form-check-vehicle m-0" style={{ height:'159px' }}>
+                                            <input id={`vehicle_type${index}`}
+                                                type="radio"
+                                                name="vehicleType"
+                                                value={tab.value}
+                                                ref={register({ required : t('form_validations:field-is-required') })}
+                                                onChange={() => handleSelectVehicleType(index)}
+                                            />
+                                            <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem', height:'159px', marginTop:'25px' }}>
+                                                <img src={vehicleType === tab.value ? `/images/${tab.imgSelected}` : `/images/${tab.img}`}
+                                                    alt={tab.label}
+                                                    title={tab.label}
+                                                    style={{ maxWidth:'80px', objectFit: 'contain' }}
+                                                />
+                                            </label>
+                                        </div>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
 
-                <Typography style={{ fontSize:"20px", marginTop:"40px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
-                <Row className="justify-content-center" style={{ marginTop:"30px" }}>
-                    {vehicleTypes() && vehicleTypes().map((tab, index) => {
-                        return (
-                            <Col key={index} xs={6} sm={6} md={3} lg={3}>
-                                <div className="form-check form-check-vehicle m-0" style={{ minHeight: '5rem' }}>
-                                    <input id={`vehicle_type${index}`}
-                                        type="radio"
-                                        name="vehicleType"
-                                        value={tab.value}
-                                        ref={register({ required : t('form_validations:field-is-required') })}
-                                        onChange={() => handleSelectVehicleType(index)}
-                                    />
-                                    <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem' }}>
-                                        <img src={vehicleType === tab.value ? `/images/${tab.imgSelected}` : `/images/${tab.img}`}
-                                            alt={tab.label}
-                                            title={tab.label}
-                                            style={{ maxWidth:'80px', objectFit: 'contain' }}
-                                        />
-                                    </label>
-                                </div>
-                            </Col>
-                        )
-                    })}
-                </Row>
+                        <Typography style={{ fontSize:"20px", marginTop:"50px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
+                        <Row className="justify-content-center" style={{ fontSize:"14px" }}>
+                            {announceTypes() && announceTypes()
+                                .filter(type => {
+                                    if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
+                                    return true
+                                })
+                                .map((tab, index) => {
+                                    return (
+                                        <Col key={index} xs={3} sm={3} md={3} lg={3}>
+                                            <div className="form-check-transparent"
+                                                style={{ minHeight: '5rem' }}>
+                                                <input id={`ad_type${index}`}
+                                                    type="radio"
+                                                    name="adType"
+                                                    value={tab.value}
+                                                    ref={register({ required : t('form_validations:field-is-required') })}
+                                                />
+                                                <label htmlFor={`ad_type${index}`}>{tab.label}</label>
+                                            </div>
+                                        </Col>
+                                    )
+                                })}
+                        </Row>
 
-                <Typography style={{ fontSize:"20px", fontWeight:"500", marginTop:"30px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
-                <Row className="justify-content-center" style={{ fontSize:"14px" }}>
-                    {announceTypes() && announceTypes()
-                        .filter(type => {
-                            if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
-                            return true
-                        })
-                        .map((tab, index) => {
-                            return (
-                                <Col key={index} xs={12} sm={4} md={3} lg={4}>
-                                    <div className="form-check-transparent"
-                                        style={{ minHeight: '5rem' }}>
-                                        <input id={`ad_type${index}`}
-                                            type="radio"
-                                            name="adType"
-                                            value={tab.value}
-                                            ref={register({ required : t('form_validations:field-is-required') })}
-                                        />
-                                        <label htmlFor={`ad_type${index}`}>{tab.label}</label>
-                                    </div>
-                                </Col>
-                            )
-                        })}
-                </Row>
+                        <Row className="justify-content-center" style={{ marginTop:'15px' }}>
+                            <button className={clsx("btn"), classes.button}
+                                type="submit"
+                                disabled={!formState.isValid}>
+                                {t('vehicles:next')}
+                            </button>
+                        </Row>
 
-                <Row className="justify-content-center">
-                    <button className={clsx('btn', classes.button)}
-                        className={clsx("btn"), classes.button}
-                        type="submit"
-                        disabled={!formState.isValid}>
-                        {t('vehicles:next')}
-                    </button>
-                </Row>
+                        {errors && <ValidationErrors errors={errors}/>}
+                    </form>
+                ) : (
+                    
+                    <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 
-                {errors && <ValidationErrors errors={errors}/>}
-            </form>
-        </Container>
+                        <Typography style={{ fontSize:"20px", marginTop:"40px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
+                        <Row className="justify-content-center" style={{ marginTop:"30px" }}>
+                            {vehicleTypes() && vehicleTypes().map((tab, index) => {
+                                return (
+                                    <Col key={index} xs={6} sm={6} md={3} lg={3}>
+                                        <div className="form-check form-check-vehicle m-0" style={{ minHeight: '5rem' }}>
+                                            <input id={`vehicle_type${index}`}
+                                                type="radio"
+                                                name="vehicleType"
+                                                value={tab.value}
+                                                ref={register({ required : t('form_validations:field-is-required') })}
+                                                onChange={() => handleSelectVehicleType(index)}
+                                            />
+                                            <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem' }}>
+                                                <img src={vehicleType === tab.value ? `/images/${tab.imgSelected}` : `/images/${tab.img}`}
+                                                    alt={tab.label}
+                                                    title={tab.label}
+                                                    style={{ maxWidth:'80px', objectFit: 'contain' }}
+                                                />
+                                            </label>
+                                        </div>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
+
+                        <Typography style={{ fontSize:"20px", fontWeight:"500", marginTop:"30px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:announce-type')}</Typography>
+                        <Row className="justify-content-center" style={{ fontSize:"14px" }}>
+                            {announceTypes() && announceTypes()
+                                .filter(type => {
+                                    if(!authenticatedUser.getIsPro) return type.value !== "sale-pro"
+                                    return true
+                                })
+                                .map((tab, index) => {
+                                    return (
+                                        <Col key={index} xs={12} sm={4} md={3} lg={4}>
+                                            <div className="form-check-transparent"
+                                                style={{ minHeight: '5rem' }}>
+                                                <input id={`ad_type${index}`}
+                                                    type="radio"
+                                                    name="adType"
+                                                    value={tab.value}
+                                                    ref={register({ required : t('form_validations:field-is-required') })}
+                                                />
+                                                <label htmlFor={`ad_type${index}`}>{tab.label}</label>
+                                            </div>
+                                        </Col>
+                                    )
+                                })}
+                        </Row>
+
+                        <Row className="justify-content-center">
+                            <button 
+                                className={clsx("btn"), classes.button}
+                                type="submit"
+                                disabled={!formState.isValid}>
+                                {t('vehicles:next')}
+                            </button>
+                        </Row>
+
+                        {errors && <ValidationErrors errors={errors}/>}
+                    </form>
+                )
+                }
+            </Container>
+        </>
     )
 }
 

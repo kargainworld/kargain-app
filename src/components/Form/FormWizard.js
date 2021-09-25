@@ -14,6 +14,20 @@ import { FormContext } from '../../context/FormContext'
 
 
 import { Emoji } from 'react-apple-emojis'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
+import clsx from 'clsx'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(() => ({
+    div: {
+        marginTop: '-10px',
+        marginBottom:'40px',
+        '& .RSPBprogressBar':{
+            height:'6px !important'
+        }
+    }	
+}))
 
 const calculatePourcent = (current, length) => {
     return ((current + 1) / (length + 1)) * 100
@@ -29,6 +43,8 @@ const Root = styled.main`
 `
 
 const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
+
+    const isMobile = useMediaQuery('(max-width:768px)')
     const isMounted = useIsMounted()
     const { t } = useTranslation()
     const steps = Array.isArray(children) ? children.filter(child => child.props.hidden !== true) : children ? [children] : []
@@ -37,6 +53,8 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     const [maxActiveStep, setMaxActiveStep] = useState(steps.length)
     const [pourcent, setPourcent] = useState(() => calculatePourcent(activeStep, steps.length))
     const [endForm, setEndForm] = useState(false)
+
+    const classes = useStyles()
 
     const setStep = useCallback((index) => {
         setActiveStep(index)
@@ -89,17 +107,34 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     return (
         <Root>
             <div className="formWizardContainer">
-                <BreadcrumbSteps activeStepIndex={activeStep}
-                    steps={steps}
-                    setStep={setStep}
-                    maxActiveStep={maxActiveStep}				 
-                />
-                <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+            
+                {isMobile ? (
+                    <div>
+                        <BreadcrumbSteps activeStepIndex={activeStep}
+                            steps={steps}
+                            setStep={setStep}
+                            maxActiveStep={maxActiveStep}
+                            style={{ marginTop:'-15px' }}
+                        />
+                        <div className={clsx(classes.div)}>
+                            <ProgressBar  percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <BreadcrumbSteps activeStepIndex={activeStep}
+                            steps={steps}
+                            setStep={setStep}
+                            maxActiveStep={maxActiveStep}
+                        />
+                        <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+                    </div>
+                )}
                 {/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
-		
+                
                 <h4 >
                     {/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
-			
+                    
                     <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="automobile" width={18} />
                     {[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
                 </h4>
@@ -124,7 +159,6 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
                         </Col>
                     </Row>
                 )}
-
             </div>
         </Root>
     )
