@@ -2,22 +2,24 @@ import { Col, Row } from "reactstrap"
 import { Avatar } from "./components"
 import Link from "next-translate/Link"
 import Typography from "@material-ui/core/Typography"
-import { NewIcons } from "../../assets/icons"
+import { NewIcons } from "assets/icons"
 import GalleryViewer from "../Gallery/GalleryViewer"
 import React, { useRef } from "react"
-import { useSocket } from "../../context/SocketContext"
+import { useSocket } from "context/SocketContext"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 
 const CarInformation = (props) => {
     const { getOnlineStatusByUserId } = useSocket()
     const refImg = useRef()
+    const isMobile = useMediaQuery('(max-width:768px)')
 
 
     return (
         <Col sm={12} md={6}>
             <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
-                <Row >
-                    <div className="pic">
+                <Row>
+                    <div style={{ width: isMobile ? "40%": "30%" }}>
                         <Avatar
                             className="img-profile-wrapper avatar-preview"
                             src={props?.announce?.getAuthor.getAvatar || props?.announce?.getAuthor.getAvatarUrl}
@@ -27,7 +29,7 @@ const CarInformation = (props) => {
                         />
                     </div>
 
-                    <div style={{ marginLeft: '10px' }}>
+                    <div style={{ width: isMobile ? "50%": "50%"  }}>
                         <Link href={`/profile/${props?.announce?.getAuthor.getUsername}`}>
                             <a>
                                 <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
@@ -37,12 +39,21 @@ const CarInformation = (props) => {
                         </Link>
 
                         {props?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                            <div className="top-profile-location">
+                            <div>
                                 <a href={props?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                    <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
-                                        <NewIcons.card_location style={{ marginRight:'5px' }}/>
-                                        {props?.announce?.getAdOrAuthorCustomAddress()}
-                                    </span>
+                                    <div style={{ flexDirection: 'row' }}>
+                                        <div style={{ width: "10%" }}>
+                                            <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                <NewIcons.card_location />
+                                            </span>
+                                        </div>
+                                        <div style={{ width: "90%" }}>
+                                            <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
+                                                {props?.announce?.getAdOrAuthorCustomAddress()}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                 </a>
                             </div>
                         )}
@@ -50,7 +61,7 @@ const CarInformation = (props) => {
                 </Row>
             </div>
 
-            <div className="pics">
+            <div className="">
                 {props?.announce?.getCountImages > 0 && (
                     <>
                         <GalleryViewer images={props?.announce?.getImages} ref={refImg} />
