@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect,  useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
@@ -7,26 +7,26 @@ import Alert from '@material-ui/lab/Alert'
 import { useWeb3React } from "@web3-react/core"
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-import TagsList from '../../../components/Tags/TagsList'
-import AnnounceService from '../../../services/AnnounceService'
-import AnnounceModel from '../../../models/announce.model'
-import { MessageContext } from '../../../context/MessageContext'
-import { useAuth } from '../../../context/AuthProvider'
+import TagsList from 'components/Tags/TagsList'
+import AnnounceService from 'services/AnnounceService'
+import AnnounceModel from 'models/announce.model'
+import { MessageContext } from 'context/MessageContext'
+import { useAuth } from 'context/AuthProvider'
 import Error from '../../_error'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import { injected } from "../../../connectors"
-import UsersService from '../../../services/UsersService'
-import MakeOffer from "../../../components/Blockchain/MakeOffer"
-import HandleOffer from "../../../components/Blockchain/HandleOffer"
+import { injected } from "connectors"
+import UsersService from 'services/UsersService'
+import MakeOffer from "components/Blockchain/MakeOffer"
+import HandleOffer from "components/Blockchain/HandleOffer"
 import Web3 from "web3"
-import TransactionsService from '../../../services/TransactionsService'
-import CarInformation from "../../../components/AnnounceCard/CarInformation"
-import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
-import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
-import SharedURL from "../../../components/AnnounceCard/SharedURL"
+import TransactionsService from 'services/TransactionsService'
+import CarInformation from "components/AnnounceCard/CarInformation"
+import EditLikeAndComments from "components/AnnounceCard/EditLikeAndComments"
+import VehicleEquipments from "components/AnnounceCard/VehicleEquipments"
+import SharedURL from "components/AnnounceCard/SharedURL"
 
 
 const useStyles = makeStyles(() => ({
@@ -36,6 +36,20 @@ const useStyles = makeStyles(() => ({
         alignItems: 'flex-start',
         margin: '15px 0',
         borderBottom: '1px solid #999999'
+    },
+    mintButton:{
+        display: 'flex !important',
+        flexDirection: 'row !important',
+        justifyContent: 'center !important',
+        alignItems: 'center !important',
+        padding: '6px 50px !important',
+        background: '#2C65F6 !important',
+        borderRadius: '25px !important',
+        fontWeight: 'bold !important',
+        fontSize: '14px !important',
+        lineHeight: '150% !important',
+        color:'white !important',
+        marginTop:'7px !important'
     },
     textfield:{
         '& .MuiInputBase-root':{
@@ -54,7 +68,7 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t } = useTranslation()
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { authenticatedUser } = useAuth()
     const { dispatchModal } = useContext(MessageContext)
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
@@ -145,8 +159,7 @@ const Announce = () => {
             return
 
         try {
-            const result = await UsersService.getUsernameByWallet(walletPayer)
-            return result
+            return await UsersService.getUsernameByWallet(walletPayer)
         }
         catch (e) {
             console.log(e)
@@ -399,7 +412,7 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button style={{ height:'55px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                            <button className={clsx(classes.mintButton)} style={{ height:'40px', marginLeft:'10px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
