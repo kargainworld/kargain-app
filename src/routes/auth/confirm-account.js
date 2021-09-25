@@ -60,7 +60,7 @@ const ConfirmAccount = () => {
                                     inline
                                     errors={errors}
                                     control={control}
-                                    rules={{ required: t('form_validations:required')}}
+                                    rules={{ required: t('form_validations:required') }}
                                 />
                             </FieldWrapper>
                             <div className="submit">

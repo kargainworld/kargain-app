@@ -8,7 +8,7 @@ import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
 import Step1MotoDetails from '../../components/Products/motorcycle/Step1_MotoDetails'
 import Step2MotoStatus from '../../components/Products/motorcycle/Step2_MotoStatus'
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
-import {vehicleTypes} from '../../business/vehicleTypes'
+import { vehicleTypes } from '../../business/vehicleTypes'
 
 const MotorCyclesForm = (props) => {
 

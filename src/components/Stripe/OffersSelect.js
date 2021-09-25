@@ -3,7 +3,7 @@ import NiceSelect from 'react-select'
 import offers from '../../business/offers.json'
 
 const OffersSelect = ({ defaultOffer, setSelectedOffer, setIsSelectedOffer }) => {
-    const [defaultValue, setDefaultValue] = useState(null);
+    const [defaultValue, setDefaultValue] = useState(null)
     useEffect(() => {
         if (defaultOffer) {
             const offer = offers.find(offer => offer.title === defaultOffer)

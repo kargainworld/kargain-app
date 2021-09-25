@@ -4,7 +4,7 @@ import toggleVehicleDamagesTabs from './ToggleVehicleDamagesTabs'
 import DamageSelectorTabs from './DamageSelectorTabs'
 import vehiclesDamagesTabs from './vehiclesDamagesTabs.json'
 
-const DamageSelectorControlled = ({vehicleType, name, control, defaultValues, selectorFullWidth }) => {
+const DamageSelectorControlled = ({ vehicleType, name, control, defaultValues, selectorFullWidth }) => {
     const [tabs, setTabs ] = useState([])
 
     useEffect(() => {

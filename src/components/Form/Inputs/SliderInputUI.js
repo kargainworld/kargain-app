@@ -34,7 +34,7 @@ const RangeSlider = ({ name, rules, control, errors, ...props }) => {
         setValue(val)
         control.setValue(name, val)
         if(props.onChange) return props.onChange(e, name, val)
-        return e;
+        return e
     }
 
     useEffect(()=>{

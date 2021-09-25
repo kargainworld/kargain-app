@@ -87,8 +87,7 @@ const FooterLight = () => {
                                 </li>
                             )
                         })}
-
-                        <DropdownSwitchLangFlags dropdownStyle={{top : 'unset', bottom : '-40px'}}/>
+                        <DropdownSwitchLangFlags dropdownStyle={{ top : 'unset', bottom : '-40px' }}/>
                     </Nav>
                     </>
                 )}

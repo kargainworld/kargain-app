@@ -1,13 +1,13 @@
 import React from "react"
 import clsx from 'clsx'
-import {Bar} from "react-chartjs-2"
-import {makeStyles} from "@material-ui/styles"
-import {Button, Card, CardActions, CardContent, CardHeader, Divider} from "@material-ui/core"
+import { Bar } from "react-chartjs-2"
+import { makeStyles } from "@material-ui/styles"
+import { Button, Card, CardActions, CardContent, CardHeader, Divider } from "@material-ui/core"
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 
-import {data, options} from "./chart"
+import { data, options } from "./chart"
 
 const useStyles = makeStyles(() => ({
     root: {},
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 
 const LatestSales = props => {
 
-    const {className, ...rest} = props
+    const { className, ...rest } = props
 
     const classes = useStyles()
     return (

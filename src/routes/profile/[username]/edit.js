@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import SaveIcon from '@material-ui/icons/Save'
+
 import Dialog from '@material-ui/core/Dialog'
 import DeleteIcon from '@material-ui/icons/Delete'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -30,7 +30,7 @@ import CTALink from '../../../components/CTALink'
 import { MessageContext } from '../../../context/MessageContext'
 import { useAuth } from '../../../context/AuthProvider'
 import UsersService from '../../../services/UsersService'
-import { themeColors } from '../../../theme/palette'
+
 import UserModel from '../../../models/user.model'
 import Error from '../../_error'
 import customColors from '../../../theme/palette'
@@ -56,11 +56,7 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         boxShadow: '0 0.5rem 1rem rgba(0,0,0,0.15)',
         borderRadius: '20px'
-    },
-
-    button: {
-        margin: '1rem'
-    },
+    }, 
 
     navItem: {
         border: 'none',
@@ -117,32 +113,30 @@ const useStyles = makeStyles(() => ({
 
     customize:{
         
-            fontSize:'24px',
+        fontSize:'24px',
         
         '& .input-field':{
-            backgroundColor:'#ffffff',
+            backgroundColor:'#ffffff'
         }
     },
 
     RemoveColorlabel:{
-       '& label':{
+        '& label':{
             marginBottom: '15px !important'
-       }
+        }
     },
 
     bordergradientbtn:{
-        borderRadius: '100rem',
-        padding: '1rem',
+        borderRadius: '100rem',        
         fontSize: '14px',        
-        padding: '5px 25px',
-        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        padding: '5px 25px',        
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
         backgroundOrigin: 'border-box',
         backgroundClip: 'content-box, border-box',
         boxShadow: '2px 1000px 1px #fff inset', 
         '&:hover': {
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)',
+            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)'
         },
         
         '& span':{
@@ -174,7 +168,7 @@ const useStyles = makeStyles(() => ({
         fontWeight: "bold",
         marginRight: "5px",
         background: customColors.gradient.main
-    },
+    }
 
     
 }))
@@ -236,8 +230,8 @@ const Edit = () => {
         UsersService.removeUser(state.profile.getUsername)
             .then(() => {
                 dispatchModal({ msg: 'User successfully removed (disabled)' })
-                router.push('/');
-                logout();
+                router.push('/')
+                logout()
             }).catch(err => {
                 dispatchModalError({ err })
             }
@@ -383,79 +377,79 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
         <form className="p-3 mx-auto" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
             {errors && <ValidationErrors errors={errors}/>}
             <>
-            {isMobile ?(
-                <>
-                <TabContent activeTab={activeTab}>
-                    <TabPane tabId={0} >
-                        <ProfilePartialForm
-                            {...{
-                                control,
-                                watch,
-                                isAdmin,
-                                errors
-                            }}
-                        />
-                    </TabPane>
-                    <TabPane tabId={1}>
-                        <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                            {t('vehicles:payments-bills')}
-                        </Typography>
-                        <OffersPurchaseForm offer={offer} />
-                    </TabPane>
-                    <TabPane tabId={2}>
-                        <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                            {t('vehicles:confidentiality-security')}
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            className={classes.button}
-                            endIcon={<DeleteIcon />}
-                            onClick={handleOpenDialogRemove}
-                            style={{marginTop:'25px'}}
-                        >
-                            {t('vehicles:remove-profile')}
-                        </Button>
-                    </TabPane>
-                </TabContent>
-                </>
-            ) : (
-                <>
-                <TabContent activeTab={activeTab}>
-                    <TabPane tabId={0}>
-                        <ProfilePartialForm
-                            {...{
-                                control,
-                                watch,
-                                isAdmin,
-                                errors
-                            }}
-                        />
-                    </TabPane>
-                    <TabPane tabId={1}>
-                        <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                            {t('vehicles:payments-bills')}
-                        </Typography>
-                        <OffersPurchaseForm offer={offer} />
-                    </TabPane>
-                    <TabPane tabId={2}>
-                        <Typography component="h2" variant="h2" className="text-left" gutterBottom>
-                            {t('vehicles:confidentiality-security')}
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            className={classes.button}
-                            endIcon={<DeleteIcon />}
-                            onClick={handleOpenDialogRemove}
-                            style={{marginTop:'25px'}}
-                        >
-                            {t('vehicles:remove-profile')}
-                        </Button>
-                    </TabPane>
-                </TabContent>
-                </>
-            )}
+                {isMobile ?(
+                    <>
+                        <TabContent activeTab={activeTab}>
+                            <TabPane tabId={0} >
+                                <ProfilePartialForm
+                                    {...{
+                                        control,
+                                        watch,
+                                        isAdmin,
+                                        errors
+                                    }}
+                                />
+                            </TabPane>
+                            <TabPane tabId={1}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:payments-bills')}
+                                </Typography>
+                                <OffersPurchaseForm offer={offer} />
+                            </TabPane>
+                            <TabPane tabId={2}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:confidentiality-security')}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.button}
+                                    endIcon={<DeleteIcon />}
+                                    onClick={handleOpenDialogRemove}
+                                    style={{ marginTop:'25px' }}
+                                >
+                                    {t('vehicles:remove-profile')}
+                                </Button>
+                            </TabPane>
+                        </TabContent>
+                    </>
+                ) : (
+                    <>
+                        <TabContent activeTab={activeTab}>
+                            <TabPane tabId={0}>
+                                <ProfilePartialForm
+                                    {...{
+                                        control,
+                                        watch,
+                                        isAdmin,
+                                        errors
+                                    }}
+                                />
+                            </TabPane>
+                            <TabPane tabId={1}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:payments-bills')}
+                                </Typography>
+                                <OffersPurchaseForm offer={offer} />
+                            </TabPane>
+                            <TabPane tabId={2}>
+                                <Typography component="h2" variant="h2" className="text-left" gutterBottom>
+                                    {t('vehicles:confidentiality-security')}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.button}
+                                    endIcon={<DeleteIcon />}
+                                    onClick={handleOpenDialogRemove}
+                                    style={{ marginTop:'25px' }}
+                                >
+                                    {t('vehicles:remove-profile')}
+                                </Button>
+                            </TabPane>
+                        </TabContent>
+                    </>
+                )}
             </>
 
             {!isDesktop && (
@@ -477,7 +471,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     return (
         <>
             {isMobile ? (
-                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-center", classes.customize)} style={{marginBottom:'10px'}}>
+                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-center", classes.customize)} style={{ marginBottom:'10px' }}>
                     {t('vehicles:edit-my-profile')}
                 </Typography>
             ) : (
@@ -543,14 +537,14 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 />
             </FieldWrapper>
 
-            <div classNameWrapper="my-3" style={{marginLeft:'8px'}}>
+            <div classNameWrapper="my-3" style={{ marginLeft:'8px' }}>
                 <label style={{
                     color: '#999999',
                     width: '100%',
                     padding: '0',
                     fontSize: '12px',
                     marginTop: '12px',
-                    marginBottom: '15px',
+                    marginBottom: '15px'
                 }}>{t('vehicles:password')}</label>
                 <Link href="/auth/forgotten">
                     <a className={"m-2", clsx(classes.bordergradientbtn)}>
@@ -665,7 +659,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
     return (
         <>
             {isMobile ? (
-                <div style={{display:'flex', marginTop:'20px', marginLeft:'5px'}} >
+                <div style={{ display:'flex', marginTop:'20px', marginLeft:'5px' }} >
                     <Button
                         variant="contained"
                         color="primary"
@@ -690,9 +684,9 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                         color="primary"
                         size="large"
                         className={clsx(classes.button)}
-                        endIcon={<NewIcons.save style={{marginLeft:'8px'}}/>}
+                        endIcon={<NewIcons.save style={{ marginLeft:'8px' }}/>}
                         type="submit"
-                        style={{height:'35px', width:'250px', marginLeft:'10px'}}
+                        style={{ height:'35px', width:'250px', marginLeft:'10px' }}
                         onClick={() => {
                             triggerSubmit()
                         }}>
@@ -700,7 +694,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                         
                     </Button>
 
-                    <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px'}}/>
+                    <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px' }}/>
                 </div>
             )}
         </>

@@ -11,7 +11,7 @@ import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
 import { MessageContext } from '../../../../context/MessageContext'
 
-const CamperFilters = ({control, watch, errors }) => {
+const CamperFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
     const { dispatchModalError } = useContext(MessageContext)
@@ -34,7 +34,7 @@ const CamperFilters = ({control, watch, errors }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 

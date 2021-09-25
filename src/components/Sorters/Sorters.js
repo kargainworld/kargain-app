@@ -57,7 +57,7 @@ const Sorters = ({ updateSorter }) => {
                 key: 'MILEAGE',
                 asc: true
             }
-        },
+        }
         // {
         //     label: t('vehicles:closest'),
         //     icon: ArrowUpwardIcon,
@@ -92,14 +92,32 @@ const Sorters = ({ updateSorter }) => {
 
     return (
         <>
-        {isMobile ? (
-            <Col md={6} sm={10} xs={12} style={{marginLeft:'-15px'}}>
+            {isMobile ? (
+                <Col md={6} sm={10} xs={12} style={{ marginLeft:'-15px' }}>
+                    <section style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <span style={{ fontSize: '12px', fontWeight: 'normal', color:'#999999' }}>{t('vehicles:sort-by')}:</span>
+                        <div className="sorter" style={{ fontSize: '14px' }}>
+                            <NiceSelect
+                                name="sort"
+                                value={sorter}
+                                onChange={onHandleChange}
+                                components={{ SingleValue: customSingleValue }}
+                                options={options}
+                            />
+                        </div>
+                    </section>
+                </Col>
+            ):(
                 <section style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'flex-end'
                 }}>
-                    <span style={{fontSize: '12px', fontWeight: 'normal', color:'#999999'}}>{t('vehicles:sort-by')}:</span>
-                    <div className="sorter" style={{fontSize: '14px'}}>
+                    <span style={{ fontSize: '12px', fontWeight: 'normal', color:'#999999' }}>{t('vehicles:sort-by')}:</span>
+                    <div className="sorter" style={{ fontSize: '14px' }}>
                         <NiceSelect
                             name="sort"
                             value={sorter}
@@ -109,26 +127,7 @@ const Sorters = ({ updateSorter }) => {
                         />
                     </div>
                 </section>
-            </Col>
-        ):(
-            <section style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end'
-            }}>
-                <span style={{fontSize: '12px', fontWeight: 'normal', color:'#999999'}}>{t('vehicles:sort-by')}:</span>
-                <div className="sorter" style={{fontSize: '14px'}}>
-                    <NiceSelect
-                        name="sort"
-                        value={sorter}
-                        onChange={onHandleChange}
-                        components={{ SingleValue: customSingleValue }}
-                        options={options}
-                    />
-                </div>
-            </section>
-        )}
-        
+            )}        
         </>
     )
 }

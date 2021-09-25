@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from "@material-ui/styles"
-import { Col, Container, Row } from 'reactstrap'
+import { Col } from 'reactstrap'
 import AdvancedFilters from '../Filters/Advanced/AdvancedFilters'
 import Typography from '@material-ui/core/Typography'
 import Sorters from '../Sorters/Sorters'
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         fountSize: '16px !important',
         textAlign: 'center',
         background: 'none',
-        width: '33.33% !important',
+        width: '33.33% !important'
         
     },
     sliderborder:{
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center !important',
         background: 'none !important',
         fontSize: '16px !important',
-        width:  '33.33% !important',
+        width:  '33.33% !important'
         
     },
     subscriptionWrapper: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     followItem: {
         display: "block",
-        lineHeight: 1,
+        lineHeight: 1
         //
         // '& svg': {
         //     width: 16
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
             marginLeft: '0 !important'
         },
         '& #new_feed':{
-            display: 'none !important',
+            display: 'none !important'
         }
 
     },
@@ -85,8 +85,8 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         margin: '1rem'
-    },
-}));
+    }
+}))
 
 const TabsItem = ({ activeTab, index, ...props }) => {
     return (
@@ -135,7 +135,7 @@ const Tabs = ({ updateFilters, defaultActive, active, children, id, handleClickT
     })
 
     useEffect(() => {
-      setActiveTab(+active)
+        setActiveTab(+active)
     }, [active])
 
     const onClickTabItem = (index) => {
@@ -174,27 +174,27 @@ const Tabs = ({ updateFilters, defaultActive, active, children, id, handleClickT
             </ul>
             <>
                 {isMobile ? (
-                    <Col sm={12} md={12} style={{marginLeft: '-10px'}} id="section_1" style={{transform:'translate(10px, 10px)'}}>
+                    <Col sm={12} md={12}  id="section_1" style={{ transform:'translate(10px, 10px)', marginLeft: '-10px' }}>
                         <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                        <div style={{marginTop:'10px'}}>
+                        <div style={{ marginTop:'10px' }}>
                             
-                            <Typography component="p" variant="h3" style={{fontSize: '20px 1important', marginLeft:'5px'}}>
+                            <Typography component="p" variant="h3" style={{ fontSize: '20px 1important', marginLeft:'5px' }}>
                                 {t('vehicles:{count}_results_search', { count: filterState.total })}
                             </Typography>
-                            <div style={{marginBottom:'20px'}}>
+                            <div style={{ marginBottom:'20px' }}>
                                 <Sorters updateSorter={updateSorter} />
                             </div>
                             
                         </div>
                     </Col> 
                 ) : (
-                    <Col sm={12} md={12} style={{marginLeft: '-10px'}} id="section_1" style={{transform:'translate(10px, 10px)'}}>
+                    <Col sm={12} md={12} id="section_1" style={{ transform:'translate(10px, 10px)',marginLeft: '-10px' }}>
                         <AdvancedFilters updateFilters={updateFilters} className={classes.filters} />
-                        <div style={{marginTop:'35px'}}>
-                            <Typography component="p" variant="h3" style={{fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px'}}>
+                        <div style={{ marginTop:'35px' }}>
+                            <Typography component="p" variant="h3" style={{ fontSize: '20px 1important', marginTop:'30px', marginLeft:'5px' }}>
                                 {t('vehicles:{count}_results_search', { count: filterState.total })}
                             </Typography>
-                            <div  style={{ marginTop: '-40px'}}>
+                            <div  style={{ marginTop: '-40px' }}>
                                 <Sorters updateSorter={updateSorter} />
                             </div>
                         </div>

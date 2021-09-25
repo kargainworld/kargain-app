@@ -11,7 +11,7 @@ const RadioGroupInput = ({ name, rules, control, errors, ...props }) => {
     return (
         <>
             <Row className={FieldRow}>
-                {options && options.map((option, index) => {
+                {props.options && props.options.map((option, index) => {
                     const labelProps = { children: option.label ? option.label : null }
                     return (
                         <div key={index} className={InputClasses}>

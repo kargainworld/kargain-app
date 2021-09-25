@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
     },
 
     annoInputField: {
-        backgroundColor:'#ffffff00 !important',
+        backgroundColor:'#ffffff00 !important'
     },
 
     annoh5tag:{
@@ -79,12 +79,10 @@ const useStyles = makeStyles(() => ({
     },
 
     nav_fontcolor:{
-       '& nav-link':{
-           color: '#999999'
-       }
-    }
-
-    
+        '& nav-link':{
+            color: '#999999'
+        }
+    }    
 
 }))
 
@@ -144,13 +142,13 @@ const DamageViewerTabs = ({ vehicleType, tabs }) => {
                                         <DamagesList tab={tab}/>
                                     </Col>
                                     <Col md={6}>
-                                        <DamagesMappedImg {...{index, tab, annoRefs}}/>
+                                        <DamagesMappedImg {...{ index, tab, annoRefs }}/>
                                     </Col>
                                 </Row>
                             ):( 
                                 <Row>
                                     <Col md={6}>
-                                        <DamagesMappedImg {...{index, tab, annoRefs}}/>
+                                        <DamagesMappedImg {...{ index, tab, annoRefs }}/>
                                     </Col>
                                     <Col md={6}>
                                         <DamagesList tab={tab}/>
@@ -194,12 +192,12 @@ const DamagesList = ({ tab }) => {
     return (
         <div className={clsx(classes.annoInputs)}>
             
-            <h5 style={{fontSize:'16px !important', marginLeft:'10px'}}><Emoji style={{marginRight:"10px", marginBottom:"3px"}} name="cross-mark" width={12} />  {t('vehicles:damages')} :</h5>
+            <h5 style={{ fontSize:'16px !important', marginLeft:'10px' }}><Emoji style={{ marginRight:"10px", marginBottom:"3px" }} name="cross-mark" width={12} />  {t('vehicles:damages')} :</h5>
             {tab.stages && tab.stages.map((stage, index) => {
                 return (
                     <div key={index} className={classes.annoInput}>
-                        <div style={{width: '90px'}}>
-                            <NewIcons.recycle style={{marginRight:'15px', with:"18px"}}/>
+                        <div style={{ width: '90px' }}>
+                            <NewIcons.recycle style={{ marginRight:'15px', with:"18px" }}/>
                             <span className={clsx(classes.annoNumber)}>{index + 1}</span>
                         </div>
                         
@@ -208,7 +206,7 @@ const DamagesList = ({ tab }) => {
                             value={stage.text}
                             className={clsx(classes.annoInputField, 'form-control form-control-sm')}
                             name={`annotation_${index + 1}`}
-                            placeholder={t('vehicles:damages-{number}-description', { number : index + 1})}
+                            placeholder={t('vehicles:damages-{number}-description', { number : index + 1 })}
 
                         />
                     </div>

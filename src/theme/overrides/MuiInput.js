@@ -21,6 +21,6 @@ export default {
         '&.Mui-focused::after, &::before': {
             border: '1px solid #000000',
             display: 'none'
-        },
-    },
+        }
+    }
 }

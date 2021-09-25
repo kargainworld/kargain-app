@@ -57,7 +57,7 @@ const CommentsList = ({ comments }) => {
                     {comments.map((comment, index) => {
                         return (
                             <tr key={index} className="p-2">
-                                <td style={{ width: '50%'}}>
+                                <td style={{ width: '50%' }}>
                                     <Typography as="p" gutterBottom>
                                         <strong>
                                             {comment.getMessage}
@@ -94,7 +94,7 @@ const CommentsList = ({ comments }) => {
     )
 }
 
-const ModalConfirmRemoveComment = ({openDialogRemove, handleCloseDialogRemove, handleCallback}) => {
+const ModalConfirmRemoveComment = ({ openDialogRemove, handleCloseDialogRemove, handleCallback }) => {
     const { t } = useTranslation()
 
     return(

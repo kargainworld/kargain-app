@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from 'clsx'
-import {makeStyles} from "@material-ui/styles"
-import {Avatar, Card, CardContent, Grid, Typography} from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { Avatar, Card, CardContent, Grid, Typography } from "@material-ui/core"
 import MoneyIcon from '@material-ui/icons/Money'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Budget = props => {
-    const {className, ...rest} = props
+    const { className, ...rest } = props
 
     const classes = useStyles()
 

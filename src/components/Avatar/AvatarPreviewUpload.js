@@ -1,83 +1,83 @@
-import React, { useContext, useEffect, useState } from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import { MessageContext } from '../../context/MessageContext';
-import { useAuth } from '../../context/AuthProvider';
-import UsersService from '../../services/UsersService';
-import { NewIcons } from 'assets/icons';
+import React, { useContext, useEffect, useState } from 'react'
 
-const FileInput = ({ value, onChange = noop, ...rest }) => (
-  <input
-    {...rest}
-    // style={{ display: "none" }}
-    type="file"
-    id="imageUpload"
-    accept=".png, .jpg, .jpeg"
-    onChange={(e) => {
-      onChange([...e.target.files]);
-    }}
-  />
-);
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+import { MessageContext } from '../../context/MessageContext'
+import { useAuth } from '../../context/AuthProvider'
+import UsersService from '../../services/UsersService'
+import { NewIcons } from 'assets/icons'
+
+const FileInput = ({ onChange , ...rest }) => (
+    <input
+        {...rest}
+        // style={{ display: "none" }}
+        type="file"
+        id="imageUpload"
+        accept=".png, .jpg, .jpeg"
+        onChange={(e) => {
+            onChange([...e.target.files])
+        }}
+    />
+)
 
 const AvatarPreviewUpload = () => {
-  const { authenticatedUser, updateAuthenticatedRawUser, isAuthenticated } = useAuth();
-  const { dispatchModal, dispatchModalError } = useContext(MessageContext);
-  const [avatarLocation, setAvatarLocation] = useState(authenticatedUser.getAvatar);
-  const [avatarUrl, setAvatarUrl] = useState(authenticatedUser.getAvatarUrl);
+    const { authenticatedUser, updateAuthenticatedRawUser, isAuthenticated } = useAuth()
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const [avatarLocation, setAvatarLocation] = useState(authenticatedUser.getAvatar)
+    const [avatarUrl, setAvatarUrl] = useState(authenticatedUser.getAvatarUrl)
 
-  const onChangeFile = (files) => {
-    dispatchModal({ msg: 'Uploading...', persist: true });
-    let data = new FormData();
-    data.append('avatar', files[0]);
+    const onChangeFile = (files) => {
+        dispatchModal({ msg: 'Uploading...', persist: true })
+        let data = new FormData()
+        data.append('avatar', files[0])
 
-    UsersService.uploadAvatar(data)
-      .then((doc) => {
-        updateAuthenticatedRawUser(doc);
-        dispatchModal({ msg: 'Upload Successfully' });
-      })
-      .catch((err) => {
-        dispatchModalError({ err, persist: true });
-      });
-  };
+        UsersService.uploadAvatar(data)
+            .then((doc) => {
+                updateAuthenticatedRawUser(doc)
+                dispatchModal({ msg: 'Upload Successfully' })
+            })
+            .catch((err) => {
+                dispatchModalError({ err, persist: true })
+            })
+    }
 
-  const handleRemoveAvatar = () => {
-    const userId = authenticatedUser.getID;
-    UsersService.removeAvatar(userId)
-      .then((doc) => {
-        updateAuthenticatedRawUser(doc);
-        dispatchModal({ msg: 'Remove Successfully' });
-      })
-      .catch((err) => {
-        dispatchModalError({ err, persist: true });
-      });
-  };
+    const handleRemoveAvatar = () => {
+        const userId = authenticatedUser.getID
+        UsersService.removeAvatar(userId)
+            .then((doc) => {
+                updateAuthenticatedRawUser(doc)
+                dispatchModal({ msg: 'Remove Successfully' })
+            })
+            .catch((err) => {
+                dispatchModalError({ err, persist: true })
+            })
+    }
 
-  useEffect(() => {
-    setAvatarLocation(authenticatedUser.getAvatar);
-    setAvatarUrl(authenticatedUser.getAvatarUrl);
-  }, [authenticatedUser]);
+    useEffect(() => {
+        setAvatarLocation(authenticatedUser.getAvatar)
+        setAvatarUrl(authenticatedUser.getAvatarUrl)
+    }, [authenticatedUser])
 
-  return (
-    <div className="avatar-upload">
-      {isAuthenticated && (
-        <div className="avatar-edit" style={{transform: 'translate(-30px, 0px)'}}>
-          <FileInput onChange={onChangeFile} />
-          {avatarLocation ? (
-            <label onClick={handleRemoveAvatar} style={{backgroundColor:'#ED80EB' }}>
-              <CloseOutlinedIcon />
-            </label>
-          ) : (
-            <label htmlFor="imageUpload" style={{backgroundColor:'#ED80EB', borderColor:'#ED80EB'}}>
-              <NewIcons.pen />
-            </label>
-          )}
+    return (
+        <div className="avatar-upload">
+            {isAuthenticated && (
+                <div className="avatar-edit" style={{ transform: 'translate(-30px, 0px)' }}>
+                    <FileInput onChange={onChangeFile} />
+                    {avatarLocation ? (
+                        <label onClick={handleRemoveAvatar} style={{ backgroundColor:'#ED80EB' }}>
+                            <CloseOutlinedIcon />
+                        </label>
+                    ) : (
+                        <label htmlFor="imageUpload" style={{ backgroundColor:'#ED80EB', borderColor:'#ED80EB' }}>
+                            <NewIcons.pen />
+                        </label>
+                    )}
+                </div>
+            )}
+            <div className="avatar-preview" style={{ height: 164, width: 164 }}>
+                <div id="imagePreview" style={{ backgroundImage: `url(${avatarLocation || avatarUrl})` }} />
+            </div>
         </div>
-      )}
-      <div className="avatar-preview" style={{ height: 164, width: 164 }}>
-        <div id="imagePreview" style={{ backgroundImage: `url(${avatarLocation || avatarUrl})` }} />
-      </div>
-    </div>
-  );
-};
+    )
+}
 
-export default AvatarPreviewUpload;
+export default AvatarPreviewUpload

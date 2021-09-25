@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const TagsList = memo(({tags, editMode, onRemoveTag}) => {
+const TagsList = memo(({ tags, editMode, onRemoveTag }) => {
     const classes = useStyles()
     if(!tags) return null
 

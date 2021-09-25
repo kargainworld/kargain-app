@@ -1,7 +1,7 @@
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from 'next-translate/useTranslation'
 
 const Named = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation()
 
     return [
         {

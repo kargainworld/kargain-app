@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import TableMUI from '../TableMUI'
 import AnnounceService from '../../../services/AnnounceService'
@@ -222,7 +222,7 @@ const AdsTable = () => {
             .catch(err => {
                 dispatchModalError({ err })
             })
-    }, [rowsLength, pageIndex])
+    }, [dispatchModalError, rowsLength, pageIndex])
 
     useEffect(() => {
         fetchData()

@@ -1,5 +1,5 @@
 import config from '../config/config'
-import {buildUrl} from '../libs/utils'
+import { buildUrl } from '../libs/utils'
 import handleResponse from '../libs/handleResponse'
 
 const baseRoute = `${config.api}/vehicles`
@@ -22,7 +22,7 @@ function getCarsDistinctModels (vehicleType, make) {
                     })
             }
 
-            return data;
+            return data
         })
         .catch(err => {
             throw err

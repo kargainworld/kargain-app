@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import {makeStyles} from "@material-ui/styles"
+import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const BulletStatus = props => {
-    const {className, size, color, ...rest} = props
+    const { className, size, color, ...rest } = props
 
     const classes = useStyles()
 

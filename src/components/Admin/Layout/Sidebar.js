@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import {makeStyles} from "@material-ui/styles"
-import { Drawer} from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { Drawer } from "@material-ui/core"
 import BarChartIcon from '@material-ui/icons/BarChart'
 import HomeIcon from '@material-ui/icons/Home'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Sidebar = props => {
-    const {open, variant, onClose, className} = props
+    const { open, variant, onClose, className } = props
     const classes = useStyles()
     const pages = [
         {

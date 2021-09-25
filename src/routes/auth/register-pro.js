@@ -20,7 +20,7 @@ const formConfig = {
 }
 
 const RegisterPro = () => {
-    const { control, errors, getValues, watch, handleSubmit} = useForm(formConfig)
+    const { control, errors, getValues, watch, handleSubmit } = useForm(formConfig)
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const { t } = useTranslation()
 

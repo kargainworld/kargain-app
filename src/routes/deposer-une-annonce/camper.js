@@ -8,7 +8,7 @@ import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
 import Step1CamperDetails from '../../components/Products/camper/Step1_CamperDetails'
 import Step2CamperStatus from '../../components/Products/camper/Step2_CamperStatus'
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
-import {vehicleTypes} from '../../business/vehicleTypes'
+import { vehicleTypes } from '../../business/vehicleTypes'
 
 const CamperForm = (props) => {
 

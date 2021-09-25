@@ -16,8 +16,8 @@ const Index = () => {
             if (!isAuthenticated) {
                 router.push({
                     pathname: '/auth/login',
-                    query: { redirect: router.asPath },
-                });
+                    query: { redirect: router.asPath }
+                })
                 return
             }
         }

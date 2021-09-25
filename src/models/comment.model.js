@@ -30,7 +30,7 @@ export default class Comment {
     get getDate(){
         if (!this.raw?.createdAt) return null
         const date = parseISO(this.raw?.createdAt)
-        return format(date, 'Pp', {code: 'fr'})
+        return format(date, 'Pp', { code: 'fr' })
     }
     
     get getMessage () {

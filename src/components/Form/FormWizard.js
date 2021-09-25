@@ -10,9 +10,9 @@ import BreadcrumbSteps from './BreadcrumbSteps'
 import useIsMounted from '../../hooks/useIsMounted'
 import DebugLocalStorage from '../DebugLocalStorage'
 import { FormContext } from '../../context/FormContext'
-import Header from '../Header'
 
-import { NewIcons } from '../../assets/icons'
+
+
 import { Emoji } from 'react-apple-emojis'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -20,14 +20,13 @@ import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
-	div: {
-		marginTop: '-10px',
-		marginBottom:'40px',
-		'& .RSPBprogressBar':{
-			height:'6px !important'
-		}
-	},
-	
+    div: {
+        marginTop: '-10px',
+        marginBottom:'40px',
+        '& .RSPBprogressBar':{
+            height:'6px !important'
+        }
+    }	
 }))
 
 const calculatePourcent = (current, length) => {
@@ -45,7 +44,7 @@ const Root = styled.main`
 
 const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
 
-	const isMobile = useMediaQuery('(max-width:768px)')
+    const isMobile = useMediaQuery('(max-width:768px)')
     const isMounted = useIsMounted()
     const { t } = useTranslation()
     const steps = Array.isArray(children) ? children.filter(child => child.props.hidden !== true) : children ? [children] : []
@@ -58,111 +57,110 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     const classes = useStyles()
 
     const setStep = useCallback((index) => {
-	setActiveStep(index)
+        setActiveStep(index)
     }, [])
 
     const prevStep = useCallback(() => {
-		setActiveStep(activeStep => activeStep - 1)
+        setActiveStep(activeStep => activeStep - 1)
     }, [])
 
     const nextStep = useCallback(() => {
-		setActiveStep(activeStep => activeStep + 1)
+        setActiveStep(activeStep => activeStep + 1)
     }, [])
 
     const triggerDispatchFormData = (data) => {
-		dispatchFormUpdate(data)
+        dispatchFormUpdate(data)
     }
 
     const onSubmitStep = useCallback((data) => {
-		triggerDispatchFormData(data)
-		nextStep()
+        triggerDispatchFormData(data)
+        nextStep()
     }, [])
 
     const handleSubmitForm = (data) => {
-	triggerDispatchFormData(data)
-	setEndForm(true)
+        triggerDispatchFormData(data)
+        setEndForm(true)
     }
 
     useEffect(() => {
-	dispatchFormUpdate({
-	    vehicleType : formKey.toLowerCase()
-	})
-    },[])
+        dispatchFormUpdate({
+            vehicleType : formKey.toLowerCase()
+        })
+    }, [])
 
     useEffect(() => {
-	window.scrollTo(0, 0)
-	if (isMounted) {
-	    setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
-	    dispatchFormUpdate({ currentStep: activeStep })
-	    setPourcent(calculatePourcent(activeStep, steps.length))
-	}
+        window.scrollTo(0, 0)
+        if (isMounted) {
+            setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
+            dispatchFormUpdate({ currentStep: activeStep })
+            setPourcent(calculatePourcent(activeStep, steps.length))
+        }
     }, [activeStep])
 
     useEffect(() => {
-	if (isMounted && endForm) {
-	    console.log('end form reached')
-	    onFinalSubmit(formDataContext)
-	    setEndForm(false)
-	}
+        if (isMounted && endForm) {
+            console.log('end form reached')
+            onFinalSubmit(formDataContext)
+            setEndForm(false)
+        }        
     }, [endForm])
     return (
-	<Root>
-	    <div className="formWizardContainer">
-		
-		{isMobile ? (
-			<div>
-				<BreadcrumbSteps activeStepIndex={activeStep}
-					steps={steps}
-					setStep={setStep}
-					maxActiveStep={maxActiveStep}
-					style={{marginTop:'-15px'}}
-				/>
-				<div className={clsx(classes.div)}>
-					<ProgressBar  percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
-				</div>
-			</div>
-		) : (
-			<div>
-				<BreadcrumbSteps activeStepIndex={activeStep}
-					steps={steps}
-					setStep={setStep}
-					maxActiveStep={maxActiveStep}
-				/>
-				<ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
-			</div>
-		)}
-		{/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
-		
-		<h4 >
-			{/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
-			
-			<Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="automobile" width={18} />
-			{[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
-		</h4>
-		<ControlledStep
-		    step={steps[activeStep]}
-		    onSubmitStep={onSubmitStep}
-		    prevStep={prevStep}
-		    nextStep={nextStep}
-		    handleSubmitForm={handleSubmitForm}
-		/>
+        <Root>
+            <div className="formWizardContainer">
+            
+                {isMobile ? (
+                    <div>
+                        <BreadcrumbSteps activeStepIndex={activeStep}
+                            steps={steps}
+                            setStep={setStep}
+                            maxActiveStep={maxActiveStep}
+                            style={{ marginTop:'-15px' }}
+                        />
+                        <div className={clsx(classes.div)}>
+                            <ProgressBar  percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <BreadcrumbSteps activeStepIndex={activeStep}
+                            steps={steps}
+                            setStep={setStep}
+                            maxActiveStep={maxActiveStep}
+                        />
+                        <ProgressBar percent={pourcent} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+                    </div>
+                )}
+                {/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
+                
+                <h4 >
+                    {/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
+                    
+                    <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="automobile" width={18} />
+                    {[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
+                </h4>
+                <ControlledStep
+                    step={steps[activeStep]}
+                    onSubmitStep={onSubmitStep}
+                    prevStep={prevStep}
+                    nextStep={nextStep}
+                    handleSubmitForm={handleSubmitForm}
+                />
 
-		{debug && (
-		    <Row>
-			<Col>
-			    <div>
-				<h2> formContext </h2>
-				<pre>{JSON.stringify(formDataContext, null, 2)}</pre>
-			    </div>
-			</Col>
-			<Col>
-			    <DebugLocalStorage value="formData"/>
-			</Col>
-		    </Row>
-		)}
-
-	    </div>
-	</Root>
+                {debug && (
+                    <Row>
+                        <Col>
+                            <div>
+                                <h2> formContext </h2>
+                                <pre>{JSON.stringify(formDataContext, null, 2)}</pre>
+                            </div>
+                        </Col>
+                        <Col>
+                            <DebugLocalStorage value="formData"/>
+                        </Col>
+                    </Row>
+                )}
+            </div>
+        </Root>
     )
 }
 

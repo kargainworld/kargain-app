@@ -59,8 +59,8 @@ const ActivatedBullet = ({ slug, activated: activatedProps }) => {
         icon: <BulletPoint color={option.color}/>
     }))
 
-    const wrapperRef = useRef(null);
-    useOutsideClicked(wrapperRef);
+    const wrapperRef = useRef(null)
+    useOutsideClicked(wrapperRef)
     
     function useOutsideClicked(ref) {
         useEffect(() => {
@@ -70,11 +70,11 @@ const ActivatedBullet = ({ slug, activated: activatedProps }) => {
                     setClicked(false)
                 }
             }
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside)
             return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
+                document.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [ref])
     }
     
     const handleUpdate = async () => {

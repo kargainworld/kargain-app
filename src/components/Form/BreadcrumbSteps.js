@@ -11,15 +11,15 @@ const useStyles = makeStyles(()=>({
             backgroundColor: "#fff",
             marginTop: '10px',
             '& li + li::before': {    
-                content: "'|' !important",
+                content: "'|' !important"
             }
-        },
+        }
     },
     active:{
         backgroundColor: '#fff !important',
         padding: '0 0rem !important',
         borderRadius: '10px',
-        color: '#ED80EB !important',
+        color: '#ED80EB !important'
     }
   
 }))
@@ -27,7 +27,7 @@ const useStyles = makeStyles(()=>({
 const BreadcrumbSteps = ({ steps, activeStepIndex, maxActiveStep, setStep }) => {
     const isMobile = useMediaQuery('(max-width:768px)')
 
-	const classes = useStyles()
+    const classes = useStyles()
     return (
         <section id="header">
             {isMobile ? (
@@ -42,7 +42,7 @@ const BreadcrumbSteps = ({ steps, activeStepIndex, maxActiveStep, setStep }) => 
                                     if (index === activeStepIndex) e.preventDefault()
                                     // if (index <= maxActiveStep) setStep(index)
                                 }}>
-                                <a href="#" className={clsx('bread-link text', index <= activeStepIndex && classes.active)} style={{fontSize:'8.61714px', width:'25%'}} >
+                                <a href="#" className={clsx('bread-link text', index <= activeStepIndex && classes.active)} style={{ fontSize:'8.61714px', width:'25%' }} >
                                     {step.props.title}
                                 </a>
                             </BreadcrumbItem>

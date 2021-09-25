@@ -193,7 +193,7 @@ export default makeStyles(theme => ({
         // color: '#369',
         color: '#fff',
         fontWeight: 400,
-        fontSize:'16px',
+        fontSize:'16px'
     },
 
     messageBubbleLeft: {
@@ -205,7 +205,7 @@ export default makeStyles(theme => ({
         fontWeight: 400,
         backgroundColor: '#EAEAEA',
         color: '#999999',
-        fontSize:'16px',
+        fontSize:'16px'
     },
 
     conversationFooter: {
@@ -242,7 +242,7 @@ export default makeStyles(theme => ({
         padding: '10px',
         textDecoration: 'none',
         border:'1px solid white',
-        marginTop:'-5px',
-    },
+        marginTop:'-5px'
+    }
 
 }))

@@ -4,7 +4,7 @@ import differenceInMinutes from 'date-fns/differenceInMinutes'
 import differenceInDays from 'date-fns/differenceInDays'
 import differenceInMonths from 'date-fns/differenceInMonths'
 import differenceInYears from 'date-fns/differenceInYears'
-import {inflate, flatten} from 'flattenjs'
+import { inflate, flatten } from 'flattenjs'
 import queryString from 'query-string'
 
 export const getLogo = () => '/images/Kargain_logo.png'

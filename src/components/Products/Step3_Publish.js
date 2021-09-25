@@ -15,9 +15,9 @@ import UploadDropZone from '../Uploads/UploadDropZone'
 import { FormContext } from '../../context/FormContext'
 import SearchLocationInput from '../Form/Inputs/SearchLocationInput'
 import TagsControlled from '../Tags/TagsControlled'
-import Header from '../Header'
-import SelectInput from "../Form/Inputs/SelectInput";
-import {SelectOptionsUtils} from "../../libs/formFieldsUtils";
+
+import SelectInput from "../Form/Inputs/SelectInput"
+import { SelectOptionsUtils } from "../../libs/formFieldsUtils"
 import { Emoji } from 'react-apple-emojis'
 
 import clsx from 'clsx'
@@ -27,7 +27,7 @@ import TextInput from 'components/Form/Inputs/TextInput'
 const useStyles = makeStyles(() => ({
     delete:{
         '& .special-label':{
-            display:'none',
+            display:'none'
         }
     },
     div:{
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
             width:'96% !important'
         }
     }
-	}))
+}))
 
 
 const Step = ({ handleSubmitForm, prevStep }) => {
@@ -56,7 +56,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
 
     dispatchFormUpdate(watch(), { compare: true })
 
-    const vat = watch('vat');
+    const vat = watch('vat')
 
     const getFiles = (files) => {
         setValue('images', files)
@@ -78,9 +78,9 @@ const Step = ({ handleSubmitForm, prevStep }) => {
     return (
         <form className="form_wizard" onSubmit={handleSubmit(handleSubmitForm)}>
             {/* <Header text={t('vehicles:publish-my-ad-now')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black'}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black' }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="page-facing-up" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px", marginLeft:"1%" }} name="page-facing-up" width={18} />
                 {t('vehicles:publish-my-ad-now')}
             </h3>
             <Row>
@@ -113,8 +113,8 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                                 required: t('form_validations:required'),
                                 validate: val => {
                                     const value = Number(val)
-                                    if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€'})
-                                    if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€'})
+                                    if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€' })
+                                    if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€' })
                                 }
                             }}
                         />
@@ -128,7 +128,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                             label={t('vehicles:vat')}
                             control={control}
                             errors={errors}
-                            stye={{fontSize:'14px !important', fontWeight:'nomarl'}}
+                            stye={{ fontSize:'14px !important', fontWeight:'nomarl' }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -164,7 +164,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                         {
                             value: false,
                             label: t('vehicles:is_appointment__private')
-                        },
+                        }
                     ])}
                     control={control}
                     errors={errors}
@@ -226,9 +226,9 @@ const Step = ({ handleSubmitForm, prevStep }) => {
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:pictures')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black'}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black' }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px", marginLeft:"1%"}} name="paperclip" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px", marginLeft:"1%" }} name="paperclip" width={18} />
                 {t('vehicles:pictures')}
             </h3>
             <UploadDropZone
@@ -248,7 +248,7 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     errors={errors}
                 /> */}
                 <BCheckBoxInput
-                    style={{marginBottom:'3px !important'}}
+                    style={{ marginBottom:'3px !important' }}
                     // name="confirm"
                     // label={t('vehicles:accept-cgu')}
                     // errors={errors}
@@ -258,8 +258,8 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     label={t('vehicles:accept-cgu')}
                     control={control}
                     errors={errors}
-                    stye={{fontSize:'14px', fontWeight:'nomarl'}}
-                    />
+                    stye={{ fontSize:'14px', fontWeight:'nomarl' }}
+                />
             </FieldWrapper>
             <div className={clsx(classes.div)}>
                 <StepNavigation  prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>
