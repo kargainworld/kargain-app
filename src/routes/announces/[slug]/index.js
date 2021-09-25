@@ -30,16 +30,11 @@ import SharedURL from "components/AnnounceCard/SharedURL"
 
 
 const useStyles = makeStyles(() => ({
-    priceStarsWrapper: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        margin: '15px 0',
-        borderBottom: '1px solid #999999'
-    },
     mintButton:{
         display: 'flex !important',
-        flexDirection: 'row !important',
+        height:'50px',
+        width: '100%',
+        marginLeft:'10px',
         justifyContent: 'center !important',
         alignItems: 'center !important',
         padding: '6px 50px !important',
@@ -48,8 +43,7 @@ const useStyles = makeStyles(() => ({
         fontWeight: 'bold !important',
         fontSize: '14px !important',
         lineHeight: '150% !important',
-        color:'white !important',
-        marginTop:'7px !important'
+        color:'white !important'
     },
     textFieldMint:{
         '& span':{
@@ -59,7 +53,7 @@ const useStyles = makeStyles(() => ({
             borderColor:'#999999 !important'
         },
         '& .MuiInputBase-root':{
-            height:'30px'
+            height:'40px'
         }
     }
 }))
@@ -398,14 +392,13 @@ const Announce = () => {
 
 
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
-                                <div className="icons-profile-wrapper">
-
-                                    {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5 }}>
+                            <div className="icons-profile-wrapper">
+                                {!isLoading && (
+                                    <div style={{ display: "flex", flexDirection: 'row', width: '100%' }}>
+                                        <div style={{ display: "flex", flexDirection: 'column', width: '50%'  }}>
+                                            <div style={{ fontSize:'12px', color:'#999999', marginBottom:'5px' }}>{t('vehicles:tokenPrice')} : </div>
                                             <TextField
                                                 classes={clsx(classes.textFieldMint)}
-                                                label={t('vehicles:tokenPrice')}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
                                                 value={tokenPrice}
                                                 type="number"
@@ -415,13 +408,15 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button className={clsx(classes.mintButton)} style={{ height:'40px', marginLeft:'10px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                        </div>
+                                        <div style={{ marginTop: '20px', alignSelf: 'center', width: '50%' }}>
+                                            <button className={clsx(classes.mintButton)} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
-                                    )}
+                                    </div>
+                                )}
 
-                                </div>
                             </div>
                         )}
                     </Col>
