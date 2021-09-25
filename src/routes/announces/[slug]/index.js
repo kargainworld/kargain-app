@@ -51,13 +51,15 @@ const useStyles = makeStyles(() => ({
         color:'white !important',
         marginTop:'7px !important'
     },
-    textfield:{
-        '& .MuiInputBase-root':{
-            height:'40px'
+    textFieldMint:{
+        '& span':{
+            display:'none'
         },
-        '& input:disabled': {
-            backgroundColor: '#d5d8db',
-            height: '5px'
+        '& fieldset':{
+            borderColor:'#999999 !important'
+        },
+        '& .MuiInputBase-root':{
+            height:'30px'
         }
     }
 }))
@@ -402,6 +404,7 @@ const Announce = () => {
                                     {!isLoading && (
                                         <div style={{ display: "flex", gap: 5 }}>
                                             <TextField
+                                                classes={clsx(classes.textFieldMint)}
                                                 label={t('vehicles:tokenPrice')}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
                                                 value={tokenPrice}
