@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import clsx from 'clsx'
+
 import { useRouter } from 'next/router'
 import Link from 'next-translate/Link'
 import i18nConfig from '../../../i18n.json'
