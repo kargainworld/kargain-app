@@ -19,7 +19,7 @@ const CarInformation = (props) => {
         <Col sm={12} md={6}>
             <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>
                 <Row>
-                    <div style={{ width: isMobile ? "40%": "30%" }}>
+                    <div style={{ width: isMobile ? "35%": "24%" }}>
                         <Avatar
                             className="img-profile-wrapper avatar-preview"
                             src={props?.announce?.getAuthor.getAvatar || props?.announce?.getAuthor.getAvatarUrl}
@@ -29,33 +29,30 @@ const CarInformation = (props) => {
                         />
                     </div>
 
-                    <div style={{ width: isMobile ? "50%": "50%"  }}>
+                    <div style={{ width: isMobile ? "60%": "50%", marginLeft: isMobile ? "2px" : '', marginTop: isMobile ? "2px" : '' }}>
                         <Link href={`/profile/${props?.announce?.getAuthor.getUsername}`}>
                             <a>
-                                <Typography style={{ paddingLeft: 4,fontWeight:'600', fontSize: '16px !important', lineHeight: '150%' }}>
+                                <Typography style={{ paddingLeft: 4, fontWeight:'600', fontSize: isMobile ? '15px' : '16px', lineHeight: '150%' }}>
                                     {props?.announce?.getAuthor.getFullName}
                                 </Typography>
                             </a>
                         </Link>
 
                         {props?.announce?.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                            <div>
-                                <a href={props?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
-                                    <div style={{ flexDirection: 'row' }}>
-                                        <div style={{ width: "10%" }}>
-                                            <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
-                                                <NewIcons.card_location />
-                                            </span>
-                                        </div>
-                                        <div style={{ width: "90%" }}>
-                                            <span className="top-profile-location" style={{ fontWeight:'normal', fontSize:'16px', lineHeight: '150%', color: '#999999' }}>
-                                                {props?.announce?.getAdOrAuthorCustomAddress()}
-                                            </span>
-                                        </div>
+                            <a href={props?.announce?.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
+                                <div style={{ flexDirection: 'row', display: 'flex' }}>
+                                    <div style={{ width: "10%" }}>
+                                        <span className="top-profile-location" style={{ fontWeight:'normal', fontSize: isMobile ? '15px' : '16px', lineHeight: '150%', color: '#999999' }}>
+                                            <NewIcons.card_location />
+                                        </span>
                                     </div>
-
-                                </a>
-                            </div>
+                                    <div style={{ width: "90%" }}>
+                                        <span className="top-profile-location" style={{ fontWeight:'normal', fontSize: isMobile ? '15px' : '16px', lineHeight: '150%', color: '#999999' }}>
+                                            {props?.announce?.getAdOrAuthorCustomAddress()}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
                         )}
                     </div>
                 </Row>
