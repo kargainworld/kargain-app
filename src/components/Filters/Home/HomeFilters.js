@@ -72,7 +72,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             {isMobile ? (
                 <Row>
                     <Col md={12}>
-                        <img src="/images/MainCar-mobile.png" width="100%" height="100%"/>
+                        <img src="/images/svg/MainCar.svg" width="100%" height="100%"/>
                     </Col>
 
                     <Col md={12}>
