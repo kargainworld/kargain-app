@@ -88,17 +88,17 @@ const AnnounceCardLight = ({ announceRaw }) => {
                         <>
                             <span className="mx-1">
                                 <strong>
-                                    {announce.getPriceHT}€ HT
+                                    € HT
                                 </strong>
                             </span>
                             <span> - </span>
                             <span className="mx-1">
-                                <small>{announce.getPrice}€</small>
+                                <small>€</small>
                             </span>
 
                         </>
                     ) : (
-                        <span>{announce.getPrice} €</span>
+                        <span>€</span>
                     )}
                 </div>
             

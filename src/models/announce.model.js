@@ -54,14 +54,6 @@ export default class AnnounceModel {
         return this.raw?.title
     }
 
-    get getPrice () {
-        return this.raw?.price ? Number(this.raw?.price) : 0
-    }
-
-    get getPriceHT () {
-        return this.raw?.priceHT ? Number(this.raw?.priceHT) : 0
-    }
-
     get getManufacturer () {
         const make = this.raw?.manufacturer?.make?.['make'] ?? null
         const model = this.raw?.manufacturer?.model?.['model'] ?? null

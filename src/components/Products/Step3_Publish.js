@@ -81,25 +81,6 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                 {t('vehicles:publish-my-ad-now')}
             </h3>
             <Row>
-                <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:ad-price')}>
-                        <NumberInput
-                            name="price"
-                            placeholder="15000€"
-                            errors={errors}
-                            control={control}
-                            rules={{
-                                required: t('form_validations:required'),
-                                validate: val => {
-                                    const value = Number(val)
-                                    if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€' })
-                                    if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€' })
-                                }
-                            }}
-                        />
-                    </FieldWrapper>
-                </Col>
-
                 <Col sm={12} md={6} >
                     <FieldWrapper >
                         <CheckboxMUI
