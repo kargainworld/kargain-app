@@ -83,7 +83,7 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     useEffect(() => {
         window.scrollTo(0, 0)
         if (isMounted) {
-        	setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
+            setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
             dispatchFormUpdate({ currentStep: activeStep })
             setPercentage(calculatePercentage(activeStep, steps.length))
         }
@@ -92,7 +92,7 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     useEffect(() => {
         if (isMounted && endForm) { 
             onFinalSubmit(formDataContext)
-	    	setEndForm(false)
+            setEndForm(false)
         }
     }, [endForm])
     return (
