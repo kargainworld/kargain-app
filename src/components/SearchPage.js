@@ -17,9 +17,8 @@ import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
 import useKargainContract from 'hooks/useKargainContract'
 import usePriceTracker from 'hooks/usePriceTracker'
-import Web3 from 'web3'
-import AnnounceModel from 'models/announce.model'
 
+import AnnounceModel from 'models/announce.model'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -46,8 +45,6 @@ const useStyles = makeStyles(() => ({
         display: 'none !important'
     }
 }))
-
-const toBN = Web3.utils.toBN
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const classes = useStyles()
@@ -165,7 +162,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
         if (!isContractReady && state.announces.length < 0)
             return
-        console.log('zaraza')
 
         const fetchMintedAnnounces = async () => {
             let tokensMinted = []
@@ -173,7 +169,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
                     const tokenId = ad.getTokenId
-                    console.log(tokenId)
                     fetchTokenPrice(tokenId)
                         .then((price) => {
                             const token = {
