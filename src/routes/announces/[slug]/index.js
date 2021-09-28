@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect,  useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
@@ -7,43 +7,53 @@ import Alert from '@material-ui/lab/Alert'
 import { useWeb3React } from "@web3-react/core"
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useTranslation from 'next-translate/useTranslation'
-import TagsList from '../../../components/Tags/TagsList'
-import AnnounceService from '../../../services/AnnounceService'
-import AnnounceModel from '../../../models/announce.model'
-import { MessageContext } from '../../../context/MessageContext'
-import { useAuth } from '../../../context/AuthProvider'
+import TagsList from 'components/Tags/TagsList'
+import AnnounceService from 'services/AnnounceService'
+import AnnounceModel from 'models/announce.model'
+import { MessageContext } from 'context/MessageContext'
+import { useAuth } from 'context/AuthProvider'
 import Error from '../../_error'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import { injected } from "../../../connectors"
-import UsersService from '../../../services/UsersService'
-import MakeOffer from "../../../components/Blockchain/MakeOffer"
-import HandleOffer from "../../../components/Blockchain/HandleOffer"
+import { injected } from "connectors"
+import UsersService from 'services/UsersService'
+import MakeOffer from "components/Blockchain/MakeOffer"
+import HandleOffer from "components/Blockchain/HandleOffer"
 import Web3 from "web3"
-import TransactionsService from '../../../services/TransactionsService'
-import CarInformation from "../../../components/AnnounceCard/CarInformation"
-import EditLikeAndComments from "../../../components/AnnounceCard/EditLikeAndComments"
-import VehicleEquipments from "../../../components/AnnounceCard/VehicleEquipments"
-import SharedURL from "../../../components/AnnounceCard/SharedURL"
+import TransactionsService from 'services/TransactionsService'
+import CarInformation from "components/AnnounceCard/CarInformation"
+import EditLikeAndComments from "components/AnnounceCard/EditLikeAndComments"
+import VehicleEquipments from "components/AnnounceCard/VehicleEquipments"
+import SharedURL from "components/AnnounceCard/SharedURL"
 
 
 const useStyles = makeStyles(() => ({
-    priceStarsWrapper: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        margin: '15px 0',
-        borderBottom: '1px solid #999999'
+    mintButton:{
+        display: 'flex !important',
+        height:'50px',
+        width: '100%',
+        marginLeft:'10px',
+        justifyContent: 'center !important',
+        alignItems: 'center !important',
+        padding: '6px 50px !important',
+        background: '#2C65F6 !important',
+        borderRadius: '25px !important',
+        fontWeight: 'bold !important',
+        fontSize: '14px !important',
+        lineHeight: '150% !important',
+        color:'white !important'
     },
-    textfield:{
+    textFieldMint:{
+        '& span':{
+            display:'none'
+        },
+        '& fieldset':{
+            borderColor:'#999999 !important'
+        },
         '& .MuiInputBase-root':{
             height:'40px'
-        },
-        '& input:disabled': {
-            backgroundColor: '#d5d8db',
-            height: '5px'
         }
     }
 }))
@@ -54,7 +64,7 @@ const Announce = () => {
     const router = useRouter()
     const { slug } = router.query
     const { t } = useTranslation()
-    const { isAuthenticated, authenticatedUser } = useAuth()
+    const { authenticatedUser } = useAuth()
     const { dispatchModal } = useContext(MessageContext)
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
@@ -145,8 +155,7 @@ const Announce = () => {
             return
 
         try {
-            const result = await UsersService.getUsernameByWallet(walletPayer)
-            return result
+            return await UsersService.getUsernameByWallet(walletPayer)
         }
         catch (e) {
             console.log(e)
@@ -383,13 +392,13 @@ const Announce = () => {
 
 
                         {(isOwn) && (
-                            <div className={clsx('price-stars-wrapper', classes.priceStarsWrapper)} style={{ borderBottom: '1px solid #ffffff' }}>
-                                <div className="icons-profile-wrapper">
-
-                                    {!isLoading && (
-                                        <div style={{ display: "flex", gap: 5 }}>
+                            <div className="icons-profile-wrapper">
+                                {!isLoading && (
+                                    <div style={{ display: "flex", flexDirection: 'row', width: '100%' }}>
+                                        <div style={{ display: "flex", flexDirection: 'column', width: '50%'  }}>
+                                            <div style={{ fontSize:'12px', color:'#999999', marginBottom:'5px' }}>{t('vehicles:tokenPrice')} : </div>
                                             <TextField
-                                                label={t('vehicles:tokenPrice')}
+                                                classes={clsx(classes.textFieldMint)}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
                                                 value={tokenPrice}
                                                 type="number"
@@ -399,13 +408,15 @@ const Announce = () => {
                                                 disabled={!isConfirmed || !active}
                                                 variant="outlined"
                                             />
-                                            <button style={{ height:'55px' }} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
+                                        </div>
+                                        <div style={{ marginTop: '20px', alignSelf: 'center', width: '50%' }}>
+                                            <button className={clsx(classes.mintButton)} disabled={!isConfirmed || !tokenPrice || !active} onClick={handleApplyPriceChange}>
                                                 {isMinted ? t('vehicles:save') : t('vehicles:mint')}
                                             </button>
                                         </div>
-                                    )}
+                                    </div>
+                                )}
 
-                                </div>
                             </div>
                         )}
                     </Col>
