@@ -20,6 +20,9 @@ import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from '../theme/palette'
+import { injected } from "../connectors"
+import { useWeb3React } from "@web3-react/core"
+
 
 const useStyles = makeStyles(() => ({
     row:{
@@ -46,6 +49,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { getPriceTracker } = usePriceTracker()
+    const { activate } = useWeb3React()
     const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
     const { query } = useRouter()
@@ -63,6 +67,17 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         isScrollLoding: false,
         announcesMinted: []
     })
+
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                })
+            }
+        })
+    }, [])
 
     const [hiddenFormMore, hideForm] = useState(true)
     const toggleFilters = () => {

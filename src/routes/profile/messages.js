@@ -8,14 +8,14 @@ import useTranslation from 'next-translate/useTranslation'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
-import UserModel from '../../models/user.model'
-import { useAuth } from '../../context/AuthProvider'
-import ConversationsService from '../../services/ConversationsService'
-import useStyles from '../../components/Conversations/conversation.styles'
-import { MessageContext } from '../../context/MessageContext'
-import ValidationError from '../../components/Form/Validations/ValidationError'
-import { useSocket } from '../../context/SocketContext'
-import { Avatar } from '../../components/AnnounceCard/components'
+import UserModel from 'models/user.model'
+import { useAuth } from 'context/AuthProvider'
+import ConversationsService from 'services/ConversationsService'
+import useStyles from 'components/Conversations/conversation.styles'
+import { MessageContext } from 'context/MessageContext'
+import ValidationError from 'components/Form/Validations/ValidationError'
+import { useSocket } from 'context/SocketContext'
+import { Avatar } from 'components/AnnounceCard/components'
 import { Container } from 'reactstrap'
 import { NewIcons } from 'assets/icons'
 
@@ -56,8 +56,6 @@ const Messages = () => {
     const min = newDate.getMinutes()
     const currenthour = time + ':' + min
 
-
-
     const onEnterPress = (e) => {
         e.persist()
         if(e.keyCode == 13 && e.shiftKey == false) {
@@ -69,11 +67,7 @@ const Messages = () => {
     const onSubmitMessage = async (form) => {
         const { message } = form
         try {
-            // const conversation = await ConversationsService.postConversationMessage(message, selectedRecipient.getID)
-            // setSelectedConversation(conversation)
-            // console.log(selectedConversation.announce.id);
             socket.emit('PRIVATE_MESSAGE', { message, to: selectedRecipient.getID, announceId: selectedConversation.announce.id })
-
             selectedConversation.messages.push({
                 from: authenticatedUser.getID,
                 content: message
@@ -221,16 +215,6 @@ const Messages = () => {
                                                     <span className="mx-2">{selectedRecipient.getFullName}</span>
                                                 </a>
                                             </Link>
-                                            {/* <Link href={`/announces/${selectedConversation.announce.slug}`} prefetch={false}>
-                        <a>
-                            <img
-                              src={selectedConversation.announce.images[0].location}
-                              alt={selectedConversation.announce.title}
-                              style={{width: 52, height: 52, borderRadius: "10%"}}
-                            />
-                          <span className="mx-2">{selectedConversation.announce.title}</span>
-                        </a>
-                      </Link> */}
                                         </div>
                                         {isMobile && (
                                             <div className={classes.pointerClose} onClick={() => closeConversation()}>
@@ -348,16 +332,6 @@ const Messages = () => {
                                                     <span className="mx-2">{selectedRecipient.getFullName}</span>
                                                 </a>
                                             </Link>
-                                            {/* <Link href={`/announces/${selectedConversation.announce.slug}`} prefetch={false}>
-                        <a>
-                            <img
-                              src={selectedConversation.announce.images[0].location}
-                              alt={selectedConversation.announce.title}
-                              style={{width: 52, height: 52, borderRadius: "10%"}}
-                            />
-                          <span className="mx-2">{selectedConversation.announce.title}</span>
-                        </a>
-                      </Link> */}
                                         </div>
                                         {isMobile && (
                                             <div className={classes.pointerClose} onClick={() => closeConversation()}>
