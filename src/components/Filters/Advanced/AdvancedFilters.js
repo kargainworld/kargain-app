@@ -2,7 +2,6 @@ import React, { memo, useCallback, useContext, useEffect, useRef, useState } fro
 import { useForm } from 'react-hook-form'
 import { useRouter } from "next/router"
 import clsx from 'clsx'
-import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
@@ -21,8 +20,10 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap'
 import { Emoji } from 'react-apple-emojis'
 import customColors from 'theme/palette'
 import { NewIcons } from 'assets/icons'
-import Link from 'next-translate/Link'
 import { Col } from 'reactstrap'
+import ClearAndFeed from "./Components/ClearAndNews"
+import VehicleType from "./Components/VehicleType"
+
 
 const useStyles = makeStyles(() => ({
 
@@ -72,15 +73,9 @@ const useStyles = makeStyles(() => ({
         }
     },
     rowbuttons:{
-        // padding: '10px',
         position: 'relative',
         backgroundColor: '#fff',
         marginTop:'20px'
-        // margin: '10px',
-
-        // background-color: lightblue;
-        // width: 40px;
-        // overflowX: 'auto',
     },
     overflow:{
         overflowX:'auto'
@@ -132,26 +127,6 @@ const useStyles = makeStyles(() => ({
         right: '220px',
         top: '225.49px',
         padding: '15px 10px 20px'
-    },
-    bordergradientbtn:{
-        height:'39px',
-        borderRadius: '100rem',
-        fontSize: '14px',
-        padding: '8px 30px 2px',
-        border: 'solid 2px transparent',
-        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
-        backgroundOrigin: 'border-box',
-        backgroundClip: 'content-box, border-box',
-        boxShadow: '2px 1000px 1px #fff inset',
-        '&:hover': {
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)'
-        },
-        '& label':{
-            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
-            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
-            backgroundClip: 'text',
-            color: 'transparent'
-        }
     },
     btnfontsize:{
         '& button':{
@@ -214,7 +189,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const defaultValues = {
         ...defaultFilters
     }
-    const { watch, register, control, setValue, getValues, errors, handleSubmit, reset } = useForm({
+    const { watch, register, control, setValue, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues
@@ -266,16 +241,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
         updateFilters(data)
     })
 
-
-    const onResetFilter = (form, e) => {
-        const filters = getValues()
-        for(let key in filters){
-            setValue(key, "")
-        }
-        router.push({
-            pathname: router.pathname
-        })
-    }
 
     const toggleFilters = () => {
         hideForm((hiddenForm) => !hiddenForm)
@@ -462,43 +427,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                 {isMobile ? (
                     <div>
-                        <div id="new_feed" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', marginBottom:'30px' }}>
-
-                            <ControlButtons
-                                resetFilter={onResetFilter}
-                                dynamicHandleSubmit={handleSubmit}
-                            />
-                            <Link href="/advanced-search">
-                                <a className={clsx(classes.bordergradientbtn)} style={{ textTransform: 'uppercase' }}>
-                                    <NewIcons.home_color style={{ marginRight:'10px', marginBottom:'5px' }}/>
-                                    <label> {t('layout:news_feed')} </label>
-                                </a>
-                            </Link>
-                        </div>
-
+                        <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_1" style={{ fontSize: '15.15px' }}>
-                                    <Emoji name="automobile" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:vehicle-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} >
-                                    <FieldWrapper>
-                                        <SelectInput
-                                            name="vehicleType"
-                                            control={control}
-                                            errors={errors}
-                                            options={vehicleTypesDefault()}
-                                            selected={router.query.vehicleType}
-                                            onChange={(e, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <VehicleType defaultFilters={defaultFilters} updateFilters={updateFilters} />
                             {limitwidth ? (
                                 <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                     <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}   >
@@ -735,42 +666,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     </div>
                 ) : (
                     <div>
-                        <div id="new_feed" style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', marginBottom:'30px' }}>
-                            <ControlButtons
-                                resetFilter={onResetFilter}
-                                dynamicHandleSubmit={handleSubmit}
-                            />
-                            <Link href="/advanced-search">
-                                <a className={clsx(classes.bordergradientbtn)} style={{ textTransform: 'uppercase' }}>
-                                    <NewIcons.home_color style={{ marginRight:'10px', marginBottom:'5px' }}/>
-                                    <label> {t('layout:news_feed')} </label>
-                                </a>
-                            </Link>
-                        </div>
+                        <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_1">
-                                    <Emoji name="automobile" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:vehicle-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} >
-                                    <FieldWrapper>
-                                        <SelectInput
-                                            name="vehicleType"
-                                            control={control}
-                                            errors={errors}
-                                            options={vehicleTypesDefault()}
-                                            selected={router.query.vehicleType}
-                                            onChange={(e, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <VehicleType updateFilters={updateFilters} defaultFilters={defaultFilters} />
 
                             <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
                                 <DropdownToggle caret id="button_2">
@@ -979,24 +877,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     )
 }
 
-const ControlButtons = ({ ...props }) => {
-    const { t } = useTranslation()
-    const classes = useStyles()
-
-    return (
-
-        <Button
-            className={ clsx(classes.button)}
-            variant="contained"
-            color="primary"
-            startIcon={<NewIcons.recycle_white style={{ marginBottom:'3px' }}/>}
-            type="button"
-            onClick={e =>{ props.resetFilter(e)}}
-        >
-            {t('vehicles:clear-filters')}
-        </Button>
-    )
-}
 
 AdvancedFilters.defaultProps = {
     vehicleType : vehicleTypesDefault[0]?.value
