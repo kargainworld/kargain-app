@@ -2,49 +2,34 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import * as i from '@material-ui/icons'
 import PropTypes from 'prop-types'
 import Link from 'next-translate/Link'
-import useDimensions from 'react-use-dimensions'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import { MessageContext } from '../../context/MessageContext'
-import AnnounceService from '../../services/AnnounceService'
-import { useAuth } from '../../context/AuthProvider'
-import { ModalContext } from '../../context/ModalContext'
-import AnnounceModel from '../../models/announce.model'
-import { getTimeAgo } from '../../libs/utils'
+import { MessageContext } from 'context/MessageContext'
+import AnnounceService from 'services/AnnounceService'
+import { useAuth } from 'context/AuthProvider'
+import { ModalContext } from 'context/ModalContext'
+import AnnounceModel from 'models/announce.model'
 import { makeStyles } from '@material-ui/core/styles'
-import { themeColors } from '../../theme/palette'
-import { Root, User, Avatar, Info, AuthorName, Location, Meta, CreationDate, ShareIcon, SubHeader, Action, Price, Body,
-    ImageWrapper, Title, CommentListStyled, Footer, ImageCounter, ImagePlaceholder } from './components'
-import Button from '@material-ui/core/Button'
-import { CardContent } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import GalleryViewer from '../Gallery/GalleryViewer'
-import { useSocket } from '../../context/SocketContext'
-import usePriceTracker from 'hooks/usePriceTracker'
-import { Row } from 'reactstrap'
 
-import { NewIcons } from '../../assets/icons'
+import { Root, User, Avatar, Info, AuthorName, Location, Meta, SubHeader, Action,  Body,
+    ImageWrapper, ImageCounter, ImagePlaceholder } from './components'
+import { CardContent } from '@material-ui/core'
+import GalleryViewer from '../Gallery/GalleryViewer'
+import { useSocket } from 'context/SocketContext'
+import usePriceTracker from 'hooks/usePriceTracker'
+import { NewIcons } from 'assets/icons'
 import clsx from 'clsx'
 import { Emoji } from 'react-apple-emojis'
-import { Modal, ModalBody, ModalFooter } from 'reactstrap'
-import customColors from '../../theme/palette'
+import { Modal } from 'reactstrap'
+import customColors from 'theme/palette'
 import CTALink from '../CTALink'
 
 const useStyles = makeStyles(() => ({
-    buttonRemove: {
-        backgroundColor : themeColors.red,
-
-        "&:hover" : {
-            backgroundColor : themeColors.red
-        }
-    },
-
     image:{
-       
         '& .image-gallery-image':{
             width:'100% !important',
             height: '240px !important',
-            objectFit: 'fill !important',
+            objectFit: 'fill !important'
         }
     },
     a_coin:{
@@ -52,48 +37,50 @@ const useStyles = makeStyles(() => ({
         fontWeight: '500',
         fontSize: '12.2272px',
         lineHeight: '150%',
-        color: '#999999',
+        color: '#999999'
     },
     a_info:{
         marginTop: '5px',
-        fontWeight: 'bold',
         fontSize: '17.4674px !important',
         fontWeight: '500',
-        color: '#2C65F6',
-    },
-    filterbutton:{
-        borderRadius: '100rem',
-        padding: '1rem',
-        fontFamily: 'Avenir Next',
-        fontSize: '14px',
-        fontWeight: '700',
-        padding: '6px 16px',
-        color: '$color-black',
-        boxShadow: '0 0 6px 0 #f0eeee',
-        border: 'solid 2px transparent',
-        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(179deg, #2C65F6, #ED80EB)',
-        backgroundOrigin: 'border-box',
-        backgroundClip: 'content-box, border-box',
-        boxShadow: '2px 1000px 1px #f0eeee inset',
-        baclgroundColor: '#F0EEEE !important',
-        transform: 'translate(10%, -15%)',
+        color: '#2C65F6'
     },
     avatar:{
         '& svg':{
-            marginLeft:'1px !important',
+            marginLeft:'1px !important'
         }
     },
     row:{
-        display: '-webkit-flex',
-        display: '-moz-box',
         display: 'flex, -webkitFlex-wrap: wrap',
         flexWrap: 'wrap',
         marginRight: '-15px'
     },
     share:{
         '&:hover':{
-            backgroundColor:'#ececec !important',
+            backgroundColor:'#ececec !important'
         }
+    },
+    price: {
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '14px',
+        lineHeight: '150%',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'center'
+    },
+    priceContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '6px 16px',
+        position: 'absolute',
+        left: '66%',
+        right: '4%',
+        bottom: '-8%',
+        background: '#F0EEEE',
+        borderRadius: '25px'
     },
     button: {
         border: "none !important",
@@ -110,27 +97,27 @@ const useStyles = makeStyles(() => ({
     },
     modalcontent:{
         '& .modal-content':{
-            borderRadius: '5px',
+            borderRadius: '5px'
         }
     },
     gear:{
         marginTop:'-55px',
         marginLeft:"95%",
         '&:hover':{
-            width:'20px',
+            width:'20px'
         }
     }
 }))
 
-const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogRemove, onSelectSlug }) => {
-    
-    const [modalOpen, setModalOpen] = React.useState(false);
+const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug }) => {
+
+    const [modalOpen, setModalOpen] = React.useState(false)
     const classes = useStyles()
     const refImg = useRef()
     const router = useRouter()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
-    const { t, lang } = useTranslation()
+    const { t } = useTranslation()
     const announce = new AnnounceModel(announceRaw)
     const { dispatchModalError } = useContext(MessageContext)
     const { dispatchModalState } = useContext(ModalContext)
@@ -144,9 +131,7 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     }
 
     const alreadyLikeCurrentUser = checkIfAlreadyLike()
-
     const [liked, setLiked] = useState(alreadyLikeCurrentUser)
-
     const { getOnlineStatusByUserId } = useSocket()
 
     const handleClickLikeButton = async () => {
@@ -154,8 +139,8 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         try {
@@ -191,55 +176,51 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
     })
 
     useEffect(() => {
-
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
-
-
     }, [state])
 
-    var str = announce.getAnnounceTitle;
-    const tempArr = str.split("|");
-    var temp1 = tempArr[0]+'|'+tempArr[1]
-    var temp2 = tempArr[2]+'|'+tempArr[3]+'|'+tempArr[4]
+    const str = announce.getAnnounceTitle
+    const tempArr = str.split("|")
+    const temp1 = tempArr[0] + '|' + tempArr[1]
+    const temp2 = tempArr[2] + '|' + tempArr[3] + '|' + tempArr[4]
 
-    var strmaile = announce.getMileage;
-    var strlength = strmaile.length;
-    var strkm = '';
-    if(strlength/3 < 0.4){
-        strkm = '0.00'+strmaile;
+    const strmaile = announce.getMileage
+    const strlength = strmaile.length
+    let strkm = ''
+    if(strlength/3 < 0.4) {
+        strkm = '0.00' + strmaile
     }else if(0.4 < strlength/3 < 0.7){
-        strkm = '0.0'+strmaile;
+        strkm = '0.0'+strmaile
     }else if(strlength/3 == 1){
-        strkm = '0.'+ strmaile;
+        strkm = '0.'+ strmaile
     }else{
-        var m = strlength % 3;
-        strkm = strmaile.slice(strlength-3, strlength);
-        strkm = strmaile.slice(0, m) + '.' +strkm;
+        var m = strlength % 3
+        strkm = strmaile.slice(strlength-3, strlength)
+        strkm = strmaile.slice(0, m) + '.' +strkm
     }
-    
+
     return (
         <div className={clsx(classes.row)}>
-            <Root  style={{borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', height:'520px'}}>
-            
+            <Root  style={{ borderRadius:'25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', height:'520px' }}>
+
                 <CardContent>
                     <Body>
-                        <Meta className={clsx(classes.share)} style={{marginTop: '-5px', marginRight: '2px', marginBottom: '-27px', width:'25px', height:'25px', backgroundColor: '#ffffff', borderRadius: '50%'}}> 
+                        <Meta className={clsx(classes.share)} style={{ marginTop: '-5px', marginRight: '2px', marginBottom: '-27px', width:'25px', height:'25px', backgroundColor: '#ffffff', borderRadius: '50%' }}>
                             <NewIcons.share
                                 onClick={() =>
                                     dispatchModalState({
                                         openModalShare: true,
                                         modalShareAnnounce: announce
                                     })
-
                                 }
                                 alt="share"
-                                style={{marginTop: '11px',
-                                    marginRight: '3px'}}
+                                style={{ marginTop: '11px',
+                                    marginRight: '3px' }}
                             />
                         </Meta>
-                        
+
                         <ImageWrapper className={clsx(classes.image)}>
                             {announce.getImages.length > 0 && (
                                 <GalleryViewer
@@ -262,9 +243,9 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                     {announce.getCountImages}
                                 </ImageCounter>
                             )}
-                            <div style={{display: 'flex', justifyContent: 'flex-end', marginTop:'-5%'}}> 
-                                <div className={'btn btn-primary', classes.filterbutton}>
-                                    € {announce.getPrice}
+                            <div className={classes.priceContainer}>
+                                <div className={classes.price}>
+                                    € {(priceBNB * tokenPrice).toFixed(2)}
                                 </div>
                             </div>
                         </ImageWrapper>
@@ -277,20 +258,18 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                 style={{ width: 45, height: 45, marginRight: 10 }}
                             />
 
-                            <Info style={{width:'55%', marginTop:'-5px'}}>
-                                <AuthorName href={announce.getAuthor.getProfileLink} style={{fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'6px'}}>{announce.getAuthor.getFullName}</AuthorName>
-
+                            <Info style={{ width:'55%', marginTop:'-5px' }}>
+                                <AuthorName href={announce.getAuthor.getProfileLink} style={{ fontsSize:'13.9739px !important', fontWeight:'normal', color:'black', marginLeft:'6px' }}>{announce.getAuthor.getFullName}</AuthorName>
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px'}}>
-                                        {/* <i.RoomOutlined size={5.24} /> */}
+                                    <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer" className={clsx(classes.avatar)} style={{ fontSize:'13.9739px', fontWeight:'normal', color:'#999999', marginLeft: '2px' }}>
                                         <NewIcons.card_location/>
                                         {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
                                     </Location>
                                 )}
                             </Info>
 
-                            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
-                                <SubHeader style={{marginTop:'20px !important'}}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <SubHeader style={{ marginTop:'20px !important' }}>
                                     {isOwn && (
                                         <Action onClick={toggleVisibility}>
                                             {announce.getIsVisible ? <i.VisibilityOutlined /> : <i.VisibilityOffOutlined />}
@@ -299,8 +278,8 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
 
                                     {!isAuthor && (
                                         <Action title={t('vehicles:i-like')} onClick={() => handleClickLikeButton()}>
-                                            <NewIcons.card_heart style={{marginRight:'7px'}}/>
-                                            <span style={{color:'#999999'}}>{likesCounter}</span>
+                                            <NewIcons.card_heart style={{ marginRight:'7px' }}/>
+                                            <span style={{ color:'#999999' }}>{likesCounter}</span>
                                         </Action>
                                     )}
 
@@ -309,53 +288,44 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                         style={{ color: announce.getCountComments > 0 ? '#999999' : '#999999' }}
                                         onClick={() => handleImageClick()}
                                     >
-                                        <NewIcons.card_message style={{marginLeft:'10px', marginRight:'7px'}}/>
+                                        <NewIcons.card_message style={{ marginLeft:'10px', marginRight:'7px' }}/>
                                         <span>{announce.getCountComments}</span>
                                     </Action>
-
-                                    {tokenPrice && <Price>€ {(priceBNB * tokenPrice).toFixed(2)}</Price>}
                                 </SubHeader>
-
                             </div>
-                            
                         </User>
-
-                        <div style={{marginLeft:'5px', marginTop:'15px'}}>
+                        <div style={{ marginLeft:'5px', marginTop:'15px' }}>
                             <a className={clsx(classes.a_coin)}>#1212</a>
                         </div>
-
                         <Link href={announce.getAnnounceLink}>
-                            <a > 
+                            <a>
                                 <h3 className={clsx(classes.a_info)}>
-                                    <p style={{color:'black'}}> {temp1} </p>
+                                    <p style={{ color:'black' }}> {temp1} </p>
                                     <p> {temp2}  </p>
                                 </h3>
                             </a>
                         </Link>
-                        
-                        <div style={{marginLeft:'5px ', marginBottom:'-15px '}}>
-                            <h6 style={{fontsSize:'16px ', textAlign:'left'}}> 
-                                {strkm} Km 
+
+                        <div style={{ marginLeft:'5px ', marginBottom:'-15px ' }}>
+                            <h6 style={{ fontsSize:'16px ', textAlign:'left' }}>
+                                {strkm} Km
                             </h6>
-                            
                             <Emoji  name="gear" width="18" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
-                            
-                            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen} className={clsx(classes.modalcontent)} style={{borderRadius:'5px', marginTop:'15%', width:'400px'}}>
-                                
+                            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen} className={clsx(classes.modalcontent)} style={{ borderRadius:'5px', marginTop:'15%', width:'400px' }}>
                                 <button
                                     aria-label="Close"
                                     className=" close"
                                     type="button"
                                     onClick={() => setModalOpen(!modalOpen)}
-                                    style={{display: 'flex',
+                                    style={{ display: 'flex',
                                         justifyContent: 'flex-end',
-                                        margin: '15px 15px'}}
+                                        margin: '15px 15px' }}
                                 >
                                     <NewIcons.close_color />
-                                    <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
+                                    <NewIcons.inclose_color style={{ transform: 'translate(-14.4px, 7.3px)' }} />
                                 </button>
 
-                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px'}}>
+                                <div style={{ display:'flex', justifyContent: 'center', marginTop: '10px' }}>
                                     <div
                                         className={clsx(classes.button)}
                                         onClick={e => {
@@ -365,16 +335,13 @@ const Index = ({ announceRaw, featuredImgHeight, tokenPrice, onhandleOpenDialogR
                                         {t('vehicles:remove-announce')}
                                     </div>
                                 </div>
-                                
-                                <div style={{display:'flex', justifyContent: 'center', marginTop: '10px', marginBottom:'50px'}}>
-                                    
+                                <div style={{ display:'flex', justifyContent: 'center', marginTop: '10px', marginBottom:'50px' }}>
                                     <CTALink className={clsx(classes.button)} title={t('vehicles:edit-announce')} href={announce.getAnnounceEditLink} />
                                 </div>
-                                
-                            </Modal> 
+                            </Modal>
                         </div>
                     </Body>
- 
+
                 </CardContent>
             </Root>
         </div>

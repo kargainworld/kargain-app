@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
         fontSize: '13px'
     },
-
     cardTop: {
         display: 'flex',
         margin: '1rem',
@@ -31,16 +30,11 @@ const useStyles = makeStyles((theme) => ({
             margin: '.3rem'
         }
     },
-    
-    cardAvatar : {
-    },
-    
     cardTopInfos: {
         display: 'flex',
         justifyContent: 'space-between',
         padding: '0 1rem'
     },
-
     cardTopSubInfos : {
         display : 'flex',
         justifyContent : 'space-between'
@@ -53,15 +47,15 @@ const AnnounceCardLight = ({ announceRaw }) => {
     const announce = new AnnounceModel(announceRaw)
     const likesCounter = announce.getCountLikes
     const { authenticatedUser, isAuthenticated } = useAuth()
-    
+
     const checkIfAlreadyLike = () => {
         const matchUserFavorite = authenticatedUser.getFavorites.find(favorite => favorite.getID === announce.getID)
         const matchAnnounceLike = announce.getLikes.find(like => like.getAuthor.getID === authenticatedUser.getID)
         return !!matchUserFavorite || !!matchAnnounceLike
     }
-    
+
     const alreadyLikeCurrentUser = checkIfAlreadyLike()
-    
+
     return (
         <div className={clsx("objava-wrapper", "cardAd", classes.card)}>
             <div className={classes.cardTop}>
@@ -76,7 +70,7 @@ const AnnounceCardLight = ({ announceRaw }) => {
                         </a>
                     </Link>
                 </div>
-    
+
                 <div className="d-flex ml-1 align-items-center">
                     <span className="mr-2">{announce.getAnnounceTitle}</span>
                 </div>
@@ -84,7 +78,7 @@ const AnnounceCardLight = ({ announceRaw }) => {
 
             <div className={classes.cardTopInfos}>
                 <div className="price-announce">
-                    {(isAuthenticated && authenticatedUser.getIsPro) ? (
+                    {(isAuthenticated) ? (
                         <>
                             <span className="mx-1">
                                 <strong>
@@ -95,27 +89,25 @@ const AnnounceCardLight = ({ announceRaw }) => {
                             <span className="mx-1">
                                 <small>{announce.getPrice}€</small>
                             </span>
-
                         </>
                     ) : (
                         <span>{announce.getPrice} €</span>
                     )}
                 </div>
-            
+
                 <div className="d-flex">
                     <div className="mx-0 ml-2 icons-star-prof">
                         {alreadyLikeCurrentUser ? <StarSVGYellow/> : <StarSVG/>}
                         <span>{likesCounter}</span>
                     </div>
-    
+
                     <div className="mx-0 ml-2 icons-star-prof">
                         <img src="/images/svg/comment.svg" alt=""/>
                         <span>{announce.getCountComments}</span>
                     </div>
                 </div>
-               
             </div>
-            
+
             {announce.getFeaturedImg && (
                 <div className="cardAd_Featured my-1">
                     <Link href={announce.getAnnounceLink} prefetch={false}>
