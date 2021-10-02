@@ -22,6 +22,7 @@ import customColors from 'theme/palette'
 import { NewIcons } from 'assets/icons'
 import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
+import VehicleType from "./Components/VehicleType"
 
 
 const useStyles = makeStyles(() => ({
@@ -428,28 +429,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_1" style={{ fontSize: '15.15px' }}>
-                                    <Emoji name="automobile" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:vehicle-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} >
-                                    <FieldWrapper>
-                                        <SelectInput
-                                            name="vehicleType"
-                                            control={control}
-                                            errors={errors}
-                                            options={vehicleTypesDefault()}
-                                            selected={router.query.vehicleType}
-                                            onChange={(e, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <VehicleType defaultFilters={defaultFilters} updateFilters={updateFilters} />
                             {limitwidth ? (
                                 <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                     <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}   >
@@ -688,29 +668,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_1">
-                                    <Emoji name="automobile" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:vehicle-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} >
-                                    <FieldWrapper>
-                                        <SelectInput
-                                            name="vehicleType"
-                                            control={control}
-                                            errors={errors}
-                                            options={vehicleTypesDefault()}
-                                            selected={router.query.vehicleType}
-                                            onChange={(e, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <VehicleType updateFilters={updateFilters} defaultFilters={defaultFilters} />
 
                             <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
                                 <DropdownToggle caret id="button_2">
