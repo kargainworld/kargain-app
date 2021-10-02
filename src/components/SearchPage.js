@@ -6,12 +6,12 @@ import { NextSeo } from 'next-seo'
 import useTranslation from 'next-translate/useTranslation'
 import Typography from '@material-ui/core/Typography'
 import FindInPageIcon from '@material-ui/icons/FindInPage'
-import AnnounceCard from '../components/AnnounceCard'
-import AnnounceService from '../services/AnnounceService'
-import { MessageContext } from '../context/MessageContext'
-import { useAuth } from '../context/AuthProvider'
+import AnnounceCard from 'components/AnnounceCard'
+import AnnounceService from 'services/AnnounceService'
+import { MessageContext } from 'context/MessageContext'
+import { useAuth } from 'context/AuthProvider'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
-import Loading from '../components/Loading'
+import Loading from 'components/Loading'
 import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
 import useKargainContract from 'hooks/useKargainContract'
@@ -19,8 +19,8 @@ import usePriceTracker from 'hooks/usePriceTracker'
 import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import customColors from '../theme/palette'
-import { injected } from "../connectors"
+import customColors from 'theme/palette'
+import { injected } from "connectors"
 import { useWeb3React } from "@web3-react/core"
 
 
@@ -138,7 +138,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             }))
             dispatchModalError({ err })
         }
-    }, [state.page, state.filters, state.sorter])
+    }, [state.page, state.filters, state.sorter, AnnounceService, setState])
 
     const handlePageChange = (page) => {
         if(state.page >= state.pages) return
@@ -170,9 +170,8 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
     useEffect(() => {
 
-        if (!isContractReady && state.announces.length < 0)
+        if (!isContractReady || state.announces.length < 0 || !state.loading)
             return
-
         const fetchMintedAnnounces = async () => {
             let tokensMinted = []
             try {
@@ -204,7 +203,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         }
 
         fetchMintedAnnounces()
-    }, [state.announces, isContractReady, fetchTokenPrice])
+    }, [state.announces, isContractReady, fetchTokenPrice, state.loading, setState])
 
     return (
         <Container>
