@@ -24,6 +24,7 @@ import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
 import VehicleType from "./Components/VehicleType"
 import AnnounceType from "./Components/AnnounceType"
+import Brand from "./Components/Brand"
 
 
 const useStyles = makeStyles(() => ({
@@ -149,12 +150,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
-
-    const [dropdownOpen1, setOpen1] = useState(false)
-    const toggle1 = () => setOpen1(!dropdownOpen1)
-
-    const [dropdownOpen2, setOpen2] = useState(false)
-    const toggle2 = () => setOpen2(!dropdownOpen2)
 
     const [dropdownOpen3, setOpen3] = useState(false)
     const toggle3 = () => setOpen3(!dropdownOpen3)
@@ -434,27 +429,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
 
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_3" style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="wrench" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:make')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
-                                        <FieldWrapper >
-                                            <SelectInput
-                                                name="manufacturer.make"
-                                                control={control}
-                                                errors={errors}
-                                                options={manufacturersData.makes}
-                                                onChange={(selected, name) =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                    return selected
-                                                }}
-                                            />
-                                        </FieldWrapper>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
+                                <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
 
                                 <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                                     <DropdownToggle caret id="button_4" style={{ fontSize: '15.15px' }}>
@@ -622,28 +597,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                         <div className={clsx(classes.rowbuttons)}>
                             <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
                             <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
-
-                            <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_3">
-                                    <Emoji name="wrench" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:make')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
-                                    <FieldWrapper >
-                                        <SelectInput
-                                            name="manufacturer.make"
-                                            control={control}
-                                            errors={errors}
-                                            options={manufacturersData.makes}
-                                            onChange={(selected, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                return selected
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
 
                             <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                                 <DropdownToggle caret id="button_4">
