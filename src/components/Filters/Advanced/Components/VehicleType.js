@@ -5,16 +5,16 @@ import { Emoji } from "react-apple-emojis"
 import FieldWrapper from "../../../Form/FieldWrapper"
 import SelectInput from "../../../Form/Inputs/SelectInput"
 import vehicleTypesDefault from "../../../../business/vehicleTypes"
-import React, { useCallback, useState } from "react"
+import React, {  useState } from "react"
 import useTranslation from "next-translate/useTranslation"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
-import filterProps from "libs/filterProps"
+
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 
 const useStyles = makeStyles(() => ({
-    buttondropdown: {
+    buttonDropdown: {
         '& button':{
             borderRadius: '26.8293px !important',
             borderColor:'#dcd7d7 !important',
@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 
-const VehicleType = ({ defaultFilters, updateFilters }) => {
+const VehicleType = ({ defaultFilters, submit }) => {
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
     const classes = useStyles()
@@ -61,34 +61,14 @@ const VehicleType = ({ defaultFilters, updateFilters }) => {
         defaultValues
     })
 
-    const onSubmit = useCallback(async (form, e, name) => {
 
-        let empty
-        for (var key in form) {
-            if(form[key] === null) form[key] = empty
-        }
-
-        if(e !== null && e?.type !== null)  if(typeof e?.type === "submit")   e.preventDefault()
-
-        const { coordinates, radius } = form
-        const filtersFlat = filterProps(form)
-        const data = { ...filtersFlat }
-
-        if (coordinates && radius) {
-            data.radius = radius
-            data.coordinates = coordinates
-            data.enableGeocoding = true
-        }
-
-        updateFilters(data)
-    }, [updateFilters])
 
     const router = useRouter()
 
 
     return (
         !isMobile ? (
-            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttonDropdown)} >
                 <DropdownToggle caret id="button_1">
                     <Emoji name="automobile" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
                     {t('vehicles:vehicle-type')}
@@ -103,7 +83,7 @@ const VehicleType = ({ defaultFilters, updateFilters }) => {
                             options={vehicleTypesDefault()}
                             selected={router.query.vehicleType}
                             onChange={(e, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
+                                setTimeout(handleSubmit((data) => submit(data, e, name)), 100)
                                 return e
                             }}
                         />
@@ -112,7 +92,7 @@ const VehicleType = ({ defaultFilters, updateFilters }) => {
                 </DropdownMenu>
             </ButtonDropdown>
         ) : (
-            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
+            <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttonDropdown)} >
                 <DropdownToggle caret id="button_1" style={{ fontSize: '15.15px' }}>
                     <Emoji name="automobile" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
                     {t('vehicles:vehicle-type')}
@@ -127,7 +107,7 @@ const VehicleType = ({ defaultFilters, updateFilters }) => {
                             options={vehicleTypesDefault()}
                             selected={router.query.vehicleType}
                             onChange={(e, name) =>{
-                                setTimeout(handleSubmit((data) => onSubmit(data, e, name)), 100)
+                                setTimeout(handleSubmit((data) => submit(data, e, name)), 100)
                                 return e
                             }}
                         />

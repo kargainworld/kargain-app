@@ -23,6 +23,7 @@ import { NewIcons } from 'assets/icons'
 import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
 import VehicleType from "./Components/VehicleType"
+import AnnounceType from "./Components/AnnounceType"
 
 
 const useStyles = makeStyles(() => ({
@@ -429,57 +430,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType defaultFilters={defaultFilters} updateFilters={updateFilters} />
-                            {limitwidth ? (
-                                <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}   >
-                                        <DropdownToggle caret id="button_2" style={{ fontSize:'15.15px' }}>
-                                            <Emoji name="page-facing-up" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                            {t('vehicles:announce-type')}
-                                            <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                        </DropdownToggle>
-                                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                            <FieldWrapper >
-                                                <SelectInput
-
-                                                    name="adType"
-                                                    control={control}
-                                                    errors={errors}
-                                                    options={announceTypesFiltered}
-                                                    selected={router.query.adType}
-                                                    onChange={(selected, name) =>{
-                                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                        return selected
-                                                    }}
-                                                />
-                                            </FieldWrapper>
-                                        </DropdownMenu>
-                                    </ButtonDropdown>
-                                </div>
-                            ) : (
-                                <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                    <DropdownToggle caret id="button_2" style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="page-facing-up" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:announce-type')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                        <FieldWrapper >
-                                            <SelectInput
-                                                name="adType"
-                                                control={control}
-                                                errors={errors}
-                                                options={announceTypesFiltered}
-                                                selected={router.query.adType}
-                                                onChange={(selected, name) =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                    return selected
-                                                }}
-                                            />
-                                        </FieldWrapper>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
-                            )}
+                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
+                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
 
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                 <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
@@ -668,30 +620,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType updateFilters={updateFilters} defaultFilters={defaultFilters} />
-
-                            <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                <DropdownToggle caret id="button_2">
-                                    <Emoji name="page-facing-up" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:announce-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                    <FieldWrapper >
-                                        <SelectInput
-                                            name="adType"
-                                            control={control}
-                                            errors={errors}
-                                            options={announceTypesFiltered}
-                                            selected={router.query.adType}
-                                            onChange={(selected, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                return selected
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
+                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
 
                             <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
                                 <DropdownToggle caret id="button_3">
