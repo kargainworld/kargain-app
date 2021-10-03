@@ -6,7 +6,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
 import filterProps from 'libs/filterProps'
-import SelectInput from '../../Form/Inputs/SelectInput'
 import SliderInput from '../../Form/Inputs/SliderInputUI'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { useAuth } from 'context/AuthProvider'
@@ -23,6 +22,9 @@ import { NewIcons } from 'assets/icons'
 import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
 import VehicleType from "./Components/VehicleType"
+import AnnounceType from "./Components/AnnounceType"
+import Brand from "./Components/Brand"
+import Model from "./Components/Model"
 
 
 const useStyles = makeStyles(() => ({
@@ -148,15 +150,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
-
-    const [dropdownOpen1, setOpen1] = useState(false)
-    const toggle1 = () => setOpen1(!dropdownOpen1)
-
-    const [dropdownOpen2, setOpen2] = useState(false)
-    const toggle2 = () => setOpen2(!dropdownOpen2)
-
-    const [dropdownOpen3, setOpen3] = useState(false)
-    const toggle3 = () => setOpen3(!dropdownOpen3)
 
     const [dropdownOpen4, setOpen4] = useState(false)
     const toggle4 = () => setOpen4(!dropdownOpen4)
@@ -429,103 +422,13 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType defaultFilters={defaultFilters} updateFilters={updateFilters} />
-                            {limitwidth ? (
-                                <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                    <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}   >
-                                        <DropdownToggle caret id="button_2" style={{ fontSize:'15.15px' }}>
-                                            <Emoji name="page-facing-up" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                            {t('vehicles:announce-type')}
-                                            <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                        </DropdownToggle>
-                                        <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                            <FieldWrapper >
-                                                <SelectInput
-
-                                                    name="adType"
-                                                    control={control}
-                                                    errors={errors}
-                                                    options={announceTypesFiltered}
-                                                    selected={router.query.adType}
-                                                    onChange={(selected, name) =>{
-                                                        setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                        return selected
-                                                    }}
-                                                />
-                                            </FieldWrapper>
-                                        </DropdownMenu>
-                                    </ButtonDropdown>
-                                </div>
-                            ) : (
-                                <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                    <DropdownToggle caret id="button_2" style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="page-facing-up" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:announce-type')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                        <FieldWrapper >
-                                            <SelectInput
-                                                name="adType"
-                                                control={control}
-                                                errors={errors}
-                                                options={announceTypesFiltered}
-                                                selected={router.query.adType}
-                                                onChange={(selected, name) =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                    return selected
-                                                }}
-                                            />
-                                        </FieldWrapper>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
-                            )}
+                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
+                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
 
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_3" style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="wrench" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:make')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
-                                        <FieldWrapper >
-                                            <SelectInput
-                                                name="manufacturer.make"
-                                                control={control}
-                                                errors={errors}
-                                                options={manufacturersData.makes}
-                                                onChange={(selected, name) =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                    return selected
-                                                }}
-                                            />
-                                        </FieldWrapper>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
+                                <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
 
-                                <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret id="button_4" style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="two-oclock" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:model')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'8.82px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
-                                        <FieldWrapper >
-                                            <SelectInput
-                                                name="manufacturer.model"
-                                                options={manufacturersData.models}
-                                                control={control}
-                                                errors={errors}
-                                                disabled={!watch('manufacturer.make')}
-                                                onChange={(selected, name) =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                    return selected
-                                                }}
-                                            />
-                                        </FieldWrapper>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
+                                <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
 
                                 <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
                                     <DropdownToggle caret id="button_5" style={{ fontSize: '15.15px' }}>
@@ -668,75 +571,11 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType updateFilters={updateFilters} defaultFilters={defaultFilters} />
+                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
+                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
+                            <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
+                            <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
 
-                            <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttondropdown)}  >
-                                <DropdownToggle caret id="button_2">
-                                    <Emoji name="page-facing-up" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:announce-type')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} id="buuton_2">
-                                    <FieldWrapper >
-                                        <SelectInput
-                                            name="adType"
-                                            control={control}
-                                            errors={errors}
-                                            options={announceTypesFiltered}
-                                            selected={router.query.adType}
-                                            onChange={(selected, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                return selected
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
-
-                            <ButtonDropdown id="button_3" isOpen={dropdownOpen2} toggle={toggle2} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_3">
-                                    <Emoji name="wrench" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:make')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_3">
-                                    <FieldWrapper >
-                                        <SelectInput
-                                            name="manufacturer.make"
-                                            control={control}
-                                            errors={errors}
-                                            options={manufacturersData.makes}
-                                            onChange={(selected, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                return selected
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
-
-                            <ButtonDropdown id="button_4" isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_4">
-                                    <Emoji name="two-oclock" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:model')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenu)} id="button_4">
-                                    <FieldWrapper >
-                                        <SelectInput
-                                            name="manufacturer.model"
-                                            options={manufacturersData.models}
-                                            control={control}
-                                            errors={errors}
-                                            disabled={!watch('manufacturer.make')}
-                                            onChange={(selected, name) =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, selected, name)), 100)
-                                                return selected
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                </DropdownMenu>
-                            </ButtonDropdown>
 
                             <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
                                 <DropdownToggle caret id="button_5">
