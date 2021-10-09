@@ -214,17 +214,19 @@ const useKargainContract = () => {
     }, [library])
 
     const fetchTokenPrice = useCallback(async (tokenId) => {
+        console.log('primero')
         if (!contract)
             return
 
         try {
+
             const value = await contract.methods
                 .tokenPrice(tokenId).call()
+
             const price = Web3.utils.fromWei(value, 'ether')
 
             return price.toString()
         } catch (error) {
-            // tokenId does not exist
             return null
         }
     }, [contract])
@@ -274,7 +276,7 @@ const useKargainContract = () => {
 
             const tx = await contract.methods
                 .mint(tokenId, waiPrice)
-                .send({ from: account })
+                .send({ from: account, gas: 266000, gasPrice: 20000000000  })
 
             return tx.transactionHash
         } catch (error) {

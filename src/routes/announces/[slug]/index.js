@@ -123,10 +123,12 @@ const Announce = () => {
         const action = async () => {
             const transactionsPending = transactions.filter(x=>x.status === "Pending")
             console.log("transactionsPending", transactionsPending)
-
             for (const tx of transactionsPending) {
+
                 try {
+                    console.log('entrando 1')
                     await waitTransactionToBeConfirmed(tx.hashTx)
+                    console.log('entrando 22')
                     const newTx = await TransactionsService.updateTransaction(state?.announce?.getID, { hashTx:tx.hashTx, status: "Approved" })
 
                     setTransactions(prev => {
@@ -235,9 +237,12 @@ const Announce = () => {
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
-
+        let tx = TransactionsService.getTransactionsByAnnounceId(tokenId).then((data) =>{
+            console.log(data, 'txxxx')
+        })
         fetchTokenPrice(tokenId)
             .then((price) => {
+                console.log(price, 'preciooo')
                 setTokenPrice(price)
                 setIsLoading(false)
                 setIsMinted(price ? true : false)
@@ -342,7 +347,6 @@ const Announce = () => {
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
 
-    console.log("pererere", !isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet)
 
     return (
         <Container>
@@ -370,7 +374,7 @@ const Announce = () => {
                                         </Row>
                                     </Col>
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
-                                    
+
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
                                         <HandleOffer newOfferCreated={newOfferCreated} announce={state.announce} tokenPrice={tokenPrice} />
                                     )}

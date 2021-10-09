@@ -49,7 +49,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { getPriceTracker } = usePriceTracker()
-    const { activate } = useWeb3React()
+    const { activate, chainId } = useWeb3React()
     const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
     const { query } = useRouter()
@@ -175,6 +175,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         const fetchMintedAnnounces = async () => {
             let tokensMinted = []
             try {
+                console.log(chainId)
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
                     const tokenId = ad.getTokenId
