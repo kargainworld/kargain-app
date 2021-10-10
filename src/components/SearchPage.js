@@ -20,8 +20,10 @@ import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from 'theme/palette'
-import { injected } from "connectors"
+
 import { useWeb3React } from "@web3-react/core"
+import TransactionsService from 'services/TransactionsService'
+import { injected } from "../connectors"
 
 
 const useStyles = makeStyles(() => ({
@@ -67,17 +69,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         isScrollLoding: false,
         announcesMinted: []
     })
-
-    useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                }).catch((err) => {
-                    console.log("err", err)
-                })
-            }
-        })
-    }, [])
 
     const [hiddenFormMore, hideForm] = useState(true)
     const toggleFilters = () => {
@@ -157,12 +148,16 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         }))
     }
 
-    const updateSorter = (sorter) => {
-        setState(state => ({
-            ...state,
-            sorter
-        }))
-    }
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                })
+            }
+        })
+    }, [])
 
     useEffect(() => {
         fetchAnnounces()
@@ -170,28 +165,46 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
     useEffect(() => {
 
-        if (!isContractReady || state.announces.length < 0 || !state.loading)
+        if (state.announces.length < 0 || !state.loading)
             return
+
+        setState(state => ({
+            ...state,
+            loading: true
+        }))
+
         const fetchMintedAnnounces = async () => {
+            console.log('entro 0')
+
+            if (!state.announces)
+                return
+            console.log('entro 1')
             let tokensMinted = []
             try {
+                console.log('entro 2')
+
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
-                    const tokenId = ad.getTokenId
-                    fetchTokenPrice(tokenId)
-                        .then((price) => {
+                    let tokenMinted = false
+                    TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
+                        console.log('entro 3')
+
+                        if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                            tokenMinted = true
+                        }
+                        if (data[0] && data[0].status === 'OfferAccepted') {
+                            tokenMinted = false
+                        }
+                        console.log(data)
+
+                        if (tokenMinted) {
                             const token = {
-                                isMinted: !!price,
-                                tokenPrice: price,
+                                tokenPrice: data[0].data,
                                 id: announce.id
                             }
-                            if (token.isMinted) {
-                                tokensMinted.push(token)
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
+                            tokensMinted.push(token)
+                        }
+                    })
                 }
             } catch (err) {
                 console.log(err)
@@ -200,10 +213,16 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 announcesMinted: tokensMinted
             }))
+            setState(state => ({
+                ...state,
+                loading: false
+            }))
+
+            console.log(state.announcesMinted, 'anuncios minteados')
         }
 
         fetchMintedAnnounces()
-    }, [state.announces, isContractReady, fetchTokenPrice, state.loading, setState])
+    }, [state.announces, state.loading, setState, TransactionsService])
 
     return (
         <Container>
