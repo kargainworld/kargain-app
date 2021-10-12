@@ -28,6 +28,8 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useWeb3React } from "@web3-react/core"
 import { injected } from "connectors"
+import AnnounceModel from "../../../models/announce.model"
+import TransactionsService from "../../../services/TransactionsService"
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -93,32 +95,28 @@ const useStyles = makeStyles((theme) => ({
         background: customColors.gradient.main
     },
     subscriptionbutton:{
-        backgroundColor: 'white', /* Green */
+        backgroundColor: 'white',
         color: '#666666',
         padding: '5.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        // fontWeight:'500',
         margin: '4px 2px',
-        // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
         height:'35px'
     },
     subscriptionbuttonblue:{
-        backgroundColor: 'white', /* Green */
+        backgroundColor: 'white',
         color: '#666666',
         padding: '4.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        // fontWeight:'500',
         margin: '4px 2px',
-        // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid blue',
         borderWidth: '1px',
@@ -144,7 +142,8 @@ const Profile = () => {
         stateReady: false,
         isSelf: false,
         isAdmin: false,
-        profile: new UserModel()
+        profile: new UserModel(),
+        announcesMinted: []
     })
 
     const [filterState, setFilterState] = useState({
@@ -249,7 +248,6 @@ const Profile = () => {
         }
     }, [filterState.sorter, filterState.filters, filterState.page])
 
-
     const updateFilters = (filters) => {
         setFilterState(filterState => ({
             ...filterState,
@@ -258,13 +256,66 @@ const Profile = () => {
     }
 
     useEffect(() => {
+        console.log(filterState, 'anncios del usuario')
+
+        if (state.sorter && state.sorter.length < 0 || !state.loading)
+            return
+        setState(state => ({
+            ...state,
+            loading: true
+        }))
+
+        const fetchMintedAnnounces = async () => {
+
+            if (!state.sorter)
+                return
+            let tokensMinted = []
+            try {
+
+                for (const announce of state.sorter) {
+                    const ad = new AnnounceModel(announce)
+                    let tokenMinted = false
+                    TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
+
+                        if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                            tokenMinted = true
+                        }
+                        if (data[0] && data[0].status === 'OfferAccepted') {
+                            tokenMinted = false
+                        }
+
+                        if (tokenMinted) {
+                            const token = {
+                                tokenPrice: data[0].data,
+                                id: announce.id
+                            }
+                            tokensMinted.push(token)
+                        }
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted
+            }))
+            setState(state => ({
+                ...state,
+                loading: false
+            }))
+        }
+
+        fetchMintedAnnounces()
+    }, [state.announces, state.loading, setState, TransactionsService])
+
+    useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
             if (isAuthorized) {
                 activate(injected, undefined, true).then(() =>{
                 }).catch((err) => {
                     console.log("err", err)
                 })
-            } else {
             }
         })
     }, [])
@@ -276,14 +327,12 @@ const Profile = () => {
     }, [authenticatedUser, profile])
 
     useEffect(() => {
-        console.log('fetch profile')
         fetchProfile()
         window.scrollTo(0, 0)
     }, [fetchProfile])
 
     useEffect(() => {
         if (state.stateReady) {
-            console.log('fetch announces')
             fetchAnnounces()
         }
     }, [fetchAnnounces])
@@ -291,13 +340,12 @@ const Profile = () => {
     if (!state.stateReady) return null
     if (filterState.loading) return <Loading />
     if (state.err) return <Error statusCode={state.err?.statusCode} />
-    // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
     return (
         <>
             {isMobile ? (
-                <div className={clsx(classes.pagetopdiv)} style={{ marginTop:'25px' }}></div>
+                <div className={clsx(classes.pagetopdiv)} style={{ marginTop: '25px' }}/>
             ) : (
-                <div className={clsx(classes.pagetopdiv)}></div>
+                <div className={clsx(classes.pagetopdiv)}/>
             )}
 
             <Container style={{ marginTop: 25 }}>
@@ -357,9 +405,7 @@ const Profile = () => {
                                         </span>
                                     ) : (
                                         <>
-                                            <span onClick={(e) => {
-                                                e.stopPropagation()
-                                            }}>
+                                            <span onClick={(e) => { e.stopPropagation() }}>
                                                 {
                                                     alreadyFollowProfile ?
                                                         <Button
@@ -509,7 +555,7 @@ const Profile = () => {
                         </div>
 
                         <div style={{ width:'100%', display:'flex' }}>
-                            <div style={{ width:'50%' }}></div>
+                            <div style={{ width: '50%' }}/>
                             <div style={{ display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)' }}>
                                 <div
                                     onClick={() => dispatchModalState({
@@ -697,38 +743,6 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                         </Tabs.Item>
 
                         {isSelf && (
-                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')}>
-                                {isMobile ? (
-                                    <div style={{ width:'100%' }}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                                <div key={index} style={{ width: '90%', marginTop:'20px', marginLeft:'-15px' }}>
-                                                    <AnnounceCard announceRaw={announceRaw} />
-                                                </div>
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{t('vehicles:no-hidden-announces')}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </div>
-                                ) : (
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard announceRaw={announceRaw} />
-                                            </div>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-hidden-announces')}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                )}
-                            </Tabs.Item>
-                        )}
-
-                        {isSelf && (
                             <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
                                 {isMobile ? (
                                     <div style={{ width:'100%' }}>
@@ -764,17 +778,10 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                 </div>
             </Row>
 
-            <Dialog
-                open={openDialogRemove}
-                onClose={handleCloseDialogRemove}
-            >
-                <DialogTitle id="alert-dialog-title" disableTypography>
-                    {t('vehicles:confirm-suppression')}
-                </DialogTitle>
+            <Dialog open={openDialogRemove} onClose={handleCloseDialogRemove}>
+                <DialogTitle id="alert-dialog-title" disableTypography>{t('vehicles:confirm-suppression')}</DialogTitle>
                 <DialogActions>
-                    <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>
-                        {t('vehicles:cancel')}
-                    </Button>
+                    <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>{t('vehicles:cancel')}</Button>
                     <Button
                         variant="contained"
                         color="secondary"

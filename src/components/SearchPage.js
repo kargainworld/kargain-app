@@ -102,16 +102,15 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 await AnnounceService.getFeedAnnounces(params)
                 : await AnnounceService.getSearchAnnounces(params)
             let total_rows = []
-            if(state.isScrollLoding){
+            if (state.isScrollLoding) {
                 state.announces.map((row, index) => {
                     total_rows.push(row)
                 })
                 result.rows.map((row, index) => {
                     total_rows.push(row)
                 })
-            } else {
-                total_rows = result.rows
             }
+            else { total_rows = result.rows }
             setState(state => ({
                 ...state,
                 announces: total_rows || [],
@@ -132,7 +131,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }, [state.page, state.filters, state.sorter, AnnounceService, setState])
 
     const handlePageChange = (page) => {
-        if(state.page >= state.pages) return
+        if (state.page >= state.pages) return
         page = state.page + 1
         setState(state => ({
             ...state,
@@ -174,20 +173,16 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         }))
 
         const fetchMintedAnnounces = async () => {
-            console.log('entro 0')
 
             if (!state.announces)
                 return
-            console.log('entro 1')
             let tokensMinted = []
             try {
-                console.log('entro 2')
 
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
                     let tokenMinted = false
                     TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
-                        console.log('entro 3')
 
                         if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
                             tokenMinted = true
@@ -195,7 +190,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                         if (data[0] && data[0].status === 'OfferAccepted') {
                             tokenMinted = false
                         }
-                        console.log(data)
 
                         if (tokenMinted) {
                             const token = {
@@ -217,8 +211,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 loading: false
             }))
-
-            console.log(state.announcesMinted, 'anuncios minteados')
         }
 
         fetchMintedAnnounces()
