@@ -143,9 +143,9 @@ const Messages = () => {
     return (
         <Container style={{ marginTop:'30px' }}>
             {isMobileCon ? (
-                <h2 style={{ fontSize:'20px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h2>
+                <h3 style={{ fontSize:'20px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h3>
             ) : (
-                <h2 style={{ fontSize:'28px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h2>
+                <h3 style={{ fontSize:'28px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h3>
             )}
 
             <div className={classes.conversations} >
