@@ -14,13 +14,12 @@ import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from 'components/Loading'
 import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
-import useKargainContract from 'hooks/useKargainContract'
-import usePriceTracker from 'hooks/usePriceTracker'
+
+
 import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from 'theme/palette'
-
 import { useWeb3React } from "@web3-react/core"
 import TransactionsService from 'services/TransactionsService'
 import { injected } from "../connectors"
@@ -50,9 +49,7 @@ const useStyles = makeStyles(() => ({
 const SearchPage = ({ fetchFeed, ...props }) => {
     const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
-    const { getPriceTracker } = usePriceTracker()
     const { activate } = useWeb3React()
-    const { fetchTokenPrice, isContractReady } = useKargainContract()
     const { t } = useTranslation()
     const { query } = useRouter()
     const { dispatchModalError } = useContext(MessageContext)
