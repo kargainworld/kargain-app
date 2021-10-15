@@ -140,6 +140,7 @@ const Profile = () => {
     const [state, setState] = useState({
         err: null,
         stateReady: false,
+        stateAnnounces: false,
         isSelf: false,
         isAdmin: false,
         profile: new UserModel(),
@@ -231,9 +232,9 @@ const Profile = () => {
                 profile: new UserModel({
                     ...profile.getRaw,
                     garage: result.rows
-                })
+                }),
+                stateAnnounces: true
             }))
-            console.log(profile, 'profile')
 
             setFilterState(filterState => ({
                 ...filterState,
@@ -258,15 +259,13 @@ const Profile = () => {
 
     const fetchMintedAnnounces = useCallback(async () => {
         let tokensMinted = []
-        if (state.profile.raw.garage && state.profile.raw.garage.length <= 0)
+        if (!state.stateAnnounces)
             return
 
         try {
-            console.log(state.profile.raw.garage, 'garageee')
             for (const announce of state.profile.raw.garage) {
                 const ad = new AnnounceModel(announce)
                 let tokenMinted = false
-                console.log(ad.getID, 'entro 3')
                 TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
                     if (data[0] && ad.getID === data[0].announce && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
                         tokenMinted = true
@@ -276,7 +275,6 @@ const Profile = () => {
                     }
 
                     if (tokenMinted) {
-                        console.log('entro 4')
                         const token = {
                             tokenPrice: data[0].data,
                             id: announce.id
@@ -292,27 +290,23 @@ const Profile = () => {
             ...state,
             announcesMinted: tokensMinted
         }))
-        console.log(tokensMinted.length, 'tokens minteados')
         setFilterState(filterState => ({
             ...filterState,
             loading: false
         }))
-    }, [state.profile])
+    }, [ ])
 
     useEffect(() => {
-        console.log('entro 1')
-        console.log(state.profile)
-        if (state.profile.raw.garage && state.profile.raw.garage.length < 0 || filterState.loading)
+        if (!state.stateAnnounces || filterState.loading)
             return
 
-        console.log('entro 2')
         setFilterState(filterState => ({
             ...filterState,
             loading: true
         }))
 
         fetchMintedAnnounces()
-    }, [filterState.loading, state.profile, fetchMintedAnnounces])
+    }, [state.profile, fetchMintedAnnounces, state.stateAnnounces])
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -473,7 +467,6 @@ const Profile = () => {
                                         startIcon={<ChatIcon />}
                                         onClick={ () => {
                                             if(!isAuthenticated){
-                                                console.log(router.asPath)
                                                 router.push({
                                                     pathname: '/auth/login',
                                                     query: { redirect: router.asPath }
@@ -515,7 +508,6 @@ const Profile = () => {
                                             startIcon={<ChatIcon />}
                                             onClick={ () => {
                                                 if(!isAuthenticated){
-                                                    console.log(router.asPath)
                                                     router.push({
                                                         pathname: '/auth/login',
                                                         query: { redirect: router.asPath }
@@ -693,12 +685,16 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     }
 
     const announceMinted = (announce) => {
-        if (announce.raw.id) {
-            console.log(announce, 'iddd')
+        let minted = false
+        for (let i = 0; i < state.announcesMinted.length; i++) {
+            const item = state.announcesMinted[i]
 
+            if (item.id.includes(announce.raw.id)) {
+                minted = true
+                break
+            }
         }
-        console.log(state.announcesMinted.find(x=>x.id === announce.raw.id), 'minteado')
-        return state.announcesMinted.find(x=>x.id === announce.raw.id)
+        return minted
     }
 
     const onTabChange = (tab) => {
@@ -724,9 +720,15 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                     <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                         <Row className="my-2 d-flex justify-content-center">
                                             {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                                <div key={index} style={{ width: '90%', marginTop:'20px', marginLeft:'-15px' }}>
-                                                    <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                                </div>
+                                                announceMinted(announce) ?
+                                                    <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
+                                                        <AnnounceCard
+                                                            announceRaw={announce.getRaw}
+                                                            onSelectSlug={setSelectedSlug}
+                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                        />
+                                                    </div>
+                                                    : null
                                             )) : (
                                                 <div className="d-flex flex-column align-items-center smy-2">
                                                     <p>{t('vehicles:no-found-announces')}</p>
@@ -741,17 +743,15 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                     <Row className="my-2 d-flex justify-content-center">
 
                                         {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                {
-                                                    announceMinted(announce) ?
-                                                        <AnnounceCard
-                                                            announceRaw={announce.getRaw}
-                                                            onSelectSlug={setSelectedSlug}
-                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                        />
-                                                        : null
-                                                }
-                                            </div>
+                                            announceMinted(announce) ?
+                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
+                                                    <AnnounceCard
+                                                        announceRaw={announce.getRaw}
+                                                        onSelectSlug={setSelectedSlug}
+                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                    />
+                                                </div>
+                                                : null
                                         )) : (
                                             <div className="d-flex flex-column align-items-center smy-2">
                                                 <p>{t('vehicles:no-found-announces')}</p>
@@ -769,9 +769,15 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                     <div style={{ width:'100%' }}>
                                         <Row className="my-2 d-flex justify-content-center">
                                             {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                                <div key={index} style={{ width: '90%', marginLeft:'-15px', marginTop:'20px' }}>
-                                                    <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                                </div>
+                                                announceMinted(announceRaw) ?
+                                                    <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw.getRaw}
+                                                            onSelectSlug={setSelectedSlug}
+                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                        />
+                                                    </div>
+                                                    : null
                                             )) : (
                                                 <div className="d-flex flex-column align-items-center smy-2">
                                                     <p>{(t('vehicles:no-favorite-announces'))}</p>
@@ -784,15 +790,15 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                     <Row className="my-2 d-flex justify-content-center">
                                         {profile.getFavorites.length  ? profile.getFavorites.map((announceRaw, index) => (
                                             <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                {
-                                                    announceMinted(announceRaw) ?
-                                                        <AnnounceCard
-                                                            announceRaw={announceRaw.getRaw}
-                                                            onSelectSlug={setSelectedSlug}
-                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                        />
-                                                        : null
-                                                }
+                                                announceMinted(announceRaw) ?
+                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
+                                                    <AnnounceCard
+                                                        announceRaw={announceRaw.getRaw}
+                                                        onSelectSlug={setSelectedSlug}
+                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                    />
+                                                </div>
+                                                : null
                                             </div>
                                         )) : (
                                             <div className="d-flex flex-column align-items-center smy-2">
