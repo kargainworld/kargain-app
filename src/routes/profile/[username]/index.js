@@ -256,6 +256,49 @@ const Profile = () => {
         }))
     }
 
+    const fetchMintedAnnounces = useCallback(async () => {
+        let tokensMinted = []
+        if (state.profile.raw.garage && state.profile.raw.garage.length <= 0)
+            return
+
+        try {
+            console.log(state.profile.raw.garage, 'garageee')
+            for (const announce of state.profile.raw.garage) {
+                const ad = new AnnounceModel(announce)
+                let tokenMinted = false
+                console.log(ad.getID, 'entro 3')
+                TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
+                    if (data[0] && ad.getID === data[0].announce && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                        tokenMinted = true
+                    }
+                    if (data[0] && ad.getID === data[0].announce && data[0] && data[0].status === 'OfferAccepted') {
+                        tokenMinted = false
+                    }
+
+                    if (tokenMinted) {
+                        console.log('entro 4')
+                        const token = {
+                            tokenPrice: data[0].data,
+                            id: announce.id
+                        }
+                        tokensMinted.push(token)
+                    }
+                })
+            }
+        } catch (err) {
+            // console.log(err)
+        }
+        setState(state => ({
+            ...state,
+            announcesMinted: tokensMinted
+        }))
+        console.log(tokensMinted.length, 'tokens minteados')
+        setFilterState(filterState => ({
+            ...filterState,
+            loading: false
+        }))
+    }, [state.profile])
+
     useEffect(() => {
         console.log('entro 1')
         console.log(state.profile)
@@ -268,51 +311,8 @@ const Profile = () => {
             loading: true
         }))
 
-        const fetchMintedAnnounces = async () => {
-
-            let tokensMinted = []
-            if (state.profile.raw.garage && state.profile.raw.garage.length < 0)
-                return
-            try {
-                console.log(state.profile.raw.garage, 'garageee')
-                for (const announce of state.profile.raw.garage) {
-                    const ad = new AnnounceModel(announce)
-                    let tokenMinted = false
-                    console.log(ad.getID, 'entro 3')
-                    TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
-                        console.log(data[0], 'entro 4')
-                        if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
-                            tokenMinted = true
-                        }
-                        if (data[0] && data[0].status === 'OfferAccepted') {
-                            tokenMinted = false
-                        }
-
-                        if (tokenMinted) {
-                            const token = {
-                                tokenPrice: data[0].data,
-                                id: announce.id
-                            }
-                            tokensMinted.push(token)
-                        }
-                    })
-                }
-            } catch (err) {
-                // console.log(err)
-            }
-            setState(state => ({
-                ...state,
-                announcesMinted: tokensMinted
-            }))
-            console.log(tokensMinted, 'tokens minteados')
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false
-            }))
-        }
-
         fetchMintedAnnounces()
-    }, [filterState.loading, TransactionsService, state.profile])
+    }, [filterState.loading, state.profile, fetchMintedAnnounces])
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -693,12 +693,12 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     }
 
     const announceMinted = (announce) => {
-        if (announce != undefined) {
-            console.log(announce.id, 'iddd')
+        if (announce.raw.id) {
+            console.log(announce, 'iddd')
 
         }
-        console.log(state.announcesMinted.find(x=>x.id === announce.id), 'exoste')
-        return state.announcesMinted.find(x=>x.id === announce.id)
+        console.log(state.announcesMinted.find(x=>x.id === announce.raw.id), 'minteado')
+        return state.announcesMinted.find(x=>x.id === announce.raw.id)
     }
 
     const onTabChange = (tab) => {
