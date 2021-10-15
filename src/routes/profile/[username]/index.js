@@ -789,8 +789,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                 ):(
                                     <Row className="my-2 d-flex justify-content-center">
                                         {profile.getFavorites.length  ? profile.getFavorites.map((announceRaw, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                announceMinted(announceRaw) ?
+                                            announceMinted(announceRaw) ?
                                                 <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                     <AnnounceCard
                                                         announceRaw={announceRaw.getRaw}
@@ -799,7 +798,6 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
                                                     />
                                                 </div>
                                                 : null
-                                            </div>
                                         )) : (
                                             <div className="d-flex flex-column align-items-center smy-2">
                                                 <p>{(t('vehicles:no-favorite-announces'))}</p>
