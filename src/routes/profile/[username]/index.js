@@ -237,10 +237,6 @@ const Profile = () => {
                 stateAnnounces: true
             }))
 
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false
-            }))
 
         } catch (err) {
             setFilterState(filterState => ({
@@ -298,7 +294,7 @@ const Profile = () => {
     }, [ ])
 
     useEffect(() => {
-        if (!state.stateAnnounces || filterState.loading)
+        if (!state.stateAnnounces)
             return
 
         setFilterState(filterState => ({
