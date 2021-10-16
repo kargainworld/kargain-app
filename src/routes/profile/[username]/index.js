@@ -192,6 +192,10 @@ const Profile = () => {
 
     const fetchProfile = useCallback(async () => {
         try {
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: true
+            }))
             const result = await UsersService.getUserByUsername(username)
             const { user, isAdmin, isSelf } = result
             setState(state => ({
@@ -213,10 +217,6 @@ const Profile = () => {
     const fetchAnnounces = useCallback(async () => {
         try {
             const { sorter, filters, page } = filterState
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: true
-            }))
 
             const params = {
                 page,
@@ -256,6 +256,8 @@ const Profile = () => {
 
     const fetchMintedAnnounces = useCallback(async () => {
         let tokensMinted = []
+        console.log('zazazazaaaaa')
+
         if (!state.stateAnnounces)
             return
 
@@ -291,6 +293,7 @@ const Profile = () => {
             ...filterState,
             loading: false
         }))
+
     }, [ ])
 
     useEffect(() => {
@@ -303,7 +306,7 @@ const Profile = () => {
         }))
 
         fetchMintedAnnounces()
-    }, [state.profile, fetchMintedAnnounces, state.stateAnnounces])
+    }, [fetchMintedAnnounces, state.stateAnnounces])
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -328,13 +331,17 @@ const Profile = () => {
     }, [fetchProfile])
 
     useEffect(() => {
+        if (filterState.loading) return <Loading />
+
+    }, [filterState.loading])
+
+    useEffect(() => {
         if (state.stateReady) {
             fetchAnnounces()
         }
-    }, [fetchAnnounces])
+    }, [fetchAnnounces, state.stateReady])
 
     if (!state.stateReady) return null
-    if (filterState.loading) return <Loading />
     if (state.err) return <Error statusCode={state.err?.statusCode} />
     return (
         <>
