@@ -1,10 +1,10 @@
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
-import { useAuth } from "../context/AuthProvider"
+
 import React, { useContext, useState } from "react"
 import { MessageContext } from "../context/MessageContext"
-import { ModalContext } from "../context/ModalContext"
+
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
 import Tabs from "./Tabs/Tabs"
@@ -14,6 +14,117 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import DeleteIcon from "@material-ui/icons/Delete"
+import { makeStyles } from "@material-ui/styles"
+import customColors from "../theme/palette"
+
+
+const useStyles = makeStyles((theme) => ({
+    subscriptionWrapper: {
+        display: 'flex'
+    },
+    userName: {
+        color: theme.palette.primary.light
+    },
+    tabs: {
+        '& > .nav': {
+            display: 'flex',
+            flexWrap: 'nowrap'
+        }
+    },
+    followContainer: {
+        marginTop: theme.spacing(2),
+        display: 'flex',
+        alignItems: 'center',
+        '& > div': {
+            display: 'flex',
+            alignItems: 'center'
+        },
+
+        '&:not(:last-child)': {
+            marginRight: theme.spacing(3)
+        }
+    },
+    followItem: {
+        display: "block",
+        lineHeight: 1
+    },
+    filters: {
+        padding: '0 !important',
+        '& .FieldWrapper': {
+            marginRight: '0 !important',
+            marginLeft: '0 !important'
+        },
+        '& #new_feed':{
+            display: 'none !important'
+        }
+    },
+    btnFollow: {
+        padding: '3px 8px',
+        fontSize: '12px',
+        marginRight: '15px'
+    },
+    pagetopdiv: {
+        position: 'absolute',
+        width: '100%',
+        height: '126px',
+        left: '0px',
+        top: '-25px',
+        background: '#EAEAEA'
+    },
+    button: {
+        border: "none !important",
+        padding: '4.5px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        marginRight: "5px",
+        background: customColors.gradient.main
+    },
+    subscriptionbutton:{
+        backgroundColor: 'white',
+        color: '#666666',
+        padding: '5.5px 10px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '16px',
+        margin: '4px 2px',
+        borderRadius: '17.5px',
+        border: '1px solid #C4C4C4',
+        borderWidth: '1px',
+        height:'35px'
+    },
+    subscriptionbuttonblue:{
+        backgroundColor: 'white',
+        color: '#666666',
+        padding: '4.5px 10px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'inline-block',
+        fontSize: '16px',
+        margin: '4px 2px',
+        borderRadius: '17.5px',
+        border: '1px solid blue',
+        borderWidth: '1px',
+        height:'35px'
+    }
+}))
+
+const getParams = () => {
+    if (typeof window === 'undefined') {
+        return {}
+    }
+
+    return window.location.search.substring(1).split('&').reduce((acc, param) => {
+        const [key, value] = param.split('=')
+
+        return {
+            ...acc,
+            [key]: value
+        }
+    }, {})
+}
 
 const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
 
@@ -21,9 +132,7 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     const router = useRouter()
     const classes = useStyles()
     const { t } = useTranslation()
-    const { isAuthenticated } = useAuth()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
     const [filtersOpened] = useState(false)
     const { profile, isSelf } = state
     const { activeTab = 0 } = getParams()
