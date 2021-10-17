@@ -25,7 +25,7 @@ export function geoCodeFromLatLng (lat = '48.8583701', lng = '2.2922926') {
         response =>
             response.results[0],
         error => {
-            throw error
+            console.error(error)
         }
     )
 }
@@ -43,7 +43,7 @@ export function geoCodeFromAddress (address = 'Eiffel Tower') {
             return { lat, lng }
         },
         error => {
-            throw error
+            console.error(error)
         }
     )
 }
