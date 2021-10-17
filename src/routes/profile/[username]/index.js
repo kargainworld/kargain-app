@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import {  Container, Row } from 'reactstrap'
+import {  Container } from 'reactstrap'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import ChatIcon from '@material-ui/icons/Chat'
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
-import DeleteIcon from '@material-ui/icons/Delete'
+
+
+
+
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import { ModalContext } from 'context/ModalContext'
@@ -17,8 +17,8 @@ import UsersService from 'services/UsersService'
 import AnnounceService from 'services/AnnounceService'
 import UserModel from 'models/user.model'
 import AvatarPreview from 'components/Avatar/AvatarPreview'
-import AnnounceCard from 'components/AnnounceCard'
-import Tabs from 'components/Tabs/Tabs'
+
+
 import Loading from 'components/Loading'
 import Error from '../../_error'
 import { makeStyles } from "@material-ui/styles"
@@ -30,6 +30,7 @@ import { useWeb3React } from "@web3-react/core"
 import { injected } from "connectors"
 import AnnounceModel from "../../../models/announce.model"
 import TransactionsService from "../../../services/TransactionsService"
+import TabsContainer from "../../../components/TabsContainer"
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -191,6 +192,10 @@ const Profile = () => {
 
     const fetchProfile = useCallback(async () => {
         try {
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: true
+            }))
             const result = await UsersService.getUserByUsername(username)
             const { user, isAdmin, isSelf } = result
             setState(state => ({
@@ -211,11 +216,12 @@ const Profile = () => {
 
     const fetchAnnounces = useCallback(async () => {
         try {
-            const { sorter, filters, page } = filterState
             setFilterState(filterState => ({
                 ...filterState,
                 loading: true
             }))
+            const { sorter, filters, page } = filterState
+            let tokensMinted = []
 
             const params = {
                 page,
@@ -227,6 +233,7 @@ const Profile = () => {
 
             const result = await AnnounceService.getProfileAnnounces(params)
 
+
             setState(state => ({
                 ...state,
                 profile: new UserModel({
@@ -235,35 +242,7 @@ const Profile = () => {
                 }),
                 stateAnnounces: true
             }))
-
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false
-            }))
-
-        } catch (err) {
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false,
-                err
-            }))
-        }
-    }, [filterState.sorter, filterState.filters, filterState.page])
-
-    const updateFilters = (filters) => {
-        setFilterState(filterState => ({
-            ...filterState,
-            filters: filters
-        }))
-    }
-
-    const fetchMintedAnnounces = useCallback(async () => {
-        let tokensMinted = []
-        if (!state.stateAnnounces)
-            return
-
-        try {
-            for (const announce of state.profile.raw.garage) {
+            for (const announce of result.rows) {
                 const ad = new AnnounceModel(announce)
                 let tokenMinted = false
                 TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
@@ -283,30 +262,22 @@ const Profile = () => {
                     }
                 })
             }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted
+            }))
         } catch (err) {
-            // console.log(err)
+            console.error(err)
         }
-        setState(state => ({
-            ...state,
-            announcesMinted: tokensMinted
-        }))
+    }, [filterState.sorter, filterState.filters, filterState.page])
+
+    const updateFilters = (filters) => {
         setFilterState(filterState => ({
             ...filterState,
-            loading: false
+            filters: filters
         }))
-    }, [ ])
+    }
 
-    useEffect(() => {
-        if (!state.stateAnnounces || filterState.loading)
-            return
-
-        setFilterState(filterState => ({
-            ...filterState,
-            loading: true
-        }))
-
-        fetchMintedAnnounces()
-    }, [state.profile, fetchMintedAnnounces, state.stateAnnounces])
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -331,13 +302,21 @@ const Profile = () => {
     }, [fetchProfile])
 
     useEffect(() => {
+        if (filterState.loading) return <Loading />
+
+    }, [filterState.loading])
+
+    useEffect(() => {
         if (state.stateReady) {
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: false
+            }))
             fetchAnnounces()
         }
-    }, [fetchAnnounces])
+    }, [fetchAnnounces, state.stateReady])
 
     if (!state.stateReady) return null
-    if (filterState.loading) return <Loading />
     if (state.err) return <Error statusCode={state.err?.statusCode} />
     return (
         <>
@@ -621,8 +600,7 @@ const Profile = () => {
                 <TabsContainer {...{
                     state,
                     filterState,
-                    updateFilters,
-                    fetchAnnounces
+                    updateFilters
                 }} />
             </Container>
 
@@ -630,203 +608,6 @@ const Profile = () => {
     )
 }
 
-const getParams = () => {
-    if (typeof window === 'undefined') {
-        return {}
-    }
 
-    return window.location.search.substring(1).split('&').reduce((acc, param) => {
-        const [key, value] = param.split('=')
-
-        return {
-            ...acc,
-            [key]: value
-        }
-    }, {})
-}
-
-const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
-
-    const isMobile = useMediaQuery('(max-width:768px)')
-    const router = useRouter()
-    const classes = useStyles()
-    const { t } = useTranslation()
-    const { isAuthenticated } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
-    const [filtersOpened] = useState(false)
-    const { profile, isSelf } = state
-    const { activeTab = 0 } = getParams()
-    const[selectedSlug, setSelectedSlug] = useState("")
-    const [openDialogRemove, setOpenDialogRemove] = useState(false)
-
-    const [state1, setState] = useState({
-        loading: true,
-        sorter: {},
-        filters: {},
-        page: 1,
-        pages: 1,
-        announces: [],
-        total: 0,
-        isScrollLoding: false
-    })
-
-    const handleOpenDialogRemove = () => { setOpenDialogRemove(true) }
-
-    const handleCloseDialogRemove = () => { setOpenDialogRemove(false) }
-
-    const handleRemove = () => {
-        AnnounceService.removeAnnounce(selectedSlug)
-            .then(() => {
-                dispatchModal({ msg: 'Announce successfully removed' })
-                window.location.reload()
-            }).catch(err => {
-                dispatchModalError({ err }) })
-    }
-
-    const announceMinted = (announce) => {
-        let minted = false
-        for (let i = 0; i < state.announcesMinted.length; i++) {
-            const item = state.announcesMinted[i]
-
-            if (item.id.includes(announce.raw.id)) {
-                minted = true
-                break
-            }
-        }
-        return minted
-    }
-
-    const onTabChange = (tab) => {
-        const href = router.pathname.replace('[username]', router.query.username)
-        router.push(`${href}?activeTab=${tab}`)
-    }
-
-    const updateSorter = (sorter) => {
-        setState(state1 => ({
-            ...state1,
-            sorter
-        }))
-    }
-    return (
-        <Container>
-            <Row>
-                <div style={{ width:'103%' }}>
-
-                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
-                        <Tabs.Item id="home-tab" title="Vitrine">
-                            {isMobile ? (
-                                <div style={{ width:'100%' }}>
-                                    <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                                announceMinted(announce) ?
-                                                    <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                        <AnnounceCard
-                                                            announceRaw={announce.getRaw}
-                                                            onSelectSlug={setSelectedSlug}
-                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                        />
-                                                    </div>
-                                                    : null
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{t('vehicles:no-found-announces')}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </section>
-                                </div>
-
-                            ):(
-                                <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                    <Row className="my-2 d-flex justify-content-center">
-
-                                        {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                            announceMinted(announce) ?
-                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                    <AnnounceCard
-                                                        announceRaw={announce.getRaw}
-                                                        onSelectSlug={setSelectedSlug}
-                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                    />
-                                                </div>
-                                                : null
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-found-announces')}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                </section>
-                            )}
-
-                        </Tabs.Item>
-
-                        {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
-                                {isMobile ? (
-                                    <div style={{ width:'100%' }}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                                announceMinted(announceRaw) ?
-                                                    <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                        <AnnounceCard
-                                                            announceRaw={announceRaw.getRaw}
-                                                            onSelectSlug={setSelectedSlug}
-                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                        />
-                                                    </div>
-                                                    : null
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </div>
-
-                                ):(
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getFavorites.length  ? profile.getFavorites.map((announceRaw, index) => (
-                                            announceMinted(announceRaw) ?
-                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw.getRaw}
-                                                        onSelectSlug={setSelectedSlug}
-                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                    />
-                                                </div>
-                                                : null
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                )}
-                            </Tabs.Item>
-                        )}
-                    </Tabs>
-                </div>
-            </Row>
-
-            <Dialog open={openDialogRemove} onClose={handleCloseDialogRemove}>
-                <DialogTitle id="alert-dialog-title" disableTypography>{t('vehicles:confirm-suppression')}</DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>{t('vehicles:cancel')}</Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        startIcon={<DeleteIcon/>}
-                        onClick={handleRemove} >
-                        {t('vehicles:remove-announce')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </Container>
-    )
-}
 
 export default Profile
