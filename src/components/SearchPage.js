@@ -14,8 +14,6 @@ import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from 'components/Loading'
 import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
-
-
 import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'

@@ -422,8 +422,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                     <div>
                         <ClearAndFeed defaultFilters={defaultFilters} />
                         <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
-                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
+                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} watch={watch} register={register} setValue={setValue} errors={errors} handleSubmit={handleSubmit} />
+                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} watch={watch} register={register} setValue={setValue} errors={errors} handleSubmit={handleSubmit} />
 
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                 <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />

@@ -7,10 +7,11 @@ import SelectInput from "../../../Form/Inputs/SelectInput"
 import vehicleTypesDefault from "../../../../business/vehicleTypes"
 import React, {  useState } from "react"
 import useTranslation from "next-translate/useTranslation"
-import { useForm } from "react-hook-form"
+
 import { useRouter } from "next/router"
 
 import useMediaQuery from "@material-ui/core/useMediaQuery"
+import { useForm } from "react-hook-form"
 
 
 const useStyles = makeStyles(() => ({
@@ -46,23 +47,14 @@ const useStyles = makeStyles(() => ({
 }))
 
 
-const VehicleType = ({ defaultFilters, submit }) => {
+const VehicleType = ({ defaultFilters, submit, watch, register, ssetValue, errors }) => {
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
     const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { t } = useTranslation()
-    const defaultValues = {
-        ...defaultFilters
-    }
-    const { control, errors, handleSubmit } = useForm({
-        mode: 'onChange',
-        validateCriteriaMode: 'all',
-        defaultValues
-    })
 
-
-
+    const { control, handleSubmit } = useForm()
     const router = useRouter()
 
 
