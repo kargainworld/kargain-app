@@ -2,7 +2,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
 
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { MessageContext } from "../context/MessageContext"
 
 import AnnounceService from "../services/AnnounceService"
@@ -16,6 +16,7 @@ import Button from "@material-ui/core/Button"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { makeStyles } from "@material-ui/styles"
 import customColors from "../theme/palette"
+import Loading from "./Loading"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -187,6 +188,12 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
             sorter
         }))
     }
+
+    useEffect(() => {
+        if (filterState.loading) return <Loading />
+
+    }, [filterState.loading])
+
     return (
         <Container>
             <Row>

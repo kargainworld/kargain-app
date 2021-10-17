@@ -216,7 +216,12 @@ const Profile = () => {
 
     const fetchAnnounces = useCallback(async () => {
         try {
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: true
+            }))
             const { sorter, filters, page } = filterState
+            let tokensMinted = []
 
             const params = {
                 page,
@@ -228,6 +233,7 @@ const Profile = () => {
 
             const result = await AnnounceService.getProfileAnnounces(params)
 
+
             setState(state => ({
                 ...state,
                 profile: new UserModel({
@@ -236,33 +242,7 @@ const Profile = () => {
                 }),
                 stateAnnounces: true
             }))
-
-
-        } catch (err) {
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false,
-                err
-            }))
-        }
-    }, [filterState.sorter, filterState.filters, filterState.page])
-
-    const updateFilters = (filters) => {
-        setFilterState(filterState => ({
-            ...filterState,
-            filters: filters
-        }))
-    }
-
-    const fetchMintedAnnounces = useCallback(async () => {
-        let tokensMinted = []
-        console.log('zazazazaaaaa')
-
-        if (!state.stateAnnounces)
-            return
-
-        try {
-            for (const announce of state.profile.raw.garage) {
+            for (const announce of result.rows) {
                 const ad = new AnnounceModel(announce)
                 let tokenMinted = false
                 TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
@@ -282,31 +262,22 @@ const Profile = () => {
                     }
                 })
             }
+            setState(state => ({
+                ...state,
+                announcesMinted: tokensMinted
+            }))
         } catch (err) {
-            // console.log(err)
+            console.error(err)
         }
-        setState(state => ({
-            ...state,
-            announcesMinted: tokensMinted
-        }))
+    }, [filterState.sorter, filterState.filters, filterState.page])
+
+    const updateFilters = (filters) => {
         setFilterState(filterState => ({
             ...filterState,
-            loading: false
+            filters: filters
         }))
+    }
 
-    }, [ ])
-
-    useEffect(() => {
-        if (!state.stateAnnounces)
-            return
-
-        setFilterState(filterState => ({
-            ...filterState,
-            loading: true
-        }))
-
-        fetchMintedAnnounces()
-    }, [fetchMintedAnnounces, state.stateAnnounces])
 
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
@@ -337,6 +308,10 @@ const Profile = () => {
 
     useEffect(() => {
         if (state.stateReady) {
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: false
+            }))
             fetchAnnounces()
         }
     }, [fetchAnnounces, state.stateReady])
