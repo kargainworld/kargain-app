@@ -600,8 +600,7 @@ const Profile = () => {
                 <TabsContainer {...{
                     state,
                     filterState,
-                    updateFilters,
-                    fetchAnnounces
+                    updateFilters
                 }} />
             </Container>
 

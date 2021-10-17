@@ -1,10 +1,8 @@
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
-
 import React, { useContext, useEffect, useState } from "react"
 import { MessageContext } from "../context/MessageContext"
-
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
 import Tabs from "./Tabs/Tabs"
@@ -127,7 +125,7 @@ const getParams = () => {
     }, {})
 }
 
-const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
+const TabsContainer = ({ state, filterState, updateFilters }) => {
 
     const isMobile = useMediaQuery('(max-width:768px)')
     const router = useRouter()
@@ -139,17 +137,6 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     const { activeTab = 0 } = getParams()
     const[selectedSlug, setSelectedSlug] = useState("")
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
-
-    const [state1, setState] = useState({
-        loading: true,
-        sorter: {},
-        filters: {},
-        page: 1,
-        pages: 1,
-        announces: [],
-        total: 0,
-        isScrollLoding: false
-    })
 
     const handleOpenDialogRemove = () => { setOpenDialogRemove(true) }
 
@@ -180,13 +167,6 @@ const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) =>
     const onTabChange = (tab) => {
         const href = router.pathname.replace('[username]', router.query.username)
         router.push(`${href}?activeTab=${tab}`)
-    }
-
-    const updateSorter = (sorter) => {
-        setState(state1 => ({
-            ...state1,
-            sorter
-        }))
     }
 
     useEffect(() => {
