@@ -47,14 +47,20 @@ const useStyles = makeStyles(() => ({
 }))
 
 
-const VehicleType = ({ defaultFilters, submit, watch, register, ssetValue, errors }) => {
+const VehicleType = ({ defaultFilters, submit }) => {
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
     const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { t } = useTranslation()
-
-    const { control, handleSubmit } = useForm()
+    const defaultValues = {
+        ...defaultFilters
+    }
+    const { watch, register, control, setValue, errors, handleSubmit } = useForm({
+        mode: 'onChange',
+        validateCriteriaMode: 'all',
+        defaultValues
+    })
     const router = useRouter()
 
 
