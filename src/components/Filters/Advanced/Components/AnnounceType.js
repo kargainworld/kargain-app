@@ -1,4 +1,3 @@
-import makeStyles from "@material-ui/core/styles/makeStyles"
 import clsx from "clsx"
 import { ButtonDropdown, DropdownMenu, DropdownToggle } from "reactstrap"
 import { Emoji } from "react-apple-emojis"
@@ -10,52 +9,10 @@ import { useForm } from "react-hook-form"
 import AnnounceTypes from "../../../../business/announceTypes"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
+import { useStyles } from './styles.js'
 
-
-const useStyles = makeStyles(() => ({
-    dropdownMenu: {
-        position: 'absolute',
-        width: '250px',
-        right: '220px',
-        top: '225.49px',
-        padding: '5px 5px'
-    },
-    filtersHidden: {
-        display: 'none !important'
-    },
-    buttonDropdown:{
-        '& button':{
-            borderRadius: '26.8293px !important',
-            borderColor:'#dcd7d7 !important',
-            backgroundColor: '#c4c4c400 !important',
-            color: 'black !important',
-            cursor: 'pointer',
-            fontSize:"17.1707px",
-            marginRight: '6px !important',
-            marginTop: '5px !important',
-            '& button:clicked': {
-                borderRadius: '25px !important',
-                backgroundColor: '#c4c4c447 !important',
-                color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none !important'
-            },
-            '& .propTypes':{
-                disabled: 'PropTypes.bool',
-                direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
-                group: 'PropTypes.bool',
-                isOpen: 'PropTypes.bool',
-                tag: 'PropTypes.string',
-                toggle: 'PropTypes.func'
-            }
-        }
-    }
-}))
-
-const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
-    const classes = useStyles()
+const AnnounceType = (props) => {
+    const classes = useStyles(props)
     const toggle1 = () => setOpen1(!dropdownOpen1)
     const { t } = useTranslation()
     const router = useRouter()
@@ -63,7 +20,7 @@ const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
     const [hiddenFormMobile, hideFormMobile] = useState(true)
     const isMobile = useMediaQuery('(max-width:768px)')
     const defaultValues = {
-        ...defaultFilters
+        ...props.defaultFilters
     }
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
     const { control, errors, handleSubmit } = useForm({
@@ -74,7 +31,7 @@ const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
 
 
     return (
-        isMobile && limitwidth ? (
+        isMobile && props.limitwidth ? (
             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                 <ButtonDropdown id="buuton_2" isOpen={dropdownOpen1} toggle={toggle1} className={clsx(classes.buttonDropdown)}   >
                     <DropdownToggle caret id="button_2" style={{ fontSize:'15.15px' }}>
@@ -92,7 +49,7 @@ const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
                                 options={announceTypesFiltered}
                                 selected={router.query.adType}
                                 onChange={(selected, name) =>{
-                                    setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                    setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                     return selected
                                 }}
                             />
@@ -116,7 +73,7 @@ const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
                             options={announceTypesFiltered}
                             selected={router.query.adType}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
@@ -139,7 +96,7 @@ const AnnounceType = ({ defaultFilters, submit, limitwidth }) => {
                             options={announceTypesFiltered}
                             selected={router.query.adType}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
