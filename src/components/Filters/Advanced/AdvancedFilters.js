@@ -26,6 +26,7 @@ import AnnounceType from "./Components/AnnounceType"
 import Brand from "./Components/Brand"
 import Model from "./Components/Model"
 import Year from "./Components/Year"
+import { Price } from "../../AnnounceCard/components"
 
 
 const useStyles = makeStyles(() => ({
@@ -148,12 +149,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const toggleFiltersMobile = () => {
         hideFormMobile((hiddenFormMobile) => !hiddenFormMobile)
     }
-
-    const [dropdownOpen4, setOpen4] = useState(false)
-    const toggle4 = () => setOpen4(!dropdownOpen4)
-
-    const [dropdownOpen5, setOpen5] = useState(false)
-    const toggle5 = () => setOpen5(!dropdownOpen5)
 
     const [dropdownOpen6, setOpen6] = useState(false)
     const toggle6 = () => setOpen6(!dropdownOpen6)
@@ -425,43 +420,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
 
                             <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
                                 <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
-
                                 <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
-
                                 <Year submit={onSubmit} defaultFilters={defaultFilters} />
-
-                                <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                                    <DropdownToggle caret style={{ fontSize: '15.15px' }}>
-                                        <Emoji name="dollar-banknote" width="11" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                        {t('vehicles:price')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
-
-                                        <label className={clsx(classes.label)}>
-                                            {t('vehicles:price')}
-                                        </label>
-                                        <FieldWrapper >
-                                            <SliderInput
-                                                name="price"
-                                                defaultValue={[1000, 50000]}
-                                                min={0}
-                                                max={200000}
-                                                step={1000}
-                                                errors={errors}
-                                                control={control}
-                                                suffix="€"
-                                                onChange={e =>{
-                                                    setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
-                                                    return e
-                                                }}
-                                            />
-                                        </FieldWrapper>
-
-                                        <label className={clsx(classes.label)} style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px' }}>0 €</label>
-                                        <label className={clsx(classes.label)} style={{ textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px' }}>200000 €</label>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
+                                <Price submit={onSubmit} defaultFilters={defaultFilters} />
 
                                 <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
                                     <DropdownToggle caret style={{ fontSize: '15.15px' }}>
@@ -543,71 +504,8 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
                             <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
                             <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
-
-
-                            <ButtonDropdown  id="button_5" isOpen={dropdownOpen4} toggle={toggle4} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret id="button_5">
-                                    <Emoji name="calendar" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:year')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenuslide)} id="button_5">
-                                    <label className={clsx(classes.label)}>
-                                        {t('vehicles:year')}
-                                    </label>
-                                    <FieldWrapper >
-                                        <SliderInput
-                                            name="year"
-                                            defaultValue={[1900, 2021]}
-                                            min={1900}
-                                            max={2100}
-                                            step={10}
-                                            errors={errors}
-                                            control={control}
-                                            suffix=""
-                                            onChange={e =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-                                    <label className={clsx(classes.label)} style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px' }}>1900</label>
-                                    <label className={clsx(classes.label)} style={{ textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px' }}>2100</label>
-
-                                </DropdownMenu>
-                            </ButtonDropdown>
-
-                            <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                                <DropdownToggle caret>
-                                    <Emoji name="dollar-banknote" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
-                                    {t('vehicles:price')}
-                                    <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{ width:'10px', height:'5px', marginBottom:'5px' }}/>
-                                </DropdownToggle>
-                                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
-                                    <label className={clsx(classes.label)}>
-                                        {t('vehicles:price')}
-                                    </label>
-                                    <FieldWrapper >
-                                        <SliderInput
-                                            name="price"
-                                            defaultValue={[1000, 50000]}
-                                            min={0}
-                                            max={200000}
-                                            step={1000}
-                                            errors={errors}
-                                            control={control}
-                                            suffix="€"
-                                            onChange={e =>{
-                                                setTimeout(handleSubmit((data) => onSubmit(data, e)), 100)
-                                                return e
-                                            }}
-                                        />
-                                    </FieldWrapper>
-
-                                    <label className={clsx(classes.label)} style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px' }}>0 €</label>
-                                    <label className={clsx(classes.label)} style={{ textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px' }}>200000 €</label>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <Year submit={onSubmit} defaultFilters={defaultFilters} />
+                            <Price submit={onSubmit} defaultFilters={defaultFilters} />
 
                             <ButtonDropdown isOpen={dropdownOpen6} toggle={toggle6} className={clsx(classes.buttondropdown)} >
                                 <DropdownToggle caret>
