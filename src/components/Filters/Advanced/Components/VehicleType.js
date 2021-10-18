@@ -1,4 +1,4 @@
-import makeStyles from "@material-ui/core/styles/makeStyles"
+
 import clsx from "clsx"
 import { ButtonDropdown, DropdownMenu, DropdownToggle } from "reactstrap"
 import { Emoji } from "react-apple-emojis"
@@ -7,56 +7,22 @@ import SelectInput from "../../../Form/Inputs/SelectInput"
 import vehicleTypesDefault from "../../../../business/vehicleTypes"
 import React, {  useState } from "react"
 import useTranslation from "next-translate/useTranslation"
-
+import { useStyles } from './styles.js'
 import { useRouter } from "next/router"
-
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useForm } from "react-hook-form"
 
 
-const useStyles = makeStyles(() => ({
-    buttonDropdown: {
-        '& button':{
-            borderRadius: '26.8293px !important',
-            borderColor:'#dcd7d7 !important',
-            backgroundColor: '#c4c4c400 !important',
-            color: 'black !important',
-            cursor: 'pointer',
-            fontSize:"17.1707px",
-            marginRight: '6px !important',
-            marginTop: '5px !important',
-            '& button:clicked': {
-                borderRadius: '25px !important',
-                backgroundColor: '#c4c4c447 !important',
-                color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none !important'
-            },
-            '& .propTypes':{
-                disabled: 'PropTypes.bool',
-                direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
-                group: 'PropTypes.bool',
-                isOpen: 'PropTypes.bool',
-                tag: 'PropTypes.string',
-                toggle: 'PropTypes.func'
-            }
-        }
-    }
-}))
-
-
-const VehicleType = ({ defaultFilters, submit }) => {
+const VehicleType = (props) => {
     const [dropdownOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!dropdownOpen)
-    const classes = useStyles()
+    const classes = useStyles(props)
     const isMobile = useMediaQuery('(max-width:768px)')
     const { t } = useTranslation()
     const defaultValues = {
-        ...defaultFilters
+        ...props.defaultFilters
     }
-    const { watch, register, control, setValue, errors, handleSubmit } = useForm({
+    const { control, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues
@@ -81,7 +47,7 @@ const VehicleType = ({ defaultFilters, submit }) => {
                             options={vehicleTypesDefault()}
                             selected={router.query.vehicleType}
                             onChange={(e, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, e, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, e, name)), 100)
                                 return e
                             }}
                         />
@@ -105,7 +71,7 @@ const VehicleType = ({ defaultFilters, submit }) => {
                             options={vehicleTypesDefault()}
                             selected={router.query.vehicleType}
                             onChange={(e, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, e, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, e, name)), 100)
                                 return e
                             }}
                         />
