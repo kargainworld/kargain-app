@@ -292,7 +292,7 @@ const NavbarClient = () => {
                                                 </>
                                             
                                             ) : (
-                                                <div className={clsx(classes.removeMark)} style={{display:'flex', justifyContent:'center'}}>                                                   
+                                                <div className={clsx(classes.removeMark)} style={{display:'grid', textAlign: 'center'}}>                                                   
                                                     <NavItem className="p-2">
                                                         <Link href="/auth/login" prefetch={false}>
                                                             <a className="nav-link py-0" style={{ color: "#666666" }} onClick={toggleNavbar}>
