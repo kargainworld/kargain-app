@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button'
 
 
 
-
+import TransactionsService from "../../../services/TransactionsService"
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import { ModalContext } from 'context/ModalContext'
@@ -28,9 +28,10 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useWeb3React } from "@web3-react/core"
 import { injected } from "connectors"
-import AnnounceModel from "../../../models/announce.model"
-import TransactionsService from "../../../services/TransactionsService"
+
+
 import TabsContainer from "../../../components/TabsContainer"
+import AnnounceModel from 'models/announce.model'
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -157,6 +158,7 @@ const Profile = () => {
     })
 
     const profile = state.profile
+    
 
     const handleFollowProfile = async () => {
         if (!isAuthenticated) {
@@ -191,7 +193,7 @@ const Profile = () => {
     }
 
     const fetchProfile = useCallback(async () => {
-        try {
+        try {            
             setFilterState(filterState => ({
                 ...filterState,
                 loading: true
@@ -206,6 +208,8 @@ const Profile = () => {
                 isSelf
             }))
         } catch (err) {
+            console.log("Error Login")
+            console.log(err)
             setState(state => ({
                 ...state,
                 stateReady: true,
@@ -220,9 +224,10 @@ const Profile = () => {
                 ...filterState,
                 loading: true
             }))
-            const { sorter, filters, page } = filterState
-            let tokensMinted = []
 
+            const { sorter, filters, page } = filterState
+            
+            
             const params = {
                 page,
                 sort_by: sorter.key,
@@ -230,40 +235,43 @@ const Profile = () => {
                 ...filters,
                 user: profile.getID
             }
-
+           
             const result = await AnnounceService.getProfileAnnounces(params)
-
-
-            setState(state => ({
+            state.profile.updateAnnounces(result.rows)           
+                        
+            /*setState(state => ({
                 ...state,
                 profile: new UserModel({
-                    ...profile.getRaw,
+                    ...state.profile.getRaw,
                     garage: result.rows
                 }),
                 stateAnnounces: true
-            }))
+            }))*/
+
+            let tokensMinted = []
             for (const announce of result.rows) {
                 const ad = new AnnounceModel(announce)
-                let tokenMinted = false
-                TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
-                    if (data[0] && ad.getID === data[0].announce && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
-                        tokenMinted = true
-                    }
-                    if (data[0] && ad.getID === data[0].announce && data[0] && data[0].status === 'OfferAccepted') {
-                        tokenMinted = false
-                    }
+                let isTokenMinted = false
+                const data = await TransactionsService.getTransactionsByAnnounceId(ad.getID)
+                if (data[0] && ad.getID === data[0].announce && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                    isTokenMinted = true
+                }
+                if (data[0] && ad.getID === data[0].announce && data[0] && data[0].status === 'OfferAccepted') {
+                    isTokenMinted = false
+                }
 
-                    if (tokenMinted) {
-                        const token = {
-                            tokenPrice: data[0].data,
-                            id: announce.id
-                        }
-                        tokensMinted.push(token)
-                    }
-                })
-            }
+                if (isTokenMinted) {
+                    const token = {
+                        tokenPrice: data[0].data,
+                        id: announce.id
+                    }                   
+                    tokensMinted.push(token)
+                }
+                
+            } 
+
             setState(state => ({
-                ...state,
+                ...state,               
                 announcesMinted: tokensMinted
             }))
         } catch (err) {
@@ -297,7 +305,7 @@ const Profile = () => {
     }, [authenticatedUser, profile])
 
     useEffect(() => {
-        fetchProfile()
+        fetchProfile()       
         window.scrollTo(0, 0)
     }, [fetchProfile])
 
@@ -317,8 +325,8 @@ const Profile = () => {
     }, [fetchAnnounces, state.stateReady])
 
     if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode} />
-    return (
+    if (state.err) return <Error statusCode={state.err?.statusCode} />    
+    return (        
         <>
             {isMobile ? (
                 <div className={clsx(classes.pagetopdiv)} style={{ marginTop: '25px' }}/>
@@ -596,12 +604,13 @@ const Profile = () => {
                         </div>
                     </div>
                 )}
-
-                <TabsContainer {...{
-                    state,
-                    filterState,
-                    updateFilters
-                }} />
+                
+                <TabsContainer  profile={state.profile} 
+                    isSelf = {state.isSelf} 
+                    announceMinted = {state.announcesMinted}
+                    filterState ={filterState}      
+                    updateFilters = {updateFilters}                    
+                />
             </Container>
 
         </>
