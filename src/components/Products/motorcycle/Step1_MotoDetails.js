@@ -121,12 +121,12 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                     </Row>
                 </Col>
                 <Col sm={12} md={6}>
-                    <FieldWrapper label={t('vehicles:cylinder')}>
+                    <FieldWrapper label={t('vehicles:cylinder') + ' CM3'}>
                         <NumberInput
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
-                            placeholder="150 ch"
+                            placeholder="0"
                         />
                     </FieldWrapper>
                 </Col>
