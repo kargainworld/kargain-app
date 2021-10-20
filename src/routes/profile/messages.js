@@ -143,9 +143,9 @@ const Messages = () => {
     return (
         <Container style={{ marginTop:'30px' }}>
             {isMobileCon ? (
-                <h2 style={{ fontSize:'20px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h2>
+                <h3 style={{ fontSize:'20px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h3>
             ) : (
-                <h2 style={{ fontSize:'28px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h2>
+                <h3 style={{ fontSize:'28px', marginLeft:'15px' }}>{t('vehicles:messaging')}</h3>
             )}
 
             <div className={classes.conversations} >
@@ -177,8 +177,8 @@ const Messages = () => {
                                                 </div>
                                                 <div className={classes.itemDetails} style={{ width:'100%' }}>
 
-                                                    <p className="mt-0" style={{ fontSize:'16px', fontWeight:'normal', color:'black' }}>{recipient.getFullName} | <span className="mx-2">{conversation.announce.title}</span></p>
-                                                    <p className={classes.itemDetailsPreview} style={{ color:'#999999', fontSize:'14px' }}>
+                                                    <p className="mt-0" style={{ fontSize:'16px', fontWeight:'normal', color:'black' }}>{recipient.getFullName}</p>
+                                                    <p className={classes.itemDetailsPreview} style={{ color:'#999999', fontSize:'10px' }}>
                                                         {format(parseISO(conversation.createdAt), 'MM/dd/yyyy')}
                                                     </p>
                                                     <p className={classes.itemDetailsPreview}>{conversation?.message?.content}</p>

@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import {  Container, Row } from 'reactstrap'
+import {  Container } from 'reactstrap'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import ChatIcon from '@material-ui/icons/Chat'
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogActions from '@material-ui/core/DialogActions'
-import DeleteIcon from '@material-ui/icons/Delete'
+
+
+
+import TransactionsService from "../../../services/TransactionsService"
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import { ModalContext } from 'context/ModalContext'
@@ -17,8 +17,8 @@ import UsersService from 'services/UsersService'
 import AnnounceService from 'services/AnnounceService'
 import UserModel from 'models/user.model'
 import AvatarPreview from 'components/Avatar/AvatarPreview'
-import AnnounceCard from 'components/AnnounceCard'
-import Tabs from 'components/Tabs/Tabs'
+
+
 import Loading from 'components/Loading'
 import Error from '../../_error'
 import { makeStyles } from "@material-ui/styles"
@@ -28,6 +28,10 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useWeb3React } from "@web3-react/core"
 import { injected } from "connectors"
+
+
+import TabsContainer from "../../../components/TabsContainer"
+import AnnounceModel from 'models/announce.model'
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -93,32 +97,28 @@ const useStyles = makeStyles((theme) => ({
         background: customColors.gradient.main
     },
     subscriptionbutton:{
-        backgroundColor: 'white', /* Green */
+        backgroundColor: 'white',
         color: '#666666',
         padding: '5.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        // fontWeight:'500',
         margin: '4px 2px',
-        // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
         height:'35px'
     },
     subscriptionbuttonblue:{
-        backgroundColor: 'white', /* Green */
+        backgroundColor: 'white',
         color: '#666666',
         padding: '4.5px 10px',
         textAlign: 'center',
         textDecoration: 'none',
         display: 'inline-block',
         fontSize: '16px',
-        // fontWeight:'500',
         margin: '4px 2px',
-        // cursor: 'pointer',
         borderRadius: '17.5px',
         border: '1px solid blue',
         borderWidth: '1px',
@@ -142,9 +142,11 @@ const Profile = () => {
     const [state, setState] = useState({
         err: null,
         stateReady: false,
+        stateAnnounces: false,
         isSelf: false,
         isAdmin: false,
-        profile: new UserModel()
+        profile: new UserModel(),
+        announcesMinted: []
     })
 
     const [filterState, setFilterState] = useState({
@@ -156,6 +158,7 @@ const Profile = () => {
     })
 
     const profile = state.profile
+    
 
     const handleFollowProfile = async () => {
         if (!isAuthenticated) {
@@ -190,7 +193,11 @@ const Profile = () => {
     }
 
     const fetchProfile = useCallback(async () => {
-        try {
+        try {            
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: true
+            }))
             const result = await UsersService.getUserByUsername(username)
             const { user, isAdmin, isSelf } = result
             setState(state => ({
@@ -201,6 +208,8 @@ const Profile = () => {
                 isSelf
             }))
         } catch (err) {
+            console.log("Error Login")
+            console.log(err)
             setState(state => ({
                 ...state,
                 stateReady: true,
@@ -211,12 +220,14 @@ const Profile = () => {
 
     const fetchAnnounces = useCallback(async () => {
         try {
-            const { sorter, filters, page } = filterState
             setFilterState(filterState => ({
                 ...filterState,
                 loading: true
             }))
 
+            const { sorter, filters, page } = filterState
+            
+            
             const params = {
                 page,
                 sort_by: sorter.key,
@@ -224,31 +235,49 @@ const Profile = () => {
                 ...filters,
                 user: profile.getID
             }
-
+           
             const result = await AnnounceService.getProfileAnnounces(params)
-
-            setState(state => ({
+            state.profile.updateAnnounces(result.rows)           
+                        
+            /*setState(state => ({
                 ...state,
                 profile: new UserModel({
-                    ...profile.getRaw,
+                    ...state.profile.getRaw,
                     garage: result.rows
-                })
-            }))
+                }),
+                stateAnnounces: true
+            }))*/
 
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false
-            }))
+            let tokensMinted = []
+            for (const announce of result.rows) {
+                const ad = new AnnounceModel(announce)
+                let isTokenMinted = false
+                const data = await TransactionsService.getTransactionsByAnnounceId(ad.getID)
+                if (data[0] && ad.getID === data[0].announce && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                    isTokenMinted = true
+                }
+                if (data[0] && ad.getID === data[0].announce && data[0] && data[0].status === 'OfferAccepted') {
+                    isTokenMinted = false
+                }
 
+                if (isTokenMinted) {
+                    const token = {
+                        tokenPrice: data[0].data,
+                        id: announce.id
+                    }                   
+                    tokensMinted.push(token)
+                }
+                
+            } 
+
+            setState(state => ({
+                ...state,               
+                announcesMinted: tokensMinted
+            }))
         } catch (err) {
-            setFilterState(filterState => ({
-                ...filterState,
-                loading: false,
-                err
-            }))
+            console.error(err)
         }
     }, [filterState.sorter, filterState.filters, filterState.page])
-
 
     const updateFilters = (filters) => {
         setFilterState(filterState => ({
@@ -257,6 +286,7 @@ const Profile = () => {
         }))
     }
 
+
     useEffect(() => {
         injected.isAuthorized().then((isAuthorized) => {
             if (isAuthorized) {
@@ -264,7 +294,6 @@ const Profile = () => {
                 }).catch((err) => {
                     console.log("err", err)
                 })
-            } else {
             }
         })
     }, [])
@@ -276,28 +305,33 @@ const Profile = () => {
     }, [authenticatedUser, profile])
 
     useEffect(() => {
-        console.log('fetch profile')
-        fetchProfile()
+        fetchProfile()       
         window.scrollTo(0, 0)
     }, [fetchProfile])
 
     useEffect(() => {
+        if (filterState.loading) return <Loading />
+
+    }, [filterState.loading])
+
+    useEffect(() => {
         if (state.stateReady) {
-            console.log('fetch announces')
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: false
+            }))
             fetchAnnounces()
         }
-    }, [fetchAnnounces])
+    }, [fetchAnnounces, state.stateReady])
 
     if (!state.stateReady) return null
-    if (filterState.loading) return <Loading />
-    if (state.err) return <Error statusCode={state.err?.statusCode} />
-    // if (state.profile.getCountGarage === 0) dispatchModalError({ msg: "User's vitrine is empty", persist : false})
-    return (
+    if (state.err) return <Error statusCode={state.err?.statusCode} />    
+    return (        
         <>
             {isMobile ? (
-                <div className={clsx(classes.pagetopdiv)} style={{ marginTop:'25px' }}></div>
+                <div className={clsx(classes.pagetopdiv)} style={{ marginTop: '25px' }}/>
             ) : (
-                <div className={clsx(classes.pagetopdiv)}></div>
+                <div className={clsx(classes.pagetopdiv)}/>
             )}
 
             <Container style={{ marginTop: 25 }}>
@@ -357,9 +391,7 @@ const Profile = () => {
                                         </span>
                                     ) : (
                                         <>
-                                            <span onClick={(e) => {
-                                                e.stopPropagation()
-                                            }}>
+                                            <span onClick={(e) => { e.stopPropagation() }}>
                                                 {
                                                     alreadyFollowProfile ?
                                                         <Button
@@ -422,7 +454,6 @@ const Profile = () => {
                                         startIcon={<ChatIcon />}
                                         onClick={ () => {
                                             if(!isAuthenticated){
-                                                console.log(router.asPath)
                                                 router.push({
                                                     pathname: '/auth/login',
                                                     query: { redirect: router.asPath }
@@ -464,7 +495,6 @@ const Profile = () => {
                                             startIcon={<ChatIcon />}
                                             onClick={ () => {
                                                 if(!isAuthenticated){
-                                                    console.log(router.asPath)
                                                     router.push({
                                                         pathname: '/auth/login',
                                                         query: { redirect: router.asPath }
@@ -509,7 +539,7 @@ const Profile = () => {
                         </div>
 
                         <div style={{ width:'100%', display:'flex' }}>
-                            <div style={{ width:'50%' }}></div>
+                            <div style={{ width: '50%' }}/>
                             <div style={{ display:'flex', justifyContent:'flex-end', marginTop:'-45px', width:'50%', transform: 'translate(0px, -125px)' }}>
                                 <div
                                     onClick={() => dispatchModalState({
@@ -574,219 +604,19 @@ const Profile = () => {
                         </div>
                     </div>
                 )}
-
-                <TabsContainer {...{
-                    state,
-                    filterState,
-                    updateFilters,
-                    fetchAnnounces
-                }} />
+                
+                <TabsContainer  profile={state.profile} 
+                    isSelf = {state.isSelf} 
+                    announceMinted = {state.announcesMinted}
+                    filterState ={filterState}      
+                    updateFilters = {updateFilters}                    
+                />
             </Container>
 
         </>
     )
 }
 
-const getParams = () => {
-    if (typeof window === 'undefined') {
-        return {}
-    }
 
-    return window.location.search.substring(1).split('&').reduce((acc, param) => {
-        const [key, value] = param.split('=')
-
-        return {
-            ...acc,
-            [key]: value
-        }
-    }, {})
-}
-
-const TabsContainer = ({ state, filterState, updateFilters, fetchAnnounces }) => {
-
-    const isMobile = useMediaQuery('(max-width:768px)')
-    const router = useRouter()
-    const classes = useStyles()
-    const { t } = useTranslation()
-    const { isAuthenticated } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
-    const [filtersOpened] = useState(false)
-    const { profile, isSelf } = state
-    const { activeTab = 0 } = getParams()
-    const[selectedSlug, setSelectedSlug] = useState("")
-    const [openDialogRemove, setOpenDialogRemove] = useState(false)
-
-    const [state1, setState] = useState({
-        loading: true,
-        sorter: {},
-        filters: {},
-        page: 1,
-        pages: 1,
-        announces: [],
-        total: 0,
-        isScrollLoding: false,
-        announcesMinted: []
-    })
-
-    const handleOpenDialogRemove = () => { setOpenDialogRemove(true) }
-
-    const handleCloseDialogRemove = () => { setOpenDialogRemove(false) }
-
-    const handleRemove = () => {
-        AnnounceService.removeAnnounce(selectedSlug)
-            .then(() => {
-                dispatchModal({ msg: 'Announce successfully removed' })
-                window.location.reload()
-            }).catch(err => {
-                dispatchModalError({ err }) })
-    }
-
-    const onTabChange = (tab) => {
-        const href = router.pathname.replace('[username]', router.query.username)
-        router.push(`${href}?activeTab=${tab}`)
-    }
-
-    const updateSorter = (sorter) => {
-        setState(state1 => ({
-            ...state1,
-            sorter
-        }))
-    }
-    return (
-        <Container>
-            <Row>
-                <div style={{ width:'103%' }}>
-
-                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
-                        <Tabs.Item id="home-tab" title="Vitrine">
-                            {isMobile ? (
-                                <div style={{ width:'100%' }}>
-                                    <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                                <div key={index} style={{ width: '90%', marginTop:'20px', marginLeft:'-15px' }}>
-                                                    <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                                </div>
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{t('vehicles:no-found-announces')}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </section>
-                                </div>
-
-                            ):(
-                                <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                    <Row className="my-2 d-flex justify-content-center">
-
-                                        {profile.getCountGarage !== 0 ? profile.getGarage.map((announce, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard announceRaw={announce.getRaw} onSelectSlug={setSelectedSlug} onhandleOpenDialogRemove={handleOpenDialogRemove} />
-                                            </div>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-found-announces')}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                </section>
-                            )}
-
-                        </Tabs.Item>
-
-                        {isSelf && (
-                            <Tabs.Item id="garage-tab" title={t('vehicles:garage')}>
-                                {isMobile ? (
-                                    <div style={{ width:'100%' }}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                                <div key={index} style={{ width: '90%', marginTop:'20px', marginLeft:'-15px' }}>
-                                                    <AnnounceCard announceRaw={announceRaw} />
-                                                </div>
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{t('vehicles:no-hidden-announces')}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </div>
-                                ) : (
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getHiddenGarage.length ? profile.getHiddenGarage.map((announceRaw, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard announceRaw={announceRaw} />
-                                            </div>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{t('vehicles:no-hidden-announces')}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                )}
-                            </Tabs.Item>
-                        )}
-
-                        {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
-                                {isMobile ? (
-                                    <div style={{ width:'100%' }}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                                <div key={index} style={{ width: '90%', marginLeft:'-15px', marginTop:'20px' }}>
-                                                    <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                                </div>
-                                            )) : (
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </div>
-
-                                ):(
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {profile.getFavorites.length ? profile.getFavorites.map((announceRaw, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard announceRaw={announceRaw.getRaw} />
-                                            </div>
-                                        )) : (
-                                            <div className="d-flex flex-column align-items-center smy-2">
-                                                <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                            </div>
-                                        )}
-                                    </Row>
-                                )}
-                            </Tabs.Item>
-                        )}
-                    </Tabs>
-                </div>
-            </Row>
-
-            <Dialog
-                open={openDialogRemove}
-                onClose={handleCloseDialogRemove}
-            >
-                <DialogTitle id="alert-dialog-title" disableTypography>
-                    {t('vehicles:confirm-suppression')}
-                </DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>
-                        {t('vehicles:cancel')}
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        startIcon={<DeleteIcon/>}
-                        onClick={handleRemove} >
-                        {t('vehicles:remove-announce')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </Container>
-    )
-}
 
 export default Profile
