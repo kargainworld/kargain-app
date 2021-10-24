@@ -1,8 +1,8 @@
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from 'next-translate/useTranslation'
 
 const vehicleTypesDefault = () => {
 
-    const { t } = useTranslation();
+    const { t } = useTranslation()
 
     return [
         {
@@ -32,7 +32,7 @@ const vehicleTypesDefault = () => {
         }
     ]
 }
-export default vehicleTypesDefault;
+export default vehicleTypesDefault
 
 export const vehicleTypeRefModels = {
     car : "cars",

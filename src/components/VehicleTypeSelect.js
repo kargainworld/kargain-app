@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
+import React from "react"
+import styled from "styled-components"
+import Typography from "@material-ui/core/Typography"
 
 const VehicleTypesWrapper = styled.div`
   display: grid;
@@ -24,7 +24,7 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
     <VehicleTypesWrapper style={style}>
         {items.map(({ label, value: itemValue, img, imgSelected, IconComponent }, index) => {
             const isActive = itemValue === value
-
+            // console.log(imgSelected, 'imagen')
             return (
                 <VehicleTypeContainer selected={isActive} onClick={() => onChange(itemValue)} key={index}>
                     {/*<IconComponent />*/}
@@ -33,7 +33,6 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
                         alt={label}
                         title={label}
                     />
-
                     <Typography
                         variant="h3"
                         style={{
