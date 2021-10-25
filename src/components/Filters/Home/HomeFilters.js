@@ -136,7 +136,7 @@ const HomeFilters = ({ updateFilters, totalResult }) => {
             ) : (
                 <Row>
                     <Col md={4}>
-                        <img src="/images/MainCar.png" width="100%" height="100%" />
+                        <img src="/images/svg/MainCar.svg" width="100%" height="100%" />
                     </Col>
 
                     <Col md={8}>
