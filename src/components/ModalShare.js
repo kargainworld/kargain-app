@@ -1,21 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 import Fade from '@material-ui/core/Fade'
-import Typography from '@material-ui/core/Typography'
+
 import { useForm } from 'react-hook-form'
 import useTranslation from 'next-translate/useTranslation'
 import copy from 'copy-to-clipboard'
 import { ModalContext } from '../context/ModalContext'
 import EmailInput from '../components/Form/Inputs/EmailInput'
 import AnnounceService from '../services/AnnounceService'
-import { MessageContext } from '../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import { useAuth } from '../context/AuthProvider'
-import ro from 'date-fns/locale/ro/index.js'
+
 import customColors from '../theme/palette'
 import clsx from 'clsx'
-import { NewIcons } from '../assets/icons';
+import { NewIcons } from '../assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         flexWrap: 'wrap'
     },
-    
+
     paper: {
         backgroundColor: theme.palette.background.paper,
         // border: '2px solid #000',
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 4),
         maxWidth : '600px',
         width : '30%',
-        textAlign: 'center',
+        textAlign: 'center'
     },
 
     list: {
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '500',
         textAlign: 'center',
         marginTop: '1px',
-        marginBottom: '15px',
+        marginBottom: '15px'
     }
 }))
 
@@ -121,34 +121,34 @@ const Email = () => {
     const { control, errors, handleSubmit } = useForm()
     const { isAuthenticated } = useAuth()
     const [clipBoarCopied, setClipBoardCopied] = useState(false)
-    
+
     const onSubmit = (form) => {
-        console.log(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
-        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink);
+        console.log(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
+        copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
         // copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink, {
         //     onCopy : () => setClipBoardCopied(true)
         // })
         if(isAuthenticated) {
             AnnounceService.mailtoAnnounceLink(modalStateContext.modalShareAnnounce.getSlug, form.email)
-            .then(() => {
-                dispatchModal({
-                    msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
+                .then(() => {
+                    dispatchModal({
+                        msg: t('layout:email_had_been_sent_to_{email}', { email : form.email })
+                    })
+                }).catch(err => {
+                    dispatchModalError({ err })
                 })
-            }).catch(err => {
-                dispatchModalError({ err })
-            })
         } else {
             AnnounceService.mailtoAnnounceLinkWithoutAuth(modalStateContext.modalShareAnnounce.getSlug, form.email)
-            .then(() => {
-                dispatchModal({
-                    msg: t('layout:email_had_been_sent_to_{email}', {email : form.email})
+                .then(() => {
+                    dispatchModal({
+                        msg: t('layout:email_had_been_sent_to_{email}', { email : form.email })
+                    })
+                }).catch(err => {
+                    dispatchModalError({ err })
                 })
-            }).catch(err => {
-                dispatchModalError({ err })
-            })
         }
     }
-    
+
     return(
         <div className="d-flex">
             <div style={{ flex : 1 }}>
@@ -156,7 +156,7 @@ const Email = () => {
                     {label}
                 </a>
             </div>
-            
+
             {openForm && (
                 <div style={{ flex : 3 }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -180,15 +180,15 @@ const Clipboard = () => {
     const { modalStateContext } = useContext(ModalContext)
     const [clipBoarCopied, setClipBoardCopied] = useState(false)
     const label = !clipBoarCopied ? t('layout:copy_link') : t('layout:copy_link_copied')
-    
+
     const handleClick = () => {
         copy(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
         setClipBoardCopied(true)
     }
-    
+
     return(
         <div >
-            <a className="social-link-modal" style={{color: 'white'}} href="#" onClick={handleClick}>
+            <a className="social-link-modal" style={{ color: 'white' }} href="#" onClick={handleClick}>
                 {label}
             </a>
         </div>
@@ -197,16 +197,16 @@ const Clipboard = () => {
 
 export default function ModalShare () {
     const classes = useStyles()
-    const router = useRouter();
+    const router = useRouter()
     const { isAuthenticated } = useAuth()
     const { modalStateContext, dispatchModalState } = useContext(ModalContext)
-    
+
     const handleClose = () => {
         dispatchModalState({
             openModalShare : false
         })
     }
-    
+
     useEffect(()=> {
         // if(!isAuthenticated){
         //     // setForceLoginModal(true)
@@ -222,7 +222,7 @@ export default function ModalShare () {
 
     const isMobile = useMediaQuery('(max-width:768px)')
     // if(!isAuthenticated) return null
-    
+
     return (
         <Modal
             className={classes.modal}
@@ -230,16 +230,16 @@ export default function ModalShare () {
             onClose={handleClose}>
             <Fade in={modalStateContext.openModalShare}>
                 {isMobile ? (
-                    <div className={classes.paper} style={{width: '90%', borderColor:'white', marginLeft:'-20px'}}>
-                        <div style={{ display:'flex', justifyContent: 'flex-end'}}>
-                            <NewIcons.close_color onClick={handleClose}/>                     
-                            <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
+                    <div className={classes.paper} style={{ width: '90%', borderColor:'white', marginLeft:'-20px' }}>
+                        <div style={{ display:'flex', justifyContent: 'flex-end' }}>
+                            <NewIcons.close_color onClick={handleClose}/>
+                            <NewIcons.inclose_color style={{ transform: 'translate(-14.4px, 7.3px)' }} />
                         </div>
                         <div className={clsx(classes.share)}>
                             Partager
                         </div>
-                        
-                        <div style={{display:'flex', justifyContent: 'center'}}>
+
+                        <div style={{ display:'flex', justifyContent: 'center' }}>
                             <div className={clsx(classes.button)}>
                                 {/*<Facebook/>*/}
                                 {/*<Messenger/>*/}
@@ -248,18 +248,18 @@ export default function ModalShare () {
                             </div>
                         </div>
                     </div>
-            
+
                 ):(
-<                   div className={classes.paper}>
-                        <div style={{ display:'flex', justifyContent: 'flex-end'}}>
-                            <NewIcons.close_color onClick={handleClose}/>                     
-                            <NewIcons.inclose_color style={{transform: 'translate(-14.4px, 7.3px)'}} />
+                    <                   div className={classes.paper}>
+                        <div style={{ display:'flex', justifyContent: 'flex-end' }}>
+                            <NewIcons.close_color onClick={handleClose}/>
+                            <NewIcons.inclose_color style={{ transform: 'translate(-14.4px, 7.3px)' }} />
                         </div>
                         <div className={clsx(classes.share)}>
                             Partager
                         </div>
-                        
-                        <div style={{display:'flex', justifyContent: 'center'}}>
+
+                        <div style={{ display:'flex', justifyContent: 'center' }}>
                             <div className={clsx(classes.button)}>
                                 {/*<Facebook/>*/}
                                 {/*<Messenger/>*/}
@@ -268,9 +268,9 @@ export default function ModalShare () {
                             </div>
                         </div>
                     </div>
-            
+
                 )}
-                
+
             </Fade>
         </Modal>
     )

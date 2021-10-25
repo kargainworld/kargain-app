@@ -2,7 +2,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
 import React, { useContext, useEffect, useState } from "react"
-import { MessageContext } from "../context/MessageContext"
+import { MessageContext } from "context/MessageContext"
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
 import Tabs from "./Tabs/Tabs"
@@ -132,7 +132,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     const classes = useStyles()
     const { t } = useTranslation()
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const [filtersOpened] = useState(false)  
+    const [filtersOpened] = useState(false)
     const { activeTab = 0 } = getParams()
     const[selectedSlug, setSelectedSlug] = useState("")
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
@@ -149,10 +149,10 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
             }).catch(err => {
                 dispatchModalError({ err }) })
     }
-    
+
     const garageAnnounceMint = profile.getGarage.filter(x=>  announceMinted.find( y => y.id === x.getID))
     const favoritesAnnounceMint = profile.getFavorites.filter(x=> announceMinted.find( y => y.id === x.getID))
-    
+
 
     const onTabChange = (tab) => {
         const href = router.pathname.replace('[username]', router.query.username)
@@ -166,14 +166,14 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     return (
         <Container>
             <Row>
-                <div style={{ width:'103%' }}>                    
+                <div style={{ width:'103%' }}>
                     <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
                         <Tabs.Item id="home-tab" title="Vitrine">
                             {isMobile ? (
                                 <div style={{ width:'100%' }}>
                                     <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                         <Row className="my-2 d-flex justify-content-center">
-                                            {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (                                                
+                                            {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
                                                 <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                     <AnnounceCard
                                                         announceRaw={announce.getRaw}
@@ -194,7 +194,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                             ):(
                                 <section className={filtersOpened ? 'filter-is-visible' : ''}>
                                     <Row className="my-2 d-flex justify-content-center">
-                                        {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (                                                
+                                        {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
                                             <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                 <AnnounceCard
                                                     announceRaw={announce.getRaw}
@@ -219,14 +219,14 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                                 {isMobile ? (
                                     <div style={{ width:'100%' }}>
                                         <Row className="my-2 d-flex justify-content-center">
-                                            {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (                                                
+                                            {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
                                                 <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                     <AnnounceCard
                                                         announceRaw={announceRaw.getRaw}
                                                         onSelectSlug={setSelectedSlug}
                                                         onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                     />
-                                                </div>)) 
+                                                </div>))
                                             }
                                             {favoritesAnnounceMint.length === 0 &&
                                                 <div className="d-flex flex-column align-items-center smy-2">
@@ -238,14 +238,14 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
 
                                 ):(
                                     <Row className="my-2 d-flex justify-content-center">
-                                        {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (                                                
+                                        {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
                                             <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                 <AnnounceCard
                                                     announceRaw={announceRaw.getRaw}
                                                     onSelectSlug={setSelectedSlug}
                                                     onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                 />
-                                            </div>)) 
+                                            </div>))
                                         }
                                         {favoritesAnnounceMint.length === 0 &&
                                         <div className="d-flex flex-column align-items-center smy-2">

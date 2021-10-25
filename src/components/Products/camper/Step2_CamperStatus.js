@@ -4,16 +4,16 @@ import useTranslation from 'next-translate/useTranslation'
 import StepNavigation from '../../Form/StepNavigation'
 import FieldWrapper from '../../Form/FieldWrapper'
 import SelectInput from '../../Form/Inputs/SelectInput'
-import NumberInput from '../../Form/Inputs/NumberInput'
+
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
-import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
+import { MessageContext } from 'context/MessageContext'
+
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
-import TextInput from "../../Form/Inputs/TextInput";
-import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
+import TextInput from "../../Form/Inputs/TextInput"
+import CheckBoxInput from "../../Form/Inputs/CheckBoxInput"
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -38,7 +38,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 

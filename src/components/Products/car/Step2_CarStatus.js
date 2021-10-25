@@ -1,19 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useTranslation from 'next-translate/useTranslation'
-import Header from '../../Header'
+
 import FieldWrapper from '../../Form/FieldWrapper'
-import NumberInput from '../../Form/Inputs/NumberInput'
+
 import StepNavigation from '../../Form/StepNavigation'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
-import TextInput from "../../Form/Inputs/TextInput";
-import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
+import TextInput from "../../Form/Inputs/TextInput"
+
 import { Emoji } from 'react-apple-emojis'
 
 const Step = ({ onSubmitStep, prevStep }) => {
@@ -39,7 +39,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.car, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 
@@ -49,11 +49,11 @@ const Step = ({ onSubmitStep, prevStep }) => {
 
     return (
         <form className="form_wizard" onSubmit={handleSubmit(onSubmitStep)}>
-            
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black'}}>
+
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"10px", color:'black' }}>
                 <div></div>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="oncoming-automobile" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="oncoming-automobile" width={18} />
                 {t('vehicles:vehicle-state')}
             </h3>
             <FieldWrapper label={t('vehicles:chassis_number')}>
@@ -90,11 +90,11 @@ const Step = ({ onSubmitStep, prevStep }) => {
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:accident_vehicle')}>
-                <SelectInput 
+                <SelectInput
                     name="accidentVehicle"
                     control={control}
                     errors={errors}
-                    
+
                 />
             </FieldWrapper>
 
@@ -103,7 +103,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
                     name="defectiveVehicle"
                     control={control}
                     errors={errors}
-                    
+
                 />
             </FieldWrapper>
 
@@ -119,9 +119,9 @@ const Step = ({ onSubmitStep, prevStep }) => {
             </FieldWrapper>
 
             {/* <Header text={t('vehicles:data-sheet')}/> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black'}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black' }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="page-facing-up" width={18} />
                 {t('vehicles:data-sheet')}
             </h3>
             <DamageSelectorControlled

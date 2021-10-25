@@ -7,7 +7,7 @@ import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../../services/AuthService'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import Loading from '../../components/Loading'
 import CTALink from '../../components/CTALink'
 
@@ -60,7 +60,7 @@ const ConfirmAccount = () => {
                                     inline
                                     errors={errors}
                                     control={control}
-                                    rules={{ required: t('form_validations:required')}}
+                                    rules={{ required: t('form_validations:required') }}
                                 />
                             </FieldWrapper>
                             <div className="submit">

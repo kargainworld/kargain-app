@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'
-import { MessageContext } from '../../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import AnnounceService from '../../../../services/AnnounceService'
 import NiceSelect, { components } from 'react-select'
 import Button from '@material-ui/core/Button'
@@ -83,9 +83,9 @@ const StatusBullet = ({ slug, status: statusProps }) => {
             icon: <BulletPoint color={option.color}/>
         }))
 
-    const wrapperRef = useRef(null);
-    useOutsideClicked(wrapperRef);
-    
+    const wrapperRef = useRef(null)
+    useOutsideClicked(wrapperRef)
+
     function useOutsideClicked(ref) {
         useEffect(() => {
             function handleClickOutside(event) {
@@ -94,13 +94,13 @@ const StatusBullet = ({ slug, status: statusProps }) => {
                     setClicked(false)
                 }
             }
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside)
             return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
+                document.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [ref])
     }
-    
+
     const handleUpdate = async () => {
         try {
             await AnnounceService.updateAdminAnnounce(slug, {

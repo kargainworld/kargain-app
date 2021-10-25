@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import { useWeb3React } from "@web3-react/core"
 import UsersService from '../services/UsersService'
 import { injected } from "../connectors"
-import { MessageContext } from "../context/MessageContext"
+import { MessageContext } from "context/MessageContext"
 import { useAuth } from "../context/AuthProvider"
 
 export function useEagerConnect() {
