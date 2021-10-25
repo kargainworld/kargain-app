@@ -15,9 +15,10 @@ import AnnounceService from 'services/AnnounceService'
 import UserModel from 'models/user.model'
 import Loading from 'components/Loading'
 import Error from '../_error'
-
 import customColors from '../../theme/palette'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { injected } from "../../connectors"
+import { useWeb3React } from "@web3-react/core"
 
 const path = require('path')
 
@@ -34,8 +35,8 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Page = () => {
-
-
+    const { activate } = useWeb3React()
+    const [tried, setTried] = useState(false)
     const isMobile = useMediaQuery('(max-width:768px)')
     const router = useRouter()
     const classes = useStyles()
@@ -52,6 +53,20 @@ const Page = () => {
         loading: false,
         profile: new UserModel()
     })
+
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
 
     const { dispatchFormUpdate, dispatchFormClear } = useContext(FormContext)
     const profile = state.profile
