@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
+import React from "react"
+import styled from "styled-components"
+import Typography from "@material-ui/core/Typography"
 
 const VehicleTypesWrapper = styled.div`
   display: grid;
@@ -27,7 +27,6 @@ export const VehicleTypeSelect = ({ items = [], value, onChange, style }) => (
 
             return (
                 <VehicleTypeContainer selected={isActive} onClick={() => onChange(itemValue)} key={index}>
-                    {/*<IconComponent />*/}
                     <img
                         src={isActive ? `/images/${imgSelected}` : `/images/${img}`}
                         alt={label}

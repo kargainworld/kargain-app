@@ -7,16 +7,11 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
-
-
-
-
 import { useAuth } from '../../context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import clsx from "clsx"
 import { Avatar } from '../AnnounceCard/components'
-
 import AnnounceModel from '../../models/announce.model'
 import { useSocket } from '../../context/SocketContext'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -129,8 +124,6 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                         <div onClick={() => complain(comment.getID)}
                                             style={{
                                                 color: '#999999',
-                                                display: '-webkit-flex',
-                                                display: '-moz-box',
                                                 display: 'flex',
                                                 alignItems: 'flex-start' }}
                                         >
@@ -150,8 +143,6 @@ const CommentsList = ({ comments, moreLink, className }) => {
                                             onClick={()=>handleOpenDialogRemove(comment.getID) }
                                             style={{
                                                 color: '#999999',
-                                                display: '-webkit-flex',
-                                                display: '-moz-box',
                                                 display: 'flex',
                                                 alignItems: 'flex-start'
                                             }}
