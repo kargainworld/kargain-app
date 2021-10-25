@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
-import FormWizard from '../../components/Form/FormWizard'
-import AnnounceService from '../../services/AnnounceService'
-import { MessageContext } from '../../context/MessageContext'
-import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
-import Step1CarDetails from '../../components/Products/car/Step1_CarDetails'
-import Step2CarStatus from '../../components/Products/car/Step2_CarStatus'
-import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
-import { vehicleTypes } from '../../business/vehicleTypes.js'
+import FormWizard from 'components/Form/FormWizard'
+import AnnounceService from 'services/AnnounceService'
+import { MessageContext } from 'context/MessageContext'
+import Step0_Manufacturer from 'components/Products/Step0_Manufacturer'
+import Step1CarDetails from 'components/Products/car/Step1_CarDetails'
+import Step2CarStatus from 'components/Products/car/Step2_CarStatus'
+import Step3PublishAnnounce from 'components/Products/Step3_Publish'
+import { vehicleTypes } from 'business/vehicleTypes.js'
+
+
 
 const CarForm = (props) => {
     const router = useRouter()

@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
-import FormWizard from '../../components/Form/FormWizard'
-import AnnounceService from '../../services/AnnounceService'
-import { MessageContext } from '../../context/MessageContext'
-import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
-import Step1CamperDetails from '../../components/Products/camper/Step1_CamperDetails'
-import Step2CamperStatus from '../../components/Products/camper/Step2_CamperStatus'
-import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
-import {vehicleTypes} from '../../business/vehicleTypes'
+import FormWizard from 'components/Form/FormWizard'
+import AnnounceService from 'services/AnnounceService'
+import { MessageContext } from '/context/MessageContext'
+import Step0_Manufacturer from 'components/Products/Step0_Manufacturer'
+import Step1CamperDetails from 'components/Products/camper/Step1_CamperDetails'
+import Step2CamperStatus from 'components/Products/camper/Step2_CamperStatus'
+import Step3PublishAnnounce from 'components/Products/Step3_Publish'
+import { vehicleTypes } from 'business/vehicleTypes'
+
+
 
 const CamperForm = (props) => {
 
@@ -54,7 +56,7 @@ const CamperForm = (props) => {
             })
         }
     }
-    
+
     return (
         <FormWizard
             formKey={props.formKey}
