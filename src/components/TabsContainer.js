@@ -1,7 +1,7 @@
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
-import React, { useContext, useEffect, useState } from "react"
+import React, {  useContext, useEffect, useState } from "react"
 import { MessageContext } from "context/MessageContext"
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
@@ -153,6 +153,10 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     const garageAnnounceMint = profile.getGarage.filter(x=>  announceMinted.find( y => y.id === x.getID))
     const favoritesAnnounceMint = profile.getFavorites.filter(x=> announceMinted.find( y => y.id === x.getID))
 
+    const getPriceGarageToken = (id) => {
+        const tokenPrice = announceMinted.find( y => y.id === id).tokenPrice
+        return tokenPrice
+    }
 
     const onTabChange = (tab) => {
         const href = router.pathname.replace('[username]', router.query.username)
@@ -161,7 +165,6 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
 
     useEffect(() => {
         if (filterState.loading) return <Loading />
-
     }, [filterState.loading])
     return (
         <Container>
@@ -177,6 +180,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                                                 <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                     <AnnounceCard
                                                         announceRaw={announce.getRaw}
+                                                        tokenPrice={getPriceGarageToken(announce.getID)}
                                                         onSelectSlug={setSelectedSlug}
                                                         onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                     />
@@ -198,6 +202,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                                             <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                 <AnnounceCard
                                                     announceRaw={announce.getRaw}
+                                                    tokenPrice={getPriceGarageToken(announce.getID)}
                                                     onSelectSlug={setSelectedSlug}
                                                     onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                 />
@@ -223,6 +228,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                                                 <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                     <AnnounceCard
                                                         announceRaw={announceRaw.getRaw}
+                                                        tokenPrice={getPriceGarageToken(announceRaw.getID)}
                                                         onSelectSlug={setSelectedSlug}
                                                         onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                     />
@@ -242,6 +248,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                                             <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
                                                 <AnnounceCard
                                                     announceRaw={announceRaw.getRaw}
+                                                    tokenPrice={getPriceGarageToken(announceRaw.getID)}
                                                     onSelectSlug={setSelectedSlug}
                                                     onhandleOpenDialogRemove={handleOpenDialogRemove}
                                                 />
