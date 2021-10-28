@@ -1,7 +1,7 @@
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
-import React, {  useContext, useEffect, useState, useCallback } from "react"
+import React, {  useContext, useEffect, useState } from "react"
 import { MessageContext } from "context/MessageContext"
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
@@ -153,10 +153,10 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     const garageAnnounceMint = profile.getGarage.filter(x=>  announceMinted.find( y => y.id === x.getID))
     const favoritesAnnounceMint = profile.getFavorites.filter(x=> announceMinted.find( y => y.id === x.getID))
 
-    const getPriceGarageToken = useCallback(async (id) => {
-        const token = announceMinted.find(x=> x.id === id)
-        return token.price
-    })
+    const getPriceGarageToken = (id) => {
+        const tokenPrice = announceMinted.find( y => y.id === id).tokenPrice
+        return tokenPrice
+    }
 
     const onTabChange = (tab) => {
         const href = router.pathname.replace('[username]', router.query.username)
@@ -165,7 +165,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
 
     useEffect(() => {
         if (filterState.loading) return <Loading />
-
+        console.log(announceMinted, 'anuncios minteados')
     }, [filterState.loading])
     return (
         <Container>

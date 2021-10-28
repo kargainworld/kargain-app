@@ -259,8 +259,6 @@ const Profile = () => {
                         id: announce.id
                     }
                     tokensMinted.push(token)
-                    console.log(token, 'tokennn')
-
                 }
             }
 
@@ -598,13 +596,16 @@ const Profile = () => {
                         </div>
                     </div>
                 )}
+                { state.announcesMinted.length > 0 ?
+                    <TabsContainer  profile={state.profile}
+                        isSelf = {state.isSelf}
+                        announceMinted = {state.announcesMinted}
+                        filterState ={filterState}
+                        updateFilters = {updateFilters}
+                    />
+                    : <Loading />
+                }
 
-                <TabsContainer  profile={state.profile}
-                    isSelf = {state.isSelf}
-                    announceMinted = {state.announcesMinted}
-                    filterState ={filterState}
-                    updateFilters = {updateFilters}
-                />
             </Container>
 
         </>
