@@ -165,7 +165,6 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
 
     useEffect(() => {
         if (filterState.loading) return <Loading />
-        console.log(announceMinted, 'anuncios minteados')
     }, [filterState.loading])
     return (
         <Container>
