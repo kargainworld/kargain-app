@@ -29,10 +29,10 @@ const ControlButtons = ({ ...props }) => {
 }
 
 
-const ClearAndFeed = ({ defaultFilters }) => {
+const ClearAndFeed = ({ ...props }) => {
     const isMobile = useMediaQuery('(max-width:768px)')
     const router = useRouter()
-    const classes = useStyles()
+    const classes = useStyles(props)
     const { t } = useTranslation()
 
     const onResetFilter = (form, e) => {
@@ -46,7 +46,7 @@ const ClearAndFeed = ({ defaultFilters }) => {
     }
 
     const defaultValues = {
-        ...defaultFilters
+        ...props.defaultFilters
     }
 
     const { setValue, getValues, handleSubmit } = useForm({

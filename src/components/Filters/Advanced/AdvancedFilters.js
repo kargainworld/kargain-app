@@ -13,7 +13,6 @@ import AnnounceTypes from 'business/announceTypes.js'
 import VehiclesService from 'services/VehiclesService'
 import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from 'hooks/useAddress'
-import customColors from 'theme/palette'
 import { NewIcons } from 'assets/icons'
 import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
@@ -34,63 +33,10 @@ const useStyles = makeStyles(() => ({
     filtersHidden: {
         display: 'none !important'
     },
-    buttondropdown:{
-        '& button':{
-            borderRadius: '26.8293px !important',
-            borderColor:'#dcd7d7 !important',
-            backgroundColor: '#c4c4c400 !important',
-            color: 'black !important',
-            cursor: 'pointer',
-            fontSize:"17.1707px",
-            marginRight: '6px !important',
-            marginTop: '5px !important',
-            '& button:clicked': {
-                borderRadius: '25px !important',
-                backgroundColor: '#c4c4c447 !important',
-                color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none !important'
-            },
-            '& .propTypes':{
-                disabled: 'PropTypes.bool',
-                direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
-                group: 'PropTypes.bool',
-                isOpen: 'PropTypes.bool',
-                tag: 'PropTypes.string',
-                toggle: 'PropTypes.func'
-            }
-        }
-    },
-    dropdowntoggle:{
-        '& .propTypes':{
-            caret: 'PropTypes.bool',
-            color: 'PropTypes.string',
-            disabled: 'PropTypes.bool',
-            onClick: 'PropTypes.func',
-            dataToggle: 'PropTypes.string',
-            ariaHaspopup: 'PropTypes.bool'
-        }
-    },
     rowbuttons:{
         position: 'relative',
         backgroundColor: '#fff',
         marginTop:'20px'
-    },
-    overflow:{
-        overflowX:'auto'
-    },
-    button: {
-        border: "none !important",
-        padding: '6px 2rem',
-        borderRadius: '20px',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: "bold",
-        marginRight: "5px",
-        height: '39px',
-        background: customColors.gradient.main
     },
     filterbutton:{
         backgroundColor: 'white', /* Green */
@@ -104,30 +50,6 @@ const useStyles = makeStyles(() => ({
         borderRadius: '26.8293px',
         border: 'solid #dcd7d7',
         borderWidth: '1px'
-    },
-    dropdownmenu: {
-        position: 'absolute',
-        width: '250px',
-        right: '220px',
-        top: '225.49px',
-        padding: '5px 5px'
-    },
-    label:{
-        textAlign:'left',
-        fontSize:'14px',
-        fontWeight: 'normal',
-        lineHeight: '150%',
-        color: 'black',
-        marginLeft:'5px',
-        marginBottom: '-10px'
-    },
-    dropdownmenuslide:{
-        position: 'absolute',
-        width: '250px',
-        // height: 105px;
-        right: '220px',
-        top: '225.49px',
-        padding: '15px 10px 20px'
     },
     btnfontsize:{
         '& button':{
