@@ -45,7 +45,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const SearchPage = ({ fetchFeed, ...props }) => {
-    const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { activate } = useWeb3React()
     const { t } = useTranslation()
@@ -65,7 +64,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announcesMinted: []
     })
 
-    
+
     const defaultFilters = query? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
 
     const fetchAnnounces = useCallback(async () => {
@@ -94,12 +93,11 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 await AnnounceService.getFeedAnnounces(params)
                 : await AnnounceService.getSearchAnnounces(params)
             let total_rows = []
-            console.log(state.page)
-            if (state.isScrollLoding) {                
-                total_rows =[...state.announces,...result.rows]  
+            if (state.isScrollLoding) {
+                total_rows =[...state.announces,...result.rows]
             }
-            else { 
-                total_rows = result.rows 
+            else {
+                total_rows = result.rows
             }
             setState(state => ({
                 ...state,
@@ -186,7 +184,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                             id: announce.id
                         }
                         tokensMinted.push(token)
-                    }                    
+                    }
                 }
                 console.log("fetchMintedAnnounces",tokensMinted)
             } catch (err) {
@@ -196,7 +194,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 ...state,
                 announcesMinted: tokensMinted,
                 loading: false
-            }))           
+            }))
         }
 
         fetchMintedAnnounces()
@@ -230,13 +228,13 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                             <div style={{ marginLeft:'15px' }}>
                                                 {state.announces.map((announceRaw, index) => (
                                                     <PageMobileAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
-                                                ))} 
+                                                ))}
                                             </div>
                                         ) : (
                                             <Row className="my-2 d-flex justify-content-center">
                                                 {state.announces.map((announceRaw, index) => (
                                                     <PageAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
-                                                ))} 
+                                                ))}
                                             </Row>
                                         )}
                                     </>
@@ -285,7 +283,7 @@ SearchPage.defaultProps = {
 
 export default SearchPage
 const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
-    
+
     const announce = announcesMinted? announcesMinted.find(x=>x.id === announceRaw.id):null
     const classes = useStyles()
     const [hiddenFormMore, hideForm] = useState(true)
@@ -293,7 +291,7 @@ const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
         hideForm((hiddenFormMore) => !hiddenFormMore)
     }
     console.log("Mobile", announce, announcesMinted)
-    if (announce) {        
+    if (announce) {
         return (
             <div key={index}>
                 {index > '2' ? (
@@ -327,7 +325,7 @@ const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
                 )}
             </div>
         )
-    } 
+    }
     return null
 }
 const PageAnnounceItem = ({ announcesMinted, announceRaw, index }) => {

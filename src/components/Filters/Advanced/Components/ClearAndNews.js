@@ -2,52 +2,17 @@ import Link from "next-translate/Link"
 import clsx from "clsx"
 import { NewIcons } from "assets/icons"
 import React from "react"
-import makeStyles from "@material-ui/core/styles/makeStyles"
 import useTranslation from "next-translate/useTranslation"
 import Button from "@material-ui/core/Button"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router"
-import customColors from "../../../../theme/palette"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
+import { useStyles } from './styles.js'
 
-
-const useStyles = makeStyles(() => ({
-    borderGradientButton:{
-        height:'39px',
-        borderRadius: '100rem',
-        fontSize: '14px',
-        padding: '8px 30px 2px',
-        border: 'solid 2px transparent',
-        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
-        backgroundOrigin: 'border-box',
-        backgroundClip: 'content-box, border-box',
-        boxShadow: '2px 1000px 1px #fff inset',
-        '&:hover': {
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)'
-        },
-        '& label':{
-            background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
-            backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
-            backgroundClip: 'text',
-            color: 'transparent'
-        }
-    },
-    button: {
-        border: "none !important",
-        padding: '6px 2rem',
-        borderRadius: '20px',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: "bold",
-        marginRight: "5px",
-        height: '39px',
-        background: customColors.gradient.main
-    }
-}))
 
 const ControlButtons = ({ ...props }) => {
     const { t } = useTranslation()
-    const classes = useStyles()
+    const classes = useStyles(props)
 
     return (
         <Button
