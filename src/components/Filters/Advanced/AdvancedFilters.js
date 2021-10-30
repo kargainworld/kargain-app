@@ -432,7 +432,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                             </div>
 
                             <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{ width:'100%', display:'flex' }}>
-                                <Col className={clsx(!hiddenFormMobile && classes.filtersHidden)}sm={5} xs={1}> </Col>
+                                <Col className={clsx(!hiddenFormMobile && classes.filtersHidden)} sm={5} xs={1}> </Col>
                                 <Col
                                     style={{
                                         display: 'flex',
