@@ -6,8 +6,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useTranslation from 'next-translate/useTranslation'
 import filterProps from 'libs/filterProps'
-
-
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import vehicleTypesDefault, { vehicleTypes, vehicleTypeRefModels } from 'business/vehicleTypes.js'
@@ -15,8 +13,6 @@ import AnnounceTypes from 'business/announceTypes.js'
 import VehiclesService from 'services/VehiclesService'
 import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from 'hooks/useAddress'
-
-
 import customColors from 'theme/palette'
 import { NewIcons } from 'assets/icons'
 import { Col } from 'reactstrap'
@@ -150,9 +146,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const toggleFiltersMobile = () => {
         hideFormMobile((hiddenFormMobile) => !hiddenFormMobile)
     }
-
-    const [dropdownOpen6, setOpen6] = useState(false)
-    const toggle6 = () => setOpen6(!dropdownOpen6)
 
     const cache = useRef({})
     const classes = useStyles()
@@ -424,7 +417,6 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
                                 <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
                                 <Year submit={onSubmit} defaultFilters={defaultFilters} />
                                 <Price submit={onSubmit} defaultFilters={defaultFilters} />
-
                                 <Cylinder defaultFilters={defaultFilters} submit={onSubmit} />
                                 <div className={clsx(classes.btnfontsize)}>
                                     {DynamicFiltersComponent && (

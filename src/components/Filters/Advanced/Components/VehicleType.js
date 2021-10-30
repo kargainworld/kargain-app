@@ -29,7 +29,6 @@ const VehicleType = (props) => {
     })
     const router = useRouter()
 
-
     return (
         !isMobile ? (
             <ButtonDropdown  id="button_1" isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttonDropdown)} >
