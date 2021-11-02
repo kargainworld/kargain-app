@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
@@ -9,12 +9,24 @@ import Step1CarDetails from '../../components/Products/car/Step1_CarDetails'
 import Step2CarStatus from '../../components/Products/car/Step2_CarStatus'
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
 import { vehicleTypes } from '../../business/vehicleTypes.js'
+import useKargainContract from '../../hooks/useKargainContract'
+import TransactionsService from 'services/TransactionsService'
+import ObjectID from 'bson-objectid'
+import Web3 from 'web3'
+
+const toBN = Web3.utils.toBN
+
 
 const CarForm = (props) => {
+    /*Mint Section*/
+    const [tokenPrice, setTokenPrice] = useState(null)
+    const [error, setError] = useState(null)
+    
+    const { mintToken, waitTransactionToBeConfirmed }= useKargainContract()
+    /*Mint Section*/
     const router = useRouter()
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-
+    const { dispatchModal, dispatchModalError } = useContext(MessageContext)    
     const onFinalSubmit = form => {
         const { images, ...body } = form
         let formData = new FormData()
@@ -29,10 +41,27 @@ const CarForm = (props) => {
     }
 
     const startPost = async (body, formData, images) => {
-        dispatchModal({ msg: 'Creating...' })
+        
         try {
+            if (+tokenPrice <= 0) {
+                setError(new Error(`Price must be grater than zero.`))
+                return
+            }
+            dispatchModal({ msg: 'Creating...' })
+            
             const announce = await AnnounceService.createAnnounce(body)
-            const link = `/announces/${announce?.slug}`
+            const link = `/announces/${announce?.slug}`  
+            try {           
+                const hashTx = await mintToken(toBN(ObjectID(announce._id).toHexString()),+tokenPrice)             
+                await TransactionsService.addTransaction({ announceId: announce._id.toString(), hashTx, data: +tokenPrice, action: "TokenMinted" })
+                
+                await waitTransactionToBeConfirmed(hashTx)
+                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx, status: "Approved" })
+            }
+            catch(err){
+                console.log(err)
+                /*Mint Fail, continue to create the announce */ 
+            }
 
             if (announce && images) {
                 await AnnounceService.uploadImages(announce.slug, formData)
@@ -66,7 +95,7 @@ const CarForm = (props) => {
             />
             <Step1CarDetails title={t('vehicles:vehicle-description')}/>
             <Step2CarStatus title={t('vehicles:vehicle-state')}/>
-            <Step3PublishAnnounce title={t('vehicles:your-announce')}/>
+            <Step3PublishAnnounce title={t('vehicles:your-announce')} setTokenPrice = {setTokenPrice} tokenPrice = {tokenPrice}  error = {error} />             
         </FormWizard>
     )
 }

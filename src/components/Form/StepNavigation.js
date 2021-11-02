@@ -11,32 +11,32 @@ import customColors from '../../theme/palette'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(() => ({
-		button: {
-			border: "none !important",
-			padding: '6px 2rem',
-			borderRadius: '20px',
-			color: 'white',
-			fontSize: '14px',
-			fontWeight: "bold",
-            height:'33px',
-            marginLeft:'10px',
-			background: customColors.gradient.main
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: "bold",
+        height:'33px',
+        marginLeft:'10px',
+        background: customColors.gradient.main
             
-		},
+    }
 		
-	}))
+}))
 
 const StepNavigation = ({ prev, prevLabel, next, nextLabel, submit, submitLabel, ...defaultProps }) => {
-    const {defaultPrevLabel, defaultNextLabel, defaultSubmitLabel } = defaultProps
+    const { defaultPrevLabel, defaultNextLabel, defaultSubmitLabel } = defaultProps
     const { t } = useTranslation()
     const classes = useStyles()
-	const isMobile = useMediaQuery('(max-width:768px)')
+    const isMobile = useMediaQuery('(max-width:768px)')
 
     return (
         <>
             {isMobile ? (
                 <Row className="form_navigation justify-content-around" style={{ marginTop: 30 }}>
-                    <div id="btnwidth" style={{width:'80%'}}>
+                    <div id="btnwidth" style={{ width:'80%' }}>
                         {prev && (
                             <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={() => prev()}>
                                 {prevLabel || t(`vehicles:${defaultPrevLabel}`)}
@@ -57,29 +57,29 @@ const StepNavigation = ({ prev, prevLabel, next, nextLabel, submit, submitLabel,
                     </div>
                 </Row>
     
-                ):(
-                    <Row className="form_navigation justify-content-around" style={{ marginTop: 30 }}>
-                        {prev && (
-                            <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={() => prev()}>
-                                {prevLabel || t(`vehicles:${defaultPrevLabel}`)}
-                            </Button>
-                        )}
+            ):(
+                <Row className="form_navigation justify-content-around" style={{ marginTop: 30 }}>
+                    {prev && (
+                        <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={() => prev()}>
+                            {prevLabel || t(`vehicles:${defaultPrevLabel}`)}
+                        </Button>
+                    )}
 
-                        {next && !submit && (
-                            <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={e => next(e)}>
-                                {nextLabel || t(`vehicles:${defaultNextLabel}`)}
-                            </Button>
-                        )}
+                    {next && !submit && (
+                        <Button variant="outlined" type="button" className={clsx("btn", classes.button)} onClick={e => next(e)}>
+                            {nextLabel || t(`vehicles:${defaultNextLabel}`)}
+                        </Button>
+                    )}
 
-                        {!next && submit && (
-                            <Button variant="contained" color="primary" className={clsx("btn", classes.button)} type="submit">
-                                {submitLabel || t(`vehicles:${defaultSubmitLabel}`)}
-                            </Button>
-                        )}
+                    {!next && submit && (
+                        <Button variant="contained" color="primary" className={clsx("btn", classes.button)} type="submit">
+                            {submitLabel || t(`vehicles:${defaultSubmitLabel}`)}
+                        </Button>
+                    )}
                         
-                    </Row>
+                </Row>
                 
-                )
+            )
             }
         </>
         
