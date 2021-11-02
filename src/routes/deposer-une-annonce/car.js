@@ -59,8 +59,11 @@ const CarForm = (props) => {
                 await TransactionsService.updateTransaction(announce._id.toString(), { hashTx, status: "Approved" })
             }
             catch(err){
-                console.log(err)
-                /*Mint Fail, continue to create the announce */ 
+                dispatchModalError({
+                    err,
+                    persist : true
+                })
+                return
             }
 
             if (announce && images) {
