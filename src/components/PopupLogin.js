@@ -14,7 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../services/AuthService'
 import { useAuth } from '../context/AuthProvider'
-import { MessageContext } from '../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import CheckBoxInput from './Form/Inputs/CheckBoxInput'
 import EmailInput from './Form/Inputs/EmailInput'
 import PasswordInput from './Form/Inputs/PasswordInput'
@@ -131,7 +131,7 @@ const PopupLogin = () => {
                         </div>
                     </Col>
                 )}
-            
+
                 <Col sm={12} md={isDesktop ? 6 : 12}>
                     <div className={classes.wrapperForm}>
                         {!avoidCloseLoginModal && (
@@ -141,7 +141,7 @@ const PopupLogin = () => {
                                 </button>
                             </div>
                         )}
-                        
+
                         <div className="d-flex flex-column">
                             <SSOProviders col/>
                         </div>
@@ -157,7 +157,7 @@ const PopupLogin = () => {
                                         rules={{ required: t('form_validations:field-is-required') }}
                                     />
                                 </div>
-            
+
                                 <div className="mt-2 form-group">
                                     <PasswordInput
                                         name="password"
@@ -167,7 +167,7 @@ const PopupLogin = () => {
                                         rules={{ required: t('form_validations:field-is-required') }}
                                     />
                                 </div>
-            
+
                                 <div className="mt-2 form-group">
                                     <CheckBoxInput
                                         name="confirm"
@@ -175,9 +175,9 @@ const PopupLogin = () => {
                                         errors={errors}
                                         control={control}
                                     />
-            
+
                                 </div>
-            
+
                                 <div className="submit">
                                     <CTAButton
                                         title={t('layout:login')}
@@ -186,7 +186,7 @@ const PopupLogin = () => {
                                     />
                                 </div>
                             </form>
-            
+
                             <div className="d-block text-center">
                                 <Link href="/auth/reset-password">
                                     <a>{t('layout:password-forgotten')}</a>

@@ -9,8 +9,8 @@ import FieldWrapper from '../../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
-import { MessageContext } from '../../../../context/MessageContext'
-import NumberInput from "../../../Form/Inputs/NumberInput";
+import { MessageContext } from 'context/MessageContext'
+import NumberInput from "../../../Form/Inputs/NumberInput"
 
 const UtilityFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
@@ -34,7 +34,7 @@ const UtilityFilters = ({ control, watch, errors }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 

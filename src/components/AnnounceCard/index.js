@@ -129,11 +129,9 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
         const matchAnnounceLike = announce.getLikes.find((like) => like.getAuthor.getID === authenticatedUser.getID)
         return !!matchUserFavorite || !!matchAnnounceLike
     }
-
     const alreadyLikeCurrentUser = checkIfAlreadyLike()
     const [liked, setLiked] = useState(alreadyLikeCurrentUser)
     const { getOnlineStatusByUserId } = useSocket()
-
     const handleClickLikeButton = async () => {
         if(isOwn) return
         if (!isAuthenticated) {

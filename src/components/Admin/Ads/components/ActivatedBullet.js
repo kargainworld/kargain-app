@@ -1,5 +1,5 @@
 import React, { useContext,  useState, useRef, useEffect } from 'react'
-import { MessageContext } from '../../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import AnnounceService from '../../../../services/AnnounceService'
 import NiceSelect, { components } from 'react-select'
 import Button from '@material-ui/core/Button'
@@ -59,9 +59,9 @@ const ActivatedBullet = ({ slug, activated: activatedProps }) => {
         icon: <BulletPoint color={option.color}/>
     }))
 
-    const wrapperRef = useRef(null);
-    useOutsideClicked(wrapperRef);
-    
+    const wrapperRef = useRef(null)
+    useOutsideClicked(wrapperRef)
+
     function useOutsideClicked(ref) {
         useEffect(() => {
             function handleClickOutside(event) {
@@ -70,19 +70,19 @@ const ActivatedBullet = ({ slug, activated: activatedProps }) => {
                     setClicked(false)
                 }
             }
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside)
             return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
+                document.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [ref])
     }
-    
+
     const handleUpdate = async () => {
         try {
             const announceRawUpdated = await AnnounceService.updateAdminAnnounce(slug, {
                 activated: selectedOption
             })
-    
+
             const announce = new AnnounceModel(announceRawUpdated)
             setActivated(activated => !activated)
             dispatchModal({ msg: `updated. Mail sent to ${announce.getAuthor.getEmail}` })

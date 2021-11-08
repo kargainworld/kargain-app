@@ -8,7 +8,7 @@ import StepNavigation from '../../Form/StepNavigation'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import { Emoji } from 'react-apple-emojis'
@@ -16,14 +16,14 @@ import { Emoji } from 'react-apple-emojis'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
-    
+
     const isMobile = useMediaQuery('(max-width:768px)')
 
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-    
+
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -33,7 +33,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -77,14 +77,14 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const onPowerChChange = ({ target: { value } }) => {
         setValue('powerKw', (Math.round(+value * 0.735499)).toString())
     }
-    
+
     useEffect(() => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
-    
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -130,7 +130,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                                 </FieldWrapper>
                             </Col>
                         </Row>
-                        
+
                     </Col>
                 ):(
                     <Col sm={12} md={6}>
@@ -158,10 +158,10 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                                 </FieldWrapper>
                             </Col>
                         </Row>
-                        
+
                     </Col>
                 )}
-                
+
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>
                         <NumberInput
@@ -230,10 +230,10 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header strong text={t('vehicles:consumption')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
                 {/* <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="fuel-pump" width={18} />
-                {t('vehicles:consumption')} 
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="fuel-pump" width={18} />
+                {t('vehicles:consumption')}
             </h3>
             <Row>
                 <Col sm={12} md={6}>
@@ -293,9 +293,9 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             </Row>
 
             {/* <Header text={t('vehicles:vehicle-informations')} /> */}
-            <h3 style={{fontSize:'24px', fontWeight:"500", marginTop:"30px"}}>
+            <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
-                <Emoji style={{marginRight:"15px", marginBottom:"3px"}} name="page-facing-up" width={18} />
+                <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="page-facing-up" width={18} />
                 {t('vehicles:vehicle-informations')}
             </h3>
             <Row>

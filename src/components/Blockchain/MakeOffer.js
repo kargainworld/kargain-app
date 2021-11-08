@@ -4,8 +4,8 @@ import React, { useCallback, useContext,  useState } from "react"
 import useKargainContract from "../../hooks/useKargainContract"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import TransactionsService from "../../services/TransactionsService"
-import { useAuth } from "../../context/AuthProvider"
-import { MessageContext } from "../../context/MessageContext"
+import { useAuth } from "context/AuthProvider"
+import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 import Web3 from "web3"
 
@@ -41,7 +41,7 @@ const MakeOffer = (props) => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const { authenticatedUser } = useAuth()
     const [error, setError] = useState(null)
-    
+
 
     const {
         makeOffer,

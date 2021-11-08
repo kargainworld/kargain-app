@@ -7,7 +7,7 @@ import EmailInput from '../../components/Form/Inputs/EmailInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import SelectInput from '../../components/Form/Inputs/SelectInput'
 import TextareaInput from '../../components/Form/Inputs/TextareaInput'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 
 const ContactPage = () => {
     const { t } = useTranslation()

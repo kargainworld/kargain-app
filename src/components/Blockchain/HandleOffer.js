@@ -5,8 +5,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles"
 import useKargainContract from "../../hooks/useKargainContract"
 import TransactionsService from "../../services/TransactionsService"
 import AnnounceService from "../../services/AnnounceService"
-import { useAuth } from "../../context/AuthProvider"
-import { MessageContext } from "../../context/MessageContext"
+import { useAuth } from "context/AuthProvider"
+import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 
 const useStyles = makeStyles(() => ({

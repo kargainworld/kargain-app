@@ -14,8 +14,6 @@ import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from 'components/Loading'
 import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
-
-
 import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -47,7 +45,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const SearchPage = ({ fetchFeed, ...props }) => {
-    const classes = useStyles()
     const isMobile = useMediaQuery('(max-width:768px)')
     const { activate } = useWeb3React()
     const { t } = useTranslation()
@@ -59,7 +56,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         loading: true,
         sorter: {},
         filters: {},
-        page: 1,
+        page: 0,
         pages: 1,
         announces: [],
         total: 0,
@@ -67,10 +64,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announcesMinted: []
     })
 
-    const [hiddenFormMore, hideForm] = useState(true)
-    const toggleFilters = () => {
-        hideForm((hiddenFormMore) => !hiddenFormMore)
-    }
+
     const defaultFilters = query? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
 
     const fetchAnnounces = useCallback(async () => {
@@ -100,14 +94,11 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 : await AnnounceService.getSearchAnnounces(params)
             let total_rows = []
             if (state.isScrollLoding) {
-                state.announces.map((row, index) => {
-                    total_rows.push(row)
-                })
-                result.rows.map((row, index) => {
-                    total_rows.push(row)
-                })
+                total_rows =[...state.announces,...result.rows]
             }
-            else { total_rows = result.rows }
+            else {
+                total_rows = result.rows
+            }
             setState(state => ({
                 ...state,
                 announces: total_rows || [],
@@ -178,34 +169,30 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
-                    let tokenMinted = false
-                    TransactionsService.getTransactionsByAnnounceId(ad.getID).then((data) => {
+                    let isTokenMinted = false
+                    const data = await TransactionsService.getTransactionsByAnnounceId(ad.getID)
+                    if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
+                        isTokenMinted = true
+                    }
+                    if (data[0] && data[0].status === 'OfferAccepted') {
+                        isTokenMinted = false
+                    }
 
-                        if (data[0] && data[0].status === 'Approved' && data[0].action === 'TokenMinted') {
-                            tokenMinted = true
+                    if (isTokenMinted) {
+                        const token = {
+                            tokenPrice: data[0].data,
+                            id: announce.id
                         }
-                        if (data[0] && data[0].status === 'OfferAccepted') {
-                            tokenMinted = false
-                        }
-
-                        if (tokenMinted) {
-                            const token = {
-                                tokenPrice: data[0].data,
-                                id: announce.id
-                            }
-                            tokensMinted.push(token)
-                        }
-                    })
+                        tokensMinted.push(token)
+                    }
                 }
+                console.log("fetchMintedAnnounces",tokensMinted)
             } catch (err) {
                 console.log(err)
             }
             setState(state => ({
                 ...state,
-                announcesMinted: tokensMinted
-            }))
-            setState(state => ({
-                ...state,
+                announcesMinted: tokensMinted,
                 loading: false
             }))
         }
@@ -227,6 +214,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 <Col sm={12} md={12}>
                     <section className={clsx(filtersOpened && 'filter-is-visible')} style={{ padding:'10px 1% !important' }}>
                         <InfiniteScroll
+                            pageStart={1}
                             throttle={100}
                             threshold={300}
                             isLoading={state.loading}
@@ -238,61 +226,15 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                     <>
                                         {isMobile ? (
                                             <div style={{ marginLeft:'15px' }}>
-                                                {state.announces.map((announceRaw, index) => {
-                                                    const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
-                                                    if (announceMinted) {
-                                                        return (
-                                                            <div key={index}>
-                                                                {index > '2' ? (
-                                                                    <div>
-                                                                        {index == '3' &&
-                                                                        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-20px' }}>
-                                                                            <div className={clsx(!hiddenFormMore && classes.filtersHidden)} style={{ width:'142px' }}>
-                                                                                <div className={clsx(classes.button)} onClick={() => toggleFilters()} >LOAD MORE</div>
-                                                                            </div>
-                                                                        </div>
-                                                                        }
-
-                                                                        <div className={clsx(hiddenFormMore && classes.filtersHidden)}>
-                                                                            <div style={{ width:'90%', marginTop: '20px' }} >
-                                                                                <AnnounceCard
-                                                                                    announceRaw={announceRaw}
-                                                                                    tokenPrice={announceMinted?.tokenPrice}
-                                                                                    detailsFontSize={'13px'}
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div  style={{ width:'90%', marginTop: '20px' }}>
-                                                                        <AnnounceCard
-                                                                            announceRaw={announceRaw}
-                                                                            tokenPrice={announceMinted?.tokenPrice}
-                                                                            detailsFontSize={'13px'}
-                                                                        />
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        )
-                                                    }
-                                                })}
+                                                {state.announces.map((announceRaw, index) => (
+                                                    <PageMobileAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
+                                                ))}
                                             </div>
                                         ) : (
                                             <Row className="my-2 d-flex justify-content-center">
-                                                {state.announces.map((announceRaw, index) => {
-                                                    const announceMinted = state.announcesMinted.find(x=>x.id === announceRaw.id)
-                                                    if (announceMinted) {
-                                                        return (
-                                                            <div key={index} style={{ width:'30%', marginRight:'3%', marginTop: '2%' }}>
-                                                                <AnnounceCard
-                                                                    announceRaw={announceRaw}
-                                                                    tokenPrice={announceMinted?.tokenPrice}
-                                                                    detailsFontSize={'13px'}
-                                                                />
-                                                            </div>
-                                                        )
-                                                    }
-                                                })}
+                                                {state.announces.map((announceRaw, index) => (
+                                                    <PageAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
+                                                ))}
                                             </Row>
                                         )}
                                     </>
@@ -340,3 +282,64 @@ SearchPage.defaultProps = {
 }
 
 export default SearchPage
+const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
+
+    const announce = announcesMinted? announcesMinted.find(x=>x.id === announceRaw.id):null
+    const classes = useStyles()
+    const [hiddenFormMore, hideForm] = useState(true)
+    const toggleFilters = () => {
+        hideForm((hiddenFormMore) => !hiddenFormMore)
+    }
+    console.log("Mobile", announce, announcesMinted)
+    if (announce) {
+        return (
+            <div key={index}>
+                {index > '2' ? (
+                    <div>
+                        {index == '3' &&
+                        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-20px' }}>
+                            <div className={clsx(!hiddenFormMore && classes.filtersHidden)} style={{ width:'142px' }}>
+                                <div className={clsx(classes.button)} onClick={() => toggleFilters()} >LOAD MORE</div>
+                            </div>
+                        </div>
+                        }
+
+                        <div className={clsx(hiddenFormMore && classes.filtersHidden)}>
+                            <div style={{ width:'90%', marginTop: '20px' }} >
+                                <AnnounceCard
+                                    announceRaw={announceRaw}
+                                    tokenPrice={announce?.tokenPrice}
+                                    detailsFontSize={'13px'}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div  style={{ width:'90%', marginTop: '20px' }}>
+                        <AnnounceCard
+                            announceRaw={announceRaw}
+                            tokenPrice={announce?.tokenPrice}
+                            detailsFontSize={'13px'}
+                        />
+                    </div>
+                )}
+            </div>
+        )
+    }
+    return null
+}
+const PageAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
+    const announce = announcesMinted? announcesMinted.find(x=>x.id === announceRaw.id):null
+    if (announce) {
+        return (
+            <div key={index} style={{ width:'30%', marginRight:'3%', marginTop: '2%' }}>
+                <AnnounceCard
+                    announceRaw={announceRaw}
+                    tokenPrice={announce?.tokenPrice}
+                    detailsFontSize={'13px'}
+                />
+            </div>
+        )
+    }
+    return null
+}

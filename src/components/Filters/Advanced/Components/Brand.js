@@ -1,70 +1,29 @@
-import makeStyles from "@material-ui/core/styles/makeStyles"
 import clsx from "clsx"
 import { ButtonDropdown, DropdownMenu, DropdownToggle } from "reactstrap"
 import { Emoji } from "react-apple-emojis"
 import FieldWrapper from "../../../Form/FieldWrapper"
 import SelectInput from "../../../Form/Inputs/SelectInput"
-import React, { useState } from "react"
+import React, {  useState } from "react"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import useTranslation from "next-translate/useTranslation"
 import { useForm } from "react-hook-form"
+import { useStyles } from './styles.js'
 
 
-const useStyles = makeStyles(() => ({
-    dropdownMenu: {
-        position: 'absolute',
-        width: '250px',
-        right: '220px',
-        top: '225.49px',
-        padding: '5px 5px'
-    },
-    buttonDropdown:{
-        '& button':{
-            borderRadius: '26.8293px !important',
-            borderColor:'#dcd7d7 !important',
-            backgroundColor: '#c4c4c400 !important',
-            color: 'black !important',
-            cursor: 'pointer',
-            fontSize:"17.1707px",
-            marginRight: '6px !important',
-            marginTop: '5px !important',
-            '& button:clicked': {
-                borderRadius: '25px !important',
-                backgroundColor: '#c4c4c447 !important',
-                color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none !important'
-            },
-            '& .propTypes':{
-                disabled: 'PropTypes.bool',
-                direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
-                group: 'PropTypes.bool',
-                isOpen: 'PropTypes.bool',
-                tag: 'PropTypes.string',
-                toggle: 'PropTypes.func'
-            }
-        }
-    }
-}))
-
-
-const Brand = ({ defaultFilters, submit, brands }) => {
+const Brand = (props) => {
+    const classes = useStyles(props)
     const isMobile = useMediaQuery('(max-width:768px)')
     const [dropdownOpen2, setOpen2] = useState(false)
     const toggle2 = () => setOpen2(!dropdownOpen2)
-    const classes = useStyles()
     const { t } = useTranslation()
     const defaultValues = {
-        ...defaultFilters
+        ...props.defaultFilters
     }
     const { control, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues
     })
-
 
     return (
         isMobile ? (
@@ -80,9 +39,9 @@ const Brand = ({ defaultFilters, submit, brands }) => {
                             name="manufacturer.make"
                             control={control}
                             errors={errors}
-                            options={brands}
+                            options={props.brands}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
@@ -102,9 +61,9 @@ const Brand = ({ defaultFilters, submit, brands }) => {
                             name="manufacturer.make"
                             control={control}
                             errors={errors}
-                            options={brands}
+                            options={props.brands}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
