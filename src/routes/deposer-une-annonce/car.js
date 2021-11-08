@@ -61,7 +61,7 @@ const CarForm = (props) => {
             catch(err){
                 dispatchModalError({
                     err,
-                    persist : true
+                    persist : false
                 })
                 return
             }
