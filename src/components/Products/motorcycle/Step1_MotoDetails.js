@@ -127,6 +127,8 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="0"
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>

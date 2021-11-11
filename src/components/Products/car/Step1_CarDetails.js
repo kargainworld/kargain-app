@@ -169,7 +169,8 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="cm&sup3;"
-                            rules={{ required: t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
