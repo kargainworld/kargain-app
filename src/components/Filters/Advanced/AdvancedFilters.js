@@ -4,7 +4,6 @@ import { useRouter } from "next/router"
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import useTranslation from 'next-translate/useTranslation'
 import filterProps from 'libs/filterProps'
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
@@ -13,16 +12,15 @@ import AnnounceTypes from 'business/announceTypes.js'
 import VehiclesService from 'services/VehiclesService'
 import SwitchFiltersVehicleType from './SwitchFiltersVehicleType'
 import useAddress from 'hooks/useAddress'
-import { NewIcons } from 'assets/icons'
-import { Col } from 'reactstrap'
 import ClearAndFeed from "./Components/ClearAndNews"
 import VehicleType from "./Components/VehicleType"
 import AnnounceType from "./Components/AnnounceType"
 import Brand from "./Components/Brand"
 import Model from "./Components/Model"
 import Year from "./Components/Year"
-import { Price } from "../../AnnounceCard/components"
+import Price from "./Components/Price"
 import Cylinder from "./Components/Cylinder"
+import ShowAllFilters from "./Components/ShowAllFilters"
 
 
 const useStyles = makeStyles(() => ({
@@ -37,27 +35,6 @@ const useStyles = makeStyles(() => ({
         position: 'relative',
         backgroundColor: '#fff',
         marginTop:'20px'
-    },
-    filterbutton:{
-        backgroundColor: 'white', /* Green */
-        color: 'black',
-        padding: '8px 15px',
-        textAlign: 'center',
-        textDecoration: 'none',
-        display: 'inline-block',
-        fontSize: '16px',
-        margin: '4px 2px',
-        borderRadius: '26.8293px',
-        border: 'solid #dcd7d7',
-        borderWidth: '1px'
-    },
-    btnfontsize:{
-        '& button':{
-            fontSize:'15.15px !important'
-        },
-        '& img':{
-            width:'11px'
-        }
     }
 }))
 
@@ -65,13 +42,12 @@ const useStyles = makeStyles(() => ({
 const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTypeProp, setVehicleType, className }) => {
 
     const [hiddenFormMobile, hideFormMobile] = useState(true)
-    const toggleFiltersMobile = () => {
+    const toggleFiltersMobile = useCallback(async  => {
         hideFormMobile((hiddenFormMobile) => !hiddenFormMobile)
-    }
+    })
 
     const cache = useRef({})
     const classes = useStyles()
-    const { t } = useTranslation()
     const router = useRouter()
 
     const [_vehicleType, _setVehicleType] = useState(router.query? router.query.vehicleType: vehicleTypes.car)
@@ -144,9 +120,9 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     })
 
 
-    const toggleFilters = () => {
+    const toggleFilters = useCallback(async  => {
         hideForm((hiddenForm) => !hiddenForm)
-    }
+    })
 
     const fetchMakes = useCallback(async () => {
         const cacheKey = `${vehicleType}_makes`
@@ -326,111 +302,77 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     return (
         <div className={clsx(classes.filtersContainer, className)}>
             <form className="filters_form" onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <ClearAndFeed defaultFilters={defaultFilters} />
+                    <div className={clsx(classes.rowbuttons)}>
+                        <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
+                        <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
 
-                {isMobile ? (
-                    <div>
-                        <ClearAndFeed defaultFilters={defaultFilters} />
-                        <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
-                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
-
-                            <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
-                                <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
-                                <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
-                                <Year submit={onSubmit} defaultFilters={defaultFilters} />
-                                <Price submit={onSubmit} defaultFilters={defaultFilters} />
-                                <Cylinder defaultFilters={defaultFilters} submit={onSubmit} />
-                                <div className={clsx(classes.btnfontsize)}>
-                                    {DynamicFiltersComponent && (
-                                        <DynamicFiltersComponent
-                                            control={control}
-                                            errors={errors}
-                                            watch={watch}
-                                            dynamicOnSubmit={onSubmit}
-                                            dynamicHandleSubmit={handleSubmit}
-                                        />
-                                    )}
+                        {
+                            isMobile ?
+                                <div className={clsx(hiddenFormMobile && classes.filtersHidden)} >
+                                    <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
+                                    <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
+                                    <Year submit={onSubmit} defaultFilters={defaultFilters} />
+                                    <Price submit={onSubmit} defaultFilters={defaultFilters} />
+                                    <Cylinder defaultFilters={defaultFilters} submit={onSubmit} />
                                 </div>
-                            </div>
+                                :
+                                <>
+                                    <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
+                                    <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
+                                    <Year submit={onSubmit} defaultFilters={defaultFilters} />
+                                    <Price submit={onSubmit} defaultFilters={defaultFilters} />
+                                    <Cylinder defaultFilters={defaultFilters} submit={onSubmit} />
+                                </>
+                        }
 
-                            <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{ width:'100%', display:'flex' }}>
-                                <Col className={clsx(!hiddenFormMobile && classes.filtersHidden)} sm={5} xs={1}> </Col>
-                                <Col
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'flex-end',
-                                        transform: 'translate(25px, -44px)'
+                        <ShowAllFilters hiddenForm={hiddenForm} toggleFilters={toggleFilters} hiddenFormMobile={hiddenFormMobile} toggleFiltersMobile={toggleFiltersMobile} />
 
-                                    }}>
-                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden)} style={{
-                                        backgroundColor: '#ffffffeb',
-                                        width: '40px'
-                                    }}/>
-                                    <div className={clsx(!hiddenFormMobile && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFiltersMobile()} style={{ transform: 'translate(-25px, 0px)', width: '232px' }}>
-                                        <NewIcons.filter alt='filter' style={{ marginRight:'10px' }} />
-                                        {t('filters:select-filters')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')}/>
+                        {
+                            isMobile ?
+                                <>
+
+                                    <div className={clsx(hiddenFormMobile && classes.filtersHidden)}>
+                                        {DynamicFiltersComponent && (
+                                            <DynamicFiltersComponent
+                                                control={control}
+                                                errors={errors}
+                                                watch={watch}
+                                                dynamicOnSubmit={onSubmit}
+                                                dynamicHandleSubmit={handleSubmit}
+                                            />
+                                        )}
                                     </div>
-                                </Col>
-                            </div>
-
-                            <div className={clsx(hiddenFormMobile && classes.filtersHidden)}>
-                                <div  onClick={() => toggleFiltersMobile()} style={{ height:'20px' }}>
-                                    <label> ... </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div>
-                        <ClearAndFeed defaultFilters={defaultFilters} />
-                        <div className={clsx(classes.rowbuttons)}>
-                            <VehicleType defaultFilters={defaultFilters} submit={onSubmit} />
-                            <AnnounceType submit={onSubmit} defaultFilters={defaultFilters} limitwidth={limitwidth} />
-                            <Brand defaultFilters={defaultFilters} submit={onSubmit} brands={manufacturersData.makes} />
-                            <Model submit={onSubmit} defaultFilters={defaultFilters} models={manufacturersData.models}/>
-                            <Year submit={onSubmit} defaultFilters={defaultFilters} />
-                            <Price submit={onSubmit} defaultFilters={defaultFilters} />
-                            <Cylinder defaultFilters={defaultFilters} submit={onSubmit} />
-
-                            <div className={clsx(hiddenForm && classes.filtersHidden)} >
-                                {DynamicFiltersComponent && (
-                                    <DynamicFiltersComponent
-                                        control={control}
-                                        errors={errors}
-                                        watch={watch}
-                                        dynamicOnSubmit={onSubmit}
-                                        dynamicHandleSubmit={handleSubmit}
-                                    />
-                                )}
-                            </div>
-
-                            <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{ width:'100%', display:'flex' }}>
-                                <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{ width:'70.5%' }}> </div>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'flex-end',
-                                        transform: 'translate(25px, -44px)',
-                                        width:"29.5%"
-                                    }}>
-                                    <div className={clsx(!hiddenForm && classes.filtersHidden)} style={{ backgroundColor: '#ffffffeb', width: '40px' }}/>
-                                    <div className={clsx(!hiddenForm && classes.filtersHidden, classes.filterbutton)} onClick={() => toggleFilters()} style={{ transform: 'translate(-25px, 0px)' }}>
-                                        <NewIcons.filter alt='filter' style={{ marginRight:'10px' }} />
-                                        {t('filters:select-filters')}
-                                        <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')}/>
+                                    <div className={clsx(hiddenFormMobile && classes.filtersHidden)}>
+                                        <div  onClick={() => toggleFiltersMobile()} style={{ height:'20px' }}>
+                                            <label> ... </label>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </>
+                                :
+                                <>
 
-                            <div className={clsx(hiddenForm && classes.filtersHidden)}>
-                                <div  onClick={() => toggleFilters()} style={{ height:'20px' }}>
-                                    <label> ... </label>
-                                </div>
-                            </div>
-                        </div>
+                                    <div className={clsx(hiddenForm && classes.filtersHidden)} >
+                                        {DynamicFiltersComponent && (
+                                            <DynamicFiltersComponent
+                                                control={control}
+                                                errors={errors}
+                                                watch={watch}
+                                                dynamicOnSubmit={onSubmit}
+                                                dynamicHandleSubmit={handleSubmit}
+                                            />
+                                        )}
+                                    </div>
+                                    <div className={clsx(hiddenForm && classes.filtersHidden)}>
+                                        <div  onClick={() => toggleFilters()} style={{ height:'20px' }}>
+                                            <label> ... </label>
+                                        </div>
+                                    </div>
+                                </>
+                        }
                     </div>
-                )}
+                </div>
             </form>
         </div>
     )

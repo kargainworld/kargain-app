@@ -1,8 +1,9 @@
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from "next-translate/useTranslation"
 
 const vehicleTypesDefault = () => {
 
-    const { t } = useTranslation();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { t } = useTranslation()
 
     return [
         {
@@ -32,7 +33,7 @@ const vehicleTypesDefault = () => {
         }
     ]
 }
-export default vehicleTypesDefault;
+export default vehicleTypesDefault
 
 export const vehicleTypeRefModels = {
     car : "cars",

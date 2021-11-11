@@ -6,12 +6,10 @@ import SliderInput from '../../../Form/Inputs/SliderInputUI'
 import SelectCountryFlags from '../../../Form/Inputs/SelectCountryFlags'
 import SearchLocationInput from '../../../Form/Inputs/SearchLocationInput'
 import FieldWrapper from '../../../Form/FieldWrapper'
-import localeDataHelper from '../../../../libs/localeDataHelper'
-import { vehicleTypes } from '../../../../business/vehicleTypes'
+import localeDataHelper from 'libs/localeDataHelper'
+import { vehicleTypes } from 'business/vehicleTypes'
 import { MessageContext } from 'context/MessageContext'
-
 import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap'
-
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Emoji } from 'react-apple-emojis'
@@ -35,16 +33,6 @@ const useStyles = makeStyles(() => ({
             },
             '&::after': {
                 display: 'none'
-                // FONTVARIANT: 'JIS83 !important',
-                // display: 'inline-block !important',
-                // marginLeft: '0.355em !important',
-                // verticalAlign: '0.255em !important',
-                // content: " !important",
-                // borderTop: '0.4em solid !important',
-                // borderRight: '0.4em solid transparent !important',
-                // borderBottom: '0 !important',
-                // borderLeft:' 0.4em solid transparent !important',
-                // marginLeft:'5px !important',
             }
         }
     },
@@ -89,9 +77,6 @@ const useStyles = makeStyles(() => ({
 
 const CarFilters = ({ control, watch, errors, ...props }) => {
     const classes = useStyles()
-
-    // const [dropdownOpen, setOpen] = useState(false);
-    // const toggle = () => setOpen(!dropdownOpen);
     const [dropdownOpen1, setOpen1] = useState(false)
     const toggle1 = () => setOpen1(!dropdownOpen1)
     const [dropdownOpen2, setOpen2] = useState(false)
@@ -128,9 +113,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     const toggle17 = () => setOpen17(!dropdownOpen17)
     const [dropdownOpen18, setOpen18] = useState(false)
     const toggle18 = () => setOpen18(!dropdownOpen18)
-
-
-
 
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
@@ -174,71 +156,6 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
 
     return (
         <>
-            {/* <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} className={clsx(classes.buttondropdown)} >
-                <DropdownToggle caret>
-                    <Emoji name="dollar-banknote" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                    {t('vehicles:price')}
-                <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
-                        </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
-
-                    <label className={clsx(classes.label)}>
-                        {t('vehicles:price')}
-                    </label>
-                    <FieldWrapper >
-                        <SliderInput
-                            name="price"
-                            defaultValue={[1000, 50000]}
-                            min={0}
-                            max={200000}
-                            step={1000}
-                            errors={errors}
-                            control={control}
-                            suffix="€"
-                            onChange={e =>{
-                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                return e
-                            }}
-                        />
-                    </FieldWrapper>
-
-                        <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>0 €</label>
-                        <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>200000 €</label>
-                    </DropdownMenu>
-            </ButtonDropdown> */}
-
-            {/* <ButtonDropdown isOpen={dropdownOpen5} toggle={toggle5} className={clsx(classes.buttondropdown)} >
-                <DropdownToggle caret>
-                    <Emoji name="nut-and-bolt" width="14" style={{marginLeft: '5px', marginRight: '10px',}}/>
-                    {t('vehicles:cylinder')}
-                <i className={clsx('ml-2', 'arrow_nav', 'is-bottom')} style={{width:'10px', height:'5px', marginBottom:'5px'}}/>
-                        </DropdownToggle>
-                <DropdownMenu className={clsx(classes.dropdownmenuslide)}>
-                    <label className={clsx(classes.label)}>
-                        {t('vehicles:cylinder')}
-                    </label>
-                    <FieldWrapper>
-                        <SliderInput
-                            name="vehicleEngineCylinder"
-                            suffix="cm3"
-                            min={10}
-                            max={1000}
-                            step={10}
-                            defaultValue={[1, 1000]}
-                            errors={errors}
-                            control={control}
-                            onChange={e =>{
-                                setTimeout(props.dynamicHandleSubmit((data) => props.dynamicOnSubmit(data, e)), 100)
-                                return e
-                            }}
-                        />
-                    </FieldWrapper>
-                    <label className={clsx(classes.label)} style={{display: 'flex', justifyContent: 'flex-start', marginTop: '-10px', fontSize: '11px'}}>10 cm3</label>
-                    <label className={clsx(classes.label)} style={{textAlign:'right', display: 'flex', justifyContent: 'flex-end', marginTop: '-16px', fontSize: '11px'}}>1000 cm3</label>
-
-                </DropdownMenu>
-            </ButtonDropdown> */}
-
             <ButtonDropdown isOpen={dropdownOpen3} toggle={toggle3} className={clsx(classes.buttondropdown)} >
                 <DropdownToggle caret>
                     <Emoji name="joystick" width="14" style={{ marginLeft: '5px', marginRight: '10px' }}/>
