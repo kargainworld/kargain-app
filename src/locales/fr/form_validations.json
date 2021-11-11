@@ -4,6 +4,7 @@
     "max_price_{max}{currency}": "Maximum {{max}}{{currency}}",
     "min_length_{min}": "Longueur minimum : {{min}} caractères",
     "max_length_{max}" : "Longueur maximale : {{max}} caractères",
-    "regexPwd{min}{max}": "Entre 4 et 16 caractères. Au moins 1 chiffre"
+    "regexPwd{min}{max}": "Entre 4 et 16 caractères. Au moins 1 chiffre",
+    "min_{min}": "minimum : {{min}}"
 }
 

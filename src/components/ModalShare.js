@@ -165,7 +165,7 @@ const Email = () => {
                             placeholder="email"
                             errors={errors}
                             control={control}
-                            rules={{ required: t('form_validations:field-is-required') }}
+                            rules={{ required: t('form_validations:required') }}
                         />
                         <button type="submit">Envoyer</button>
                     </form>

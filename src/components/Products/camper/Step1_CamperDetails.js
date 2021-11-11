@@ -129,6 +129,8 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
