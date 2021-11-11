@@ -130,7 +130,7 @@ const Page = () => {
                                                 type="radio"
                                                 name="vehicleType"
                                                 value={tab.value}
-                                                ref={register({ required : t('form_validations:field-is-required') })}
+                                                ref={register({ required : t('form_validations:required') })}
                                                 onChange={() => handleSelectVehicleType(index)}
                                             />
                                             <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem', height:'159px', marginTop:'25px' }}>
@@ -162,7 +162,7 @@ const Page = () => {
                                                     type="radio"
                                                     name="adType"
                                                     value={tab.value}
-                                                    ref={register({ required : t('form_validations:field-is-required') })}
+                                                    ref={register({ required : t('form_validations:required') })}
                                                 />
                                                 <label htmlFor={`ad_type${index}`}>{tab.label}</label>
                                             </div>
@@ -195,7 +195,7 @@ const Page = () => {
                                                 type="radio"
                                                 name="vehicleType"
                                                 value={tab.value}
-                                                ref={register({ required : t('form_validations:field-is-required') })}
+                                                ref={register({ required : t('form_validations:required') })}
                                                 onChange={() => handleSelectVehicleType(index)}
                                             />
                                             <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem' }}>
@@ -227,7 +227,7 @@ const Page = () => {
                                                     type="radio"
                                                     name="adType"
                                                     value={tab.value}
-                                                    ref={register({ required : t('form_validations:field-is-required') })}
+                                                    ref={register({ required : t('form_validations:required') })}
                                                 />
                                                 <label htmlFor={`ad_type${index}`}>{tab.label}</label>
                                             </div>
