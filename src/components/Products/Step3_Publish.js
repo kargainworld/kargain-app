@@ -20,6 +20,7 @@ import { Emoji } from 'react-apple-emojis'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import TextInput from 'components/Form/Inputs/TextInput'
+import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(() => ({
     delete:{
@@ -33,12 +34,14 @@ const useStyles = makeStyles(() => ({
         }
     }
 }))
+/*const [, ] = useState(null)
+    const [, ] = useState(null)*/
 
-
-const Step = ({ handleSubmitForm, prevStep }) => {
+const Step = ({ handleSubmitForm, prevStep,tokenPrice ,setTokenPrice,error }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
+    
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { watch, control, errors, setValue, register, handleSubmit } = useForm({
         mode: 'onChange',
@@ -175,6 +178,19 @@ const Step = ({ handleSubmitForm, prevStep }) => {
                     />
                 </div>
             </FieldWrapper>
+            <div style={{ display: "flex", flexDirection: 'column', width: '50%'  }}>
+                <div style={{ fontSize:'12px', color:'#999999', marginBottom:'5px' }}>{t('vehicles:tokenPrice')} : </div>
+                <TextField
+                    classes={clsx(classes.textFieldMint)}
+                    onChange={(event) => setTokenPrice(event.target.value)}
+                    value={tokenPrice}
+                    type="number"
+                    InputLabelProps={{ shrink: true }}
+                    error={!!error}
+                    helperText={error ? error.message : ''}                    
+                    variant="outlined"
+                />
+            </div>
 
             <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px", color:'black' }}>
                 {/* <img src="/icons/Vehicleinfo-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
