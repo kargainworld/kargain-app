@@ -353,10 +353,9 @@ header {
 @media (max-width: 767px) {
     nav {
         .navbar-nav {
-            margin-top: 10px;
+            margin-top: 40px;
             width: 100%;
             display: block;
-            border-top: 1px solid #EEE;
 
             &.flex-row-nav {
                 display: flex;
