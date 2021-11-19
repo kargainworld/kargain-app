@@ -8,7 +8,7 @@ import StepNavigation from '../../Form/StepNavigation'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import { Emoji } from 'react-apple-emojis'
@@ -16,14 +16,14 @@ import { Emoji } from 'react-apple-emojis'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
-    
+
     const isMobile = useMediaQuery('(max-width:768px)')
 
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-    
+
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -77,14 +77,14 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const onPowerChChange = ({ target: { value } }) => {
         setValue('powerKw', (Math.round(+value * 0.735499)).toString())
     }
-    
+
     useEffect(() => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
         })
     }, [selectedMileage])
-    
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -130,7 +130,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                                 </FieldWrapper>
                             </Col>
                         </Row>
-                        
+
                     </Col>
                 ):(
                     <Col sm={12} md={6}>
@@ -158,10 +158,10 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                                 </FieldWrapper>
                             </Col>
                         </Row>
-                        
+
                     </Col>
                 )}
-                
+
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:cylinder')}>
                         <NumberInput
@@ -169,7 +169,8 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="cm&sup3;"
-                            rules={{ required: t('form_validations:required') }}
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -233,7 +234,11 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
             <h3 style={{ fontSize:'24px', fontWeight:"500", marginTop:"30px" }}>
                 {/* <img src="/icons/Consumption-icon.png" style={{marginRight:"10px", marginBottom:"5px", width:"16px", height:"24px"}}/> */}
                 <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="fuel-pump" width={18} />
+<<<<<<< HEAD
                 {t('vehicles:consumption')} 
+=======
+                {t('vehicles:consumption')}
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
             </h3>
             <Row>
                 <Col sm={12} md={6}>

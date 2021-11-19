@@ -5,7 +5,7 @@ import useTranslation from 'next-translate/useTranslation'
 import PasswordInput from '../../components/Form/Inputs/PasswordInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import AuthService from '../../services/AuthService'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import { Col } from 'reactstrap'
 import CTAButton from '../../components/CTAButton'
 

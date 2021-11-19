@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { loadStripe } from '@stripe/stripe-js'
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useAuth } from '../../context/AuthProvider'
 import paymentsServices from '../../services/PaymentsService'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import config from '../../config/config'
 
 const stripePromise = loadStripe(config.stripe.API_KEY)
@@ -185,7 +185,7 @@ const CARD_OPTIONS = {
 
 const StripeCard = ({ offer }) => {
     const classes = useStyles()
-    const router = useRouter();
+    const router = useRouter()
     const stripe = useStripe()
     const elements = useElements()
     const [error, setError] = useState(null)
@@ -226,8 +226,8 @@ const StripeCard = ({ offer }) => {
         if (!isAuthenticated) {
             router.push({
                 pathname: '/auth/login',
-                query: { redirect: router.asPath },
-            });
+                query: { redirect: router.asPath }
+            })
             return
         }
         if (cardComplete) setProcessing(true)

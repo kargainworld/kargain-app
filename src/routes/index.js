@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import useIsMounted from '../hooks/useIsMounted'
 import AnnounceService from '../services/AnnounceService'
-import { MessageContext } from '../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import HomeFilters from '../components/Filters/Home/HomeFilters'
 
 
@@ -65,7 +65,7 @@ const SearchPage = ( ) => {
                 ...state,
                 loading: false
             }))
-            dispatchModalError({err})
+            dispatchModalError({ err })
         }
     },[state.filters])
 

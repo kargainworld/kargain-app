@@ -56,7 +56,7 @@ const CarForm = (props) => {
                 await TransactionsService.addTransaction({ announceId: announce._id.toString(), hashTx, data: +tokenPrice, action: "TokenMinted" })
                 
                 await waitTransactionToBeConfirmed(hashTx)
-                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx, status: "Approved" })
+                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx: hashTx, status: "Approved" })
             }
             catch(err){
                 dispatchModalError({

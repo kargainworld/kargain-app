@@ -9,13 +9,13 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Table } from 'reactstrap'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import CommentEnableBullet from '../Admin/Ads/components/CommentEnableBullet'
 
 const CommentsList = ({ comments }) => {
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    
+
     const handleEnableComment = (commentID) => {
         CommentsService.enableComment(commentID)
             .then(() => {
@@ -24,7 +24,7 @@ const CommentsList = ({ comments }) => {
                 dispatchModalError({ err })
             })
     }
-    
+
     const handleDisableComment = (commentID) => {
         return CommentsService.disableComment(commentID)
             .then(() => {
@@ -33,7 +33,7 @@ const CommentsList = ({ comments }) => {
                 dispatchModalError({ err })
             })
     }
-    
+
     return (
         <div className="comments" style={{ width : '90vw' }}>
             <p>
@@ -57,7 +57,7 @@ const CommentsList = ({ comments }) => {
                     {comments.map((comment, index) => {
                         return (
                             <tr key={index} className="p-2">
-                                <td style={{ width: '50%'}}>
+                                <td style={{ width: '50%' }}>
                                     <Typography as="p" gutterBottom>
                                         <strong>
                                             {comment.getMessage}
@@ -94,7 +94,7 @@ const CommentsList = ({ comments }) => {
     )
 }
 
-const ModalConfirmRemoveComment = ({openDialogRemove, handleCloseDialogRemove, handleCallback}) => {
+const ModalConfirmRemoveComment = ({ openDialogRemove, handleCloseDialogRemove, handleCallback }) => {
     const { t } = useTranslation()
 
     return(

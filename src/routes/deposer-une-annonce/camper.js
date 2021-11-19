@@ -82,7 +82,7 @@ const CamperForm = (props) => {
             })
         }
     }
-    
+
     return (
         <FormWizard
             formKey={props.formKey}

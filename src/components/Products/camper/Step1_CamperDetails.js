@@ -7,7 +7,7 @@ import StepNavigation from '../../Form/StepNavigation'
 import NumberInput from '../../Form/Inputs/NumberInput'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
@@ -17,7 +17,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-    
+
     const { t, lang } = useTranslation()
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
@@ -26,9 +26,9 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     })
 
     dispatchFormUpdate(watch(), { compare: true })
-    
+
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -52,16 +52,16 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
             }
         ]
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.camper, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -73,12 +73,12 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     const onPowerChChange = ({ target: { value } }) => {
         setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
     }
-    
+
     useEffect(() => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
 
     return (
@@ -129,6 +129,8 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -187,7 +189,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
                         <NumberInput
                             name="weight"
                             placeholder="kg"
-                            control={control} 
+                            control={control}
                             errors={errors}
                         />
                     </FieldWrapper>

@@ -6,8 +6,8 @@ import FieldWrapper from '../../Form/FieldWrapper'
 import NumberInput from '../../Form/Inputs/NumberInput'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import StepNavigation from '../../Form/StepNavigation'
-import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { FormContext } from 'context/FormContext'
+import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
@@ -24,9 +24,9 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     })
 
     dispatchFormUpdate(watch(), { compare: true })
-    
+
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -49,16 +49,16 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
             }
         ]
     })
-    
+
     const getData = useCallback(async () => {
         try{
             const data = await localeDataHelper.getLocaleData(vehicleTypes.moto, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
-    
+
     useEffect(() => {
         getData()
     }, [getData])
@@ -70,14 +70,14 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     const onPowerChChange = ({ target: { value } }) => {
         setValue('powerKw', (Math.round(+value * 0.735499 )).toString())
     }
-    
+
     useEffect(() => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
-    
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -127,6 +127,8 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="0"
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -179,7 +181,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                     </FieldWrapper>
                 </Col>
             </Row>
-    
+
             <Header strong text={t('vehicles:consumption')}/>
             <Row>
                 <Col sm={12} md={6}>
@@ -189,7 +191,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="20 g/100"
-                
+
                         />
                     </FieldWrapper>
                 </Col>
@@ -210,7 +212,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder="20 g/100"
-                
+
                         />
                     </FieldWrapper>
                 </Col>
@@ -221,12 +223,12 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                             control={control}
                             errors={errors}
                             placeholder={0}
-                
+
                         />
                     </FieldWrapper>
                 </Col>
             </Row>
-    
+
             <Row>
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:class_emission')}>
@@ -239,7 +241,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                     </FieldWrapper>
                 </Col>
             </Row>
-    
+
             <Header text={t('vehicles:vehicle-informations')}/>
 
             <Row>
@@ -253,7 +255,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
                         />
                     </FieldWrapper>
                 </Col>
-                                
+
                 <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:external_color')}>
                         <SelectInput

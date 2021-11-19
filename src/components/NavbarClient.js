@@ -243,7 +243,7 @@ const NavbarClient = () => {
                                                     {/* <li className="px-0 dropdown-item"> */}
                                                     <div className={clsx(classes.removeMark)} style={{display: 'flex', marginLeft:'6px'}}>
                                                         <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
-                                                        <span className="m-2" style={{marginLeft:'0px !important', fontSize:'23.5px'}}>
+                                                        <span className="mr-2 mt-1" style={{marginLeft:'-2px', fontSize:'23.5px'}}>
                                                             Notifications
                                                         </span>
                                                     </div>
@@ -324,7 +324,7 @@ const NavbarClient = () => {
                                             
                                             
                                         }
-                                        {isAuthenticated && <Metamask />}
+                                        {isAuthenticated && !isMobile && <Metamask />}
                                     </div>
                                     </>
                                 ) : (

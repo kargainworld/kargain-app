@@ -3,17 +3,17 @@ import { useForm } from 'react-hook-form'
 import useTranslation from 'next-translate/useTranslation'
 import Header from '../../Header'
 import FieldWrapper from '../../Form/FieldWrapper'
-import NumberInput from '../../Form/Inputs/NumberInput'
+
 import StepNavigation from '../../Form/StepNavigation'
 import SelectInput from '../../Form/Inputs/SelectInput'
-import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { FormContext } from 'context/FormContext'
+import { MessageContext } from 'context/MessageContext'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
-import TextInput from "../../Form/Inputs/TextInput";
-import CheckBoxInput from "../../Form/Inputs/CheckBoxInput";
+import TextInput from "../../Form/Inputs/TextInput"
+import CheckBoxInput from "../../Form/Inputs/CheckBoxInput"
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
@@ -38,7 +38,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 

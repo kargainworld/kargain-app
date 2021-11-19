@@ -4,7 +4,7 @@ import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline'
 import TableMUI from '../TableMUI'
 import CommentsService from '../../../services/CommentsService'
 import CommentModel from '../../../models/comment.model'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import TablePaginationActions from '../TablePaginationActions'
 import { getTimeAgo } from '../../../libs/utils'
 

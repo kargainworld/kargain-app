@@ -6,10 +6,7 @@ import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import ChatIcon from '@material-ui/icons/Chat'
 import Button from '@material-ui/core/Button'
-
-
-
-import TransactionsService from "../../../services/TransactionsService"
+import TransactionsService from "services/TransactionsService"
 import { useAuth } from 'context/AuthProvider'
 import { MessageContext } from 'context/MessageContext'
 import { ModalContext } from 'context/ModalContext'
@@ -17,8 +14,6 @@ import UsersService from 'services/UsersService'
 import AnnounceService from 'services/AnnounceService'
 import UserModel from 'models/user.model'
 import AvatarPreview from 'components/Avatar/AvatarPreview'
-
-
 import Loading from 'components/Loading'
 import Error from '../../_error'
 import { makeStyles } from "@material-ui/styles"
@@ -28,8 +23,6 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useWeb3React } from "@web3-react/core"
 import { injected } from "connectors"
-
-
 import TabsContainer from "../../../components/TabsContainer"
 import AnnounceModel from 'models/announce.model'
 
@@ -158,7 +151,7 @@ const Profile = () => {
     })
 
     const profile = state.profile
-    
+
 
     const handleFollowProfile = async () => {
         if (!isAuthenticated) {
@@ -193,7 +186,7 @@ const Profile = () => {
     }
 
     const fetchProfile = useCallback(async () => {
-        try {            
+        try {
             setFilterState(filterState => ({
                 ...filterState,
                 loading: true
@@ -226,8 +219,8 @@ const Profile = () => {
             }))
 
             const { sorter, filters, page } = filterState
-            
-            
+
+
             const params = {
                 page,
                 sort_by: sorter.key,
@@ -235,10 +228,10 @@ const Profile = () => {
                 ...filters,
                 user: profile.getID
             }
-           
+
             const result = await AnnounceService.getProfileAnnounces(params)
-            state.profile.updateAnnounces(result.rows)           
-                        
+            state.profile.updateAnnounces(result.rows)
+
             /*setState(state => ({
                 ...state,
                 profile: new UserModel({
@@ -264,14 +257,13 @@ const Profile = () => {
                     const token = {
                         tokenPrice: data[0].data,
                         id: announce.id
-                    }                   
+                    }
                     tokensMinted.push(token)
                 }
-                
-            } 
+            }
 
             setState(state => ({
-                ...state,               
+                ...state,
                 announcesMinted: tokensMinted
             }))
         } catch (err) {
@@ -305,7 +297,7 @@ const Profile = () => {
     }, [authenticatedUser, profile])
 
     useEffect(() => {
-        fetchProfile()       
+        fetchProfile()
         window.scrollTo(0, 0)
     }, [fetchProfile])
 
@@ -325,8 +317,8 @@ const Profile = () => {
     }, [fetchAnnounces, state.stateReady])
 
     if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode} />    
-    return (        
+    if (state.err) return <Error statusCode={state.err?.statusCode} />
+    return (
         <>
             {isMobile ? (
                 <div className={clsx(classes.pagetopdiv)} style={{ marginTop: '25px' }}/>
@@ -604,13 +596,13 @@ const Profile = () => {
                         </div>
                     </div>
                 )}
-                
-                <TabsContainer  profile={state.profile} 
-                    isSelf = {state.isSelf} 
+                <TabsContainer  profile={state.profile}
+                    isSelf = {state.isSelf}
                     announceMinted = {state.announcesMinted}
-                    filterState ={filterState}      
-                    updateFilters = {updateFilters}                    
+                    filterState ={filterState}
+                    updateFilters = {updateFilters}
                 />
+
             </Container>
 
         </>

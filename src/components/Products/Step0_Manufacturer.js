@@ -9,12 +9,17 @@ import NumberInput from '../Form/Inputs/NumberInput'
 import TextInput from '../Form/Inputs/TextInput'
 import StepNavigation from '../Form/StepNavigation'
 import SelectInput from '../Form/Inputs/SelectInput'
-import { FormContext } from '../../context/FormContext'
-import { MessageContext } from '../../context/MessageContext'
-import VehiclesService from '../../services/VehiclesService'
+import { FormContext } from 'context/FormContext'
+import { MessageContext } from 'context/MessageContext'
+import VehiclesService from 'services/VehiclesService'
 import { vehicleTypes, vehicleTypeRefModels } from '../../business/vehicleTypes'
+import { useWeb3React } from "@web3-react/core"
 
 const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
+<<<<<<< HEAD
+=======
+    const { library, chainId, account, activate, active } = useWeb3React()
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
     const { t, lang } = useTranslation()
     const cache = useRef({})
     const formRef = useRef(null)
@@ -95,16 +100,28 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 
     const fetchModels = useCallback(async () => {
         const make = selectedMake?.label
+<<<<<<< HEAD
         const cacheKey = `${vehicleType}_makes_${make}_models`       
         if (!make) return
         if (!cache.current[cacheKey]) {
 			
+=======
+        const cacheKey = `${vehicleType}_makes_${make}_models`
+        console.log(cache.current[cacheKey], '>>>>>>>>>>>>')
+        if (!make) return
+        if (!cache.current[cacheKey]) {
+
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
             // const modelsService = VehiclesService.getMakeModels
             const modelsService = isCar ? VehiclesService.getCarsDistinctModels
                 : VehiclesService.getMakeModels
 
             await modelsService(vehicleTypeModel, make)
                 .then(models => {
+<<<<<<< HEAD
+=======
+                    console.log('fetch models', models)
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                     if (!Array.isArray(models)) models = [models]
                     let modelsOptions = []
 
@@ -120,7 +137,11 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
                             label: model.model
                         }))
                     }
+<<<<<<< HEAD
 					
+=======
+
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                     const defaultOption = {
                         value: 'other',
                         label: t(`vehicles:i_dont_know_other`)
@@ -158,7 +179,12 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
         const cacheKey = `${vehicleType}_makes_${make}_models_${model}`
 
         if (!isCar || !make || !model) return
+<<<<<<< HEAD
         if (!cache.current[cacheKey]) {            
+=======
+        if (!cache.current[cacheKey]) {
+            console.log('fetch cars models years')
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
             await VehiclesService.getCarsMakeModelTrimYears(make, model)
                 .then(years => {
                     if (!Array.isArray(years)) years = [years]
@@ -232,6 +258,10 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
     const onMakeChange = value => {
         setValue('manufacturer.model', null)
         setValue('manufacturer.year', null)
+<<<<<<< HEAD
+=======
+        console.log('Make Changed!!!')
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
         return value
     }
 
@@ -297,7 +327,11 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
                 </Col>
 
                 <Col md={4}>
+<<<<<<< HEAD
                     <FieldWrapper label={t('vehicles:year')} >
+=======
+                    <FieldWrapper label={t('vehicles:year')}>
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                         {/* {isCar ? (<SelectInput
 							name="manufacturer.year"
 							placeholder={t('vehicles:select')}
@@ -314,14 +348,18 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
 								errors={errors}
 							/>
 						)} */}
+<<<<<<< HEAD
 						
+=======
+
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                         {/* <TextInput
 							disabled={!watch('manufacturer.model')}
 							name="manufacturer.year"
 							control={control}
 							errors={errors}
 						/> */}
-						
+
                         <NumberInput
                             disabled={!watch('manufacturer.model')}
                             name="manufacturer.year"
@@ -329,14 +367,22 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
                             errors={errors}
                             placeholder="2021"
                             rules={{ required: t('form_validations:required') }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                         />
                     </FieldWrapper>
                 </Col>
             </Row>
             <StepNavigation prev={prevStep} submit />
+<<<<<<< HEAD
             <div style={{ display:'flex', justifyContent:'center', marginTop:'15px' }}>
                 <button className="btn" style={{ color: '#2C65F6', fontSize: "14px", fontWeight: "normal" }}  onClick={triggerSkipStep}>{t(`vehicles:skip-step`)} </button>
             </div>
+=======
+            
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
         </form>
     )
 }

@@ -8,7 +8,7 @@ import NumberInput from '../../Form/Inputs/NumberInput'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
@@ -18,7 +18,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { dispatchModalError } = useContext(MessageContext)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
-    
+
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -28,7 +28,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(null);
+    const [ mileageType, setMileageType ] = useState(null)
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],
         CheckboxOptionsEquipments: [],
@@ -57,7 +57,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
             const data = await localeDataHelper.getLocaleData(vehicleTypes.utility, lang)
             setFormData(data)
         }catch (err){
-            dispatchModalError({ err, persist : true})
+            dispatchModalError({ err, persist : true })
         }
     },[lang])
 
@@ -77,9 +77,9 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         setMileageType(selectedMileage || {
             label: 'kilometer',
             value: 'km'
-        });
+        })
     }, [selectedMileage])
-    
+
     return (
         <form className="form_wizard" ref={formRef} onSubmit={handleSubmit(onSubmitStep)}>
             <Row>
@@ -128,6 +128,8 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                             name="vehicleEngineCylinder"
                             control={control}
                             errors={errors}
+                            rules={{ required: t('form_validations:required'),
+                                validate: { min: (value) => value >= 10 ? true : t('form_validations:min_{min}', { min : 10 }) } }}
                         />
                     </FieldWrapper>
                 </Col>
@@ -181,16 +183,16 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
                 </Col>
             </Row>
             <Row>
-            <Col sm={12} md={6}>
-                <FieldWrapper label={t('vehicles:function_hour')}>
-                    <NumberInput
-                        name="functionHour"
-                        control={control}
-                        errors={errors}
-                    />
-                </FieldWrapper>
-            </Col>
-            <Col sm={12} md={6}>
+                <Col sm={12} md={6}>
+                    <FieldWrapper label={t('vehicles:function_hour')}>
+                        <NumberInput
+                            name="functionHour"
+                            control={control}
+                            errors={errors}
+                        />
+                    </FieldWrapper>
+                </Col>
+                <Col sm={12} md={6}>
                     <FieldWrapper label={t('vehicles:class_emission')}>
                         <SelectInput
                             name="emission"

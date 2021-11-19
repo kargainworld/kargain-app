@@ -1,6 +1,5 @@
 import useTranslation from 'next-translate/useTranslation'
 import React from 'react'
-import { Row } from 'reactstrap'
 
 import clsx from 'clsx'
 import customColors from '../../theme/palette'
@@ -19,30 +18,30 @@ const useStyles = makeStyles(() => ({
         hegiht: "41px",
         textAlign:'center',
         background: customColors.gradient.main
-    },
+    }
 }))
- 
+
 const CommentForm = ({ onSubmitComment, textareaCommentRef, doneSubmitting }) => {
     const { t } = useTranslation()
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <form onSubmit={e => onSubmitComment(e)}
             className="comments-write" >
-            <div style={{display:'flex'}}>
-                <div className="form-group" style={{width: '70%'}}>
-                    <input 
+            <div style={{ display:'flex' }}>
+                <div className="form-group" style={{ width: '70%' }}>
+                    <input
                         type="text"
                         rows={3}
                         cols={13}
                         ref={textareaCommentRef}
                         placeholder="ex: Superbe voiture"
                         // className="form-control editor"]
-                        style={{width:'100%'}}
+                        style={{ width:'100%' }}
                     />
                 </div>
-                
-                <div style={{marginLeft:'10px'}}>
+
+                <div style={{ marginLeft:'10px' }}>
                     <button
                         className={clsx(classes.button)}
                         disabled={!doneSubmitting}

@@ -7,7 +7,7 @@ import UserModel from '../../../models/user.model'
 import TableMUI from '../TableMUI'
 import BulletPoint from '../../BulletPoint'
 import TablePaginationActions from '../TablePaginationActions'
-import { MessageContext } from '../../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import ActivatedBullet from './components/ActivatedBullet'
 import IsProBullet from './components/IsProBullet'
 import { makeStyles } from "@material-ui/styles"

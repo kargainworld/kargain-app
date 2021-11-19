@@ -34,7 +34,6 @@ const OffersPurchaseForm = ({ offer: defaultOffer }) => {
 			<div style={{marginLeft:'-15px'}}>
 			    <h4 className="step-title" style={{fontSize:'20px', color:'black'}}>Souscrire à une offre</h4>
 			    <p className="concept-name">Vous ne disposez d'aucune offre.</p>
-			    <p>Vous n'avez le droit d'avoir que 2 annonces publiées en simultanée.</p>
 			    <p>Vous pouvez souscrire à une des offres ci dessous : </p>
 
 				{isMobile ? (

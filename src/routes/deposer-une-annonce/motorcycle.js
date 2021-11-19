@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
-import { MessageContext } from '../../context/MessageContext'
+import { MessageContext } from 'context/MessageContext'
 import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
 import Step1MotoDetails from '../../components/Products/motorcycle/Step1_MotoDetails'
 import Step2MotoStatus from '../../components/Products/motorcycle/Step2_MotoStatus'
@@ -55,7 +55,7 @@ const MotorCyclesForm = (props) => {
                 await TransactionsService.addTransaction({ announceId: announce._id.toString(), hashTx, data: +tokenPrice, action: "TokenMinted" })
                 
                 await waitTransactionToBeConfirmed(hashTx)
-                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx, status: "Approved" })
+                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx: hashTx, status: "Approved" })
             }catch(err){
                 dispatchModalError({
                     err,

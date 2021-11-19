@@ -6,19 +6,19 @@ import useTranslation from 'next-translate/useTranslation'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
 import { useForm } from 'react-hook-form'
-import { FormContext } from '../../context/FormContext'
-import { useAuth } from '../../context/AuthProvider'
-import vehicleTypes from '../../business/vehicleTypes.js'
-import announceTypes from '../../business/announceTypes.js'
-import ValidationErrors from '../../components/Form/Validations/ValidationErrors'
-
-import AnnounceService from '../../services/AnnounceService'
-import UserModel from '../../models/user.model'
-import Loading from '../../components/Loading'
+import { FormContext } from 'context/FormContext'
+import { useAuth } from 'context/AuthProvider'
+import vehicleTypes from 'business/vehicleTypes.js'
+import announceTypes from 'business/announceTypes.js'
+import ValidationErrors from 'components/Form/Validations/ValidationErrors'
+import AnnounceService from 'services/AnnounceService'
+import UserModel from 'models/user.model'
+import Loading from 'components/Loading'
 import Error from '../_error'
-
 import customColors from '../../theme/palette'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { injected } from "../../connectors"
+import { useWeb3React } from "@web3-react/core"
 
 const path = require('path')
 
@@ -35,10 +35,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Page = () => {
-
-    
+    const { activate } = useWeb3React()
+    const [tried, setTried] = useState(false)
     const isMobile = useMediaQuery('(max-width:768px)')
-
     const router = useRouter()
     const classes = useStyles()
     const formRef = useRef()
@@ -54,6 +53,20 @@ const Page = () => {
         loading: false,
         profile: new UserModel()
     })
+
+    useEffect(() => {
+        injected.isAuthorized().then((isAuthorized) => {
+            if (isAuthorized) {
+                activate(injected, undefined, true).then(() =>{
+                }).catch((err) => {
+                    console.log("err", err)
+                    setTried(true)
+                })
+            } else {
+                setTried(true)
+            }
+        })
+    }, [])
 
     const { dispatchFormUpdate, dispatchFormClear } = useContext(FormContext)
     const profile = state.profile
@@ -101,10 +114,6 @@ const Page = () => {
 
     if (state.loading) return <Loading/>
     if (state.err) return <Error statusCode={state.err?.statusCode}/>
-    if (state.profile.getCountGarage >= 2 && isAuthenticated && state.profile.getCountGarage >= authenticatedUser.getSubscriptionOfferMaxAnnounces) {
-        const userName = authenticatedUser.getUsername
-        router.push(`/profile/${userName}/edit?offer=true`)
-    }
 
     return (
         <>
@@ -121,7 +130,11 @@ const Page = () => {
                                                 type="radio"
                                                 name="vehicleType"
                                                 value={tab.value}
+<<<<<<< HEAD
                                                 ref={register({ required : t('form_validations:field-is-required') })}
+=======
+                                                ref={register({ required : t('form_validations:required') })}
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                                                 onChange={() => handleSelectVehicleType(index)}
                                             />
                                             <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem', height:'159px', marginTop:'25px' }}>
@@ -153,7 +166,11 @@ const Page = () => {
                                                     type="radio"
                                                     name="adType"
                                                     value={tab.value}
+<<<<<<< HEAD
                                                     ref={register({ required : t('form_validations:field-is-required') })}
+=======
+                                                    ref={register({ required : t('form_validations:required') })}
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                                                 />
                                                 <label htmlFor={`ad_type${index}`}>{tab.label}</label>
                                             </div>
@@ -164,7 +181,6 @@ const Page = () => {
 
                         <Row className="justify-content-center" style={{ marginTop:'15px' }}>
                             <button className={clsx('btn', classes.button)}
-                                className={clsx("btn"), classes.button}
                                 type="submit"
                                 disabled={!formState.isValid}>
                                 {t('vehicles:next')}
@@ -174,7 +190,7 @@ const Page = () => {
                         {errors && <ValidationErrors errors={errors}/>}
                     </form>
                 ) : (
-                    
+
                     <form className="form_wizard my-4" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 
                         <Typography style={{ fontSize:"20px", marginTop:"40px" }} component="h3" variant="h3" gutterBottom className="text-center">{t('vehicles:choose-vehicle-type')}</Typography>
@@ -187,7 +203,11 @@ const Page = () => {
                                                 type="radio"
                                                 name="vehicleType"
                                                 value={tab.value}
+<<<<<<< HEAD
                                                 ref={register({ required : t('form_validations:field-is-required') })}
+=======
+                                                ref={register({ required : t('form_validations:required') })}
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                                                 onChange={() => handleSelectVehicleType(index)}
                                             />
                                             <label htmlFor={`vehicle_type${index}`} style={{ minHeight: '5rem' }}>
@@ -219,7 +239,11 @@ const Page = () => {
                                                     type="radio"
                                                     name="adType"
                                                     value={tab.value}
+<<<<<<< HEAD
                                                     ref={register({ required : t('form_validations:field-is-required') })}
+=======
+                                                    ref={register({ required : t('form_validations:required') })}
+>>>>>>> 45edd24f60137febe70568834b49bb283388f564
                                                 />
                                                 <label htmlFor={`ad_type${index}`}>{tab.label}</label>
                                             </div>
@@ -230,7 +254,6 @@ const Page = () => {
 
                         <Row className="justify-content-center">
                             <button className={clsx('btn', classes.button)}
-                                className={clsx("btn"), classes.button}
                                 type="submit"
                                 disabled={!formState.isValid}>
                                 {t('vehicles:next')}

@@ -1,4 +1,3 @@
-import makeStyles from "@material-ui/core/styles/makeStyles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import useTranslation from "next-translate/useTranslation"
 import { useForm } from "react-hook-form"
@@ -8,55 +7,16 @@ import { Emoji } from "react-apple-emojis"
 import FieldWrapper from "../../../Form/FieldWrapper"
 import SelectInput from "../../../Form/Inputs/SelectInput"
 import React, { useState } from "react"
+import { useStyles } from './styles.js'
 
-
-const useStyles = makeStyles(() => ({
-    dropdownMenu: {
-        position: 'absolute',
-        width: '250px',
-        right: '220px',
-        top: '225.49px',
-        padding: '5px 5px'
-    },
-    buttonDropdown:{
-        '& button':{
-            borderRadius: '26.8293px !important',
-            borderColor:'#dcd7d7 !important',
-            backgroundColor: '#c4c4c400 !important',
-            color: 'black !important',
-            cursor: 'pointer',
-            fontSize:"17.1707px",
-            marginRight: '6px !important',
-            marginTop: '5px !important',
-            '& button:clicked': {
-                borderRadius: '25px !important',
-                backgroundColor: '#c4c4c447 !important',
-                color: 'black !important',
-                fontSize:"17.1707px !important"
-            },
-            '&::after': {
-                display: 'none !important'
-            },
-            '& .propTypes':{
-                disabled: 'PropTypes.bool',
-                direction: 'PropTypes.oneOf([`up`, `down`, `left`, `right`])',
-                group: 'PropTypes.bool',
-                isOpen: 'PropTypes.bool',
-                tag: 'PropTypes.string',
-                toggle: 'PropTypes.func'
-            }
-        }
-    }
-}))
-
-const Model = ({ defaultFilters, submit, models }) => {
+const Model = (props) => {
     const isMobile = useMediaQuery('(max-width:768px)')
     const [dropdownOpen3, setOpen3] = useState(false)
     const toggle3 = () => setOpen3(!dropdownOpen3)
-    const classes = useStyles()
+    const classes = useStyles(props)
     const { t } = useTranslation()
     const defaultValues = {
-        ...defaultFilters
+        ...props.defaultFilters
     }
     const { watch, control, errors, handleSubmit } = useForm({
         mode: 'onChange',
@@ -75,12 +35,12 @@ const Model = ({ defaultFilters, submit, models }) => {
                     <FieldWrapper >
                         <SelectInput
                             name="manufacturer.model"
-                            options={models}
+                            options={props.models}
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.make')}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
@@ -98,12 +58,12 @@ const Model = ({ defaultFilters, submit, models }) => {
                     <FieldWrapper >
                         <SelectInput
                             name="manufacturer.model"
-                            options={models}
+                            options={props.models}
                             control={control}
                             errors={errors}
                             disabled={!watch('manufacturer.make')}
                             onChange={(selected, name) =>{
-                                setTimeout(handleSubmit((data) => submit(data, selected, name)), 100)
+                                setTimeout(handleSubmit((data) => props.submit(data, selected, name)), 100)
                                 return selected
                             }}
                         />
