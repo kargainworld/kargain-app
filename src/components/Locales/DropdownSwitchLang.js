@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next-translate/Link';
 import i18nConfig from '../../../i18n.json';
@@ -10,10 +9,12 @@ import { Menu, MenuItem } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles } from '@material-ui/styles';
 
+import customColors from 'theme/palette'
+
 const useStyles = makeStyles(() => ({
   button: {
     whiteSpace: 'nowrap',
-    background: '-webkit-linear-gradient(180deg, #DB00FF 0%, #5200FF 100%)',
+    background: customColors.gradient.main,
     '-webkit-background-clip': 'text',
     '-webkit-text-fill-color': 'transparent',
     display: 'flex',
