@@ -223,28 +223,22 @@ const Announce = () => {
             fetchProfile()
         }
     }, [fetchAnnounce, fetchProfile])
-
-
+    
 
     useEffect(() => {
         if (!state.stateReady) return
 
         setIsLoading(true)
-
-        const tokenId = state.announce.getTokenId
         getPriceTracker().then((price) => {
             setPrice(price.quotes.EUR.price)
         })
 
-        fetchTokenPrice(tokenId)
-            .then((price) => {
-                setTokenPrice(price)
-                setIsLoading(false)
-                setIsMinted(price ? true : false)
-            })
-            .catch(() => {
-                setIsLoading(false)
-            })
+        if (tokenMinted && offerAccepted.length === 0) {
+            setTokenPrice(tokenMinted.data)
+            setIsLoading(false)
+            setIsMinted(true)
+        }
+
     }, [state, fetchTokenPrice])
 
     useEffect(() => {
@@ -272,14 +266,6 @@ const Announce = () => {
             !offerAccepted.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status)) &&
             !offerRejected.some(y=>y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
         )
-
-    console.log({
-        tokenMinted,
-        newOfferCreated,
-        offerAccepted,
-        offerRejected,
-        transactions
-    })
 
     const handleApplyPriceChange = async () => {
         const tokenId = state?.announce?.getTokenId
@@ -342,8 +328,6 @@ const Announce = () => {
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
 
-    console.log("pererere", !isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet)
-
     return (
         <Container>
 
@@ -370,7 +354,7 @@ const Announce = () => {
                                         </Row>
                                     </Col>
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Pending" && <div>offer pending, wait a few minutes to be confirmed.</div>}
-                                    
+
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === "Approved" && (
                                         <HandleOffer newOfferCreated={newOfferCreated} announce={state.announce} tokenPrice={tokenPrice} />
                                     )}
