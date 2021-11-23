@@ -134,7 +134,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const [filtersOpened] = useState(false)
     const { activeTab = 0 } = getParams()
-    const[selectedSlug, setSelectedSlug] = useState("")
+    const [selectedSlug, setSelectedSlug] = useState("")
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
 
     const handleOpenDialogRemove = () => { setOpenDialogRemove(true) }
@@ -170,7 +170,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
         <Container>
             <Row>
                 <div style={{ width:'103%' }}>
-                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
+                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} total={announceMinted.length} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
                         <Tabs.Item id="home-tab" title="Vitrine">
                             {isMobile ? (
                                 <div style={{ width:'100%' }}>
