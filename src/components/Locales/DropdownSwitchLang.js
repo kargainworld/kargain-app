@@ -5,16 +5,17 @@ import i18nConfig from '../../../i18n.json';
 import useTranslation from 'next-translate/useTranslation';
 import startsWithLang from 'next-translate/_helpers/startsWithLang';
 import Button from '@material-ui/core/Button';
-import { Menu, MenuItem } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/styles';
+import ChevronDown from '../../assets/icons/ChevronDown';
 
-import customColors from 'theme/palette'
+import customColors from 'theme/palette';
 
 const useStyles = makeStyles(() => ({
   button: {
     whiteSpace: 'nowrap',
-    background: customColors.gradient.main,
+    background: 'linear-gradient(180deg, #2C65F6 0%, #699EF8 27.08%, #A291F3 58.33%, #ED80EB 100%)',
     '-webkit-background-clip': 'text',
     '-webkit-text-fill-color': 'transparent',
     display: 'flex',
@@ -23,11 +24,6 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       opacity: 0.8,
     },
-  },
-  arrowDown: {
-    fontSize: '26px',
-    lineHeight: 1,
-    marginTop: -10,
   },
 }));
 
@@ -56,17 +52,7 @@ const DropdownSwitchLang = () => {
   return (
     <>
       <Button className={classes.button} aria-controls="language-menu" aria-haspopup="true" onClick={handleClick}>
-        文A{' '}
-        <span className={classes.arrowDown}>
-          <ExpandMoreIcon
-            style={{
-              position: 'relative',
-              top: 3,
-              fontSize: '20px',
-              color: '#9e6ffa',
-            }}
-          />
-        </span>
+        文A <ChevronDown style={{ marginLeft: 8 }} />
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {allLanguages &&

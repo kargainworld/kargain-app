@@ -34,7 +34,7 @@ export default {
         contrastText: white,
         dark: "linear-gradient(180deg, #DB00FF 0%, #5200FF 100%)",
         main: "linear-gradient(94.54deg, rgba(44, 101, 246, 0.69) 6.32%, rgba(105, 158, 248, 0.87) 31.3%, #A291F3 57.1%, rgba(237, 128, 235, 0.81) 83.75%)",
-        light: "linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%)"
+        light: "linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%)",
     },
     success: {
         contrastText: white,
