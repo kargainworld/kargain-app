@@ -52,7 +52,7 @@ const DropdownSwitchLang = () => {
   return (
     <>
       <Button className={classes.button} aria-controls="language-menu" aria-haspopup="true" onClick={handleClick}>
-        文A <ChevronDown />
+        文A <ChevronDown style={{ marginLeft: 8 }} />
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {allLanguages &&
