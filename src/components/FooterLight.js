@@ -55,7 +55,7 @@ const FooterLight = () => {
     <footer>
       <Nav navbar className={classes.footerLinks}>
         {isMobile && (
-          <NavItem className={classes.navItem}>
+          <NavItem key={'kargain-world-link'} className={classes.navItem}>
             <Link href="https://kargain.world" prefetch={false}>
               <a target="_blank" variant="text" style={{ color: '#2C6BFC' }}>
                 <Emoji name="globe-with-meridians" width={13} />
@@ -66,7 +66,7 @@ const FooterLight = () => {
         {links &&
           links.map((link, index) => {
             return (
-              <NavItem className={classes.navItem}>
+              <NavItem key={index} className={classes.navItem}>
                 <Link href={link.link}>
                   <a className={classes.link}>{link.label}</a>
                 </Link>
