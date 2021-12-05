@@ -14,6 +14,7 @@ import customColors from 'theme/palette';
 
 const useStyles = makeStyles(() => ({
   button: {
+    fontWeight: 700,
     whiteSpace: 'nowrap',
     background: 'linear-gradient(180deg, #2C65F6 0%, #699EF8 27.08%, #A291F3 58.33%, #ED80EB 100%)',
     '-webkit-background-clip': 'text',
