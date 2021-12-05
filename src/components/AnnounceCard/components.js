@@ -110,6 +110,7 @@ export const Root = styled(Card)`
 
 export const User = styled.div`
   display: flex;
+  margin-bottom: 23.46px;
 `;
 
 export const Info = styled.div`
@@ -117,37 +118,42 @@ export const Info = styled.div`
   flex-direction: column;
   justify-content: center;
   max-width: 100%;
+  width: 55%;
   overflow: hidden;
 `;
 
 export const AuthorName = styled(Link)`
-  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 13.9739px;
+  font-weight: 500;
+  color: black;
+  margin-bottom: 3.5px;
 `;
 
 export const Location = styled(Link)`
-  margin-top: 4px !important;
-  display: flex !important;
-  align-items: center !important;
-  font-size: 13px !important;
-  color: #99999 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-
-  svg {
-    margin-right: ${({ theme }) => theme.spacing(0.5)}px;
-    margin-left: -${({ theme }) => theme.spacing(0.5)}px;
+  color: #99999;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13.9739px;
+  font-weight: normal;
+  line-height: 1.5;
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  a {
+    color: #999999 !important;
   }
 `;
 
 export const Meta = styled.div`
   margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
 `;
 
 export const CreationDate = styled.span`
@@ -185,10 +191,13 @@ export const Price = styled.span`
   color: ${({ theme: { palette } }) => palette.primary.main};
 `;
 
-export const Body = styled.div``;
+export const Body = styled.div`
+  height:100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 export const ImageWrapper = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(3.5)}px;
   position: relative;
 `;
 
@@ -203,8 +212,13 @@ export const ImagePlaceholder = styled.span`
   justify-content: center;
   color: ${({ theme }) => theme.palette.primary.light};
   background-color: ${({ theme }) => lighten(theme.palette.primary.light, 0.9)};
-  height: 240px;
+  height: 241px;
+`;
+
+export const ImageBox = styled.div`
+  height: 241px;
   width: 100%;
+  margin-bottom: 24px;
 `;
 
 export const ImageCounter = styled.span`
