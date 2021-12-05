@@ -25,6 +25,7 @@ import {
   ImageWrapper,
   ImageCounter,
   ImagePlaceholder,
+  ImageBox,
 } from './components';
 import { CardContent } from '@material-ui/core';
 import GalleryViewer from '../Gallery/GalleryViewer';
@@ -41,7 +42,7 @@ const useStyles = makeStyles(() => ({
   image: {
     '& .image-gallery-image': {
       width: '100% !important',
-      height: '240px !important',
+      height: '241px !important',
       objectFit: 'fill !important',
     },
   },
@@ -53,10 +54,8 @@ const useStyles = makeStyles(() => ({
     color: '#999999',
   },
   a_info: {
-    marginTop: '5px',
-    fontSize: '17.4674px !important',
-    fontWeight: '500',
-    color: '#2C65F6',
+    fontSize: '17.4674px',
+    marginBottom: '6.54px',
   },
   avatar: {
     '& svg': {
@@ -69,6 +68,15 @@ const useStyles = makeStyles(() => ({
     marginRight: '-15px',
   },
   share: {
+    marginBottom: '6px',
+    marginTop: '-10.5px',
+    width: '25px',
+    height: '25px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: '50%',
     '&:hover': {
       backgroundColor: '#ececec !important',
     },
@@ -116,9 +124,10 @@ const useStyles = makeStyles(() => ({
     },
   },
   gear: {
-    marginTop: '-55px',
-    marginLeft: '95%',
+    height: '18px',
+    width: '18px',
     '&:hover': {
+      height: '20px',
       width: '20px',
     },
   },
@@ -215,21 +224,17 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
 
   return (
     <div className={clsx(classes.row)}>
-      <Root style={{ borderRadius: '25px', border: '2px solid #D9D9DB', boxSizing: 'border-box', height: '520px' }}>
-        <CardContent style={{ padding: '28px' }}>
+      <Root
+        style={{
+          borderRadius: '25px',
+          border: '2px solid #D9D9DB',
+          boxSizing: 'border-box',
+          height: '511px',
+        }}
+      >
+        <CardContent style={{ padding: '31px 28px 17px 28px', height: '100%' }}>
           <Body>
-            <Meta
-              className={clsx(classes.share)}
-              style={{
-                marginTop: '-5px',
-                marginRight: '2px',
-                marginBottom: '-27px',
-                width: '25px',
-                height: '25px',
-                backgroundColor: '#ffffff',
-                borderRadius: '50%',
-              }}
-            >
+            <Meta className={clsx(classes.share)}>
               <NewIcons.share
                 onClick={() =>
                   dispatchModalState({
@@ -238,62 +243,52 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
                   })
                 }
                 alt="share"
-                style={{ marginTop: '11px', marginRight: '3px' }}
               />
             </Meta>
+            <ImageBox>
+              <ImageWrapper className={clsx(classes.image)}>
+                {announce.getImages.length > 0 && (
+                  <GalleryViewer
+                    images={announce.getImages}
+                    ref={refImg}
+                    handleClick={handleImageClick}
+                    isAnnounceCard={true}
+                  />
+                )}
 
-            <ImageWrapper className={clsx(classes.image)}>
-              {announce.getImages.length > 0 && (
-                <GalleryViewer
-                  images={announce.getImages}
-                  ref={refImg}
-                  handleClick={handleImageClick}
-                  isAnnounceCard={true}
-                />
-              )}
+                {!announce.getFeaturedImg && (
+                  <ImagePlaceholder>
+                    <i.CameraAlt fontSize="large" />
+                  </ImagePlaceholder>
+                )}
 
-              {!announce.getFeaturedImg && (
-                <ImagePlaceholder>
-                  <i.CameraAlt fontSize="large" />
-                </ImagePlaceholder>
-              )}
-
-              {announce.getFeaturedImg && (
-                <ImageCounter>
-                  <i.CameraAlt />
-                  {announce.getCountImages}
-                </ImageCounter>
-              )}
-              <div className={classes.priceContainer}>
-                <div className={classes.price}>€ {(priceBNB * tokenPrice).toFixed(2)}</div>
-              </div>
-            </ImageWrapper>
-
-            <User style={{ marginTop: '24px' }}>
+                {announce.getFeaturedImg && (
+                  <ImageCounter>
+                    <i.CameraAlt />
+                    {announce.getCountImages}
+                  </ImageCounter>
+                )}
+                <div className={classes.priceContainer}>
+                  <div className={classes.price}>€ {(priceBNB * tokenPrice).toFixed(2)}</div>
+                </div>
+              </ImageWrapper>
+            </ImageBox>
+            <User>
               <Avatar
                 src={announce.getAuthor.getAvatar || announce.getAuthor.getAvatarUrl}
                 size="medium"
                 isonline={getOnlineStatusByUserId(announce.getAuthor.getID)}
-                style={{ width: 45, height: 45, marginRight: 10 }}
+                style={{ width: 45, height: 45, marginRight: 7 }}
               />
 
-              <Info style={{ width: '55%', marginTop: '-5px' }}>
-                <AuthorName
-                  href={announce.getAuthor.getProfileLink}
-                  style={{ fontsSize: '13.9739px !important', fontWeight: 'normal', color: 'black', marginLeft: '6px' }}
-                >
-                  {announce.getAuthor.getFullName}
-                </AuthorName>
+              <Info>
+                <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
-                  <Location
-                    href={announce.buildAddressGoogleMapLink()}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={clsx(classes.avatar)}
-                    style={{ fontSize: '13.9739px', fontWeight: 'normal', color: '#999999', marginLeft: '2px' }}
-                  >
+                  <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
                     <NewIcons.card_location />
-                    {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                    <div style={{ fontSize: '13px', color: '#99999', marginLeft: '3.49px' }}>
+                      {announce.getAdOrAuthorCustomAddress(['city', 'country'])}
+                    </div>
                   </Location>
                 )}
               </Info>
@@ -324,61 +319,88 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
                 </SubHeader>
               </div>
             </User>
-            <div style={{ marginLeft: '5px', marginTop: '15px' }}>
+            <div style={{ marginLeft: '8px' }}>
               <a className={clsx(classes.a_coin)}>#1212</a>
             </div>
             <Link href={announce.getAnnounceLink}>
-              <a>
-                <h3 className={clsx(classes.a_info)}>
-                  <p style={{ color: 'black' }}> {temp1} </p>
-                  <p> {temp2} </p>
-                </h3>
-              </a>
+              <div className={clsx(classes.a_info)}>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    color: 'black',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {temp1}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 500,
+                    color: '#2C65F6',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {temp2}
+                </div>
+              </div>
             </Link>
 
-            <div style={{ marginLeft: '5px ', marginBottom: '-15px ' }}>
-              <h6 style={{ fontsSize: '16px ', textAlign: 'left' }}>{strkm} Km</h6>
-              <Emoji name="gear" width="18" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
-              <Modal
-                toggle={() => setModalOpen(!modalOpen)}
-                isOpen={modalOpen}
-                className={clsx(classes.modalcontent)}
-                style={{ borderRadius: '5px', marginTop: '15%', width: '400px' }}
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  fontsSize: '16px',
+                  color: customColors.text.primary,
+                  fontWeight: 500,
+                  lineHeight: '24px',
+                }}
               >
-                <button
-                  aria-label="Close"
-                  className=" close"
-                  type="button"
-                  onClick={() => setModalOpen(!modalOpen)}
-                  style={{ display: 'flex', justifyContent: 'flex-end', margin: '15px 15px' }}
-                >
-                  <NewIcons.close_color />
-                  <NewIcons.inclose_color style={{ transform: 'translate(-14.4px, 7.3px)' }} />
-                </button>
-
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                  <div
-                    className={clsx(classes.button)}
-                    onClick={(e) => {
-                      onSelectSlug(announce.getSlug);
-                      onhandleOpenDialogRemove();
-                    }}
-                  >
-                    {t('vehicles:remove-announce')}
-                  </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '50px' }}>
-                  <CTALink
-                    className={clsx(classes.button)}
-                    title={t('vehicles:edit-announce')}
-                    href={announce.getAnnounceEditLink}
-                  />
-                </div>
-              </Modal>
+                {strkm} Km
+              </div>
+              <Emoji name="gear" className={clsx(classes.gear)} onClick={() => setModalOpen(!modalOpen)} />
             </div>
           </Body>
         </CardContent>
       </Root>
+      <Modal
+        toggle={() => setModalOpen(!modalOpen)}
+        isOpen={modalOpen}
+        className={clsx(classes.modalcontent)}
+        style={{ borderRadius: '5px', marginTop: '15%', width: '400px' }}
+      >
+        <button
+          aria-label="Close"
+          className=" close"
+          type="button"
+          onClick={() => setModalOpen(!modalOpen)}
+          style={{ display: 'flex', justifyContent: 'flex-end', margin: '15px 15px' }}
+        >
+          <NewIcons.close_color />
+          <NewIcons.inclose_color style={{ transform: 'translate(-14.4px, 7.3px)' }} />
+        </button>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+          <div
+            className={clsx(classes.button)}
+            onClick={(e) => {
+              onSelectSlug(announce.getSlug);
+              onhandleOpenDialogRemove();
+            }}
+          >
+            {t('vehicles:remove-announce')}
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '50px' }}>
+          <CTALink
+            className={clsx(classes.button)}
+            title={t('vehicles:edit-announce')}
+            href={announce.getAnnounceEditLink}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
