@@ -1,4 +1,9 @@
 import React, { useContext } from 'react'
+import Web3 from 'web3'
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import Portis from "@portis/web3"
+import Fortmatic from 'fortmatic'
 import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import { useForm } from 'react-hook-form'
@@ -35,7 +40,7 @@ const useStyles = makeStyles(() => ({
 const formConfig = {
     mode: 'onChange',
     validateCriteriaMode: 'all'
-}
+}  
 
 const RegisterPage = () => {
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
@@ -60,18 +65,41 @@ const RegisterPage = () => {
 	    )
     }
 
+    const providerOptions = {        
+        walletconnect: {
+          package: WalletConnectProvider, // required
+          options: {
+            infuraId: "de98845889164596b64d51908b361ce2" // required
+          }
+        },
+        fortmatic: {
+            package: Fortmatic, // required
+            options: {
+              key: "pk_live_BD5D4B8351A4F63A" // required
+            }
+        },
+        portis: {
+            package: Portis, // required
+            options: {
+                id: "d29d2427-0c9b-4b6e-bcde-799f6fd0e833" // required
+            }
+        }
+    };
+    
+    const web3Modal = new Web3Modal({
+        network: "mainnet", // optional
+        cacheProvider: true, // optional
+        providerOptions // required
+    });
+    
+    const provider = web3Modal.connect();
+    const web3 = new Web3(provider);
+
     return (
         <Container>
             <h1 style={{ fontSize:"24px", marginTop:'40px' }}>{t('vehicles:register')}</h1>
-            <Row>
-                <Col className="m-auto" sm="12" md="10">
-
-                    {/* <SSOProviders/> */}
-
-                    {/* <div className="mx-auto text-center"> */}
-                    {/* <CTALink title={t('vehicles:register-pro')} */}
-                    {/* href="/auth/register-pro" /> */}
-                    {/* </div> */}
+            {/* <Row>
+                <Col className="m-auto" sm="12" md="10">                    
 
                     <form className="p-3 mx-auto"
                         onSubmit={handleSubmit(onSubmit)}
@@ -169,7 +197,7 @@ const RegisterPage = () => {
                         </div>
                     </form>
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     )
 }
