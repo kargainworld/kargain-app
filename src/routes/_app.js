@@ -12,6 +12,7 @@ import { MessageContextProvider } from 'context/MessageContext'
 import { AuthProvider, useAuth } from '../context/AuthProvider'
 import { FormContextProvider } from '../context/FormContext'
 import { SocketProvider } from '../context/SocketContext'
+import { Web3ContextProvider } from '../context/Web3Context'
 import ModalSearchResults from '../components/Search/ModalSearchResults'
 import AdminLayout from '../components/Admin/Layout/AdminLayout'
 import appWithI18n from '../components/Locales/appWithI18n'
@@ -28,7 +29,7 @@ import '../scss/theme.scss'
 import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
 import { Web3ReactProvider } from '@web3-react/core'
-import Web3 from 'web3'
+// import Web3 from 'web3'
 import { EmojiProvider } from 'react-apple-emojis'
 import emojiData from 'react-apple-emojis/lib/data.json'
 
@@ -50,13 +51,13 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                    <MessageContextProvider>
-                        <AuthProvider>
-                            <SocketProvider>
-                                <FormContextProvider formKey={formKey}>
-                                    <SearchContextProvider>
-                                        <ModalContextProvider>
+                <MessageContextProvider>
+                    <AuthProvider>
+                        <SocketProvider>
+                            <FormContextProvider formKey={formKey}>
+                                <SearchContextProvider>
+                                    <ModalContextProvider>
+                                        <Web3ContextProvider>
                                             <EmojiProvider data={emojiData}>
                                                 <NextProgress />
                                                 <DefaultSeo {...SEO} />
@@ -64,13 +65,13 @@ const MyApp = ({ Component, pageProps }) => {
                                                     <Component {...pageProps} />
                                                 </ProtectedRouter>
                                             </EmojiProvider>
-                                        </ModalContextProvider>
-                                    </SearchContextProvider>
-                                </FormContextProvider>
-                            </SocketProvider>
-                        </AuthProvider>
-                    </MessageContextProvider>
-                </Web3ReactProvider>
+                                        </Web3ContextProvider>
+                                    </ModalContextProvider>
+                                </SearchContextProvider>
+                            </FormContextProvider>
+                        </SocketProvider>
+                    </AuthProvider>
+                </MessageContextProvider>
             </ThemeProvider>
         </StyledThemeProvider>
     )
