@@ -103,7 +103,7 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
 
     useEffect(() => {
         getPriceTracker().then((price) => {
-            setPrice(price.quotes.EUR.price)
+            setPrice(price?.quotes?.EUR.price)
         })
     }, [state])
 

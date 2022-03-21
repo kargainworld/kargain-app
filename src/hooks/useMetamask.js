@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react"
 import { useWeb3React } from "@web3-react/core"
 import UsersService from '../services/UsersService'
-import { injected } from "../connectors"
+// import { injected } from "../connectors"
 import { MessageContext } from "context/MessageContext"
 import { useAuth } from "../context/AuthProvider"
 
@@ -16,23 +16,23 @@ export function useEagerConnect() {
             return
         console.log(account)
 
-        injected.isAuthorized().then(isAuthorized => {
-            if (isAuthorized) {
-                let user = {}
-                user.wallet = account
-                user.email = authenticatedUser.raw.email
-                UsersService.updateUser(user)
-                    .then((response) => {
-                    }).catch(err => {
-                        dispatchModalError({ err })
-                    })
-                activate(injected, undefined, true).catch(() => {
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
+        // injected.isAuthorized().then(isAuthorized => {
+        //     if (isAuthorized) {
+        //         let user = {}
+        //         user.wallet = account
+        //         user.email = authenticatedUser.raw.email
+        //         UsersService.updateUser(user)
+        //             .then((response) => {
+        //             }).catch(err => {
+        //                 dispatchModalError({ err })
+        //             })
+        //         activate(injected, undefined, true).catch(() => {
+        //             setTried(true)
+        //         })
+        //     } else {
+        //         setTried(true)
+        //     }
+        // })
     }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
 
     // if the connection worked, wait until we get confirmation of that to flip the flag

@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
             await AuthService.logout()
             resetAuthState()
         } catch (err) {
-            dispatchModalError({err})
+            dispatchModalError({ err })
         }
     }
 

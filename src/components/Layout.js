@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import FooterLight from './FooterLight'
 import ScrollUpButton from 'react-scroll-up-button'
 import NavbarClient from './NavbarClient'
+// import NewHeader from './NewHeader'
 import I18nProvider from 'next-translate/I18nProvider'
 import useTranslation from 'next-translate/useTranslation'
 import layoutDefault from '../locales/fr/layout.json'
@@ -15,6 +16,7 @@ const Layout = ({ children }) => {
         <>
             <I18nProvider lang={lang} namespaces={{ layoutC }}>
                 <NavbarClient />
+                {/* <NewHeader /> */}
             </I18nProvider>
             <MainBody>
                 {children}

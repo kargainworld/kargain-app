@@ -8,16 +8,21 @@ import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-
+import Modal from '@material-ui/core/Modal'
 import Dialog from '@material-ui/core/Dialog'
 import DeleteIcon from '@material-ui/icons/Delete'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import useTranslation from 'next-translate/useTranslation'
-import { Col, Nav, NavItem, Row, TabContent, TabPane } from 'reactstrap'
+import { Col, Nav, NavItem, Row, TabContent, TabPane, Container } from 'reactstrap'
+
+import { NewIcons } from 'assets/icons'
+import { useWeb3Modal } from 'context/Web3Context'
+import { providers } from 'ethers'
+
 import TextInput from '../../../components/Form/Inputs/TextInput'
 import EmailInput from '../../../components/Form/Inputs/EmailInput'
-import TelInput from  '../../../components/Form/Inputs/TelInput'
+import TelInput from '../../../components/Form/Inputs/TelInput'
 import TextareaInput from '../../../components/Form/Inputs/TextareaInput'
 import NumberInput from '../../../components/Form/Inputs/NumberInput'
 import SelectCountryFlags from '../../../components/Form/Inputs/SelectCountryFlags'
@@ -34,8 +39,9 @@ import UsersService from '../../../services/UsersService'
 import UserModel from '../../../models/user.model'
 import Error from '../../_error'
 import customColors from '../../../theme/palette'
-import { NewIcons } from 'assets/icons'
-import { Container } from 'reactstrap'
+import { CircularProgress, DialogContent } from '@material-ui/core'
+
+
 
 const useStyles = makeStyles(() => ({
     stickyNav: {
@@ -58,9 +64,9 @@ const useStyles = makeStyles(() => ({
         borderRadius: '20px'
     },
 
-    button: {
-        margin: '1rem'
-    },
+    // button: {
+    //     margin: '1rem'
+    // },
 
     navItem: {
         border: 'none',
@@ -94,7 +100,7 @@ const useStyles = makeStyles(() => ({
         cursor: 'pointer',
         width: '33%',
         borderBottom: `2px solid #999999`,
-        fontSize:'14px',
+        fontSize: '14px',
         color: '#999999',
         '&.active': {
             fontWeight: '700',
@@ -115,27 +121,27 @@ const useStyles = makeStyles(() => ({
         }
     },
 
-    customize:{
+    customize: {
 
-        fontSize:'24px',
+        fontSize: '24px',
 
-        '& .input-field':{
-            backgroundColor:'#ffffff'
+        '& .input-field': {
+            backgroundColor: '#ffffff'
         }
     },
 
-    RemoveColorlabel:{
-        '& label':{
+    RemoveColorlabel: {
+        '& label': {
             marginBottom: '15px !important'
         }
     },
 
-    bordergradientbtn:{
+    bordergradientbtn: {
         borderRadius: '100rem',
-        padding: '1rem',
+        // padding: '1rem',
         fontSize: '14px',
         padding: '5px 25px',
-        boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
+        // boxShadow: '0 0 6px 0 rgba(157, 96, 212, 0.5)',
         border: 'solid 2px transparent',
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #2C65F6, #ED80EB)',
         backgroundOrigin: 'border-box',
@@ -145,7 +151,7 @@ const useStyles = makeStyles(() => ({
             backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #0244ea, #e81ae5)'
         },
 
-        '& span':{
+        '& span': {
 
             background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
             backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
@@ -154,14 +160,14 @@ const useStyles = makeStyles(() => ({
 
         }
     },
-    gradienttext:{
+    gradienttext: {
         background: '-webkit-linear-gradient(#2C65F6, #ED80EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent',
         backgroundImage: 'linear-gradient(60deg, #2C65F6, #ED80EB)',
         backgroundClip: 'text',
         color: 'transparent'
     },
-    phon:{
-        '& .special-label':{
+    phon: {
+        '& .special-label': {
             display: 'none !important'
         }
     },
@@ -191,16 +197,21 @@ const Edit = () => {
     const { dispatchModal, dispatchModalError } = useContext(MessageContext)
     const [activeTab, setActiveTab] = useState(0)
     const [state, setState] = useState({
-        err : null,
-        stateReady : false,
-        isSelf : false,
-        isAdmin : false,
-        profile : new UserModel()
+        err: null,
+        stateReady: false,
+        isSelf: false,
+        isAdmin: false,
+        profile: new UserModel()
     })
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
     const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
         defaultMatches: true
     })
+
+    const [open, setOpen] = useState(false)
+    const [modalMessage, setModalMessage] = useState('')
+
+    const { provider } = useWeb3Modal()
 
     const tabs = [
         {
@@ -214,13 +225,37 @@ const Edit = () => {
         }
     ]
 
+    const toggleModal = (status) => {
+        setOpen(status)
+    }
+
     const toggleTab = (tabIndex) => {
         if (activeTab !== tabIndex) {
             setActiveTab(tabIndex)
         }
     }
 
-    const triggerSubmit = () => {
+    const signMessage = async (form) => {
+        try {
+            const web3Provider = new providers.Web3Provider(provider)
+
+            const signer = web3Provider.getSigner()
+
+            const message = `
+                I would like to update preferences. Username is ${form.firstName} ${form.lastname}, email is ${form.email}, phone is ${form.phone}, Country is ${form.countrySelect?.label}, about is ${form.about}
+            `
+            toggleModal(true)
+
+            await signer.signMessage(message)
+            toggleModal(false)
+        } catch (error) {
+            setOpen(false)
+            throw new Error(500)
+        }
+    }
+
+    const triggerSubmit = async () => {
+
         formRef.current.dispatchEvent(new Event('submit'))
     }
 
@@ -245,13 +280,13 @@ const Edit = () => {
     }
 
     const fetchProfile = useCallback(async () => {
-        try{
+        try {
             const result = await UsersService.getUserByUsername(username)
             const { user, isAdmin, isSelf } = result
             setState(state => ({
                 ...state,
-                stateReady : true,
-                profile : new UserModel(user),
+                stateReady: true,
+                profile: new UserModel(user),
                 isAdmin,
                 isSelf
             }))
@@ -262,15 +297,15 @@ const Edit = () => {
                 err
             }))
         }
-    },[username])
+    }, [username])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (offer) setActiveTab(1)
-        if(isAuthReady) fetchProfile()
-    },[isAuthReady, fetchProfile])
+        if (isAuthReady) fetchProfile()
+    }, [isAuthReady, fetchProfile])
 
     if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode}/>
+    if (state.err) return <Error statusCode={state.err?.statusCode} />
 
     return (
         <Container>
@@ -292,10 +327,10 @@ const Edit = () => {
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<DeleteIcon/>}
+                        startIcon={<DeleteIcon />}
                         onClick={() => handleRemove()}
-                        // TODO: think it possibly not working. check this.
-                        // looks like you need to call handleRemove() here
+                    // TODO: think it possibly not working. check this.
+                    // looks like you need to call handleRemove() here
                     >
                         {t('vehicles:remove-announce')}
                     </Button>
@@ -313,7 +348,7 @@ const Edit = () => {
                     tabs,
                     activeTab,
                     toggleTab
-                }}/>
+                }} />
             )}
 
             <Row className="justify-content-center">
@@ -326,7 +361,7 @@ const Edit = () => {
                             toggleTab,
                             triggerSubmit,
                             profilePageLink: state.profile.getProfileLink
-                        }}/>
+                        }} />
                     </Col>
                 )}
 
@@ -338,20 +373,42 @@ const Edit = () => {
                             offer,
                             triggerSubmit,
                             handleOpenDialogRemove,
-                            profilePageLink : state.profile.getProfileLink,
-                            defaultValues : {
+                            profilePageLink: state.profile.getProfileLink,
+                            defaultValues: {
                                 ...state.profile.getRaw,
-                                address :  state.profile.getAddressParts
+                                address: state.profile.getAddressParts
                             },
-                            isAdmin: state.isAdmin
-                        }}/>
+                            isAdmin: state.isAdmin,
+                            signMessage
+                        }} />
                 </Col>
             </Row>
+
+            <Dialog
+                open={open}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                maxWidth="false"
+                style={{ minWidth: 100 }}
+            >
+                <DialogTitle id="alert-dialog-title" disableTypography>
+                    {'Loading'}
+                </DialogTitle>
+                <DialogContent style={{ minWidth: 180, textAlign: 'center' }}>
+                    <CircularProgress />
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)} color="primary" autoFocus>
+                        {t('vehicles:cancel')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     )
 }
 
-const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink, isAdmin }) => {
+const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit, handleOpenDialogRemove, profilePageLink, isAdmin, signMessage }) => {
 
     const isMobile = useMediaQuery('(max-width:768px)')
 
@@ -367,23 +424,25 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
         validateCriteriaMode: 'all',
         defaultValues
     })
-    const onSubmit = (form) => {
-        UsersService.updateUser(form)
-            .then(() => {
-                dispatchModal({
-                    msg: 'User successfully updated'
+
+    const onSubmit = async (form) => {
+        signMessage(form).then(() => {
+            UsersService.updateUser(form)
+                .then(() => {
+                    dispatchModal({
+                        msg: 'User successfully updated'
+                    })
+                }).catch(err => {
+                    dispatchModalError({ err })
                 })
-            }).catch(err => {
-                dispatchModalError({ err })
-            }
-            )
+        })
     }
 
-    return(
+    return (
         <form className="p-3 mx-auto" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
-            {errors && <ValidationErrors errors={errors}/>}
+            {errors && <ValidationErrors errors={errors} />}
             <>
-                {isMobile ?(
+                {isMobile ? (
                     <>
                         <TabContent activeTab={activeTab}>
                             <TabPane tabId={0} >
@@ -412,7 +471,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                                     className={classes.button}
                                     endIcon={<DeleteIcon />}
                                     onClick={handleOpenDialogRemove}
-                                    style={{ marginTop:'25px' }}
+                                    style={{ marginTop: '25px' }}
                                 >
                                     {t('vehicles:remove-profile')}
                                 </Button>
@@ -448,7 +507,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                                     className={classes.button}
                                     endIcon={<DeleteIcon />}
                                     onClick={handleOpenDialogRemove}
-                                    style={{ marginTop:'25px' }}
+                                    style={{ marginTop: '25px' }}
                                 >
                                     {t('vehicles:remove-profile')}
                                 </Button>
@@ -462,11 +521,17 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                 <Buttons {...{
                     profilePageLink,
                     triggerSubmit
-                }}/>
+                }} />
             )}
         </form>
     )
 }
+
+// const SimpleModal = ({ open, message }) => {
+//     return (
+
+//     )
+// }
 
 const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     const classes = useStyles()
@@ -477,7 +542,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
     return (
         <>
             {isMobile ? (
-                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-center", classes.customize)} style={{ marginBottom:'10px' }}>
+                <Typography component="h2" variant="h2" gutterBottom className={clsx("text-center", classes.customize)} style={{ marginBottom: '10px' }}>
                     {t('vehicles:edit-my-profile')}
                 </Typography>
             ) : (
@@ -487,7 +552,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
             )}
 
 
-            <AvatarPreviewUpload/>
+            <AvatarPreviewUpload />
 
             {isMobile ? (
                 <>
@@ -509,7 +574,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                         />
                     </FieldWrapper>
                 </>
-            ):(
+            ) : (
                 <div className={classes.formRow}>
                     <FieldWrapper label={t('vehicles:firstname')}>
                         <TextInput
@@ -537,13 +602,12 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                     name="email"
                     errors={errors}
                     control={control}
-                    disabled
                     rules={{ required: t('form_validations:required') }}
 
                 />
             </FieldWrapper>
 
-            <div classNameWrapper="my-3" style={{ marginLeft:'8px' }}>
+            <div classNameWrapper="my-3" style={{ marginLeft: '8px' }}>
                 <label style={{
                     color: '#999999',
                     width: '100%',
@@ -665,13 +729,13 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
     return (
         <>
             {isMobile ? (
-                <div style={{ display:'flex', marginTop:'20px', marginLeft:'5px' }} >
+                <div style={{ display: 'flex', marginTop: '20px', marginLeft: '5px' }} >
                     <Button
                         variant="contained"
                         color="primary"
                         size="large"
                         className={clsx(classes.button)}
-                        endIcon={<NewIcons.save/>}
+                        endIcon={<NewIcons.save />}
                         type="submit"
                         onClick={() => {
                             triggerSubmit()
@@ -684,15 +748,15 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                     {/* <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} /> */}
                 </div>
             ) : (
-                <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft:'30px' }}>
+                <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px', marginLeft: '30px' }}>
                     <Button
                         variant="contained"
                         color="primary"
                         size="large"
                         className={clsx(classes.button)}
-                        endIcon={<NewIcons.save style={{ marginLeft:'8px' }}/>}
+                        endIcon={<NewIcons.save style={{ marginLeft: '8px' }} />}
                         type="submit"
-                        style={{ height:'35px', width:'250px', marginLeft:'10px' }}
+                        style={{ height: '35px', width: '250px', marginLeft: '10px' }}
                         onClick={() => {
                             triggerSubmit()
                         }}>
@@ -700,7 +764,7 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
 
                     </Button>
 
-                    <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height:'35px', marginTop:'10px', width:'250px', marginLeft:'10px' }}/>
+                    <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height: '35px', marginTop: '10px', width: '250px', marginLeft: '10px' }} />
                 </div>
             )}
         </>

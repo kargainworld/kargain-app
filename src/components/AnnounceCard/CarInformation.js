@@ -14,7 +14,7 @@ const CarInformation = (props) => {
     const refImg = useRef()
     const isMobile = useMediaQuery('(max-width:768px)')
 
-
+    console.log(props, 'CardInfo')
     return (
         <Col sm={12} md={6}>
             <div className="top" style={{ marginTop: '10px', marginBottom: '30px', marginLeft:'15px' }}>

@@ -28,15 +28,9 @@ import theme from '../theme'
 import '../scss/theme.scss'
 import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
-import { Web3ReactProvider } from '@web3-react/core'
-// import Web3 from 'web3'
 import { EmojiProvider } from 'react-apple-emojis'
 import emojiData from 'react-apple-emojis/lib/data.json'
 
-function getLibrary(provider) {
-    const library = new Web3(provider)
-    return library
-}
 
 const MyApp = ({ Component, pageProps }) => {
     const { formKey } = pageProps
@@ -51,13 +45,13 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
-                <MessageContextProvider>
-                    <AuthProvider>
-                        <SocketProvider>
-                            <FormContextProvider formKey={formKey}>
-                                <SearchContextProvider>
-                                    <ModalContextProvider>
-                                        <Web3ContextProvider>
+                <Web3ContextProvider>
+                    <MessageContextProvider>
+                        <AuthProvider>
+                            <SocketProvider>
+                                <FormContextProvider formKey={formKey}>
+                                    <SearchContextProvider>
+                                        <ModalContextProvider>
                                             <EmojiProvider data={emojiData}>
                                                 <NextProgress />
                                                 <DefaultSeo {...SEO} />
@@ -65,13 +59,13 @@ const MyApp = ({ Component, pageProps }) => {
                                                     <Component {...pageProps} />
                                                 </ProtectedRouter>
                                             </EmojiProvider>
-                                        </Web3ContextProvider>
-                                    </ModalContextProvider>
-                                </SearchContextProvider>
-                            </FormContextProvider>
-                        </SocketProvider>
-                    </AuthProvider>
-                </MessageContextProvider>
+                                        </ModalContextProvider>
+                                    </SearchContextProvider>
+                                </FormContextProvider>
+                            </SocketProvider>
+                        </AuthProvider>
+                    </MessageContextProvider>
+                </Web3ContextProvider>
             </ThemeProvider>
         </StyledThemeProvider>
     )
@@ -87,6 +81,14 @@ const ProtectedRouter = ({ children, pageProps }) => {
     const { modalStateContext } = useContext(ModalContext)
 
     if (isAdminRoute) {
+        console.log(router.route)
+        if(router.route.split('/').includes('_login')) {
+            return (
+                <Layout>
+                    {children}
+                </Layout>
+            )
+        }
         if (isAuthReady) {
             if (!isAuthenticatedUserAdmin) {
                 return <Forbidden403Page />

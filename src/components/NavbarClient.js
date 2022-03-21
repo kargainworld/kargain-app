@@ -1,90 +1,93 @@
 import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Input } from '@material-ui/core'
+import { Divider, Input } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
 import clsx from 'clsx'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
-import { Collapse, Container,  Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
+import { Collapse, Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap'
 import Button from '@material-ui/core/Button'
-import LanguageIcon from '@material-ui/icons/Language'
+import { ClickAwayListener } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { Emoji } from 'react-apple-emojis'
-
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import ChatIcon from '@material-ui/icons/Chat'
+
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import SearchIcon from '@material-ui/icons/Search'
-import HomeIcon from '@material-ui/icons/Home'
+
 import CloseIcon from '@material-ui/icons/Close'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
-import SettingsIcon from '@material-ui/icons/Settings'
-import PermIdentityIcon from '@material-ui/icons/PermIdentity'
-import FaceIcon from '@material-ui/icons/Face'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
+
+import { useWeb3Modal } from '../context/Web3Context'
 import { useAuth } from '../context/AuthProvider'
 import NotificationsNav from '../components/Notifications/NotificationsNav'
 import CTALink from './CTALink'
 
 import { SearchContext } from '../context/SearchContext'
-import { ClickAwayListener } from "@material-ui/core"
-import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
-import Metamask from './Wallet/Metamask'
 
-import { NewIcons } from '../assets/icons';
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
+
+import { NewIcons } from '../assets/icons'
+
 import customColors from '../theme/palette'
+import CTAButton from './CTAButton'
+
 
 const useStyles = makeStyles(() => ({
-   btn_header_mobile:{
-       marginRight:'-25px',
-       '& .m-2':{
-           borderColor: 'white !important'
-       },
-       '& span':{
-           width:'24px',
-           height:'24px'
-       },
-       '& button':{
-           width:'30px',
-           height:'30px'
-       }
-   },
+    btn_header_mobile: {
+        marginRight: '-25px',
+        '& .m-2': {
+            borderColor: 'white !important'
+        },
+        '& span': {
+            width: '24px',
+            height: '24px'
+        },
+        '& button': {
+            width: '30px',
+            height: '30px'
+        }
+    },
 
-   SearchHidden:{
-       display:'block'
-   },
+    SearchHidden: {
+        display: 'block'
+    },
 
-   Searchcustom:{
-       '& span':{
-           display:'none',
-       },
-       '& fieldset':{
-           borderColor:'#ffffff !important'
-       }
-   },
+    Searchcustom: {
+        '& span': {
+            display: 'none'
+        },
+        '& fieldset': {
+            borderColor: '#ffffff !important'
+        }
+    },
 
-   btnClose:{
-        border: "none !important",
+    btnClose: {
+        border: 'none !important',
         // padding: '1px 1px',
-        width:'19px',
-        height:'19px',
+        width: '19px',
+        height: '19px',
         borderRadius: '25px',
         color: 'white',
-        background: customColors.gradient.main,
-   },
+        background: customColors.gradient.main
+    },
 
-   removeMark:{
-       '& li':{
+    removeMark: {
+        '& li': {
             listStyleType: 'none'
-       }
-   }
-
-   
-
-
+        }
+    },
+    button: {
+        border: "none !important",
+        padding: '6px 2rem',
+        borderRadius: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        background: customColors.gradient.main
+    }
 }))
 
 const Root = styled.header`
@@ -92,7 +95,8 @@ const Root = styled.header`
   padding: 10px 0 12px 0;
 `
 
-const SearchInput = styled(Input)(({ theme }) => `
+const SearchInput = styled(Input)(
+    ({ theme }) => `
   width: 100% !important;
   max-width: 250px;
   
@@ -103,25 +107,28 @@ const SearchInput = styled(Input)(({ theme }) => `
   ${theme.breakpoints?.down('md')} {
     width: 200px
   }
-`)
+`
+)
 
 const SearchInputContainer = styled.div`
-    position: relative;
-    
+  position: relative;
+
   svg {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0.3;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.3;
   }
 `
 
 const NavbarClient = () => {
     const classes = useStyles()
     const [isOpen, setIsOpen] = useState(false)
-    const toggleNavbar = () => setIsOpen(!isOpen)    
+    const toggleNavbar = () => setIsOpen(!isOpen)
+
     const router = useRouter()
+
     const { authenticatedUser, logout } = useAuth()
     const { t } = useTranslation()
 
@@ -132,28 +139,31 @@ const NavbarClient = () => {
     })
 
     const toggle = (toggled) => {
-        setState(state => ({
+        setState((state) => ({
             ...Object.keys(state)
-                .filter(key => key !== toggled)
-                .reduce((carry, key) => ({
-                    ...carry,
-                    [key]: false
-                }), state),
+                .filter((key) => key !== toggled)
+                .reduce(
+                    (carry, key) => ({
+                        ...carry,
+                        [key]: false
+                    }),
+                    state
+                ),
             [toggled]: !state[toggled]
         }))
     }
 
-    const closeAll = () => setState({
-        isOpen1: false,
-        isOpen2: false,
-        isSOpen: false
-    })
-
+    const closeAll = () =>
+        setState({
+            isOpen1: false,
+            isOpen2: false,
+            isSOpen: false
+        })
 
     const [isSOpen, setIsSOpen] = useState(false)
     const toggleSearch = () => {
-        setIsSOpen((isSOpen) => !isSOpen);
-    };
+        setIsSOpen((isSOpen) => !isSOpen)
+    }
 
     const { isAuthenticated } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
@@ -164,74 +174,91 @@ const NavbarClient = () => {
                     <NavbarBrand href="/">
                         <NewIcons.logo width="150" alt="logo" />
                     </NavbarBrand>
-                    <div style={{display:'flex', marginRight:'15px'}}>
-                        {isMobile && 
-                            <div style={{width:'30px', height:'30px', marginTop:'13px', marginRight:'-10px'}} 
-                            onClick={() => toggleSearch()}>
-                                <SearchIcon style={{color:'#999999'}}/>
+                    <div style={{ display: 'flex', marginRight: '15px' }}>
+                        {isMobile && (
+                            <div
+                                style={{ width: '30px', height: '30px', marginTop: '13px', marginRight: '-10px' }}
+                                onClick={() => toggleSearch()}
+                            >
+                                <SearchIcon style={{ color: '#999999' }} />
                             </div>
-                        }
+                        )}
                         <div className={clsx(classes.btn_header_mobile)}>
-                            <NavbarToggler
-                                className="m-2"
-                                onClick={toggleNavbar}
-                            />
-                        </div>  
+                            <NavbarToggler className="m-2" onClick={toggleNavbar} />
+                        </div>
                     </div>
                     {(!isMobile || isSOpen) && (
                         <>
-                        {isMobile && (
-                            <div className={clsx(isSOpen && classes.SearchHidden)}>
-                                <div className={clsx("sidebar", isSOpen && 'open')} style={{display:'flex', width:'100%', height:'auto', borderColor:'white'}}>
-                                    <div style={{width:'90%', display:'flex'}}>
-                                        <SearchIcon style={{ color:'#2C65F6', width:'24px', height:'24px', marginTop:'8px', marginLeft:'15px'}}/>
-                                        <div className={clsx(classes.Searchcustom)} style={{marginTop:'-7px', marginBottom:'12px'}}>
-                                            <AutocompleteDropdown />
+                            {isMobile && (
+                                <div className={clsx(isSOpen && classes.SearchHidden)}>
+                                    <div
+                                        className={clsx('sidebar', isSOpen && 'open')}
+                                        style={{ display: 'flex', width: '100%', height: 'auto', borderColor: 'white' }}
+                                    >
+                                        <div style={{ width: '90%', display: 'flex' }}>
+                                            <SearchIcon
+                                                style={{
+                                                    color: '#2C65F6',
+                                                    width: '24px',
+                                                    height: '24px',
+                                                    marginTop: '8px',
+                                                    marginLeft: '15px'
+                                                }}
+                                            />
+                                            <div className={clsx(classes.Searchcustom)} style={{ marginTop: '-7px', marginBottom: '12px' }}>
+                                                <AutocompleteDropdown />
+                                            </div>
+                                        </div>
+                                        <div className="sidebar_controls" style={{ width: '10%' }}>
+                                            <div
+                                                className={clsx(classes.btnClose)}
+                                                onClick={() => toggleSearch()}
+                                                style={{ marginTop: '9px', marginRight: '15px' }}
+                                            >
+                                                <CloseIcon
+                                                    style={{
+                                                        color: 'white',
+                                                        width: '15px',
+                                                        height: '15px',
+                                                        marginTop: '-5.55px',
+                                                        marginLeft: '2px'
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="sidebar_controls" style={{width:'10%'}}>
-                                        <div className={clsx(classes.btnClose)} onClick={() => toggleSearch()} style={{marginTop:'9px', marginRight:'15px'}}>
-                                            <CloseIcon style={{color:'white', width:'15px', height:'15px', marginTop:'-5.55px', marginLeft:'2px'}}/>
-                                        </div>
-                                    </div>
-
-                                    
                                 </div>
-                            </div>
-                        )}
+                            )}
                         </>
                     )}
-                            
+
                     <Collapse isOpen={isOpen} navbar>
                         {(!isMobile || isOpen) && (
                             <>
                                 {isMobile ? (
                                     <>
-                                    
-                                    <div className={clsx("sidebar", isOpen && 'open')} style={{width:'100%'}}>
-                                        <NavbarBrand href="/" style={{marginLeft:'35px'}}>
-                                            <NewIcons.logo width="150" alt="logo" />
-                                        </NavbarBrand>
-                                        <div className="sidebar_controls" style={{marginTop: '-45px', marginBottom: '25px'}}>
-                                            <Button
-                                                startIcon={<CloseIcon/>}
-                                                onClick={toggleNavbar}
-                                            />
-                                        </div>
-                                        {isAuthenticated ? (
+                                        <div className={clsx('sidebar', isOpen && 'open')} style={{ width: '100%' }}>
+                                            <NavbarBrand href="/" style={{ marginLeft: '35px' }}>
+                                                <NewIcons.logo width="150" alt="logo" />
+                                            </NavbarBrand>
+                                            <div className="sidebar_controls" style={{ marginTop: '-45px', marginBottom: '25px' }}>
+                                                <Button startIcon={<CloseIcon />} onClick={toggleNavbar} />
+                                            </div>
+                                            {isAuthenticated ? (
                                                 <>
                                                     {/* <div >
                                                         <LoggedInUserNav vertical/> 
                                                     </div> */}
 
-                                        
-
-                                                    <li className="px-0 dropdown-item" style={{padding: '0px', marginLeft: '5px', marginBottom: '-2px'}}>
+                                                    <li
+                                                        className="px-0 dropdown-item"
+                                                        style={{ padding: '0px', marginLeft: '5px', marginBottom: '-2px' }}
+                                                    >
                                                         <Link href="/feed" prefetch={false}>
                                                             <a>
                                                                 <IconButton color="inherit">
-                                                                    <NewIcons.home/>
-                                                                    <span className="m-2" style={{marginLeft:'5px', fontSize:'23.5px'}} >
+                                                                    <NewIcons.home />
+                                                                    <span className="m-2" style={{ marginLeft: '5px', fontSize: '23.5px' }}>
                                                                         Home
                                                                     </span>
                                                                 </IconButton>
@@ -239,19 +266,19 @@ const NavbarClient = () => {
                                                         </Link>
                                                     </li>
 
-
                                                     {/* <li className="px-0 dropdown-item"> */}
-                                                    <div className={clsx(classes.removeMark)} style={{display: 'flex', marginLeft:'6px'}}>
-                                                        <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
-                                                        <span className="mr-2 mt-1" style={{marginLeft:'-2px', fontSize:'23.5px'}}>
+                                                    <div className={clsx(classes.removeMark)} style={{ display: 'flex', marginLeft: '6px' }}>
+                                                        <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle} />
+                                                        <span className="mr-2 mt-1" style={{ marginLeft: '-2px', fontSize: '23.5px' }}>
                                                             Notifications
                                                         </span>
                                                     </div>
                                                     {/* </li> */}
                                                     <li className="px-0 dropdown-item">
                                                         <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                                                            <a className="nav-link text-left"><NewIcons.favorite width="24" height="24"/>
-                                                                <span className="m-2" style={{marginLeft:'5px', fontSize:'23.5px'}}>
+                                                            <a className="nav-link text-left">
+                                                                <NewIcons.favorite width="24" height="24" />
+                                                                <span className="m-2" style={{ marginLeft: '5px', fontSize: '23.5px' }}>
                                                                     {t('layoutC:favorites')}
                                                                 </span>
                                                             </a>
@@ -259,8 +286,9 @@ const NavbarClient = () => {
                                                     </li>
                                                     <li className="px-0 dropdown-item">
                                                         <Link href="/profile/messages" prefetch={false}>
-                                                            <a className="nav-link text-left"><NewIcons.message width="24" height="24"/>
-                                                                <span className="m-2" style={{marginLeft:'5px', fontSize:'23.5px'}}>
+                                                            <a className="nav-link text-left">
+                                                                <NewIcons.message width="24" height="24" />
+                                                                <span className="m-2" style={{ marginLeft: '5px', fontSize: '23.5px' }}>
                                                                     {t('layoutC:messaging')}
                                                                 </span>
                                                             </a>
@@ -268,8 +296,9 @@ const NavbarClient = () => {
                                                     </li>
                                                     <li className="px-0 dropdown-item">
                                                         <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
-                                                            <a className="nav-link text-left"><NewIcons.setting width="24" height="24"/>
-                                                                <span className="m-2" style={{marginLeft:'5px', fontSize:'23.5px'}}>
+                                                            <a className="nav-link text-left">
+                                                                <NewIcons.setting width="24" height="24" />
+                                                                <span className="m-2" style={{ marginLeft: '5px', fontSize: '23.5px' }}>
                                                                     {t('layoutC:settings')}
                                                                 </span>
                                                             </a>
@@ -277,83 +306,87 @@ const NavbarClient = () => {
                                                     </li>
                                                     <li className="px-0 dropdown-item">
                                                         <Link href="" prefetch={false}>
-                                                            <a className="nav-link text-left" onClick={() => {
-                                                                router.push('/')
-                                                                logout()
-                                                            }}>
-                                                                <NewIcons.signout width="24" height="24"/>
-                                                                <span className="m-2" style={{marginLeft:'5px', fontSize:'23.5px'}}>
+                                                            <a
+                                                                className="nav-link text-left"
+                                                                onClick={() => {
+                                                                    router.push('/')
+                                                                    logout()
+                                                                }}
+                                                            >
+                                                                <NewIcons.signout width="24" height="24" />
+                                                                <span className="m-2" style={{ marginLeft: '5px', fontSize: '23.5px' }}>
                                                                     {t('layoutC:logout')}
                                                                 </span>
                                                             </a>
                                                         </Link>
                                                     </li>
-                                                    
                                                 </>
-                                            
                                             ) : (
-                                                <div className={clsx(classes.removeMark)} style={{display:'row', textAlign:'center'}}>                                                   
+                                                <div className={clsx(classes.removeMark)} style={{ display: 'row', textAlign: 'center' }}>
                                                     <NavItem className="p-2">
                                                         <Link href="/auth/login" prefetch={false}>
-                                                            <a className="nav-link py-0" style={{ color: "#666666" }} onClick={toggleNavbar}>
-                                                               Login {/* {t('layoutC:login')} */}
+                                                            <a className="nav-link py-0" style={{ color: '#666666' }} onClick={toggleNavbar}>
+                                                                Login {/* {t('layoutC:login')} */}
                                                             </a>
                                                         </Link>
                                                     </NavItem>
                                                     <NavItem className="p-2">
                                                         <Link href="/auth/register" prefetch={false}>
-                                                            <a className="nav-link py-0" style={{ color: "#666666" }} onClick={toggleNavbar}>
+                                                            <a className="nav-link py-0" style={{ color: '#666666' }} onClick={toggleNavbar}>
                                                                 Sign up {/* {t('layoutC:register')} */}
                                                             </a>
                                                         </Link>
                                                     </NavItem>
-                                                    <div onClick={toggleNavbar}> 
+                                                    <div onClick={toggleNavbar}>
                                                         <CTALink
                                                             // title={t('layoutC:create-announce')}
                                                             title="CREATE AN ANNOUNCE"
                                                             href="/deposer-une-annonce"
-                                                            style={{marginTop:'2px', borderRadius: 25, height: 33, fontWeight: "bold", fontFamily: "Roboto", fontSize: 14, lineHeight: "150%", fontStyle: "normal", padding: '6px 16px 5px 16px' }}
+                                                            style={{
+                                                                marginTop: '2px',
+                                                                borderRadius: 25,
+                                                                height: 33,
+                                                                fontWeight: 'bold',
+                                                                fontFamily: 'Roboto',
+                                                                fontSize: 14,
+                                                                lineHeight: '150%',
+                                                                fontStyle: 'normal',
+                                                                padding: '6px 16px 5px 16px'
+                                                            }}
                                                             variant="contained"
                                                             color="primary"
                                                         />
                                                     </div>
-                                                    
+
                                                     {/* <VisitorNav vertical/> */}
                                                 </div>
-                                            ) 
-                                            
-                                            
-                                        }
-                                        {isAuthenticated && !isMobile && <Metamask />}
-                                    </div>
+                                            )}
+                                            {/* {isAuthenticated && !isMobile && <Metamask />} */}
+                                        </div>
                                     </>
                                 ) : (
-                                    <div className={clsx("d-flex", "navbar-menu")}>
+                                    <div className={clsx('d-flex', 'navbar-menu')}>
                                         <AutocompleteDropdown />
-                                        {isAuthenticated && <Metamask />}
-                                        {isAuthenticated ? <LoggedInUserNav/> : <VisitorNav/>}
+                                        {!isMobile && (
+                                            <NavItem className="p-2" style={{ listStyle: 'none' }}>
+                                                <NewAdButtonCTAStyled isDesktop={!isMobile} />
+                                            </NavItem>
+                                        )}
+                                        {/* {isAuthenticated && <Metamask />} */}
+                                        {isAuthenticated ? <LoggedInUserNav /> : <VisitorNav />}
                                     </div>
                                 )}
                             </>
                         )}
                     </Collapse>
-                   
-                    {!isMobile && 
-                        <NavItem className="p-2" style={{ listStyle: 'none' }}>
-                            <NewAdButtonCTAStyled isDesktop={!isMobile}/>
-                        </NavItem>
-                    }
-                   
-                    {!isMobile && 
-                        <Link
-                            href="https://kargain.world"
-                            prefetch={false}>
-                            <a target="_blank" variant="text" style={{color: "#2C6BFC"}}>
-                                <Emoji name="globe-with-meridians" width={24} style={{marginLeft:'10px'}} />
+
+                    {!isMobile && (
+                        <Link href="https://kargain.world" prefetch={false}>
+                            <a target="_blank" variant="text" style={{ color: '#2C6BFC' }}>
+                                <Emoji name="globe-with-meridians" width={24} style={{ marginLeft: '10px' }} />
                             </a>
                         </Link>
-                    }
-                    
+                    )}
                 </Navbar>
             </Container>
         </Root>
@@ -368,7 +401,16 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
             icon={!isDesktop && AddIcon}
             href="/deposer-une-annonce"
             className={className}
-            style={{ borderRadius: 25, height: 33, fontWeight: "bold", fontFamily: "Roboto", fontSize: 14, lineHeight: "150%", fontStyle: "normal", padding: '6px 16px 5px 16px' }}
+            style={{
+                borderRadius: 25,
+                height: 33,
+                fontWeight: 'bold',
+                fontFamily: 'Roboto',
+                fontSize: 14,
+                lineHeight: '150%',
+                fontStyle: 'normal',
+                padding: '6px 16px 5px 16px'
+            }}
             variant="contained"
             color="primary"
         />
@@ -376,7 +418,7 @@ const NewAdButtonCTA = ({ isDesktop, className }) => {
 }
 
 const NewAdButtonCTAStyled = styled(NewAdButtonCTA)`
-border-radius: 20px;
+  border-radius: 20px;
 `
 
 const NavbarAction = ({ vertical }) => {
@@ -400,25 +442,23 @@ const NavbarAction = ({ vertical }) => {
     }
 
     return (
-        <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
+        <Nav navbar className={clsx('my-2', vertical ? 'flex-column' : 'flex-row-nav')}>
             <NavItem className="p-2">
                 <form className="search-form" onSubmit={onSubmitSearch}>
                     <SearchInputContainer>
                         <SearchInput
-                          value={searchQuery}
-                          onChange={({ target }) => setSearchQuery(target.value)}
-                          onKeyUp={({ target }) => setSearchQueryByKeyUp(target.value)}
-                          name="query"
-                          type="search"
-                          placeholder={t('layoutC:search')}
-                          iconright={<Search />}
+                            value={searchQuery}
+                            onChange={({ target }) => setSearchQuery(target.value)}
+                            onKeyUp={({ target }) => setSearchQueryByKeyUp(target.value)}
+                            name="query"
+                            type="search"
+                            placeholder={t('layoutC:search')}
+                            iconright={<Search />}
                         />
                         <SearchIcon />
                     </SearchInputContainer>
 
-                    <button
-                        type="submit"
-                        className="search-button">
+                    <button type="submit" className="search-button">
                         <SearchIcon />
                     </button>
                 </form>
@@ -431,76 +471,127 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
     const router = useRouter()
     const { authenticatedUser, logout } = useAuth()
     const { t } = useTranslation()
-
+    const { disconnect, balance } = useWeb3Modal()
+    
+    const handleLogout = async () => {
+        await disconnect()
+        await logout()
+        router.push('/')
+    }
+    
     return (
-        <li className="nav-item navbar-dropdown">
-            <IconButton color="inherit"
-                data-toggle="dropdownUser"
-                aria-haspopup="true"
-                aria-expanded="true"
-                onClick={() => toggle(keyName)}>
-                <NewIcons.navuser style={{width:'21px', height:'21px'}}/>
-            </IconButton>
+        <>
+            <div style={{ cursor: 'pointer' }} onClick={() => toggle(keyName)}>
+                <div style={{ textAlign: 'right' }}>
+                    {authenticatedUser.getFirstname === undefined ? 'Unnamed' : authenticatedUser.getFullName}
+                </div>
+                <div style={{ textAlign: 'right', fontSize: '0.7rem' }}>{balance ? `${balance} ETH`: ''}</div>
+            </div>
 
-            <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
-                {authenticatedUser.getIsAdmin && (
+            <li className="nav-item navbar-dropdown">
+                {/* <IconButton color="inherit"
+                    data-toggle="dropdownUser"
+                    aria-haspopup="true"
+                    aria-expanded="true"
+                    onClick={() => toggle(keyName)}
+                > */}
+                <div
+                    data-toggle="dropdownUser"
+                    aria-haspopup="true"
+                    aria-expanded="true"
+                    onClick={() => toggle(keyName)}
+                    style={{
+                        width: 40,
+                        height: 40,
+                        marginLeft: 10,
+                        cursor: 'pointer'
+                    }}
+                >
+                    <img
+                        src={authenticatedUser.getAvatarUrl}
+                        alt="avatar"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '50%',
+                            border: '1px solid #aaa'
+                        }}
+                    />
+                    {/* <NewIcons.navuser style={{ width: '21px', height: '21px' }} /> */}
+                </div>
+                {/* </IconButton> */}
+
+                <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
+                    {authenticatedUser.getIsAdmin && (
+                        <li className="px-0 dropdown-item">
+                            <Link href={`/admin/ads`} prefetch={false}>
+                                <a className="nav-link text-left">
+                                    <DashboardIcon style={{ width: '16px', height: '17px' }} />
+                                    <span className="m-2" style={{ marginLeft: '10px' }}>
+                                        Admin
+                                    </span>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
                     <li className="px-0 dropdown-item">
-                        <Link href={`/admin/ads`} prefetch={false}>
-                            <a className="nav-link text-left"><DashboardIcon style={{width:'16px', height:'17px'}}/><span className="m-2" style={{marginLeft:'10px'}}>Admin</span></a>
+                        <Link href={authenticatedUser.getProfileLink} prefetch={false}>
+                            <a className="nav-link text-left">
+                                <NewIcons.user />
+                                <span className="m-2" style={{ marginLeft: '5px' }}>
+                                    {t('layoutC:my-profile')}
+                                </span>
+                            </a>
                         </Link>
                     </li>
-                )}
-                <li className="px-0 dropdown-item">
-                    <Link href={authenticatedUser.getProfileLink} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.user />
-                            <span className="m-2" style={{marginLeft:'5px'}}>
-                                {t('layoutC:my-profile')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
-                    <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.favorite />
-                            <span className="m-2" style={{marginLeft:'5px'}}>
-                                {t('layoutC:favorites')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
-                    <Link href="/profile/messages" prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.message />
-                            <span className="m-2" style={{marginLeft:'5px'}}>
-                                {t('layoutC:messaging')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
-                    <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
-                        <a className="nav-link text-left"><NewIcons.setting />
-                            <span className="m-2" style={{marginLeft:'5px'}}>
-                                {t('layoutC:settings')}
-                            </span>
-                        </a>
-                    </Link>
-                </li>
-                <li className="px-0 dropdown-item">
-                    <Link href="" prefetch={false}>
-                        <a className="nav-link text-left" onClick={() => {
-                            router.push('/')
-                            logout()
-                        }}>
+                    <li className="px-0 dropdown-item">
+                        <Link href={`${authenticatedUser.getProfileLink}?activeTab=2`} prefetch={false}>
+                            <a className="nav-link text-left">
+                                <NewIcons.favorite />
+                                <span className="m-2" style={{ marginLeft: '5px' }}>
+                                    {t('layoutC:favorites')}
+                                </span>
+                            </a>
+                        </Link>
+                    </li>
+                    <li className="px-0 dropdown-item">
+                        <Link href="/profile/messages" prefetch={false}>
+                            <a className="nav-link text-left">
+                                <NewIcons.message />
+                                <span className="m-2" style={{ marginLeft: '5px' }}>
+                                    {t('layoutC:messaging')}
+                                </span>
+                            </a>
+                        </Link>
+                    </li>
+                    <li className="px-0 dropdown-item">
+                        <Link href={authenticatedUser.getProfileEditLink} prefetch={false}>
+                            <a className="nav-link text-left">
+                                <NewIcons.setting />
+                                <span className="m-2" style={{ marginLeft: '5px' }}>
+                                    {t('layoutC:settings')}
+                                </span>
+                            </a>
+                        </Link>
+                    </li>
+                    <li className="px-0 dropdown-item">
+                        {/* <Link href="" prefetch={false}> */}
+                        <a
+                            className="nav-link text-left"
+                            onClick={() => {
+                                handleLogout()
+                            }}
+                        >
                             <NewIcons.signout />
-                            <span className="m-2" style={{marginLeft:'5px'}}>
+                            <span className="m-2" style={{ marginLeft: '5px' }}>
                                 {t('layoutC:logout')}
                             </span>
                         </a>
-                    </Link>
-                </li>
-            </ul>
-        </li>
+                        {/* </Link> */}
+                    </li>
+                </ul>
+            </li>
+        </>
     )
 }
 
@@ -512,38 +603,43 @@ const LoggedInUserNav = ({ vertical }) => {
     })
 
     const toggle = (toggled) => {
-        setState(state => ({
+        setState((state) => ({
             ...Object.keys(state)
-                .filter(key => key !== toggled)
-                .reduce((carry, key) => ({
-                    ...carry,
-                    [key]: false
-                }), state),
+                .filter((key) => key !== toggled)
+                .reduce(
+                    (carry, key) => ({
+                        ...carry,
+                        [key]: false
+                    }),
+                    state
+                ),
             [toggled]: !state[toggled]
         }))
     }
 
-    const closeAll = () => setState({
-        isOpen1: false,
-        isOpen2: false,
-        isSOpen: false
-    })
+    const closeAll = () =>
+        setState({
+            isOpen1: false,
+            isOpen2: false,
+            isSOpen: false
+        })
 
     return (
         <ClickAwayListener onClickAway={closeAll}>
             <div style={{ marginLeft: 'auto' }}>
-                <Nav navbar className={clsx("my-2", "justify-content-center", vertical ? "flex-column" : "flex-row-nav")}>
+                <Nav navbar className={clsx('my-2', 'justify-content-center', vertical ? 'flex-column' : 'flex-row-nav')}>
                     <NavItem>
                         <Link href="/feed" prefetch={false}>
                             <a>
                                 <IconButton color="inherit">
-                                    <NewIcons.home style={{width:'21px', height:'21px'}}/>
+                                    <NewIcons.home style={{ width: '21px', height: '21px' }} />
                                 </IconButton>
                             </a>
                         </Link>
                     </NavItem>
-                    <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle}/>
-                    <DropdownUser isOpen={state.isOpen2} keyName="isOpen2" toggle={toggle}/>
+                    <NotificationsNav isOpen={state.isOpen1} keyName="isOpen1" toggle={toggle} />
+                    <Divider className="ml-2 mr-2" orientation="vertical" flexItem />
+                    <DropdownUser isOpen={state.isOpen2} keyName="isOpen2" toggle={toggle} />
                 </Nav>
             </div>
         </ClickAwayListener>
@@ -551,23 +647,28 @@ const LoggedInUserNav = ({ vertical }) => {
 }
 
 const VisitorNav = ({ vertical }) => {
-    const { t } = useTranslation()
+    // const { t } = useTranslation()
+    // const classes = useStyles()
+    // const handleConnect = () => {
 
+    // }
     return (
-        <Nav navbar className={clsx("my-2", vertical ? "flex-column" : "flex-row-nav")}>
-            <NavItem className="p-2">
+        <Nav navbar className={clsx('my-2', vertical ? 'flex-column' : 'flex-row-nav')}>
+            {/* <NavItem className="p-2">
                 <Link href="/auth/login" prefetch={false}>
-                    <a className="nav-link py-0" style={{ color: "#666666" }}>
+                    <a className="nav-link py-0" style={{ color: '#666666' }}>
                         {t('layoutC:login')}
                     </a>
                 </Link>
-            </NavItem>
-            <NavItem className="p-2">
-                <Link href="/auth/register" prefetch={false}>
-                    <a className="nav-link py-0" style={{ color: "#666666" }}>
-                        {t('layoutC:register')}
+            </NavItem> */}
+            <NavItem>
+                <Link href="/auth/connect" prefetch={false}>
+                    <a className="nav-link py-0" style={{ color: '#666666' }}>
+                        {/* {t('layoutC:register')} */}
+                        Connect Wallet
                     </a>
                 </Link>
+                {/* <CTAButton className={clsx('btn', classes.button)} title={'Connect Wallet'} onClick={handleConnect} /> */}
             </NavItem>
         </Nav>
     )

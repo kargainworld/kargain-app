@@ -17,7 +17,7 @@ import Loading from 'components/Loading'
 import Error from '../_error'
 import customColors from '../../theme/palette'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { injected } from "../../connectors"
+// import { injected } from "../../connectors"
 import { useWeb3React } from "@web3-react/core"
 
 const path = require('path')
@@ -55,17 +55,17 @@ const Page = () => {
     })
 
     useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                }).catch((err) => {
-                    console.log("err", err)
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
+        // injected.isAuthorized().then((isAuthorized) => {
+        //     if (isAuthorized) {
+        //         activate(injected, undefined, true).then(() =>{
+        //         }).catch((err) => {
+        //             console.log("err", err)
+        //             setTried(true)
+        //         })
+        //     } else {
+        //         setTried(true)
+        //     }
+        // })
     }, [])
 
     const { dispatchFormUpdate, dispatchFormClear } = useContext(FormContext)

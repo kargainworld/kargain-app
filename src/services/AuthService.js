@@ -17,6 +17,22 @@ function login (form) {
         })
 }
 
+function adminLogin (form) {
+    const requestOptions = {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+    }
+
+    return fetch(`${config.api}/auth/admin-login`, requestOptions)
+        .then(handleResponse)
+        .then(json => json.data)
+        .catch(err => {
+            throw err
+        })
+}
+
 function SSOAuthLogin (provider, data) {
     const url = `${config.api}/auth/sso-register`
     return request(url, {
@@ -189,5 +205,6 @@ export default {
     askForEmailActivation,
     confirmAccount,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    adminLogin
 }

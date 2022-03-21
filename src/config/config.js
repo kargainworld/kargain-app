@@ -1,7 +1,6 @@
 const isProd = process.env.NODE_ENV === 'production'// TODO: remove || true
 const devApi = 'http://localhost:8080/v1'
 const api = isProd ? process.env.NEXT_PUBLIC_API_ROUTE ? process.env.NEXT_PUBLIC_API_ROUTE : 'https://api.kargain.com/v1' : devApi
-
 module.exports = {
     all : process.env,
     env : process.env.NODE_ENV,
@@ -25,5 +24,6 @@ module.exports = {
     },
     contract: {
         KARGAIN_ADDRESS: process.env.NEXT_PUBLIC_KARGAIN_ADDRESS
-    }
+    },
+    main_chain_id: process.env.NEXT_PUBLIC_MAIN_CHAIN_ID
 }

@@ -21,8 +21,6 @@ import clsx from "clsx"
 import customColors from 'theme/palette'
 import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { useWeb3React } from "@web3-react/core"
-import { injected } from "connectors"
 import TabsContainer from "../../../components/TabsContainer"
 import AnnounceModel from 'models/announce.model'
 
@@ -122,7 +120,6 @@ const useStyles = makeStyles((theme) => ({
 const Profile = () => {
 
     const isMobile = useMediaQuery('(max-width:768px)')
-    const { activate } = useWeb3React()
     const classes = useStyles()
     const { t } = useTranslation()
     const router = useRouter()
@@ -277,18 +274,6 @@ const Profile = () => {
             filters: filters
         }))
     }
-
-
-    useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                }).catch((err) => {
-                    console.log("err", err)
-                })
-            }
-        })
-    }, [])
 
     useEffect(() => {
         setFollowersCounter(profile.getCountFollowers)

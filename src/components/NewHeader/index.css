@@ -1,0 +1,1326 @@
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+/* ===========================
+  TABLE OF CONTENTS
+
+  1. GLOBAL VARIABLES
+    1.1. Primary template colors
+    1.2. Body background and font colors
+    1.3. Footer background nand font colors
+    1.4. Additional colors
+    1.5. Typography sizes
+    1.6. Form authorization colors
+    1.7. Border-radius
+    1.8. Dark Mode
+
+  2. DEFAULTS
+
+  3. HELPER CLASSES
+    3.1. General classes
+    3.2. Text classes
+    3.3. Padding classes
+    3.4. Margin classes
+    3.5. Border classes
+    3.6. Flex layout classes
+    3.7. Grid layout classes
+    3.8. Gradients
+
+  4. PRINT STYLES
+
+  5. TYPOGRAPHY 
+
+  6. BUTTONS
+    6.1 Buttons Material effect
+
+  7. SVG ICONS
+
+  8. GENERAL
+    8.1. Body, containers
+    8.2. Sections
+      8.2.1. Sections title navigation
+    8.3. Avatars
+      8.3.1. Avatar block
+      8.3.2. Avatar sizes
+    8.4. Lists
+      8.4.1. Styled list
+      8.4.2. Social styled list
+  
+  9. HEADER
+    9.1. Header General
+    9.2. Topbar
+    9.2.1. Topbar switchers
+    9.3. Logotype
+    9.4. Collection box
+    9.5. User activity buttons
+      9.5.1. Notifications dropdown
+        9.5.1.1. Notifications page
+      9.5.2. Cart dropdown
+    9.6. Header search
+      9.6.1. Mobile search
+    9.7. Header User Profile
+      9.7.1. Profile dropdown
+      9.7.2. Digital Store User Profile
+    
+  10. PRIMARY NAVIGATION
+    10.1. Submenu
+    10.2. Megamenu
+    10.3. Hiden menu dropdown
+    10.4. Social icons list
+    10.5. Mobile menu
+    10.6 Digital Store navigation
+
+  11. ELEMENTS
+    11.1. Call to action
+    11.2. Filterable bar
+    11.3. Info Box
+    11.4. Tabs
+    11.5. Accordion
+    11.6. Pagination
+    11.7. Before footer
+    11.8. Wallet
+    11.9. Become Seller block
+    11.10. Fullwidth banner
+
+  12. CRYPTOKI FORM
+    12.1. Cryptoki select
+    12.2. Cryptoki checkbox
+    12.3. Cryptoki radio
+    12.4. Cryptoki input file
+    12.5. Comment form
+    12.6. Contact form
+    12.7. Filter forms
+      12.7.1. Creators form
+      12.7.2. Artworks form
+
+  13. SLIDERS
+    13.1. Home slider
+    13.2. Featured items carousel
+    13.3. Categories bar carousel
+    13.4. Gallery carousel
+    13.5. Social icons carousel
+    13.6. Items Categories carousel
+
+  14. ASIDE
+    14.1. Recent posts widget
+    14.2. Widget Search
+    14.2. Categories Widget
+    14.3. Archives Widget
+    14.4. Latest Comments Widget
+    14.5. Calendar Widget
+  
+  15. FOOTER
+    15.1. Footer menu
+    15.2. Footer widgets
+    15.3. Footer copyright
+    15.4. Subscribe widget
+    15.5. Subscribe widget v2
+
+  16. BLOG
+    16.1. News feed
+    16.2. Post formats
+    16.3. Single post
+      16.3.1. Image caption
+      16.3.2. Quote
+      16.3.3. Post author box
+      16.3.4. Comments
+    16.4. Blog Classic
+    16.5. Single post sidebar
+
+  17. FEATURED ITEMS
+    17.1. Featured items v1
+    17.2. Featured items v2
+    17.3. Featured items v3
+    17.4. Featured items v4
+    17.5. Featured items v5
+    17.6. Featured items v6
+    17.7. Featured items v7
+    17.8. Featured items v8
+
+  18. CREATORS
+    18.1 Creators
+    18.2 Top creators
+    18.3 Featured creators
+    18.4. Become a creator
+
+  19. PRODUCTS
+    19.1. Product v1
+      19.1.1. Countdown JS
+      19.1.2. Placed bids
+      19.1.3. Related items
+    19.2. Product v2
+    19.3. Product v3
+    19.4. Product page digital store
+
+  20. PROFILE
+    20.1. Profile header
+    20.2. About author
+    20.3. Profile header mobile
+    20.4. Profile page digital store
+
+  21. COLLECTORS
+    21.1. Collectors mobile view
+
+  22. ARTWORKS
+    22.1. Artworks
+    22.2. Collections 
+    
+  23. ACTIVITY
+
+  24. USER DASHBOARD
+    24.1. Upload artwork
+    24.2. Dashboard tabs
+
+  25. SELLERS PAGE
+
+  26. SHOPPING CART  AND CHECKOUT
+    26.1. Shopping cart page
+    26.1.1. Shopping cart mobile view
+    26.2. Checkout-page
+
+  27. PROFILE DASHBOARD
+    27.1. Dashboard menu
+    27.2. User stats
+    27.3. Top Sellers
+    27.4. Responsive styles
+
+  28. PROFILE SALES STATEMENT
+    28.1. Sales statement mobile view
+
+  29. PROFILE UPLOAD ITEM
+
+  30. PROFILE MANAGE ITEMS
+
+  31. PROFILE PAYMENT HISTORY
+
+  32. PROFILE PURCHASES
+    32.1 Cryptoki modal
+  ============================ */
+
+
+
+
+/* ================================
+       9. HEADER
+       ================================ */
+
+/* ================================
+        9.1. Header General
+        ================================ */
+
+.site-header {
+    background-color: var(--body-background);
+}
+
+@media(max-width:800px) {
+    .main:not(.digital-store) .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: var(--body-background);
+    }
+}
+
+/* ================================
+        9.2. Topbar
+        ================================ */
+
+.digital-store .topbar {
+    background: var(--extra-light-gray);
+}
+
+.digital-store .topbar .nice-select {
+    background-color: transparent;
+}
+
+.topbar-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar-wrapper > * {
+    margin-right: 10px;
+}
+
+.topbar-wrapper > div:last-child {
+    margin-right: 0;
+}
+
+.topbar-47 {
+    height: 47px;
+}
+
+.topbar-92 {
+    height: 92px;
+}
+
+@media(max-width: 1200px) {
+    .digital-store .topbar {
+        display: none;
+    }
+}
+
+
+@media (min-width: 1200px){
+    .topbar-wrapper > * {
+        margin-bottom: 0;
+    }
+}
+
+/* ================================
+        9.2.1. Topbar switchers
+        ================================ */
+
+.topbar-switchers {
+    display: flex;
+}
+
+.topbar-switchers > * {
+    margin-left: 15px;
+}
+
+.topbar-switchers > div:first-child {
+    margin-left: 0;
+}
+
+/* ================================
+        9.3. Logotype
+        ================================ */
+
+.logo .logo-link:hover {
+    color: inherit;
+}
+
+.logo .logo-link,
+.collection-box,
+.header-user-profile {
+    display:flex;
+    align-items: center;
+}
+
+.logo .logo-img,
+.logo .logo-img svg {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo .logo-text {
+    font-size: 20px;
+    font-weight: var(--heading-font-weight);
+}
+
+@media (max-width: 1024px) {
+    .site-header .logo {
+        flex-grow: 1;
+    }
+}
+
+@media (max-width: 414px) {
+    .topbar .logo .logo-text,
+    .nav-ds .logo .logo-text {
+        display: none;
+    }
+}
+
+/* ================================
+        9.4. Collection box
+        ================================ */
+
+.collection-box .collection-title {
+    font-weight: var(--heading-font-weight);
+    white-space: nowrap;
+}
+
+.collection-box > * {
+    margin-right: 20px;
+}
+
+.collection-box > *:last-child {
+    margin-right: 10px;
+}
+
+.collection-box .btn {
+    padding: 18px 27px
+}
+
+.count {
+    margin-left: 5px;
+}
+
+@media (max-width: 800px) {
+    .collection-box {
+        display: none;
+    }
+}
+
+/* ================================
+        9.5. User activity buttons
+        ================================ */
+
+.user-activity-buttons {
+    display: flex;
+}
+
+.user-activity-buttons > * {
+    margin-right: 20px;
+    position: relative;
+}
+
+@media(max-width:568px) {
+    .user-activity-buttons > * {
+        position: static;
+    }
+}
+
+.user-activity-buttons button .counter {
+    position: absolute;
+    top: -18px;
+    right: -12px;
+    font-size: 9px;
+    line-height: 2;
+    width: 18px;
+    height: 18px;
+    background-color: var(--secondary-accent-color);
+    color: var(--contrast-text-color);
+    border-radius: 50%;
+}
+
+.cart-button svg,
+.favourites-button svg,
+.notifications-button svg,
+#mobile-search svg {
+    fill: var(--main-font-color);
+}
+
+.cart-button:hover svg,
+.favourites-button:hover svg,
+.notifications-button:hover svg,
+#mobile-search:hover svg {
+    fill: var(--primary-accent-color);
+}
+
+.nav-ds .user-activity-buttons button .counter {
+    color: var(--unchangable-font-color);
+}
+
+/* ================================
+        9.5.1. Notifications dropdown
+        ================================ */
+
+#notifications-dropdown {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 25px 30px;
+    background-color: var(--body-background);
+    border: 1px solid var(--border-color);
+    color: var(--main-font-color);
+    border-radius: 25px;
+    z-index: 100;
+    max-width: 100vw;
+    width: 360px;
+}
+
+#notifications-dropdown .title {
+    font-size: var(--body-font-size);
+    letter-spacing: var(--letter-spacing);
+    font-weight:var(--heading-font-weight);
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.notifications-wrapper {
+    margin-bottom: 40px;
+    max-height: 250px;
+}
+
+.notifications-wrapper .notification {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    letter-spacing: var(--letter-spacing);
+    margin-bottom: 30px;
+}
+
+.notification:last-child {
+    margin-bottom: 0;
+}
+
+.notification .thumb-box {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.notification .thumb-box span {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 5px;
+    font-size: 0;
+}
+
+.notification .thumb-box svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--contrast-text-color);
+    padding: 5px;
+}
+
+.notification .thumb-box img {
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.bid-type {
+    background-color: #6a52ff;
+}
+
+.purchase-type {
+    background-color: #ffc000;
+}
+
+.like-type {
+    background-color: #ff3a4e;
+}
+
+.review-type {
+    background-color: #c23fff;
+}
+
+.comment-type {
+    background-color: #ff394f;
+}
+
+.notification .notification-info {
+    text-align: left;
+}
+
+.notification .notification-info .message {
+    line-height: 1.4;
+    margin-bottom: 5px;
+}
+
+.cryptoki-notif-target {
+    display: none;
+    animation: fadeInUp .2s;
+}
+
+.cryptoki-notif-target.active {
+    display: block;
+}
+
+.cryptoki-notif-bttn {
+    position: relative;
+}
+
+.cryptoki-notif-bttn.active > .crumina-icon {
+    fill: var(--primary-accent-color);
+}
+
+
+/* ================================
+        9.5.1.1. Notifications page
+        ================================ */
+
+.widget-filter-panel.notifications {
+    max-width: 260px;
+}
+
+.notifications-list + .load-more_bars {
+    margin-top: 75px;
+}
+
+.notifications-list .notification {
+    padding: 25px 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    letter-spacing: var(--letter-spacing);
+}
+
+.notifications-list .notification-body {
+    display: flex;
+    align-items: center;
+}
+
+.notification-body .notification-info {
+    font-size: 14px;
+}
+
+.notification-body .publish-date {
+    font-size: 12px;
+}
+
+.notification-body .thumb-box {
+    width: 82px;
+    height: auto;
+    min-width: 82px;
+}
+
+.notification-body .avatar + .notification-info {
+    margin-left: 28px;
+}
+
+.notification .action-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.notification .action-buttons input[type="checkbox"] + label::before {
+    width: 16px;
+    height: 16px;
+    margin-right: 0;
+}
+
+.notification .action-buttons input[type="checkbox"]:checked + label::after {
+    left: 4px;
+    top: 4px;
+}
+
+.notification .action-buttons .cryptoki-form.checkbox {
+    position: relative;
+    top: 4px;
+}
+
+.notification .action-buttons button.close + .cryptoki-form.checkbox {
+    margin-left: 15px;
+}
+
+.notifications-list .command-line {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+.notifications-list .command-line > * {
+    margin-left: 20px;
+    font-size: var(--body-font-size);
+    font-weight: var(--heading-font-weight);
+    letter-spacing: var(--letter-spacing);
+}
+
+.notifications-list .command-line > .command:first-child {
+    margin-left: 0;
+}
+
+.notifications-list .command-line .command:hover,
+.notifications-list .command-line .command:active {
+    color: var(--primary-accent-color);
+}
+
+@media (max-width: 600px) {
+    .widget-filter-panel.notifications {
+        max-width: 100%;
+    }
+
+    .widget-filter-panel.notifications #filter-form {
+        margin-right: 0;
+    }
+
+    .widget-filter-panel.notifications #filter-form .form-group {
+        flex-direction: row;
+        justify-content: flex-start;}
+
+    .widget-filter-panel.notifications #filter-form .form-group .small-title {
+        flex-basis: 100%;
+    }
+
+    .widget-filter-panel.notifications #filter-form .form-group .form-list-elem {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 414px) {
+
+    .notification .action-buttons {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 10px;
+    }
+
+    .notification .action-buttons button.close + .cryptoki-form.checkbox {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
+
+@media(max-width: 320px) {
+    .notification-body .thumb-box {
+        display: none;
+    }
+}
+
+/* ================================
+        9.5.2. Cart dropdown
+        ================================ */
+
+.cart-button {
+    position: relative;
+}
+
+#cart-dropdown {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 25px 30px;
+    background-color: var(--body-background);
+    border: 1px solid var(--border-color);
+    color: var(--main-font-color);
+    border-radius: 25px;
+    z-index: 100;
+    width: 360px;
+    max-width: 100vw;
+}
+
+#cart-dropdown .cart-wrapper {
+    border-bottom: 1px solid var(--border-color);
+}
+
+#cart-dropdown .title {
+    font-size: var(--body-font-size);
+    letter-spacing: var(--letter-spacing);
+    font-weight:var(--heading-font-weight);
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.cart-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.purchase-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.purchase-info .product-info {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.product-info .product-title,
+.product-info .product-price {
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: var(--heading-font-weight);
+}
+
+.product-info .product-price {
+    margin-left: 20px;
+}
+
+.purchase-info .product-type {
+    font-size: 9px;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: var(--heading-font-weight);
+    padding: 4px 8px;
+    border-radius: 20px;
+    color: var(--contrast-text-color);
+    letter-spacing: var(--letter-spacing);
+}
+
+.product-type.ui-templates {
+    background-color: var(--ui-templates);
+}
+
+.product-type.social-graphics {
+    background-color: var(--social-graphics);
+    color: var(--main-font-color);
+}
+
+.digital-store .product-type.social-graphics {
+    color: var(--main-font-color);
+}
+
+.product-type.coded-templates {
+    background-color: var(--coded-templates);
+}
+
+.cart-product .thumb-box {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    position: relative;
+    margin-right: 10px;
+}
+
+
+.cart-product .thumb-box img {
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+#cart-dropdown .total-price {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.total-price .heading {
+    font-size: 12px;
+}
+
+.total-price .price {
+    font-size: 12px;
+    font-weight: var(--heading-font-weight);
+}
+
+.cart-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.cart-buttons a {
+    line-height: 1;
+}
+
+.cart-buttons a + a {
+    margin-left: 10px;
+}
+
+@media(max-width: 568px) {
+    #notifications-dropdown,
+    #cart-dropdown {
+        top: 90px;
+    }
+}
+
+@media(max-width: 320px) {
+    #notifications-dropdown,
+    #cart-dropdown {
+        width: 300px;
+    }
+}
+
+/* ================================
+        9.6. Header search
+        ================================ */
+
+.searchbox {
+    width: 100%;
+    flex: 0 3 700px;
+}
+
+.main-search {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid var(--border-color);
+    border-radius: var(--input-border-radius);
+}
+
+.main-search .search-input,
+.main-search .search-params,
+.main-search .search-button {
+    border: none;
+    padding: 18px 20px;
+    white-space: nowrap;
+}
+
+.main-search .search-button svg {
+    fill: var(--main-font-color);
+}
+
+.main-search .search-input {
+    flex: 0 1 100%;
+    background-color: var(--body-background);
+    color: var(--main-font-color);
+}
+
+.main-search .search-params {
+    border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+    border-right: 1px solid var(--border-color);
+    background-color: var(--extra-light-gray);
+    color: var(--main-font-color);
+}
+
+.main-search .search-params svg {
+    width: 8px;
+    margin-left: 5px;
+    fill: var(--main-font-color);
+    transition: all ease .1s;
+}
+
+.main-search .search-dropdown {
+    position: absolute;
+    background-color: var(--extra-light-gray);
+    border: 1px solid var(--border-color);
+    top: calc(100% + 10px);
+    left: -1px;
+    width: 200px;
+    z-index: 60;
+    padding: 10px 0;
+    border-radius: var(--input-border-radius);
+    text-align: left;
+    display: none;
+    animation: fadeInUp .25s;
+}
+
+.main-search .search-dropdown li {
+    white-space: initial;
+    padding: 10px 20px;
+    font-size: var(--body-font-size);
+    line-height: 1.4;
+    font-weight: var(--heading-font-weight);
+}
+
+.main-search .search-dropdown li:hover {
+    background-color: var(--main-font-color);
+    background-image: var(--cryptoki-gradient);
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+}
+
+.main-search .search-params.active svg {
+    transform: rotate(180deg);
+}
+
+.main-search .search-params.active ~ .search-dropdown {
+    display: block;
+}
+
+@media(max-width: 1024px) {
+    .searchbox {
+        display: none;
+    }
+}
+
+/* ================================
+        9.6.1. Mobile search
+        ================================ */
+
+#mobile-search {
+    display: none;
+    position: relative;
+}
+
+#mobile-search-block {
+    height: 0;
+    position: relative;
+    transition: height 0.3s linear;
+    border-bottom: 0px solid var(--border-color);
+}
+
+#mobile-search-block > #mobile-search-form {
+    width: 1430px;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s linear, opacity 0s linear;
+}
+
+#mobile-search-form input {
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: var(--body-background);
+    padding: 15px 40px 15px 20px;
+}
+
+#mobile-search-form input::placeholder {
+    color: var(--inactive-text-color);
+}
+
+#mobile-search-form .search-button {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0);
+    transition: visibility 0.3s linear, opacity 0.3s linear, transform 0.3s linear;
+}
+
+#mobile-search-block.is-visible {
+    height: 50px;
+    border-bottom-width: 1px;
+}
+
+.nav-ds #mobile-search-block.is-visible {
+    border-top: 1px solid var(--border-color);
+}
+
+#mobile-search-block.is-visible > #mobile-search-form {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.3s linear 0.3s, opacity 0.3s linear 0.3s;
+}
+
+#mobile-search-block > #mobile-search-form > .search-button svg {
+    fill: var(--main-font-color);
+}
+
+#mobile-search-block.is-visible > #mobile-search-form > .search-button {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+    transition: visibility 0.3s linear, opacity 0.3s linear, transform 0.3s linear;
+}
+
+
+#mobile-search svg {
+    will-change: transform;
+    transform: rotate(0deg);
+    transition: transform 0.3s linear;
+}
+
+#mobile-search.clicked svg {
+    transform: rotate(90deg);
+    transition: transform 0.3s linear;
+}
+
+@media(max-width: 1024px) {
+    #mobile-search {
+        display: block;
+        margin-right: 20px;
+    }
+}
+
+/* ================================
+        9.7. Header User Profile
+        ================================ */
+
+.header-user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.header-user-profile .user-meta {
+    border-left: 1px solid var(--border-color);
+    padding-left: 20px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.header-user-profile .user_name {
+    font-weight: var(--heading-font-weight);
+}
+
+.header-user-profile .user_score {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.header-user-profile .user_score svg {
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+}
+
+.header-user-profile .avatar {
+    margin-left: 10px;
+    position: relative;
+    transform: scale(1);
+    will-change: transform;
+    transition: transform 0.3s linear;
+}
+
+.verified svg {
+    fill: var(--contrast-text-color);
+    background-color: var(--secondary-accent-color);
+    border: 2px solid var(--body-background);
+    border-radius: 30px;
+}
+
+.digital-store .verified svg {
+    fill: var(--unchangable-font-color);
+}
+
+@media (max-width: 414px) {
+    .header-user-profile .user-meta {
+        display: none;
+    }
+}
+
+/* ================================
+        9.7.1. Profile dropdown
+        ================================ */
+
+#profile-dropdown {
+    width: 240px;
+    border-radius: 25px;
+    border: 1px solid var(--border-color);
+    position: absolute;
+    right: -20px;
+    top: 60px;
+    background-color: var(--extra-light-gray);
+    will-change: opacity, visibility;
+    z-index: 100;
+}
+
+.profile-dropdown-header {
+    height: 40px;
+}
+
+.profile-cover-image {
+    background: url(../img/content/profile/profile-cover-1.png) no-repeat 0 0;
+    background-size: cover;
+    border-radius: 25px 25px 0 0;
+}
+
+.profile-dropdown-body {
+    padding: 30px 0;
+    background-color: var(--body-background);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0 0 20px 20px;
+}
+
+.profile-heading {
+    padding-right: 30px;
+    padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: -45px;
+}
+
+.profile-heading .profile-avatar {
+    border: 3px solid var(--body-background);
+    position: relative;
+    width: 32px;
+    height: 32px;
+}
+
+.profile-heading .profile-avatar .verified {
+    position: absolute;
+    right: -2px;
+    top: 8px;
+}
+
+.profile-heading .profile-avatar .verified svg {
+    width: 14px;
+    height: 14px;
+    padding: 2px;
+    border: 1px solid var(--body-background);
+}
+
+.profile-heading .profile-link a {
+    font-size: 10px;
+}
+
+.profile-heading .profile-link:hover a {
+    color: var(--contrast-text-color);
+}
+
+.profile-menu li svg {
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+}
+
+
+.profile-menu li {
+    display: flex;
+    align-items: center;
+}
+
+.profile-menu li a {
+    padding: 8px 30px;
+    font-size: 13px;
+    font-weight: var(--heading-font-weight);
+    transition: all 0.2s ease-in;
+}
+
+.profile-menu li svg {
+    fill: var(--main-font-color);
+}
+
+.profile-menu li:hover {
+    background-color: var(--extra-light-gray);
+}
+
+.profile-menu li:hover svg{
+    fill: url("#cryptoki-svg-gradient") var(--primary-accent-color);
+}
+
+.profile-menu li:hover a {
+    color: inherit;
+    transform: translateX(8px);
+}
+
+
+.profile-dropdown-footer {
+    padding: 25px 30px;
+}
+
+.mode-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mode-toggle .mode-title {
+    font-size: 13px;
+    font-weight: var(--heading-font-weight);
+}
+
+.mode-toggle .mode-title svg {
+    width: 12px;
+    height: 12px;
+    margin-right: 10px;
+    fill: var(--main-font-color);
+}
+
+.toggle-control {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 12px;
+    user-select: none;
+}
+
+.toggle-control input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.toggle-control input:checked ~ .control {
+    background: var(--toggle-background-color-on);
+}
+
+.toggle-control input:checked ~ .control::after {
+    left: 16px;
+    /* border: 1px solid var(--toggle-control-border); */
+}
+
+.toggle-control .control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 30px;
+    border-radius: 30px;
+    background-color: var(--toggle-background-color-off);
+    transition: background-color 0.15s ease-in;
+}
+
+.toggle-control .control::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 30px;
+    background-color: var(--toggle-control-color);
+    transition: left 0.15s ease-in;
+}
+
+.header-user-profile .closing-icon {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    background: var(--cryptoki-gradient);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    transition: transform 0.3s linear;
+}
+
+.header-user-profile .closing-icon svg {
+    fill: var(--contrast-text-color);
+}
+
+
+@media(max-width: 800px) {
+    #profile-dropdown {
+        visibility: hidden;
+        opacity: 0;
+        height: 100%;
+        border-radius: 0;
+        position: fixed;
+        right: -100%;
+        top: 70px;
+        will-change: opacity, visibility;
+        transition: left .3s linear, right 0.3s linear;
+        z-index: 100;
+    }
+
+    #profile-dropdown.open {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        right: 0;
+        transition: left .3s linear, right 0.3s linear;
+    }
+
+    .profile-cover-image,
+    .profile-dropdown-body {
+        border-radius: 0;
+    }
+
+    .header-user-profile .avatar.hide {
+        margin-left: 20px;
+        position: relative;
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(0);
+        transition-delay: 0s;
+    }
+
+    .header-user-profile .closing-icon.show {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1);
+        transition: transform 0.3s linear 0s;
+    }
+
+    .header-user-profile .closing-icon.show svg {
+        transform: rotate(90deg);
+        transition: transform 0.3s linear 0.1s;
+    }
+}
+
+/* ================================
+        9.7.2. Digital Store User Profile
+        ================================ */
+
+.nav-ds .header-user-profile .user_score {
+    font-weight: var(--heading-font-weight);
+    color: var(--primary-accent-color);
+}

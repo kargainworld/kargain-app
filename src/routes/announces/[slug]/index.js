@@ -17,7 +17,7 @@ import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import usePriceTracker from 'hooks/usePriceTracker'
 import Box from '@material-ui/core/Box'
-import { injected } from "connectors"
+// import { injected } from "connectors"
 import UsersService from 'services/UsersService'
 import MakeOffer from "components/Blockchain/MakeOffer"
 import HandleOffer from "components/Blockchain/HandleOffer"
@@ -89,17 +89,17 @@ const Announce = () => {
     } = useKargainContract()
 
     useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                }).catch((err) => {
-                    console.log("err", err)
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
+        // injected.isAuthorized().then((isAuthorized) => {
+        //     if (isAuthorized) {
+        //         activate(injected, undefined, true).then(() =>{
+        //         }).catch((err) => {
+        //             console.log("err", err)
+        //             setTried(true)
+        //         })
+        //     } else {
+        //         setTried(true)
+        //     }
+        // })
     }, [])
 
     useEffect(() => {

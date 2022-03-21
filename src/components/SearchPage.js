@@ -20,7 +20,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from 'theme/palette'
 import { useWeb3React } from "@web3-react/core"
 import TransactionsService from 'services/TransactionsService'
-import { injected } from "../connectors"
+// import { injected } from "../connectors"
 
 
 const useStyles = makeStyles(() => ({
@@ -134,17 +134,6 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             filters
         }))
     }
-
-    useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).then(() =>{
-                }).catch((err) => {
-                    console.log("err", err)
-                })
-            }
-        })
-    }, [])
 
     useEffect(() => {
         fetchAnnounces()

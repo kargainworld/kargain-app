@@ -7,7 +7,7 @@ const handleResponse = response => {
             })
             .catch(err => {
                 if(Object.keys(err)){
-                    const error = new Error()
+                    const error = new Error('')
                     error.statusCode = err.code || response.status
                     error.name = err.name || 'UnknownError'
                     error.message = err.message || 'Unknown Error'

@@ -9,13 +9,13 @@ import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } fro
 import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3-react/frame-connector'
 import { Button } from '@material-ui/core'
 
-import { injected } from '../../connectors'
+// import { injected } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks/useMetamask'
 import { Spinner } from '../Spinner'
 
-const connectorsByName = {
-    Metamask: injected
-}
+// const connectorsByName = {
+//     Metamask: injected
+// }
 
 function getErrorMessage(error) {
     if (error instanceof NoEthereumProviderError) {
@@ -63,7 +63,7 @@ const Metamask = () => {
                     margin: 'auto'
                 } : undefined}
             >
-                {Object.keys(connectorsByName).map((name) => {
+                {/* {Object.keys(connectorsByName).map((name) => {
                     const currentConnector = connectorsByName[name]
                     const activating = currentConnector === activatingConnector
                     const connected = currentConnector === connector
@@ -102,7 +102,7 @@ const Metamask = () => {
                             )}
                         </Button>
                     )
-                })}
+                })} */}
                 {!!error && <h4 style={{ marginTop: '1rem', marginBottom: '0' }}>{getErrorMessage(error)}</h4>}
             </div>
         </div>
