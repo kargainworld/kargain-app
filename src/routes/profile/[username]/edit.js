@@ -242,7 +242,7 @@ const Edit = () => {
             const signer = web3Provider.getSigner()
 
             const message = `
-                I would like to update preferences. Username is ${form.firstName} ${form.lastname}, email is ${form.email}, phone is ${form.phone}, Country is ${form.countrySelect?.label}, about is ${form.about}
+                I would like to update preferences. Username is ${form.firstname} ${form.lastname}, email is ${form.email}, phone is ${form.phone}, Country is ${form.countrySelect?.label}, about is ${form.about}
             `
             toggleModal(true)
 
