@@ -62,9 +62,11 @@ const LoginPage = ({ forceLogout }) => {
                 email,
                 password
             })
+
             await initializeAuth()
 
             const User = new UserModel(user)
+            
             if (redirect) {
                 router.push(`/auth/callback?redirect=${redirect}`)
             } else {
