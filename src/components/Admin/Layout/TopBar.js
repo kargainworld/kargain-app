@@ -2,7 +2,7 @@ import React from "react"
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import useTranslation from 'next-translate/useTranslation'
+// import useTranslation from 'next-translate/useTranslation'
 import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { alpha, makeStyles } from '@material-ui/core/styles'
@@ -12,6 +12,7 @@ import theme from '../../../theme'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useAuth } from '../../../context/AuthProvider'
 import Metamask from "components/Wallet/Metamask"
+import { useRouter } from "next/router"
 
 const drawerWidth = 240
 
@@ -93,8 +94,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar = ({ handleDrawerToggle, open, ...props }) => {
     const classes = useStyles()
-    const { t } = useTranslation()
-    const { className, onClickTogglerNav, ...rest } = props
+    // const { t } = useTranslation()
+    const { ...rest } = props
     const { logout } = useAuth()
     const menuId = 'primary-search-account-menu'
     const mobileMenuId = 'primary-search-account-menu-mobile'
@@ -102,6 +103,7 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+    const router = useRouter()
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget)
@@ -118,6 +120,12 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget)
+    }
+
+    const handleLogout = () => {
+        logout().then(() => {
+            router.push('/admin/_login')
+        })
     }
 
     const renderMenu = (
@@ -144,7 +152,7 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
 
             <MenuItem>
                 <Link href="" prefetch={false}>
-                    <a className="nav-link text-left" onClick={() => logout()}>
+                    <a className="nav-link text-left" onClick={() => handleLogout()}>
                         <ExitToAppIcon/>
                         <span className="m-1">
                             Déconnexion

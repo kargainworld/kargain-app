@@ -70,7 +70,7 @@ const LoginPage = ({ forceLogout }) => {
             } else {
                 const isAdmin = User.getIsAdmin
                 if (isAdmin) {
-                    router.push(`/auth/callback?redirect=/admin`)
+                    router.push(`/admin`)
                 } else {
                     router.push(`/auth/callback?redirect=/profile/${User.getUsername}`)
                 }

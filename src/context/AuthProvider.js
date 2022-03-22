@@ -6,7 +6,7 @@ import { MessageContext } from './MessageContext'
 
 const defaultContext = {
     isAuthReady: false,
-    isLoading: false,
+    isLoading: true,
     authenticatedUser: new UserModel(),
     isAuthenticated: false,
     isAuthenticatedUserAdmin: false,
@@ -39,12 +39,14 @@ export const AuthProvider = ({ children }) => {
                 isAuthReady: true,
                 isAuthenticated: !!user,
                 isAuthenticatedUserAdmin: User.getIsAdmin,
-                authenticatedUser: User
+                authenticatedUser: User,
+                isLoading: false
             }))
         } catch (err) {
             setAuthState(authState => ({
                 ...authState,
-                isAuthReady: true
+                isAuthReady: true,
+                isLoading: false
             }))
         }
     }
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     const resetAuthState = () => {
         setAuthState({
             ...defaultContext,
-            isAuthReady: true
+            isAuthReady: false
         })
     }
 
@@ -77,6 +79,7 @@ export const AuthProvider = ({ children }) => {
             authenticatedUser: authState.authenticatedUser,
             forceLoginModal: authState.forceLoginModal,
             avoidCloseLoginModal : authState.avoidCloseLoginModal,
+            isLoading: authState.isLoading,
             initializeAuth,
             setForceLoginModal: (forceLogin, avoidClose = false) => {
                 setAuthState(authState => ({

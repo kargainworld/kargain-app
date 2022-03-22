@@ -5,7 +5,7 @@ import withGA from 'next-ga'
 import PropTypes from 'prop-types'
 import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
-import { ThemeProvider as StyledThemeProvider } from "styled-components"
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { SearchContext, SearchContextProvider } from '../context/SearchContext'
 import { ModalContext, ModalContextProvider } from '../context/ModalContext'
 import { MessageContextProvider } from 'context/MessageContext'
@@ -30,7 +30,7 @@ import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
 import { EmojiProvider } from 'react-apple-emojis'
 import emojiData from 'react-apple-emojis/lib/data.json'
-
+import Loading from '../components/Loading'
 
 const MyApp = ({ Component, pageProps }) => {
     const { formKey } = pageProps
@@ -75,19 +75,16 @@ const ProtectedRouter = ({ children, pageProps }) => {
     const router = useRouter()
     const { requiredAuth } = pageProps
     const isAdminRoute = router.route.split('/').includes('admin')
-    const { isAuthReady, forceLoginModal, isAuthenticated, isAuthenticatedUserAdmin } = useAuth()
+    const { isAuthReady, forceLoginModal, isAuthenticated, isAuthenticatedUserAdmin, isLoading } = useAuth()
     const showLoginModal = (requiredAuth && !isAuthenticated) || forceLoginModal
     const { searchStateContext } = useContext(SearchContext)
     const { modalStateContext } = useContext(ModalContext)
 
     if (isAdminRoute) {
-        if(router.route.split('/').includes('_login')) {
-            return (
-                <Layout>
-                    {children}
-                </Layout>
-            )
+        if (router.route.split('/').includes('_login')) {
+            return <>{children}</>
         }
+
         if (isAuthReady) {
             if (!isAuthenticatedUserAdmin) {
                 return <Forbidden403Page />
@@ -95,21 +92,24 @@ const ProtectedRouter = ({ children, pageProps }) => {
         }
 
         return (
-            <AdminLayout>
-                <PopupAlert />
-                {children}
-            </AdminLayout>
+            <>
+                {isAuthenticated ? (
+                    <AdminLayout>
+                        <PopupAlert />
+                        {isLoading ? <Loading /> : <>{children}</>}
+                    </AdminLayout>
+                ) : (
+                    <Loading />
+                )}
+            </>
+
         )
     }
 
     return (
         <DynamicNamespaces
             dynamic={(lang, ns) => import(`../locales/${lang}/${ns}.json`).then((m) => m.default)}
-            namespaces={[
-                'layout',
-                'messages_api',
-                'form_validations'
-            ]}
+            namespaces={['layout', 'messages_api', 'form_validations']}
         >
             {searchStateContext?.openModalSearch && <ModalSearchResults />}
             {modalStateContext.openModalMessaging && <ModalMessaging />}
