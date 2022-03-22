@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 
 const LoginPage = ({ forceLogout }) => {
     const router = useRouter()
-    const { logout } = useAuth()
+    const { logout, isAuthenticatedUserAdmin, authenticatedUser } = useAuth()
     const { t } = useTranslation()
     const { initializeAuth } = useAuth()
     useSocket()
@@ -55,6 +55,15 @@ const LoginPage = ({ forceLogout }) => {
         if (forceLogout) logout()
     }, [])
 
+    useEffect(() => {
+        if(isAuthenticatedUserAdmin && authenticatedUser) {
+            if(authenticatedUser.getIsAdmin) {
+                router.push('/admin')
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticatedUserAdmin, authenticatedUser])
+
     const onSubmit = async (form) => {
         const { email, password } = form
         try {
@@ -66,16 +75,13 @@ const LoginPage = ({ forceLogout }) => {
             await initializeAuth()
 
             const User = new UserModel(user)
-            
-            if (redirect) {
-                router.push(`/auth/callback?redirect=${redirect}`)
+
+            const isAdmin = User.getIsAdmin
+
+            if (isAdmin) {
+                router.push(`/admin`)
             } else {
-                const isAdmin = User.getIsAdmin
-                if (isAdmin) {
-                    router.push(`/admin`)
-                } else {
-                    router.push(`/auth/callback?redirect=/profile/${User.getUsername}`)
-                }
+                dispatchModalError({ err: 'Not Admin user!!' })
             }
         }
         catch (err) {
