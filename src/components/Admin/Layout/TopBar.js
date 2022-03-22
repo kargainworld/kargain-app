@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import theme from '../../../theme'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useAuth } from '../../../context/AuthProvider'
-import Metamask from "components/Wallet/Metamask"
+// import Metamask from "components/Wallet/Metamask"
 import { useRouter } from "next/router"
 
 const drawerWidth = 240
@@ -150,15 +150,16 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
                 <p>Profile</p>
             </MenuItem>
 
-            <MenuItem>
-                <Link href="" prefetch={false}>
-                    <a className="nav-link text-left" onClick={() => handleLogout()}>
-                        <ExitToAppIcon/>
-                        <span className="m-1">
-                            Déconnexion
-                        </span>
-                    </a>
-                </Link>
+            <MenuItem onClick={() => handleLogout()}>
+                <IconButton
+                    aria-label="account of current user"
+                    aria-controls="primary-search-account-menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                >
+                    <ExitToAppIcon/>
+                </IconButton>
+                <p>Déconnexion</p>
             </MenuItem>
         </Menu>
     )
@@ -239,7 +240,7 @@ const TopBar = ({ handleDrawerToggle, open, ...props }) => {
                             Kargain Admin
                         </Typography>
                     </Link>
-                    <Metamask />
+                    {/* <Metamask /> */}
                     <div style={{ flexGrow: 1 }}/>
                     <div className={classes.sectionDesktop}>
                         {/*<IconButton aria-label="show 4 new mails" color="inherit">*/}
