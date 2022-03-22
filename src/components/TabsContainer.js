@@ -1,7 +1,7 @@
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
-import React, {  useContext, useEffect, useState } from "react"
+import React, { useContext,  useState } from "react"
 import { MessageContext } from "context/MessageContext"
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
             marginRight: '0 !important',
             marginLeft: '0 !important'
         },
-        '& #new_feed':{
+        '& #new_feed': {
             display: 'none !important'
         }
     },
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "5px",
         background: customColors.gradient.main
     },
-    subscriptionbutton:{
+    subscriptionbutton: {
         backgroundColor: 'white',
         color: '#666666',
         padding: '5.5px 10px',
@@ -92,9 +92,9 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '17.5px',
         border: '1px solid #C4C4C4',
         borderWidth: '1px',
-        height:'35px'
+        height: '35px'
     },
-    subscriptionbuttonblue:{
+    subscriptionbuttonblue: {
         backgroundColor: 'white',
         color: '#666666',
         padding: '4.5px 10px',
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '17.5px',
         border: '1px solid blue',
         borderWidth: '1px',
-        height:'35px'
+        height: '35px'
     }
 }))
 
@@ -147,14 +147,15 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
                 dispatchModal({ msg: 'Announce successfully removed' })
                 window.location.reload()
             }).catch(err => {
-                dispatchModalError({ err }) })
+                dispatchModalError({ err })
+            })
     }
 
-    const garageAnnounceMint = profile.getGarage.filter(x=>  announceMinted.find( y => y.id === x.getID))
-    const favoritesAnnounceMint = profile.getFavorites.filter(x=> announceMinted.find( y => y.id === x.getID))
+    const garageAnnounceMint = profile.getGarage.filter(x => announceMinted.find(y => y.id === x.getID))
+    const favoritesAnnounceMint = profile.getFavorites.filter(x => announceMinted.find(y => y.id === x.getID))
 
     const getPriceGarageToken = (id) => {
-        const tokenPrice = announceMinted.find( y => y.id === id).tokenPrice
+        const tokenPrice = announceMinted.find(y => y.id === id).tokenPrice
         return tokenPrice
     }
 
@@ -163,125 +164,132 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
         router.push(`${href}?activeTab=${tab}`)
     }
 
-    useEffect(() => {
-        if (filterState.loading) return <Loading />
-    }, [filterState.loading])
+    // useEffect(() => {
+    //     if (filterState.loading) return <Loading />
+    // }, [filterState.loading])
+
     return (
-        <Container>
-            <Row>
-                <div style={{ width:'103%' }}>
-                    <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} total={announceMinted.length} className={classes.tabs} handleClickTab={onTabChange} style={{ width:'101%' }} >
-                        <Tabs.Item id="home-tab" title="Vitrine">
-                            {isMobile ? (
-                                <div style={{ width:'100%' }}>
-                                    <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
-                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                    <AnnounceCard
-                                                        announceRaw={announce.getRaw}
-                                                        tokenPrice={getPriceGarageToken(announce.getID)}
-                                                        onSelectSlug={setSelectedSlug}
-                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                    />
-                                                </div>))
-                                            }
-                                            {garageAnnounceMint.length === 0 &&
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{t('vehicles:no-found-announces')}</p>
-                                                </div>
-                                            }
-                                        </Row>
-                                    </section>
-                                </div>
-
-                            ):(
-                                <section className={filtersOpened ? 'filter-is-visible' : ''}>
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard
-                                                    announceRaw={announce.getRaw}
-                                                    tokenPrice={getPriceGarageToken(announce.getID)}
-                                                    onSelectSlug={setSelectedSlug}
-                                                    onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                />
-                                            </div>))
-                                        }
-                                        {garageAnnounceMint.length === 0 &&
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            <p>{t('vehicles:no-found-announces')}</p>
+        <>
+            {filterState.loading ? (
+                <Loading />
+            ) : (
+                <Container>
+                    <Row>
+                        <div style={{ width: '103%' }}>
+                            <Tabs updateFilters={updateFilters} defaultActive={0} active={activeTab} total={announceMinted.length} className={classes.tabs} handleClickTab={onTabChange} style={{ width: '101%' }} >
+                                <Tabs.Item id="home-tab" title="Vitrine">
+                                    {isMobile ? (
+                                        <div style={{ width: '100%' }}>
+                                            <section className={filtersOpened ? 'filter-is-visible' : ''}>
+                                                <Row className="my-2 d-flex justify-content-center">
+                                                    {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
+                                                        <div key={index} style={{ width: '31%', marginRight: '2.1%' }}>
+                                                            <AnnounceCard
+                                                                announceRaw={announce.getRaw}
+                                                                tokenPrice={getPriceGarageToken(announce.getID)}
+                                                                onSelectSlug={setSelectedSlug}
+                                                                onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                            />
+                                                        </div>))
+                                                    }
+                                                    {garageAnnounceMint.length === 0 &&
+                                                        <div className="d-flex flex-column align-items-center smy-2">
+                                                            <p>{t('vehicles:no-found-announces')}</p>
+                                                        </div>
+                                                    }
+                                                </Row>
+                                            </section>
                                         </div>
-                                        }
-                                    </Row>
-                                </section>
-                            )}
 
-                        </Tabs.Item>
+                                    ) : (
+                                        <section className={filtersOpened ? 'filter-is-visible' : ''}>
+                                            <Row className="my-2 d-flex justify-content-center">
+                                                {garageAnnounceMint.length !== 0 && garageAnnounceMint.map((announce, index) => (
+                                                    <div key={index} style={{ width: '31%', marginRight: '2.1%' }}>
+                                                        <AnnounceCard
+                                                            announceRaw={announce.getRaw}
+                                                            tokenPrice={getPriceGarageToken(announce.getID)}
+                                                            onSelectSlug={setSelectedSlug}
+                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                        />
+                                                    </div>))
+                                                }
+                                                {garageAnnounceMint.length === 0 &&
+                                                    <div className="d-flex flex-column align-items-center smy-2">
+                                                        <p>{t('vehicles:no-found-announces')}</p>
+                                                    </div>
+                                                }
+                                            </Row>
+                                        </section>
+                                    )}
 
-                        {isSelf && (
-                            <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
-                                {isMobile ? (
-                                    <div style={{ width:'100%' }}>
-                                        <Row className="my-2 d-flex justify-content-center">
-                                            {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
-                                                <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                    <AnnounceCard
-                                                        announceRaw={announceRaw.getRaw}
-                                                        tokenPrice={getPriceGarageToken(announceRaw.getID)}
-                                                        onSelectSlug={setSelectedSlug}
-                                                        onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                    />
-                                                </div>))
-                                            }
-                                            {favoritesAnnounceMint.length === 0 &&
-                                                <div className="d-flex flex-column align-items-center smy-2">
-                                                    <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                                </div>
-                                            }
-                                        </Row>
-                                    </div>
+                                </Tabs.Item>
 
-                                ):(
-                                    <Row className="my-2 d-flex justify-content-center">
-                                        {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
-                                            <div key={index} style={{ width: '31%', marginRight:'2.1%' }}>
-                                                <AnnounceCard
-                                                    announceRaw={announceRaw.getRaw}
-                                                    tokenPrice={getPriceGarageToken(announceRaw.getID)}
-                                                    onSelectSlug={setSelectedSlug}
-                                                    onhandleOpenDialogRemove={handleOpenDialogRemove}
-                                                />
-                                            </div>))
-                                        }
-                                        {favoritesAnnounceMint.length === 0 &&
-                                        <div className="d-flex flex-column align-items-center smy-2">
-                                            <p>{(t('vehicles:no-favorite-announces'))}</p>
-                                        </div>
-                                        }
-                                    </Row>
+                                {isSelf && (
+                                    <Tabs.Item id="favoris-tab" title={t('vehicles:favorites')}>
+                                        {isMobile ? (
+                                            <div style={{ width: '100%' }}>
+                                                <Row className="my-2 d-flex justify-content-center">
+                                                    {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
+                                                        <div key={index} style={{ width: '31%', marginRight: '2.1%' }}>
+                                                            <AnnounceCard
+                                                                announceRaw={announceRaw.getRaw}
+                                                                tokenPrice={getPriceGarageToken(announceRaw.getID)}
+                                                                onSelectSlug={setSelectedSlug}
+                                                                onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                            />
+                                                        </div>))
+                                                    }
+                                                    {favoritesAnnounceMint.length === 0 &&
+                                                        <div className="d-flex flex-column align-items-center smy-2">
+                                                            <p>{(t('vehicles:no-favorite-announces'))}</p>
+                                                        </div>
+                                                    }
+                                                </Row>
+                                            </div>
+
+                                        ) : (
+                                            <Row className="my-2 d-flex justify-content-center">
+                                                {favoritesAnnounceMint.length !== 0 && favoritesAnnounceMint.map((announceRaw, index) => (
+                                                    <div key={index} style={{ width: '31%', marginRight: '2.1%' }}>
+                                                        <AnnounceCard
+                                                            announceRaw={announceRaw.getRaw}
+                                                            tokenPrice={getPriceGarageToken(announceRaw.getID)}
+                                                            onSelectSlug={setSelectedSlug}
+                                                            onhandleOpenDialogRemove={handleOpenDialogRemove}
+                                                        />
+                                                    </div>))
+                                                }
+                                                {favoritesAnnounceMint.length === 0 &&
+                                                    <div className="d-flex flex-column align-items-center smy-2">
+                                                        <p>{(t('vehicles:no-favorite-announces'))}</p>
+                                                    </div>
+                                                }
+                                            </Row>
+                                        )}
+                                    </Tabs.Item>
                                 )}
-                            </Tabs.Item>
-                        )}
-                    </Tabs>
-                </div>
-            </Row>
+                            </Tabs>
+                        </div>
+                    </Row>
 
-            <Dialog open={openDialogRemove} onClose={handleCloseDialogRemove}>
-                <DialogTitle id="alert-dialog-title" disableTypography>{t('vehicles:confirm-suppression')}</DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>{t('vehicles:cancel')}</Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        startIcon={<DeleteIcon/>}
-                        onClick={handleRemove} >
-                        {t('vehicles:remove-announce')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </Container>
+                    <Dialog open={openDialogRemove} onClose={handleCloseDialogRemove}>
+                        <DialogTitle id="alert-dialog-title" disableTypography>{t('vehicles:confirm-suppression')}</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={handleCloseDialogRemove} color="primary" autoFocus>{t('vehicles:cancel')}</Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                className={classes.button}
+                                startIcon={<DeleteIcon />}
+                                onClick={handleRemove} >
+                                {t('vehicles:remove-announce')}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </Container>
+            )}
+        </>
     )
 }
 

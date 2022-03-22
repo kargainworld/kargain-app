@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from 'clsx'
-import {makeStyles} from "@material-ui/styles"
-import {Avatar, Card, CardContent, Grid, Typography} from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { Avatar, Card, CardContent, Grid, Typography } from "@material-ui/core"
 import MoneyIcon from '@material-ui/icons/Money'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Budget = props => {
-    const {className, ...rest} = props
+    const { className, ...rest } = props
 
     const classes = useStyles()
 
@@ -51,7 +51,7 @@ const Budget = props => {
             <CardContent>
                 <Grid
                     container
-                    justify="space-between">
+                    justifyContent="space-between">
                     <Grid item>
                         <Typography
                             className={classes.title}
@@ -64,12 +64,12 @@ const Budget = props => {
                     </Grid>
                     <Grid item>
                         <Avatar className={classes.avatar}>
-                            <MoneyIcon className={classes.icon}/>
+                            <MoneyIcon className={classes.icon} />
                         </Avatar>
                     </Grid>
                 </Grid>
                 <div className={classes.difference}>
-                    <ArrowDownwardIcon className={classes.differenceIcon}/>
+                    <ArrowDownwardIcon className={classes.differenceIcon} />
                     <Typography
                         className={classes.differenceValue}
                         variant="body2"

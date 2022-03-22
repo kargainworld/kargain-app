@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import Modal from '@material-ui/core/Modal'
 import Dialog from '@material-ui/core/Dialog'
 import DeleteIcon from '@material-ui/icons/Delete'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -29,7 +28,7 @@ import SelectCountryFlags from '../../../components/Form/Inputs/SelectCountryFla
 import SearchLocationInput from '../../../components/Form/Inputs/SearchLocationInput'
 import ValidationErrors from '../../../components/Form/Validations/ValidationErrors'
 import AvatarPreviewUpload from '../../../components/Avatar/AvatarPreviewUpload'
-import OffersPurchaseForm from '../../../components/Stripe/OffersPurchaseForm'
+// import OffersPurchaseForm from '../../../components/Stripe/OffersPurchaseForm'
 import FieldWrapper from '../../../components/Form/FieldWrapper'
 import CTALink from '../../../components/CTALink'
 import { MessageContext } from 'context/MessageContext'
@@ -388,7 +387,7 @@ const Edit = () => {
                 open={open}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                maxWidth="false"
+                maxWidth="sm"
                 style={{ minWidth: 100 }}
             >
                 <DialogTitle id="alert-dialog-title" disableTypography>
@@ -455,12 +454,12 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                                     }}
                                 />
                             </TabPane>
-                            <TabPane tabId={1}>
+                            {/* <TabPane tabId={1}>
                                 <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                                     {t('vehicles:payments-bills')}
                                 </Typography>
                                 <OffersPurchaseForm offer={offer} />
-                            </TabPane>
+                            </TabPane> */}
                             <TabPane tabId={2}>
                                 <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                                     {t('vehicles:confidentiality-security')}
@@ -491,12 +490,12 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
                                     }}
                                 />
                             </TabPane>
-                            <TabPane tabId={1}>
+                            {/* <TabPane tabId={1}>
                                 <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                                     {t('vehicles:payments-bills')}
                                 </Typography>
                                 <OffersPurchaseForm offer={offer} />
-                            </TabPane>
+                            </TabPane> */}
                             <TabPane tabId={2}>
                                 <Typography component="h2" variant="h2" className="text-left" gutterBottom>
                                     {t('vehicles:confidentiality-security')}
@@ -607,7 +606,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                 />
             </FieldWrapper>
 
-            <div classNameWrapper="my-3" style={{ marginLeft: '8px' }}>
+            <div className="my-3" style={{ marginLeft: '8px' }}>
                 <label style={{
                     color: '#999999',
                     width: '100%',
@@ -617,7 +616,7 @@ const ProfilePartialForm = ({ control, watch, isAdmin, errors }) => {
                     marginBottom: '15px'
                 }}>{t('vehicles:password')}</label>
                 <Link href="/auth/forgotten">
-                    <a className={"m-2", clsx(classes.bordergradientbtn)}>
+                    <a className={clsx(classes.bordergradientbtn)}>
                         <label className={clsx(classes.gradienttext)}> RESET PASSWORD </label>
                     </a>
                 </Link>

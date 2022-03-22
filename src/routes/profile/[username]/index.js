@@ -197,6 +197,10 @@ const Profile = () => {
                 isAdmin,
                 isSelf
             }))
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: false
+            }))
         } catch (err) {
             console.log("Error Login")
             console.log(err)
@@ -263,6 +267,12 @@ const Profile = () => {
                 ...state,
                 announcesMinted: tokensMinted
             }))
+
+            setFilterState(filterState => ({
+                ...filterState,
+                loading: false
+            }))
+            
         } catch (err) {
             console.error(err)
         }
@@ -286,10 +296,10 @@ const Profile = () => {
         window.scrollTo(0, 0)
     }, [fetchProfile])
 
-    useEffect(() => {
-        if (filterState.loading) return <Loading />
+    // useEffect(() => {
+    //     if (filterState.loading) return <Loading />
 
-    }, [filterState.loading])
+    // }, [filterState.loading])
 
     useEffect(() => {
         if (state.stateReady) {

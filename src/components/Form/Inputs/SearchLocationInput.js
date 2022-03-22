@@ -13,6 +13,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
     useEffect(() => {
         control.register(name, rules)
         setValue(control.getValues()?.address?.fullAddress)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -63,6 +64,7 @@ const SearchLocationInput = ({ name, control, rules, errors, country, ...props }
                 }
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [country])
 
     return (
@@ -95,15 +97,13 @@ SearchLocationInput.propTypes = {
     country: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
-    types: PropTypes.arrayOf(PropTypes.string),
-    onChange: PropTypes.func
+    types: PropTypes.arrayOf(PropTypes.string)
 }
 
 SearchLocationInput.defaultProps = {
     rules: {},
     country: 'fr',
-    types: ['address'],
-    onChange: {},
+    types: ['address']
 }
 
 export default SearchLocationInput

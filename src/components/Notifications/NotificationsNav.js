@@ -58,7 +58,7 @@ const useStyles = makeStyles(() => ({
         // padding: '0px 3px',
         borderRadius: '50%',
         backgroundColor: '#A291F3'
-    // background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
+        // background: 'linear-gradient(180deg, #0070F3 -21.43%, #00D9D9 116.67%) !important',
     },
     counts: {
         display: 'flex',
@@ -85,22 +85,26 @@ const NotificationsNav = ({ isOpen, keyName, toggle }) => {
     useEffect(() => {
         if (isOpen || !isNotificationChecked) {
             setIsLoading(true)
-            fetchNotifications()
-                .then((res) => {
-                    if (res && res.pings) {
-                        setNotifications(res.pings)
-                        const newNotifications = res.pings.filter((item) => !item.opened)
-                        if (newNotifications.length > 0) {
-                            setNotificationCounts(newNotifications.length)
-                        }
-                    }
-                })
-                .finally(() => {
-                    setIsLoading(false)
-                    notificationsChecked(isOpen)
-                })
+            getNotification()
         }
     }, [isOpen])
+
+    const getNotification = async () => {
+        fetchNotifications()
+            .then((res) => {
+                if (res && res.pings) {
+                    setNotifications(res.pings)
+                    const newNotifications = res.pings.filter((item) => !item.opened)
+                    if (newNotifications.length > 0) {
+                        setNotificationCounts(newNotifications.length)
+                    }
+                }
+            })
+            .finally(() => {
+                setIsLoading(false)
+                notificationsChecked(isOpen)
+            })
+    }
 
     const handleRemovePing = (pingId) => {
         setIsLoading(true)

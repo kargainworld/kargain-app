@@ -81,7 +81,6 @@ const ProtectedRouter = ({ children, pageProps }) => {
     const { modalStateContext } = useContext(ModalContext)
 
     if (isAdminRoute) {
-        console.log(router.route)
         if(router.route.split('/').includes('_login')) {
             return (
                 <Layout>

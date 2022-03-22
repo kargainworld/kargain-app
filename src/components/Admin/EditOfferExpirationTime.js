@@ -103,7 +103,7 @@ const EditOfferExpirationTime = props => {
             <CardContent>
                 <Grid
                     container
-                    justify="space-between">
+                    justifyContent="space-between">
                     <Grid item style={{ flex:1 }}>
                         <Typography
                             className={classes.title}
