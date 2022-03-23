@@ -12,7 +12,7 @@ Geocode.setLanguage('fr')
 Geocode.setRegion('fr')
 
 // Enable or disable logs. Its optional.
-// Geocode.enableDebug();
+// Geocode.enableDebug()
 
 /**
  * Returns a promise

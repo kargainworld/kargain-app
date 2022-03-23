@@ -53,3 +53,4 @@ pids
 *.pid.lock
 
 .vercel
+.env
