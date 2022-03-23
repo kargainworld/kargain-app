@@ -18,15 +18,15 @@ import { Emoji } from 'react-apple-emojis'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
-    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { formDataContext } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
-    const { control, errors, getValues, handleSubmit, watch } = useForm({
+    const { control, errors, getValues, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],

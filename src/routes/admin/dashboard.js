@@ -2,11 +2,11 @@ import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import Budget from '../../components/Admin/temp/Budget'
-import TotalUsers from '../../components/Admin/temp/TotalUsers'
-import TasksProgress from '../../components/Admin/temp/TasksProgress/TasksProgress'
-import TotalProfit from '../../components/Admin/temp/TotalProfit'
-import EditPlatformCommissionPercent from '../../components/Admin/EditPlatformCommissionPercent'
-import EditOfferExpirationTime from '../../components/Admin/EditOfferExpirationTime'
+// import TotalUsers from '../../components/Admin/temp/TotalUsers'
+// import TasksProgress from '../../components/Admin/temp/TasksProgress/TasksProgress'
+// import TotalProfit from '../../components/Admin/temp/TotalProfit'
+// import EditPlatformCommissionPercent from '../../components/Admin/EditPlatformCommissionPercent'
+// import EditOfferExpirationTime from '../../components/Admin/EditOfferExpirationTime'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,7 +30,7 @@ const DashboardAdmin = () => {
                     xs={12}>
                     <Budget />
                 </Grid>
-                <Grid
+                {/* <Grid
                     item
                     lg={3}
                     sm={6}
@@ -71,7 +71,7 @@ const DashboardAdmin = () => {
                     xs={12}
                 >
                     <EditOfferExpirationTime />
-                </Grid>
+                </Grid> */}
             </Grid>
         </div>
     )

@@ -13,10 +13,10 @@ import { FormContext } from 'context/FormContext'
 import { MessageContext } from 'context/MessageContext'
 import VehiclesService from 'services/VehiclesService'
 import { vehicleTypes, vehicleTypeRefModels } from '../../business/vehicleTypes'
-import { useWeb3React } from "@web3-react/core"
+// import { useWeb3React } from "@web3-react/core"
 
 const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
-    const { library, chainId, account, activate, active } = useWeb3React()
+    // const { library, chainId, account, activate, active } = useWeb3React()
     const { t, lang } = useTranslation()
     const cache = useRef({})
     const formRef = useRef(null)
@@ -44,7 +44,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
     const selectedModel = watch('manufacturer.model')
     const selectedYear = watch('manufacturer.year')
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const getMonths = () => moment.localeData(lang)
         .months()

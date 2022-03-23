@@ -21,7 +21,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
 
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
-    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { formDataContext } = useContext(FormContext)
     const { dispatchModalError } = useContext(MessageContext)
 
     const { control, errors, handleSubmit, watch, setValue } = useForm({
@@ -30,7 +30,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null)

@@ -37,12 +37,12 @@ const useStyles = makeStyles(() => ({
 /*const [, ] = useState(null)
     const [, ] = useState(null)*/
 
-const Step = ({ handleSubmitForm, prevStep,tokenPrice ,setTokenPrice,error }) => {
+const Step = ({ handleSubmitForm, prevStep, tokenPrice = '' ,setTokenPrice, error }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
     
-    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { formDataContext } = useContext(FormContext)
     const { watch, control, errors, setValue, register, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
@@ -54,7 +54,7 @@ const Step = ({ handleSubmitForm, prevStep,tokenPrice ,setTokenPrice,error }) =>
         }
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const vat = watch('vat')
 
@@ -67,6 +67,7 @@ const Step = ({ handleSubmitForm, prevStep,tokenPrice ,setTokenPrice,error }) =>
     useEffect(() => {
         register({ name: 'location.coordinates' })
         setValue('location.coordinates', coordinates)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coordinates])
 
     useEffect(() => {
