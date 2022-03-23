@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { Divider, Input } from '@material-ui/core'
@@ -32,7 +32,8 @@ import AutocompleteDropdown from '../components/Search/AutoSearchDropdown'
 import { NewIcons } from '../assets/icons'
 
 import customColors from '../theme/palette'
-import CTAButton from './CTAButton'
+import { getChainData } from '../libs/utils'
+
 
 
 const useStyles = makeStyles(() => ({
@@ -471,13 +472,23 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
     const router = useRouter()
     const { authenticatedUser, logout } = useAuth()
     const { t } = useTranslation()
-    const { disconnect, balance } = useWeb3Modal()
+    const { disconnect, balance, web3 } = useWeb3Modal()
     
     const handleLogout = async () => {
         await disconnect()
         await logout()
         router.push('/')
     }
+
+    const formatedBalance = useMemo(() => {
+        let str = 0
+        if(balance) {
+            str = web3.utils.fromWei(balance, 'ether')
+        }
+        const chainData = getChainData()
+        return `${Number(str).toFixed(4)} ${chainData.native_currency?.symbol}`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [balance])
     
     return (
         <>
@@ -485,7 +496,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                 <div style={{ textAlign: 'right' }}>
                     {authenticatedUser.getFirstname === undefined ? 'Unnamed' : authenticatedUser.getFullName}
                 </div>
-                <div style={{ textAlign: 'right', fontSize: '0.7rem' }}>{balance ? `${balance} ETH`: ''}</div>
+                <div style={{ textAlign: 'right', fontSize: '0.7rem' }}>{formatedBalance}</div>
             </div>
 
             <li className="nav-item navbar-dropdown">

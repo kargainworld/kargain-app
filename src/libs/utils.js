@@ -71,7 +71,8 @@ function buildTime(isoTime, labels) {
 
 export function getChainData(chainId) {
     if (!chainId) {
-        return null
+        // return null
+        chainId = config.main_chain_id
     }
     const chainData = supportedChains.filter((chain) => chain.chain_id === Number(chainId))[0]
     // console.log(typeof chainId)

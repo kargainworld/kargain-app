@@ -118,7 +118,7 @@ export const Web3ContextProvider = ({ children }) => {
         const web3 = initWeb3(provider)
         const accounts = await web3.eth.getAccounts()
         const address = accounts[0]
-
+        const balance = await web3.eth.getBalance(address)
         const networkId = await web3.eth.net.getId()
         const chainId = await web3.eth.getChainId()
 
@@ -127,7 +127,7 @@ export const Web3ContextProvider = ({ children }) => {
             provider: provider,
             chainId: chainId,
             address: address,
-            balance: '0.00',
+            balance: balance,
             web3: web3,
             networkId
         })
