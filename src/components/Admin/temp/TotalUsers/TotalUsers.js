@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import {makeStyles} from "@material-ui/styles"
-import {Avatar, Card, CardContent, Grid, Typography} from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { Avatar, Card, CardContent, Grid, Typography } from "@material-ui/core"
 import PeopleIcon from '@material-ui/icons/PeopleOutlined'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const TotalUsers = props => {
-    const {className, ...rest} = props
+    const { className, ...rest } = props
     const classes = useStyles()
 
     return (
@@ -68,12 +68,12 @@ const TotalUsers = props => {
                     </Grid>
                     <Grid item>
                         <Avatar className={classes.avatar}>
-                            <PeopleIcon className={classes.icon}/>
+                            <PeopleIcon className={classes.icon} />
                         </Avatar>
                     </Grid>
                 </Grid>
                 <div className={classes.difference}>
-                    <ArrowUpwardIcon className={classes.differenceIcon}/>
+                    <ArrowUpwardIcon className={classes.differenceIcon} />
                     <Typography
                         className={classes.differenceValue}
                         variant="body2"
