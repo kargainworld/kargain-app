@@ -4,10 +4,13 @@ import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Portis from '@portis/web3'
 import Fortmatic from 'fortmatic'
+import Web3 from 'web3'
+
 import ModalNetwork from '../components/ModalNetwork'
+import { getNetwork } from 'libs/utils'
 
-import { providers, utils } from 'ethers'
 
+import { useAuth } from './AuthProvider'
 
 const providerOptions = {
     walletconnect: {
@@ -35,7 +38,8 @@ const initialState = {
     web3Provider: null,
     address: null,
     chainId: null,
-    balance: null
+    balance: null,
+    web3: null
 }
 
 const Web3Context = createContext(initialState)
@@ -49,7 +53,8 @@ function reducer(state, action) {
             chainId: action.chainId,
             provider: action.provider,
             address: action.address,
-            balance: action.balance
+            balance: action.balance,
+            networkId: action.networkId
         }
     case 'SET_ADDRESS':
         return {
@@ -73,39 +78,58 @@ function reducer(state, action) {
     }
 }
 
+function initWeb3(provider) {
+    const web3 = new Web3(provider)
+
+    web3.eth.extend({
+        methods: [
+            {
+                name: 'chainId',
+                call: 'eth_chainId',
+                outputFormatter: web3.utils.hexToNumber
+            }
+        ]
+    })
+
+    return web3
+}
+
 export const Web3ContextProvider = ({ children }) => {
     let web3Modal
     if (typeof window !== 'undefined') {
         web3Modal = new Web3Modal({
-            network: 'mainnet', // optional
+            network: getNetwork(), // optional
             cacheProvider: true,
             providerOptions // required
         })
     }
 
     const [open, setOpen] = useState(false)
-
+    const { logout } = useAuth()
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const { provider, address, chainId, active, balance } = state
-
+    const { provider, address, chainId, active, balance, web3 } = state
+    
     const connect = async function () {
         console.log('Connecting...')
-        const provider1 = await web3Modal.connect()
-        const web3Provider = new providers.Web3Provider(provider1)
+        const provider = await web3Modal.connect()
+        await provider.enable()
 
-        const signer = web3Provider.getSigner()
-        const address = await signer.getAddress()
-        const balance = await signer.getBalance()
-        console.log(address)
-        const network = await web3Provider.getNetwork()
-        const { chainId } = network
+        const web3 = initWeb3(provider)
+        const accounts = await web3.eth.getAccounts()
+        const address = accounts[0]
+
+        const networkId = await web3.eth.net.getId()
+        const chainId = await web3.eth.getChainId()
+
         dispatch({
             type: 'SET_WEB3_PROVIDER',
-            provider: provider1,
+            provider: provider,
             chainId: chainId,
             address: address,
-            balance: utils.formatEther(balance)
+            balance: '0.00',
+            web3: web3,
+            networkId
         })
 
         return { chainId, wallet: address }
@@ -119,6 +143,7 @@ export const Web3ContextProvider = ({ children }) => {
 
     const handleDisconnect = async () => {
         setOpen(false)
+        logout()
         disconnect()
     }
 
@@ -155,7 +180,6 @@ export const Web3ContextProvider = ({ children }) => {
                 if (_hexChainId !== process.env.MAIN_CHAIN_ID) {
                     setOpen(true)
                 }
-                window.location.reload()
             }
 
             const handleDisconnect = (error) => {
@@ -187,7 +211,7 @@ export const Web3ContextProvider = ({ children }) => {
                 }
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provider])
 
     return (
@@ -199,7 +223,7 @@ export const Web3ContextProvider = ({ children }) => {
                 connect,
                 disconnect,
                 active,
-                web3Modal,
+                web3,
                 balance
             }}
         >

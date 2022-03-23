@@ -12,7 +12,8 @@ const defaultContext = {
     isAuthenticatedUserAdmin: false,
     forceLoginModal: false,
     avoidCloseLoginModal: false,
-    initializeAuth : () => {}
+    initializeAuth : () => {},
+    logout: () => {}
 }
 
 const AuthContext = createContext(defaultContext)

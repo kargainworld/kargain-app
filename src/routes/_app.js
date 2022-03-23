@@ -45,9 +45,9 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <StyledThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
-                <Web3ContextProvider>
-                    <MessageContextProvider>
-                        <AuthProvider>
+                <AuthProvider>
+                    <Web3ContextProvider>
+                        <MessageContextProvider>
                             <SocketProvider>
                                 <FormContextProvider formKey={formKey}>
                                     <SearchContextProvider>
@@ -63,9 +63,9 @@ const MyApp = ({ Component, pageProps }) => {
                                     </SearchContextProvider>
                                 </FormContextProvider>
                             </SocketProvider>
-                        </AuthProvider>
-                    </MessageContextProvider>
-                </Web3ContextProvider>
+                        </MessageContextProvider>
+                    </Web3ContextProvider>
+                </AuthProvider>
             </ThemeProvider>
         </StyledThemeProvider>
     )
@@ -102,7 +102,6 @@ const ProtectedRouter = ({ children, pageProps }) => {
                     <Loading />
                 )}
             </>
-
         )
     }
 

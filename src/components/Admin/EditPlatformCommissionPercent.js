@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { makeStyles } from "@material-ui/styles"
 import { Avatar, Card, CardContent, Grid, InputAdornment, Typography } from "@material-ui/core"
 import PrimaryIcon from '@material-ui/icons/Store'
-// import useKargainContract from "hooks/useKargainContract"
+import useKargainContract from "hooks/useKargainContract"
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
@@ -54,47 +54,47 @@ const EditPlatformCommissionPercent = props => {
     const [platformCommissionPercent, setPlatformCommissionPercent] = useState(null)
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
-    // const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
+    const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
 
     const { dispatchModal } = useContext(MessageContext)
 
     const [isBlockchainFail, setIsBlockchainFail] = useState(false)
 
-    // useEffect(() => {
-    //     if (isBlockchainFail) {
-    //         return
-    //     }
+    useEffect(() => {
+        if (isBlockchainFail) {
+            return
+        }
 
-    //     const action = async () => {
-    //         try {
-    //             const value = await fetchPlatformPercent()
-    //             if (!value)
-    //                 return
+        const action = async () => {
+            try {
+                const value = await fetchPlatformPercent()
+                if (!value)
+                    return
 
-    //             setPlatformCommissionPercent(value.toString())
-    //         } catch (err) {
-    //             console.error(err)
-    //             setIsBlockchainFail(true)
-    //         }
-    //     }
+                setPlatformCommissionPercent(value.toString())
+            } catch (err) {
+                console.error(err)
+                setIsBlockchainFail(true)
+            }
+        }
 
-    //     action()
-    // }, [fetchPlatformPercent, isBlockchainFail])
+        action()
+    }, [fetchPlatformPercent, isBlockchainFail])
 
     const handlePlatformPercentSave = async () => {
         setIsConfirmed(false)
         setError(null)
 
-        // updatePlatformPercent(+platformCommissionPercent)
-        //     .then(() => {
-        //         setIsConfirmed(true)
-        //         dispatchModal({ msg: 'Platform commission confirmed!' })
-        //     })
-        //     .catch((error) => {
-        //         console.error(error)
-        //         setError(error)
-        //         setIsConfirmed(true)
-        //     })
+        updatePlatformPercent(+platformCommissionPercent)
+            .then(() => {
+                setIsConfirmed(true)
+                dispatchModal({ msg: 'Platform commission confirmed!' })
+            })
+            .catch((error) => {
+                console.error(error)
+                setError(error)
+                setIsConfirmed(true)
+            })
     }
 
     return (

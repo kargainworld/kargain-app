@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { makeStyles } from "@material-ui/styles"
 import { Avatar, Card, CardContent, Grid, InputAdornment, Typography } from "@material-ui/core"
 import PrimaryIcon from '@material-ui/icons/Timer'
-// import useKargainContract from "hooks/useKargainContract"
+import useKargainContract from "hooks/useKargainContract"
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
@@ -53,47 +53,47 @@ const EditOfferExpirationTime = props => {
     const [offerExpirationTime, setOfferExpirationTime] = useState(null)
     const [error, setError] = useState(null)
     const [isConfirmed, setIsConfirmed] = useState(true)
-    // const { fetchOfferExpirationTime, updateOfferExpirationTime } = useKargainContract()
+    const { fetchOfferExpirationTime, updateOfferExpirationTime } = useKargainContract()
 
     const { dispatchModal } = useContext(MessageContext)
 
     const [isBlockchainFail, setIsBlockchainFail] = useState(false)
 
-    // useEffect(() => {
-    //     if (isBlockchainFail) {
-    //         return
-    //     }
+    useEffect(() => {
+        if (isBlockchainFail) {
+            return
+        }
 
-    //     const action = async () => {
-    //         try {
-    //             const value = await fetchOfferExpirationTime()
-    //             if (!value)
-    //                 return
+        const action = async () => {
+            try {
+                const value = await fetchOfferExpirationTime()
+                if (!value)
+                    return
 
-    //             setOfferExpirationTime(value.toString())
-    //         } catch (err) {
-    //             console.error(err)
-    //             setIsBlockchainFail(true)
-    //         }
-    //     }
+                setOfferExpirationTime(value.toString())
+            } catch (err) {
+                console.error(err)
+                setIsBlockchainFail(true)
+            }
+        }
 
-    //     action()
-    // }, [fetchOfferExpirationTime, isBlockchainFail])
+        action()
+    }, [fetchOfferExpirationTime, isBlockchainFail])
 
     const handleOfferExpirationSave = async () => {
         setIsConfirmed(false)
         setError(null)
 
-        // updateOfferExpirationTime(+offerExpirationTime)
-        //     .then(() => {
-        //         setIsConfirmed(true)
-        //         dispatchModal({ msg: 'Expiration time confirmed!' })
-        //     })
-        //     .catch((error) => {
-        //         console.error(error)
-        //         setError(error)
-        //         setIsConfirmed(true)
-        //     })
+        updateOfferExpirationTime(+offerExpirationTime)
+            .then(() => {
+                setIsConfirmed(true)
+                dispatchModal({ msg: 'Expiration time confirmed!' })
+            })
+            .catch((error) => {
+                console.error(error)
+                setError(error)
+                setIsConfirmed(true)
+            })
     }
 
     return (

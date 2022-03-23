@@ -23,7 +23,8 @@ module.exports = {
         }
     },
     contract: {
-        KARGAIN_ADDRESS: process.env.NEXT_PUBLIC_KARGAIN_ADDRESS
+        KARGAIN_ADDRESS: process.env.NEXT_PUBLIC_KARGAIN_ADDRESS,
+        INFURA_ID: 'de98845889164596b64d51908b361ce2' // 460f40a260564ac4a4f4b3fffb032dad
     },
     main_chain_id: process.env.NEXT_PUBLIC_MAIN_CHAIN_ID
 }

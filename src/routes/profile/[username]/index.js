@@ -14,7 +14,6 @@ import UsersService from 'services/UsersService'
 import AnnounceService from 'services/AnnounceService'
 import UserModel from 'models/user.model'
 import AvatarPreview from 'components/Avatar/AvatarPreview'
-import Loading from 'components/Loading'
 import Error from '../../_error'
 import { makeStyles } from "@material-ui/styles"
 import clsx from "clsx"

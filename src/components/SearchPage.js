@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import clsx from 'clsx'
 import { NextSeo } from 'next-seo'
@@ -18,19 +18,18 @@ import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from 'theme/palette'
-import { useWeb3React } from "@web3-react/core"
+import { useWeb3React } from '@web3-react/core'
 import TransactionsService from 'services/TransactionsService'
 // import { injected } from "../connectors"
 
-
 const useStyles = makeStyles(() => ({
-    row:{
+    row: {
         position: 'relative',
         backgroundColor: '#fff',
-        marginTop:'10px'
+        marginTop: '10px'
     },
     button: {
-        border: "none !important",
+        border: 'none !important',
         padding: '6px 2rem',
         borderRadius: '20px',
         color: 'white',
@@ -64,16 +63,15 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         announcesMinted: []
     })
 
-
-    const defaultFilters = query? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
+    const defaultFilters = query ? { TYPE_AD: query.adType, VEHICLE_TYPE: query.vehicleType } : {}
 
     const fetchAnnounces = useCallback(async () => {
         const { sorter, filters, page } = state
         const { size } = props
         let nextPage = 1
-        if(!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
-        if(!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
-        if(state.isScrollLoding) nextPage = page
+        if (!filters?.TYPE_AD && query) filters.TYPE_AD = query.adType
+        if (!filters?.VEHICLE_TYPE && query) filters.VEHICLE_TYPE = query.vehicleType
+        if (state.isScrollLoding) nextPage = page
 
         const params = {
             ...filters,
@@ -83,23 +81,22 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             size
         }
 
-        setState(state => ({
+        setState((state) => ({
             ...state,
             loading: true
         }))
 
         try {
-            const result = fetchFeed ?
-                await AnnounceService.getFeedAnnounces(params)
+            const result = fetchFeed
+                ? await AnnounceService.getFeedAnnounces(params)
                 : await AnnounceService.getSearchAnnounces(params)
             let total_rows = []
             if (state.isScrollLoding) {
-                total_rows =[...state.announces,...result.rows]
-            }
-            else {
+                total_rows = [...state.announces, ...result.rows]
+            } else {
                 total_rows = result.rows
             }
-            setState(state => ({
+            setState((state) => ({
                 ...state,
                 announces: total_rows || [],
                 total: result.total || 0,
@@ -109,7 +106,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                 loading: false
             }))
         } catch (err) {
-            setState(state => ({
+            setState((state) => ({
                 ...state,
                 isScrollLoding: false,
                 loading: false
@@ -121,7 +118,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     const handlePageChange = (page) => {
         if (state.page >= state.pages) return
         page = state.page + 1
-        setState(state => ({
+        setState((state) => ({
             ...state,
             isScrollLoding: true,
             page
@@ -129,7 +126,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }
 
     const updateFilters = (filters) => {
-        setState(state => ({
+        setState((state) => ({
             ...state,
             filters
         }))
@@ -140,22 +137,17 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     }, [fetchAnnounces])
 
     useEffect(() => {
+        if (state.announces.length < 0 || !state.loading) return
 
-        if (state.announces.length < 0 || !state.loading)
-            return
-
-        setState(state => ({
+        setState((state) => ({
             ...state,
             loading: true
         }))
 
         const fetchMintedAnnounces = async () => {
-
-            if (!state.announces)
-                return
+            if (!state.announces) return
             let tokensMinted = []
             try {
-
                 for (const announce of state.announces) {
                     const ad = new AnnounceModel(announce)
                     let isTokenMinted = false
@@ -175,11 +167,11 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                         tokensMinted.push(token)
                     }
                 }
-                console.log("fetchMintedAnnounces",tokensMinted)
+                console.log('fetchMintedAnnounces', tokensMinted)
             } catch (err) {
                 console.log(err)
             }
-            setState(state => ({
+            setState((state) => ({
                 ...state,
                 announcesMinted: tokensMinted,
                 loading: false
@@ -191,17 +183,14 @@ const SearchPage = ({ fetchFeed, ...props }) => {
 
     return (
         <Container>
-            <NextSeo
-                title="Kargain"
-                description="Vos meilleurs annonces automobiles"
-            />
+            <NextSeo title="Kargain" description="Vos meilleurs annonces automobiles" />
             <Row>
                 <Col sm={12} md={12}>
-                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters}/>
+                    <AdvancedFilters updateFilters={updateFilters} defaultFilters={defaultFilters} />
                 </Col>
 
                 <Col sm={12} md={12}>
-                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{ padding:'10px 1% !important' }}>
+                    <section className={clsx(filtersOpened && 'filter-is-visible')} style={{ padding: '10px 1% !important' }}>
                         <InfiniteScroll
                             pageStart={1}
                             throttle={100}
@@ -214,39 +203,41 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 {state.announces.length > 0 ? (
                                     <>
                                         {isMobile ? (
-                                            <div style={{ marginLeft:'15px' }}>
+                                            <div style={{ marginLeft: '15px' }}>
                                                 {state.announces.map((announceRaw, index) => (
-                                                    <PageMobileAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
+                                                    <PageMobileAnnounceItem
+                                                        key={index}
+                                                        announcesMinted={state.announcesMinted}
+                                                        announceRaw={announceRaw}
+                                                        index={index}
+                                                    />
                                                 ))}
                                             </div>
                                         ) : (
                                             <Row className="my-2 d-flex justify-content-center">
                                                 {state.announces.map((announceRaw, index) => (
-                                                    <PageAnnounceItem key={index} announcesMinted={state.announcesMinted} announceRaw={announceRaw}  index={index}  />
+                                                    <PageAnnounceItem
+                                                        key={index}
+                                                        announcesMinted={state.announcesMinted}
+                                                        announceRaw={announceRaw}
+                                                        index={index}
+                                                    />
                                                 ))}
                                             </Row>
                                         )}
                                     </>
-                                ): (
+                                ) : (
                                     <>
                                         {!isAuthenticated ? (
-                                            <CTALink
-                                                title={t('layout:login')}
-                                                href="/auth/login">
-                                            </CTALink>
+                                            <CTALink title={t('layout:login')} href="/auth/login"></CTALink>
                                         ) : (
                                             <>
                                                 <div className="d-flex align-items-center my-3">
                                                     <FindInPageIcon />
-                                                    <Typography variant="h3">
-                                                        {t('layout:no_result')}
-                                                    </Typography>
+                                                    <Typography variant="h3">{t('layout:no_result')}</Typography>
                                                 </div>
                                                 <div className="text-center">
-                                                    <CTALink
-                                                        title={t('layout:news_feed')}
-                                                        href="/advanced-search">
-                                                    </CTALink>
+                                                    <CTALink title={t('layout:news_feed')} href="/advanced-search"></CTALink>
                                                 </div>
                                             </>
                                         )}
@@ -254,9 +245,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
                                 )}
                             </>
                         </InfiniteScroll>
-                        {state.loading && (
-                            <Loading />
-                        )}
+                        {state.loading && <Loading />}
                     </section>
                 </Col>
             </Row>
@@ -272,44 +261,37 @@ SearchPage.defaultProps = {
 
 export default SearchPage
 const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
-
-    const announce = announcesMinted? announcesMinted.find(x=>x.id === announceRaw.id):null
+    const announce = announcesMinted ? announcesMinted.find((x) => x.id === announceRaw.id) : null
     const classes = useStyles()
     const [hiddenFormMore, hideForm] = useState(true)
     const toggleFilters = () => {
         hideForm((hiddenFormMore) => !hiddenFormMore)
     }
-    console.log("Mobile", announce, announcesMinted)
+    console.log('Mobile', announce, announcesMinted)
     if (announce) {
         return (
             <div key={index}>
                 {index > '2' ? (
                     <div>
-                        {index == '3' &&
-                        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-20px' }}>
-                            <div className={clsx(!hiddenFormMore && classes.filtersHidden)} style={{ width:'142px' }}>
-                                <div className={clsx(classes.button)} onClick={() => toggleFilters()} >LOAD MORE</div>
+                        {index == '3' && (
+                            <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-20px' }}>
+                                <div className={clsx(!hiddenFormMore && classes.filtersHidden)} style={{ width: '142px' }}>
+                                    <div className={clsx(classes.button)} onClick={() => toggleFilters()}>
+                                        LOAD MORE
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        }
+                        )}
 
                         <div className={clsx(hiddenFormMore && classes.filtersHidden)}>
-                            <div style={{ width:'90%', marginTop: '20px' }} >
-                                <AnnounceCard
-                                    announceRaw={announceRaw}
-                                    tokenPrice={announce?.tokenPrice}
-                                    detailsFontSize={'13px'}
-                                />
+                            <div style={{ width: '90%', marginTop: '20px' }}>
+                                <AnnounceCard announceRaw={announceRaw} tokenPrice={announce?.tokenPrice} detailsFontSize={'13px'} />
                             </div>
                         </div>
                     </div>
                 ) : (
-                    <div  style={{ width:'90%', marginTop: '20px' }}>
-                        <AnnounceCard
-                            announceRaw={announceRaw}
-                            tokenPrice={announce?.tokenPrice}
-                            detailsFontSize={'13px'}
-                        />
+                    <div style={{ width: '90%', marginTop: '20px' }}>
+                        <AnnounceCard announceRaw={announceRaw} tokenPrice={announce?.tokenPrice} detailsFontSize={'13px'} />
                     </div>
                 )}
             </div>
@@ -318,15 +300,11 @@ const PageMobileAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
     return null
 }
 const PageAnnounceItem = ({ announcesMinted, announceRaw, index }) => {
-    const announce = announcesMinted? announcesMinted.find(x=>x.id === announceRaw.id):null
+    const announce = announcesMinted ? announcesMinted.find((x) => x.id === announceRaw.id) : null
     if (announce) {
         return (
-            <div key={index} style={{ width:'30%', marginRight:'3%', marginTop: '2%' }}>
-                <AnnounceCard
-                    announceRaw={announceRaw}
-                    tokenPrice={announce?.tokenPrice}
-                    detailsFontSize={'13px'}
-                />
+            <div key={index} style={{ width: '30%', marginRight: '3%', marginTop: '2%' }}>
+                <AnnounceCard announceRaw={announceRaw} tokenPrice={announce?.tokenPrice} detailsFontSize={'13px'} />
             </div>
         )
     }
