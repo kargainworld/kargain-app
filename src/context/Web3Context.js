@@ -185,7 +185,7 @@ export const Web3ContextProvider = ({ children }) => {
             const handleDisconnect = (error) => {
                 // eslint-disable-next-line no-console
                 console.log('disconnect', error)
-                disconnect()
+                handleDisconnect()
             }
 
             const handleConnect = () => {

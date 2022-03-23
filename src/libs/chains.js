@@ -206,6 +206,22 @@ const supportedChains = [
             contractAddress: '',
             balance: ''
         }
+    },
+    {
+        name: 'Mumbai',
+        short_name: 'mumbai',
+        chain: 'polygon test',
+        network: 'matic',
+        chain_id: 80001,
+        network_id: 80001,
+        rpc_url: 'https://rpc-mumbai.maticvigil.com/',
+        native_currency: {
+            symbol: 'MATIC',
+            name: 'MATIC',
+            decimals: '18',
+            contractAddress: '',
+            balance: ''
+        }
     }
 ]
 
