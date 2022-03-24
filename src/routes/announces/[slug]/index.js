@@ -300,7 +300,10 @@ const Announce = () => {
     }, [authenticatedUser, state])
     
     if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode} />
+    if (state.err) {
+        console.log(state.err)
+        return Error(state.err?.statusCode)
+    }
 
     return (
         <Container>

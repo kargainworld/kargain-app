@@ -23,7 +23,7 @@ import {
     Action,
     Body,
     ImageWrapper,
-    ImageCounter,
+    // ImageCounter,
     ImagePlaceholder,
     ImageBox
 } from './components'
@@ -167,12 +167,12 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
                                     </ImagePlaceholder>
                                 )}
 
-                                {announce.getFeaturedImg && (
+                                {/* {announce.getFeaturedImg && (
                                     <ImageCounter>
                                         <i.CameraAlt />
                                         {announce.getCountImages}
                                     </ImageCounter>
-                                )}
+                                )} */}
                                 <div className={classes.priceContainer}>
                                     <div className={classes.price}>€ {(priceBNB * tokenPrice).toFixed(2)}</div>
                                 </div>
@@ -187,7 +187,7 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
                             />
 
                             <Info>
-                                <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName}</AuthorName>
+                                <AuthorName href={announce.getAuthor.getProfileLink}>{announce.getAuthor.getFullName || ''}</AuthorName>
                                 {announce.getAdOrAuthorCustomAddress(['city', 'postCode', 'country']) && (
                                     <Location href={announce.buildAddressGoogleMapLink()} target="_blank" rel="noreferrer">
                                         <div style={{ marginLeft: '-1.5px' }}>

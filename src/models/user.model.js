@@ -38,7 +38,7 @@ export default class UserModel {
     }
 
     get getFullName () {
-        return this.raw?.fullname
+        return this.raw?.fullname || 'Unnamed'
     }
 
     //stripe
