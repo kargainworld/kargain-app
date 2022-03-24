@@ -1,11 +1,15 @@
 import React, { useContext, useEffect } from 'react'
 import { Router, useRouter } from 'next/router'
+import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
 import withGA from 'next-ga'
 import PropTypes from 'prop-types'
 import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import { EmojiProvider } from 'react-apple-emojis'
+import emojiData from 'react-apple-emojis/lib/data.json'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
+
 import { SearchContext, SearchContextProvider } from '../context/SearchContext'
 import { ModalContext, ModalContextProvider } from '../context/ModalContext'
 import { MessageContextProvider } from 'context/MessageContext'
@@ -28,8 +32,7 @@ import theme from '../theme'
 import '../scss/theme.scss'
 import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
-import { EmojiProvider } from 'react-apple-emojis'
-import emojiData from 'react-apple-emojis/lib/data.json'
+
 import Loading from '../components/Loading'
 
 const MyApp = ({ Component, pageProps }) => {
@@ -43,40 +46,50 @@ const MyApp = ({ Component, pageProps }) => {
     }, [])
 
     return (
-        <StyledThemeProvider theme={theme}>
-            <ThemeProvider theme={theme}>
-                <AuthProvider>
-                    <Web3ContextProvider>
-                        <MessageContextProvider>
-                            <SocketProvider>
-                                <FormContextProvider formKey={formKey}>
-                                    <SearchContextProvider>
-                                        <ModalContextProvider>
-                                            <EmojiProvider data={emojiData}>
-                                                <NextProgress />
-                                                <DefaultSeo {...SEO} />
-                                                <ProtectedRouter pageProps={pageProps}>
-                                                    <Component {...pageProps} />
-                                                </ProtectedRouter>
-                                            </EmojiProvider>
-                                        </ModalContextProvider>
-                                    </SearchContextProvider>
-                                </FormContextProvider>
-                            </SocketProvider>
-                        </MessageContextProvider>
-                    </Web3ContextProvider>
-                </AuthProvider>
-            </ThemeProvider>
-        </StyledThemeProvider>
+        <>
+            <Head>
+                <meta name="viewport" content="viewport-fit=cover" />
+                <meta charSet="UTF-8"/>
+                <meta property="og:title" content="kargain"/>
+                <meta property="og:url" content="kargain.com"/>
+                <meta name="theme-color" content={theme.palette.primary.main} />
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
+            <StyledThemeProvider theme={theme}>
+                <ThemeProvider theme={theme}>
+                    <AuthProvider>
+                        <Web3ContextProvider>
+                            <MessageContextProvider>
+                                <SocketProvider>
+                                    <FormContextProvider formKey={formKey}>
+                                        <SearchContextProvider>
+                                            <ModalContextProvider>
+                                                <EmojiProvider data={emojiData}>                                                
+                                                    <NextProgress />
+                                                    <DefaultSeo {...SEO} />
+                                                    <ProtectedRouter pageProps={pageProps}>
+                                                        <Component {...pageProps} />
+                                                    </ProtectedRouter>                                                
+                                                </EmojiProvider>
+                                            </ModalContextProvider>
+                                        </SearchContextProvider>
+                                    </FormContextProvider>
+                                </SocketProvider>
+                            </MessageContextProvider>
+                        </Web3ContextProvider>
+                    </AuthProvider>
+                </ThemeProvider>
+            </StyledThemeProvider>
+        </>
     )
 }
 
 const ProtectedRouter = ({ children, pageProps }) => {
     const router = useRouter()
-    const { requiredAuth } = pageProps
+    // const { requiredAuth } = pageProps
     const isAdminRoute = router.route.split('/').includes('admin')
-    const { isAuthReady, forceLoginModal, isAuthenticated, isAuthenticatedUserAdmin, isLoading } = useAuth()
-    const showLoginModal = (requiredAuth && !isAuthenticated) || forceLoginModal
+    const { isAuthReady, isAuthenticated, isAuthenticatedUserAdmin, isLoading } = useAuth()
+    // const showLoginModal = (requiredAuth && !isAuthenticated) || forceLoginModal
     const { searchStateContext } = useContext(SearchContext)
     const { modalStateContext } = useContext(ModalContext)
 

@@ -182,7 +182,7 @@ const Step = ({ handleSubmitForm, prevStep, tokenPrice = '' ,setTokenPrice, erro
             <div style={{ display: "flex", flexDirection: 'column', width: '50%'  }}>
                 <div style={{ fontSize:'12px', color:'#999999', marginBottom:'5px' }}>{t('vehicles:tokenPrice')} : </div>
                 <TextField
-                    classes={clsx(classes.textFieldMint)}
+                    className={clsx(classes.textFieldMint)}
                     onChange={(event) => setTokenPrice(event.target.value)}
                     value={tokenPrice}
                     type="number"

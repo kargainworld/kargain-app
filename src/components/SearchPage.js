@@ -10,16 +10,16 @@ import AnnounceCard from 'components/AnnounceCard'
 import AnnounceService from 'services/AnnounceService'
 import { MessageContext } from 'context/MessageContext'
 import { useAuth } from 'context/AuthProvider'
-import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 import Loading from 'components/Loading'
-import CTALink from './CTALink'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
 import AnnounceModel from 'models/announce.model'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import customColors from 'theme/palette'
-import { useWeb3React } from '@web3-react/core'
 import TransactionsService from 'services/TransactionsService'
+
+import CTALink from './CTALink'
+import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
 // import { injected } from "../connectors"
 
 const useStyles = makeStyles(() => ({
@@ -45,10 +45,12 @@ const useStyles = makeStyles(() => ({
 
 const SearchPage = ({ fetchFeed, ...props }) => {
     const isMobile = useMediaQuery('(max-width:768px)')
-    const { activate } = useWeb3React()
+    // const { activate } = useWeb3React()
     const { t } = useTranslation()
     const { query } = useRouter()
+    console.log('Before useContext')
     const { dispatchModalError } = useContext(MessageContext)
+    console.log('After useContext')
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
     const [state, setState] = useState({
@@ -113,6 +115,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
             }))
             dispatchModalError({ err })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.page, state.filters, state.sorter, AnnounceService, setState])
 
     const handlePageChange = (page) => {
@@ -179,6 +182,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
         }
 
         fetchMintedAnnounces()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.announces, state.loading, setState, TransactionsService])
 
     return (
