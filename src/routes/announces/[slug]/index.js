@@ -46,15 +46,6 @@ const useStyles = makeStyles(() => ({
         color: 'white !important'
     },
     textFieldMint: {
-        '& span': {
-            display: 'none'
-        },
-        '& fieldset': {
-            borderColor: '#999999 !important'
-        },
-        '& .MuiInputBase-root': {
-            height: '40px'
-        }
     }
 }))
 
@@ -153,6 +144,7 @@ const Announce = () => {
         } catch (e) {
             console.log(e)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletPayer, isContractReady, isContractReady])
 
     const fetchAnnounce = useCallback(async () => {
@@ -204,6 +196,7 @@ const Announce = () => {
         if (walletPayer) {
             fetchProfile()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchAnnounce, fetchProfile])
 
     useEffect(() => {
@@ -219,6 +212,7 @@ const Announce = () => {
             setIsLoading(false)
             setIsMinted(true)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state, fetchTokenPrice])
 
     useEffect(() => {
@@ -362,7 +356,7 @@ const Announce = () => {
                                                 {t('vehicles:tokenPrice')} :{' '}
                                             </div>
                                             <TextField
-                                                // className={clsx(classes.textFieldMint)}
+                                                className={clsx(classes.textFieldMint)}
                                                 onChange={(event) => setTokenPrice(event.target.value)}
                                                 value={tokenPrice}
                                                 type="number"
