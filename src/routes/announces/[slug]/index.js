@@ -12,7 +12,7 @@ import AnnounceService from 'services/AnnounceService'
 import AnnounceModel from 'models/announce.model'
 import { MessageContext } from 'context/MessageContext'
 import { useAuth } from 'context/AuthProvider'
-import Error from '../../_error'
+import ErrorPage from '../../_error'
 import useKargainContract from 'hooks/useKargainContract'
 import TextField from '@material-ui/core/TextField'
 import usePriceTracker from 'hooks/usePriceTracker'
@@ -301,8 +301,7 @@ const Announce = () => {
     
     if (!state.stateReady) return null
     if (state.err) {
-        console.log(state.err)
-        return Error(state.err?.statusCode)
+        return ErrorPage({ statusCode: state.err?.statusCode })
     }
 
     return (

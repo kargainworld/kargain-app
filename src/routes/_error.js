@@ -1,14 +1,13 @@
 import React from 'react'
 import { Container } from 'reactstrap'
-import page404 from './404'
+import Page404 from './404'
 
 const Error = ({ statusCode }) => {
     let response
-
     switch (statusCode) {
     case 200:
     case 404:
-        response = <page404/>
+        response = <Page404 />
         break
     case 500:
         response = (

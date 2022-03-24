@@ -19,7 +19,7 @@ export default function ModalNetwork({ open, handleClose }) {
                 <DialogTitle disableTypography id="alert-dialog-title" >{"Wrong Network"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Look like you connected to unsupported network. Change network to Mainnet
+                        Look like you connected to unsupported network. Change network to Matic
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
