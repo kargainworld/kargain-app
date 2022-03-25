@@ -212,7 +212,6 @@ const useKargainContract = () => {
     const fetchTokenPrice = useCallback(
         async (tokenId) => {
             if (!contract) return
-
             try {
                 const value = await contract.methods.tokenPrice(tokenId).call()
                 const price = Web3.utils.fromWei(value, 'ether')
@@ -220,6 +219,7 @@ const useKargainContract = () => {
                 return price.toString()
             } catch (error) {
                 // tokenId does not exist
+                console.log(error)
                 return null
             }
         },
@@ -276,7 +276,7 @@ const useKargainContract = () => {
         },
         [contract, account, library]
     )
-        console.log(account)
+    
     const updateTokenPrince = useCallback(
         async (tokenId, price) => {
             try {

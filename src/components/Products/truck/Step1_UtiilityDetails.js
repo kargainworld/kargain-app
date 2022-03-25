@@ -18,7 +18,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { dispatchModalError } = useMessage()
-    const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
+    const { formDataContext } = useContext(FormContext)
 
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',
@@ -26,7 +26,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null)
@@ -60,6 +60,7 @@ const Step1UtilityDetails = ({ onSubmitStep, prevStep }) => {
         }catch (err){
             dispatchModalError({ err, persist : true })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[lang])
 
     useEffect(() => {

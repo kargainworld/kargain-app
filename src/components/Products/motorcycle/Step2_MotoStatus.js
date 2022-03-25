@@ -26,7 +26,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const [formData, setFormData] = useState({
         RadioVehicleGeneralState: [],

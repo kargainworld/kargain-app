@@ -34,6 +34,7 @@ import i18nConfig from '../../i18n.json'
 import SEO from '../../next-seo.config'
 
 import Loading from '../components/Loading'
+import { BackdropContextProvider } from '../context/BackdropContext'
 
 const MyApp = ({ Component, pageProps }) => {
     const { formKey } = pageProps
@@ -64,12 +65,14 @@ const MyApp = ({ Component, pageProps }) => {
                                     <FormContextProvider formKey={formKey}>
                                         <SearchContextProvider>
                                             <ModalContextProvider>
-                                                <EmojiProvider data={emojiData}>                                                
-                                                    <NextProgress />
-                                                    <DefaultSeo {...SEO} />
-                                                    <ProtectedRouter pageProps={pageProps}>
-                                                        <Component {...pageProps} />
-                                                    </ProtectedRouter>                                                
+                                                <EmojiProvider data={emojiData}>
+                                                    <BackdropContextProvider>
+                                                        <NextProgress />
+                                                        <DefaultSeo {...SEO} />
+                                                        <ProtectedRouter pageProps={pageProps}>
+                                                            <Component {...pageProps} />
+                                                        </ProtectedRouter>       
+                                                    </BackdropContextProvider>                                                                                         
                                                 </EmojiProvider>
                                             </ModalContextProvider>
                                         </SearchContextProvider>

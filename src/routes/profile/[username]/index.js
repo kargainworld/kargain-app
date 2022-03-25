@@ -276,6 +276,7 @@ const Profile = () => {
         } catch (err) {
             console.error(err)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterState.sorter, filterState.filters, filterState.page])
 
     const updateFilters = (filters) => {

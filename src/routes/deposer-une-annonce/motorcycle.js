@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react'
+import React, {  useState } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
@@ -15,20 +15,35 @@ import ObjectID from 'bson-objectid'
 import Web3 from 'web3'
 import { useMessage } from '../../context/MessageContext'
 
+import ConfirmDialog from './confirm'
+import { useBackdrop } from '../../context/BackdropContext'
+
 const toBN = Web3.utils.toBN
 
 const MotorCyclesForm = (props) => {
     /*Mint Section*/
-    const [tokenPrice, setTokenPrice] = useState(null)
-    const [error, setError] = useState(null)    
-    const { mintToken, waitTransactionToBeConfirmed }= useKargainContract()
+    const [tokenPrice, setTokenPrice] = useState('')
+    const [error, setError] = useState(null)
+    const [confirmModal, setConfirmModal] = useState(false)
+    const [form, setFormData] = useState(null)
+
+    const { mintToken, waitTransactionToBeConfirmed } = useKargainContract()
     /*Mint Section*/
 
     const router = useRouter()
     const { dispatchModal, dispatchModalError } = useMessage()
     const { t } = useTranslation()
+    const backdrop = useBackdrop()
+    const onFinalSubmit = (form, err) => {
+        console.log(form, err)
+        setFormData(form)
 
-    const onFinalSubmit = form => {
+        if (form.chassisNumber) setConfirmModal(form.chassisNumber)
+        else dispatchModalError('No VIN code')
+    // return
+    }
+
+    const handleConfirm = () => {
         const { images, ...body } = form
         let formData = new FormData()
 
@@ -37,7 +52,7 @@ const MotorCyclesForm = (props) => {
                 formData.append('images', images[i])
             }
         }
-
+        setConfirmModal(false)
         startPost(body, formData, images)
     }
 
@@ -47,20 +62,32 @@ const MotorCyclesForm = (props) => {
                 setError(new Error(`Price must be grater than zero.`))
                 return
             }
-
+            
             dispatchModal({ msg: 'Creating...' })
-            const announce = await AnnounceService.createAnnounce(body)
+            backdrop.fetch(true)
+            const announce = await AnnounceService.createAnnounce({
+                ...body,
+                vinNumber: body.chassisNumber
+            })
+
             const link = `/announces/${announce?.slug}`
-            try {           
-                const hashTx = await mintToken(toBN(ObjectID(announce._id).toHexString()),+tokenPrice)             
-                await TransactionsService.addTransaction({ announceId: announce._id.toString(), hashTx, data: +tokenPrice, action: "TokenMinted" })
-                
+
+            try {
+                const hashTx = await mintToken(toBN(ObjectID(announce._id).toHexString()), +tokenPrice)
+                await TransactionsService.addTransaction({
+                    announceId: announce._id.toString(),
+                    hashTx,
+                    data: +tokenPrice,
+                    action: 'TokenMinted'
+                })
+
                 await waitTransactionToBeConfirmed(hashTx)
-                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx: hashTx, status: "Approved" })
-            }catch(err){
+                
+                await TransactionsService.updateTransaction(announce._id.toString(), { hashTx: hashTx, status: 'Approved' })
+            } catch (err) {
                 dispatchModalError({
                     err,
-                    persist : true
+                    persist: true
                 })
                 return
             }
@@ -71,34 +98,35 @@ const MotorCyclesForm = (props) => {
 
             dispatchModal({
                 msg: t('vehicles:announce_created_successfully'),
-                persist : true,
+                persist: true,
                 link
             })
-
+            backdrop.fetch(false)
             router.push(link)
-
         } catch (err) {
             dispatchModalError({
                 err,
-                persist : true
+                persist: true
             })
+            backdrop.fetch(false)
         }
     }
 
     return (
-        <FormWizard
-            formKey={props.formKey}
-            prevRoute="/deposer-une-annonce"
-            onFinalSubmit={onFinalSubmit}>
-
-            <Step0_Manufacturer
-                vehicleType={vehicleTypes.moto}
-                title={t('vehicles:vehicle-selection')}
-            />
-            <Step1MotoDetails title={t('vehicles:vehicle-description')}/>
-            <Step2MotoStatus title={t('vehicles:vehicle-state')}/>
-            <Step3PublishAnnounce title={t('vehicles:your-announce')}setTokenPrice = {setTokenPrice} tokenPrice = {tokenPrice}  error = {error} /> 
-        </FormWizard>
+        <>
+            <FormWizard formKey={props.formKey} prevRoute="/deposer-une-annonce" onFinalSubmit={onFinalSubmit}>
+                <Step0_Manufacturer vehicleType={vehicleTypes.moto} title={t('vehicles:vehicle-selection')} />
+                <Step1MotoDetails title={t('vehicles:vehicle-description')} />
+                <Step2MotoStatus title={t('vehicles:vehicle-state')} />
+                <Step3PublishAnnounce
+                    title={t('vehicles:your-announce')}
+                    setTokenPrice={setTokenPrice}
+                    tokenPrice={tokenPrice}
+                    error={error}
+                />
+            </FormWizard>
+            <ConfirmDialog open={!!confirmModal} setOpen={setConfirmModal} handleConfirm={handleConfirm} code={confirmModal} />
+        </>
     )
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 import { ProgressBar } from 'react-step-progress-bar'
 import useTranslation from 'next-translate/useTranslation'
-import styled from "styled-components"
+import styled from 'styled-components'
 import ControlledStep from './ControlledStep'
 import BreadcrumbSteps from './BreadcrumbSteps'
 import useIsMounted from 'hooks/useIsMounted'
@@ -17,12 +17,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 const useStyles = makeStyles(() => ({
     div: {
         marginTop: '-10px',
-        marginBottom:'40px',
-        '& .RSPBprogressBar':{
-            height:'6px !important'
+        marginBottom: '40px',
+        '& .RSPBprogressBar': {
+            height: '6px !important'
         }
     }
-	
 }))
 
 const calculatePercentage = (current, length) => {
@@ -39,11 +38,14 @@ const Root = styled.main`
 `
 
 const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
-
     const isMobile = useMediaQuery('(max-width:768px)')
     const isMounted = useIsMounted()
     const { t } = useTranslation()
-    const steps = Array.isArray(children) ? children.filter(child => child.props.hidden !== true) : children ? [children] : []
+    const steps = Array.isArray(children)
+        ? children.filter((child) => child.props.hidden !== true)
+        : children
+            ? [children]
+            : []
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const [activeStep, setActiveStep] = useState(formDataContext.currentStep || 0)
     const [maxActiveStep, setMaxActiveStep] = useState(steps.length)
@@ -55,11 +57,11 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     }, [])
 
     const prevStep = useCallback(() => {
-        setActiveStep(activeStep => activeStep - 1)
+        setActiveStep((activeStep) => activeStep - 1)
     }, [])
 
     const nextStep = useCallback(() => {
-        setActiveStep(activeStep => activeStep + 1)
+        setActiveStep((activeStep) => activeStep + 1)
     }, [])
 
     const triggerDispatchFormData = (data) => {
@@ -77,55 +79,60 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
     }
 
     useEffect(() => {
-        dispatchFormUpdate({ vehicleType : formKey.toLowerCase() })
-    },[])
+        dispatchFormUpdate({ vehicleType: formKey.toLowerCase() })
+    }, [])
 
     useEffect(() => {
         window.scrollTo(0, 0)
         if (isMounted) {
-        	setMaxActiveStep(maxStep => Math.max(maxStep, Number(activeStep)))
+            setMaxActiveStep((maxStep) => Math.max(maxStep, Number(activeStep)))
             dispatchFormUpdate({ currentStep: activeStep })
             setPercentage(calculatePercentage(activeStep, steps.length))
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep])
 
     useEffect(() => {
-        if (isMounted && endForm) { 
+        if (isMounted && endForm) {
             onFinalSubmit(formDataContext)
-	    	setEndForm(false)
+            setEndForm(false)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endForm])
+    
     return (
         <Root>
             <div className="formWizardContainer">
                 {isMobile ? (
                     <div>
-                        <BreadcrumbSteps activeStepIndex={activeStep}
+                        <BreadcrumbSteps
+                            activeStepIndex={activeStep}
                             steps={steps}
                             setStep={setStep}
                             maxActiveStep={maxActiveStep}
-                            style={{ marginTop:'-15px' }}
+                            style={{ marginTop: '-15px' }}
                         />
                         <div className={clsx(classes.div)}>
-                            <ProgressBar  percent={percentage} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
+                            <ProgressBar percent={percentage} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
                         </div>
                     </div>
                 ) : (
                     <div>
-                        <BreadcrumbSteps activeStepIndex={activeStep}
+                        <BreadcrumbSteps
+                            activeStepIndex={activeStep}
                             steps={steps}
                             setStep={setStep}
                             maxActiveStep={maxActiveStep}
                         />
-                        <ProgressBar percent={percentage} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)"/>
+                        <ProgressBar percent={percentage} filledBackground="linear-gradient(to right, #699EF8, #ED80EB)" />
                     </div>
                 )}
                 {/* <Header as="h4" center={false} text={[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}/> */}
-		
-                <h4 >
+
+                <h4>
                     {/* <img src={`/icons/`+formKey.toLowerCase()+`-icon.png`} style={{marginRight: '15px', width: '20px', height: '27px', marginBottom: '8px'}}/> */}
-			
-                    <Emoji style={{ marginRight:"15px", marginBottom:"3px" }} name="automobile" width={18} />
+
+                    <Emoji style={{ marginRight: '15px', marginBottom: '3px' }} name="automobile" width={18} />
                     {[t('layout:form'), t(`vehicles:${formKey.toLowerCase()}`)].join(' ')}
                 </h4>
                 <ControlledStep
@@ -145,11 +152,10 @@ const FormWizard = ({ debug, formKey, onFinalSubmit, children }) => {
                             </div>
                         </Col>
                         <Col>
-                            <DebugLocalStorage value="formData"/>
+                            <DebugLocalStorage value="formData" />
                         </Col>
                     </Row>
                 )}
-
             </div>
         </Root>
     )

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next-translate/Link'
 import { useForm } from 'react-hook-form'
 import parseISO from 'date-fns/parseISO'
@@ -103,17 +103,19 @@ const Messages = () => {
 
     useEffect(() => {
         if (isAuthenticated) loadConversations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated])
 
     useEffect(() => {
         if (conversations.length) {
             handleSelectConversation(0)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conversations])
 
     useEffect(() => {
         if (privateMessage && selectedRecipient) {
-            const item = conversations.some((conversation, index) => {
+            conversations.some((conversation, index) => {
                 if(conversation.announce.id === selectedConversation.announce.id){
                     console.log(index, conversation.announce.id === selectedConversation.announce.id)
                     const messages = selectedConversation ? selectedConversation.messages : []
@@ -134,6 +136,7 @@ const Messages = () => {
                 console.log("breacked")
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [privateMessage])
 
     useEffect(() => {

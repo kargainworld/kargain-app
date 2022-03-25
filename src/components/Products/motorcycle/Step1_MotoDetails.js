@@ -24,7 +24,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null)
@@ -58,6 +58,7 @@ const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
         }catch (err){
             dispatchModalError({ err, persist : true })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[lang])
 
     useEffect(() => {

@@ -32,7 +32,7 @@ const Step = ({ onSubmitStep, prevStep }) => {
         RadioChoicesDefective: []
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const getData = useCallback(async () => {
         try{

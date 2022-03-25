@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
@@ -14,6 +14,8 @@ import TransactionsService from 'services/TransactionsService'
 import ObjectID from 'bson-objectid'
 import Web3 from 'web3'
 import { useMessage } from '../../context/MessageContext'
+import { useBackdrop } from '../../context/BackdropContext'
+import ConfirmDialog from './confirm'
 
 const toBN = Web3.utils.toBN
 
@@ -27,7 +29,20 @@ const CamperForm = (props) => {
     const { dispatchModal, dispatchModalError } = useMessage()
     const { t } = useTranslation()
 
-    const onFinalSubmit = form => {
+    const [confirmModal, setConfirmModal] = useState(false)
+    const [form, setFormData] = useState(null)
+
+    const backdrop = useBackdrop()
+    const onFinalSubmit = (form, err) => {
+        console.log(form, err)
+        setFormData(form)
+
+        if (form.chassisNumber) setConfirmModal(form.chassisNumber)
+        else dispatchModalError('No VIN code')
+    // return
+    }
+
+    const handleConfirm = () => {
         const { images, ...body } = form
         let formData = new FormData()
 
@@ -36,7 +51,7 @@ const CamperForm = (props) => {
                 formData.append('images', images[i])
             }
         }
-
+        setConfirmModal(false)
         startPost(body, formData, images)
     }
 
@@ -48,7 +63,12 @@ const CamperForm = (props) => {
             }
 
             dispatchModal({ msg: 'Creating...' })
-            const announce = await AnnounceService.createAnnounce(body)
+            backdrop.fetch(true)
+
+            const announce = await AnnounceService.createAnnounce({
+                ...body,
+                vinNumber: body.chassisNumber
+            })
             const link = `/announces/${announce?.slug}`
             try {           
                 const hashTx = await mintToken(toBN(ObjectID(announce._id).toHexString()),+tokenPrice)             
@@ -58,6 +78,7 @@ const CamperForm = (props) => {
                 await TransactionsService.updateTransaction(announce._id.toString(), { hashTx, status: "Approved" })
             }
             catch(err){
+                backdrop.fetch(false)
                 dispatchModalError({
                     err,
                     persist : true
@@ -75,29 +96,38 @@ const CamperForm = (props) => {
             })
 
             router.push(link)
-
+            backdrop.fetch(false)
         } catch (err) {
             dispatchModalError({
                 err,
                 persist : true
             })
+            backdrop.fetch(false)
         }
     }
 
     return (
-        <FormWizard
-            formKey={props.formKey}
-            prevRoute="/deposer-une-annonce"
-            onFinalSubmit={onFinalSubmit}>
+        <>
+            <FormWizard
+                formKey={props.formKey}
+                prevRoute="/deposer-une-annonce"
+                onFinalSubmit={onFinalSubmit}>
 
-            <Step0_Manufacturer
-                vehicleType={vehicleTypes.camper}
-                title={t('vehicles:vehicle-selection')}
+                <Step0_Manufacturer
+                    vehicleType={vehicleTypes.camper}
+                    title={t('vehicles:vehicle-selection')}
+                />
+                <Step1CamperDetails title={t('vehicles:vehicle-description')}/>
+                <Step2CamperStatus title={t('vehicles:vehicle-state')}/>
+                <Step3PublishAnnounce title={t('vehicles:your-announce')} setTokenPrice = {setTokenPrice} tokenPrice = {tokenPrice}  error = {error} /> 
+            </FormWizard>
+            <ConfirmDialog
+                open={!!confirmModal}
+                setOpen={setConfirmModal}
+                handleConfirm={handleConfirm}
+                code={confirmModal}
             />
-            <Step1CamperDetails title={t('vehicles:vehicle-description')}/>
-            <Step2CamperStatus title={t('vehicles:vehicle-state')}/>
-            <Step3PublishAnnounce title={t('vehicles:your-announce')} setTokenPrice = {setTokenPrice} tokenPrice = {tokenPrice}  error = {error} /> 
-        </FormWizard>
+        </>
     )
 }
 

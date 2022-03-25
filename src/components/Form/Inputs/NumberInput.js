@@ -36,7 +36,7 @@ const NumberInput = ({ name, rules, control, errors, onChange, ...props }) => {
                 <input
                     type="text"
                     name={name}
-                    ref={control.register(rules)}
+                    ref={control && control.register(rules)}
                     placeholder={props.placeholder}
                     disabled={props.disabled}
                     onKeyPress={onValidate}

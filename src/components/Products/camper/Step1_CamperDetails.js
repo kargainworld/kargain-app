@@ -26,7 +26,7 @@ const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
         defaultValues: formDataContext
     })
 
-    dispatchFormUpdate(watch(), { compare: true })
+    // dispatchFormUpdate(watch(), { compare: true })
 
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null)

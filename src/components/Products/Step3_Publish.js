@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 /*const [, ] = useState(null)
     const [, ] = useState(null)*/
 
-const Step = ({ handleSubmitForm, prevStep, tokenPrice = '' ,setTokenPrice, error }) => {
+const Step = ({ handleSubmitForm, prevStep, tokenPrice = '', setTokenPrice, error }) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const [, , coordinates] = useAddress()
@@ -72,6 +72,7 @@ const Step = ({ handleSubmitForm, prevStep, tokenPrice = '' ,setTokenPrice, erro
 
     useEffect(() => {
         register({ name: 'images' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const initialImagesRef = React.useRef(formDataContext.images)
@@ -186,6 +187,7 @@ const Step = ({ handleSubmitForm, prevStep, tokenPrice = '' ,setTokenPrice, erro
                     onChange={(event) => setTokenPrice(event.target.value)}
                     value={tokenPrice}
                     type="number"
+                    required={true}
                     InputLabelProps={{ shrink: true }}
                     error={!!error}
                     helperText={error ? error.message : ''}                    
