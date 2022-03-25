@@ -178,7 +178,7 @@ const Email = () => {
 
 const Clipboard = () => {
     const { t } = useTranslation()
-    const { modalStateContext } = useContext(ModalContext)
+    const { modalStateContext } = useModal()
     const [clipBoarCopied, setClipBoardCopied] = useState(false)
     const label = !clipBoarCopied ? t('layout:copy_link') : t('layout:copy_link_copied')
 
@@ -199,7 +199,7 @@ const Clipboard = () => {
 export default function ModalShare () {
     const classes = useStyles()
     const { isAuthenticated } = useAuth()
-    const { modalStateContext, dispatchModalState } = useContext(ModalContext)
+    const { modalStateContext, dispatchModalState } = useModal()
 
     const handleClose = () => {
         dispatchModalState({

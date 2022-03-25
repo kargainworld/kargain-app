@@ -13,10 +13,12 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import useTranslation from 'next-translate/useTranslation'
+import { CircularProgress, DialogContent } from '@material-ui/core'
 import { Col, Nav, NavItem, Row, TabContent, TabPane, Container } from 'reactstrap'
 
 import { NewIcons } from 'assets/icons'
 import { useWeb3Modal } from 'context/Web3Context'
+import { useMessage } from 'context/MessageContext'
 import { providers } from 'ethers'
 
 import TextInput from '../../../components/Form/Inputs/TextInput'
@@ -38,8 +40,8 @@ import UsersService from '../../../services/UsersService'
 import UserModel from '../../../models/user.model'
 import Error from '../../_error'
 import customColors from '../../../theme/palette'
-import { CircularProgress, DialogContent } from '@material-ui/core'
-import { useMessage } from 'context/MessageContext'
+
+
 
 
 
@@ -209,7 +211,6 @@ const Edit = () => {
     })
 
     const [open, setOpen] = useState(false)
-    const [modalMessage, setModalMessage] = useState('')
 
     const { provider } = useWeb3Modal()
 
@@ -415,7 +416,7 @@ const MultiTabsForm = ({ offer, activeTab, formRef, defaultValues, triggerSubmit
     const theme = useTheme()
     const classes = useStyles()
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
         defaultMatches: true
     })
