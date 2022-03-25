@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useContext } from 'react'
 import UserModel from '../models/user.model'
 import AnnounceModel from '../models/announce.model'
 
@@ -21,14 +21,14 @@ const defaultValues = {
     handleUnSubscription: () => {}
 }
 
-const ModalContext = createContext(defaultValues)
+export const ModalContext = createContext(defaultValues)
 
 const reducer = (state, action) => ({
     ...state,
     ...action.payload
 })
 
-const ModalContextProvider = ({children}) => {
+export const ModalContextProvider = ({ children }) => {
     const [modalStateContext, setModalStateContext] = useReducer(reducer, defaultValues)
     
     const dispatchModalState = (updates) => {
@@ -47,4 +47,12 @@ const ModalContextProvider = ({children}) => {
     )
 }
 
-export { ModalContext, ModalContextProvider }
+export const useModal = () => {
+    const context = useContext(ModalContext)
+    if (context === undefined) {
+        throw new Error('ModalContext must be used within an ModalProvider')
+    }
+    return context
+}
+
+// export { ModalContext, ModalContextProvider }

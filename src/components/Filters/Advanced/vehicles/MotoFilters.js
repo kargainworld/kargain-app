@@ -8,12 +8,13 @@ import SearchLocationInput from '../../../Form/Inputs/SearchLocationInput'
 import FieldWrapper from '../../../Form/FieldWrapper'
 import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
-import { MessageContext } from 'context/MessageContext'
+import { useMessage } from '../../../../context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 
 const MotoFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
 
     const [formData, setFormData] = useState({
         CheckboxOptionsEquipments: [],

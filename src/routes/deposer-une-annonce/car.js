@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
-import { MessageContext } from '../../context/MessageContext'
+// import { MessageContext } from '../../context/MessageContext'
 import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
 import Step1CarDetails from '../../components/Products/car/Step1_CarDetails'
 import Step2CarStatus from '../../components/Products/car/Step2_CarStatus'
@@ -13,6 +13,7 @@ import useKargainContract from '../../hooks/useKargainContract'
 import TransactionsService from 'services/TransactionsService'
 import ObjectID from 'bson-objectid'
 import Web3 from 'web3'
+import { useMessage } from '../../context/MessageContext'
 
 const toBN = Web3.utils.toBN
 
@@ -26,7 +27,7 @@ const CarForm = (props) => {
     /*Mint Section*/
     const router = useRouter()
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)    
+    const { dispatchModal, dispatchModalError } = useMessage()    
     const onFinalSubmit = form => {
         const { images, ...body } = form
         let formData = new FormData()

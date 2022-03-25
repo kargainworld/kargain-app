@@ -7,15 +7,16 @@ import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../../services/AuthService'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import Loading from '../../components/Loading'
 import CTALink from '../../components/CTALink'
+import { useMessage } from 'context/MessageContext'
 
 const ConfirmAccount = () => {
     const router = useRouter()
     const { token } = router.query
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [activated, setActivated] = useState(false)
     const { control, errors, handleSubmit } = useForm({
         mode: 'onChange',

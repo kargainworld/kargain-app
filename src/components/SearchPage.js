@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Col, Container, Row } from 'reactstrap'
 import clsx from 'clsx'
@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import FindInPageIcon from '@material-ui/icons/FindInPage'
 import AnnounceCard from 'components/AnnounceCard'
 import AnnounceService from 'services/AnnounceService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { useAuth } from 'context/AuthProvider'
 import Loading from 'components/Loading'
 import { InfiniteScroll } from 'react-simple-infinite-scroll'
@@ -20,6 +20,7 @@ import TransactionsService from 'services/TransactionsService'
 
 import CTALink from './CTALink'
 import AdvancedFilters from './Filters/Advanced/AdvancedFilters'
+import { useMessage } from '../context/MessageContext'
 // import { injected } from "../connectors"
 
 const useStyles = makeStyles(() => ({
@@ -48,9 +49,7 @@ const SearchPage = ({ fetchFeed, ...props }) => {
     // const { activate } = useWeb3React()
     const { t } = useTranslation()
     const { query } = useRouter()
-    console.log('Before useContext')
-    const { dispatchModalError } = useContext(MessageContext)
-    console.log('After useContext')
+    const { dispatchModalError } = useMessage()
     const { isAuthenticated } = useAuth()
     const [filtersOpened] = useState(false)
     const [state, setState] = useState({

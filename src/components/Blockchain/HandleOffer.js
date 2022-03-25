@@ -6,8 +6,9 @@ import useKargainContract from "../../hooks/useKargainContract"
 import TransactionsService from "../../services/TransactionsService"
 import AnnounceService from "../../services/AnnounceService"
 import { useAuth } from "context/AuthProvider"
-import { MessageContext } from "context/MessageContext"
+// import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
+import { useMessage } from "../../context/MessageContext"
 
 const useStyles = makeStyles(() => ({
     buttonBlue:{
@@ -31,7 +32,7 @@ const HandleOffer = (props) => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const { authenticatedUser } = useAuth()
     const [error, setError] = useState(null)
-    const { dispatchModal } = useContext(MessageContext)
+    const { dispatchModal } = useMessage()
     const { t } = useTranslation()
 
     const {

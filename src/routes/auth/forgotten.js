@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import AuthService from '../../services/AuthService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import CTAButton from '../../components/CTAButton'
 import { useAuth } from '../../context/AuthProvider'
 import useTranslation from 'next-translate/useTranslation'
@@ -11,6 +11,7 @@ import useTranslation from 'next-translate/useTranslation'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import customColors from '../../theme/palette'
+import { useMessage } from 'context/MessageContext'
 
 const useStyles = makeStyles(() => ({
     gradientbox: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles(() => ({
 const ForgottenForm = () => {
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { control, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',

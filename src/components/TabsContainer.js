@@ -2,7 +2,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
 import React, { useContext,  useState } from "react"
-import { MessageContext } from "context/MessageContext"
+// import { MessageContext } from "context/MessageContext"
 import AnnounceService from "../services/AnnounceService"
 import { Container, Row } from "reactstrap"
 import Tabs from "./Tabs/Tabs"
@@ -15,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import { makeStyles } from "@material-ui/styles"
 import customColors from "../theme/palette"
 import Loading from "./Loading"
+import { useMessage } from "../context/MessageContext"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +132,7 @@ const TabsContainer = ({ profile, isSelf, announceMinted, filterState, updateFil
     const router = useRouter()
     const classes = useStyles()
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [filtersOpened] = useState(false)
     const { activeTab = 0 } = getParams()
     const [selectedSlug, setSelectedSlug] = useState("")

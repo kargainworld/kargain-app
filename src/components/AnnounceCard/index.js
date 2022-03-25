@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import AnnounceService from 'services/AnnounceService'
 import { useAuth } from 'context/AuthProvider'
 import { ModalContext } from 'context/ModalContext'
@@ -37,6 +37,8 @@ import { Emoji } from 'react-apple-emojis'
 import { Modal } from 'reactstrap'
 import customColors from 'theme/palette'
 import CTALink from '../CTALink'
+import { useMessage } from '../../context/MessageContext.js'
+import { useModal } from '../../context/ModalContext.js'
 
 const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug, ...props }) => {
     const [modalOpen, setModalOpen] = React.useState(false)
@@ -47,8 +49,8 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
     const [priceBNB, setPrice] = useState(0)
     const { t } = useTranslation()
     const announce = new AnnounceModel(announceRaw)
-    const { dispatchModalError } = useContext(MessageContext)
-    const { dispatchModalState } = useContext(ModalContext)
+    const { dispatchModalError } = useMessage()
+    const { dispatchModalState } = useModal()
     const [likesCounter, setLikesCounter] = useState(announce.getCountLikes)
     const { isAuthenticated, authenticatedUser } = useAuth()
     const isAuthor = isAuthenticated && authenticatedUser.getID === announce.getAuthor?.getID

@@ -8,14 +8,15 @@ import Fade from '@material-ui/core/Fade'
 import Typography from '@material-ui/core/Typography'
 import { format } from 'date-fns'
 import parseISO from 'date-fns/parseISO'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { useAuth } from '../context/AuthProvider'
 import useStyles from './Conversations/conversation.styles'
 import ValidationError from './Form/Validations/ValidationError'
 import ConversationsService from '../services/ConversationsService'
-import { ModalContext } from '../context/ModalContext'
+import { useModal } from '../context/ModalContext'
 import { useSocket } from '../context/SocketContext'
 import { Avatar } from '../components/AnnounceCard/components'
+import { useMessage } from '../context/MessageContext'
 
 export default function ModalMessaging() {
     const contentRef = useRef()
@@ -23,8 +24,8 @@ export default function ModalMessaging() {
     const router = useRouter()
     const { t } = useTranslation()
     const { isAuthenticated, authenticatedUser } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const { modalStateContext, dispatchModalState } = useContext(ModalContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
+    const { modalStateContext, dispatchModalState } = useModal()
     const [conversation, setConversation] = useState(null)
     const { register, errors, handleSubmit, reset } = useForm({
         mode: 'onChange',

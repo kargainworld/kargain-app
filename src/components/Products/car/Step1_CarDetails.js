@@ -8,12 +8,13 @@ import StepNavigation from '../../Form/StepNavigation'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import { Emoji } from 'react-apple-emojis'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useMessage } from '../../../context/MessageContext'
 
 const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
 
@@ -22,7 +23,7 @@ const Step1CarDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
     const { formDataContext } = useContext(FormContext)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
 
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { useAuth } from '../../context/AuthProvider'
 import UsersService from '../../services/UsersService'
 import { NewIcons } from 'assets/icons'
+import { useMessage } from 'context/MessageContext'
 
-const FileInput = ({ value, onChange = noop, ...rest }) => (
+const FileInput = ({ value, onChange = () => {}, ...rest }) => (
     <input
         {...rest}
         // style={{ display: "none" }}
@@ -21,7 +22,7 @@ const FileInput = ({ value, onChange = noop, ...rest }) => (
 
 const AvatarPreviewUpload = () => {
     const { authenticatedUser, updateAuthenticatedRawUser, isAuthenticated } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [avatarLocation, setAvatarLocation] = useState(authenticatedUser.getAvatar)
     const [avatarUrl, setAvatarUrl] = useState(authenticatedUser.getAvatarUrl)
 

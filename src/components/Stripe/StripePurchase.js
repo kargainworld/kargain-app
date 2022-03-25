@@ -6,8 +6,9 @@ import { CardElement, Elements, useElements, useStripe } from '@stripe/react-str
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useAuth } from '../../context/AuthProvider'
 import paymentsServices from '../../services/PaymentsService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import config from '../../config/config'
+import { useMessage } from 'context/MessageContext'
 
 const stripePromise = loadStripe(config.stripe.API_KEY)
 
@@ -195,7 +196,7 @@ const StripeCard = ({ offer }) => {
     const [clientSecret, setClientSecret] = useState('')
     const [cardComplete, setCardComplete] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { isAuthenticated, authenticatedUser } = useAuth()
 
     const createPaymentIntent = async () => {

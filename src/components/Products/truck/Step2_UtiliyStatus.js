@@ -7,17 +7,18 @@ import FieldWrapper from '../../Form/FieldWrapper'
 import StepNavigation from '../../Form/StepNavigation'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import { FormContext } from 'context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import DamageSelectorControlled from '../../Damages/DamageSelectorControlled'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import TextInput from "../../Form/Inputs/TextInput"
 import CheckBoxInput from "../../Form/Inputs/CheckBoxInput"
+import { useMessage } from '../../../context/MessageContext'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { control, errors, getValues, handleSubmit, watch } = useForm({
         mode: 'onChange',

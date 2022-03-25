@@ -5,9 +5,10 @@ import useKargainContract from "../../hooks/useKargainContract"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import TransactionsService from "../../services/TransactionsService"
 import { useAuth } from "context/AuthProvider"
-import { MessageContext } from "context/MessageContext"
+// import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 import Web3 from "web3"
+import { useMessage } from "../../context/MessageContext"
 
 
 
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
 
 const MakeOffer = (props) => {
     const classes = useStyles()
-    const { dispatchModal } = useContext(MessageContext)
+    const { dispatchModal } = useMessage()
     const { t } = useTranslation()
     const [hiddenForm, hideForm] = useState(true)
     const [isConfirmed, setIsConfirmed] = useState(true)

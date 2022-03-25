@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import { useAuth } from '../../context/AuthProvider'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import clsx from 'clsx'
 import { Avatar } from '../AnnounceCard/components'
@@ -16,6 +16,7 @@ import AnnounceModel from '../../models/announce.model'
 import { useSocket } from '../../context/SocketContext'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { NewIcons } from 'assets/icons'
+import { useMessage } from '../../context/MessageContext'
 
 const useStyles = makeStyles(() => ({
     '& ul': {
@@ -42,11 +43,11 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const CommentsList = ({ comments, moreLink, className }) => {
+const CommentsList = ({ comments, moreLink }) => {
     const classes = useStyles()
     const [deletedComments, setDeletedComments] = useState([])
     const { authenticatedUser } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [openDialogRemove, setOpenDialogRemove] = useState(false)
     const [selectCommentID, setSelectedCommentID] = useState()
 

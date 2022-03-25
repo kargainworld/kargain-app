@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { Container } from 'reactstrap'
 
 import useTranslation from 'next-translate/useTranslation'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import AuthService from '../../services/AuthService'
 
 import { useWeb3Modal } from 'context/Web3Context'
@@ -14,6 +14,7 @@ import { Grid } from '@material-ui/core'
 import { useAuth } from 'context/AuthProvider'
 import { useRouter } from 'next/router'
 import UserModel from '../../models/user.model'
+import { useMessage } from 'context/MessageContext'
 
 const useStyles = makeStyles(() => ({
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const ConnectPage = () => {
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { connect, address, disconnect } = useWeb3Modal()
     const { initializeAuth } = useAuth()
     const router = useRouter()

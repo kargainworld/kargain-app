@@ -1,36 +1,36 @@
-import React, {  useContext, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import GoogleLogin from 'react-google-login'
 import useTranslation from 'next-translate/useTranslation'
-import { MessageContext } from 'context/MessageContext'
 import AuthService from '../services/AuthService'
 import Loading from './Loading'
-
+import { useMessage } from 'context/MessageContext'
 
 const SSOProviders = ({ col }) => {
     const router = useRouter()
     const { redirect } = router.query
     const { t } = useTranslation()
     const [isLoading, setIsLoading] = useState(false)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
 
     const startAuth = async (provider, data) => {
         setIsLoading(true)
         AuthService.SSOAuthLogin(provider, data)
-	    .then(user => {
+            .then((user) => {
                 setIsLoading(false)
                 if (redirect) {
-		    router.push(redirect)
+                    router.push(redirect)
                 } else {
-		    router.push(`/auth/callback?redirect=/profile/${user?.username}`)
+                    router.push(`/auth/callback?redirect=/profile/${user?.username}`)
                 }
-	    }).catch(err => {
+            })
+            .catch((err) => {
                 setIsLoading(false)
                 dispatchModalError({ err })
                 if (redirect) router.push(redirect)
-	    })
+            })
     }
 
     const responseGoogle = (response) => {
@@ -38,14 +38,14 @@ const SSOProviders = ({ col }) => {
         const { googleId, email, familyName, givenName, imageUrl } = profileObj
 
         startAuth('google', {
-	    email,
-	    firstname: givenName,
-	    lastname: familyName,
-	    avatarUrl: imageUrl,
-	    googleProvider: {
+            email,
+            firstname: givenName,
+            lastname: familyName,
+            avatarUrl: imageUrl,
+            googleProvider: {
                 id: googleId,
                 token: accessToken
-	    }
+            }
         })
     }
 
@@ -69,7 +69,7 @@ const SSOProviders = ({ col }) => {
 
     return (
         <div className={clsx('sso d-flex', col && 'flex-column', 'justify-content-center mx-auto my-2')}>
-            {isLoading && <Loading fullscreen/>}
+            {isLoading && <Loading fullscreen />}
 
             <GoogleLogin
                 // clientId={config.google.sso.CLIENT_ID}
@@ -77,13 +77,13 @@ const SSOProviders = ({ col }) => {
                 onSuccess={responseGoogle}
                 onFailure={badResponseGoogle}
                 cookiePolicy={'single_host_origin'}
-                render={renderProps => (
+                render={(renderProps) => (
                     <button className="register-g" onClick={renderProps.onClick}>
-                        <img src="/images/g+.png" alt=""/>
+                        <img src="/images/g+.png" alt="" />
                         {t('layout:login-google')}
                     </button>
                 )}
-	    />
+            />
 
             {/*    <FacebookLogin*/}
             {/*        appId={config.facebook.sso.APP_ID}*/}

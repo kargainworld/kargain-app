@@ -6,7 +6,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import filterProps from 'libs/filterProps'
 import { useAuth } from 'context/AuthProvider'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import vehicleTypesDefault, { vehicleTypes, vehicleTypeRefModels } from 'business/vehicleTypes.js'
 import AnnounceTypes from 'business/announceTypes.js'
 import VehiclesService from 'services/VehiclesService'
@@ -21,6 +21,7 @@ import Year from "./Components/Year"
 import Price from "./Components/Price"
 import Cylinder from "./Components/Cylinder"
 import ShowAllFilters from "./Components/ShowAllFilters"
+import { useMessage } from '../../../context/MessageContext'
 
 
 const useStyles = makeStyles(() => ({
@@ -60,7 +61,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
     const { isAuthReady, authenticatedUser } = useAuth()
     const isMobile = useMediaQuery('(max-width:768px)')
     const limitwidth = useMediaQuery('(max-width:480px)')
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [hiddenForm, hideForm] = useState(false)
     const DynamicFiltersComponent = SwitchFiltersVehicleType(vehicleType)
     const [announceTypesFiltered, setAnnouncesTypesFiltered] = useState(AnnounceTypes())
@@ -104,7 +105,7 @@ const AdvancedFilters = ({ defaultFilters, updateFilters, vehicleType: vehicleTy
             if(form[key] === null) form[key] = empty
         }
 
-        if(e !== null && e?.type !== null)  if(typeof e?.type === "submit")   e.preventDefault()
+        if(e !== null && e?.type !== null)  if(typeof e?.type === "object")   e.preventDefault()
 
         const { coordinates, radius } = form
         const filtersFlat = filterProps(form)

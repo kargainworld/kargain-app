@@ -9,12 +9,13 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Table } from 'reactstrap'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import CommentsService from '../../services/CommentsService'
 import CommentEnableBullet from '../Admin/Ads/components/CommentEnableBullet'
+import { useMessage } from 'context/MessageContext'
 
 const CommentsList = ({ comments }) => {
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
 
     const handleEnableComment = (commentID) => {
         CommentsService.enableComment(commentID)

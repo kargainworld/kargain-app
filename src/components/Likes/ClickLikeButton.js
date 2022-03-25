@@ -1,19 +1,20 @@
 import AnnounceService from "../../services/AnnounceService"
 import React, { useContext, useEffect, useState } from "react"
 import * as i from "@material-ui/icons"
-import { Action } from "../AnnounceCard/components"
-import { MessageContext } from "context/MessageContext"
+
+// import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import { useAuth } from "../../context/AuthProvider"
-
+import { Action } from "../AnnounceCard/components"
+import { useMessage } from "../../context/MessageContext"
 
 const ClickLikeButton = (props) => {
     const [isLiking, setIsLiking] = useState(false)
     const router = useRouter()
     const { isAuthenticated } = useAuth()
     const [like, setLike] = useState(alreadyLikeCurrentUser)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [likesCounter, setLikesCounter] = useState(props?.announce?.getCountLikes)
     const { t } = useTranslation()
 

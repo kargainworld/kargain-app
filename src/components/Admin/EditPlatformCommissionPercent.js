@@ -8,7 +8,8 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import { Skeleton } from "@material-ui/lab"
-import { MessageContext } from "context/MessageContext"
+import { useMessage } from "../../context/MessageContext"
+// import { MessageContext } from "context/MessageContext"
 
 
 const useStyles = makeStyles(theme => ({
@@ -56,7 +57,7 @@ const EditPlatformCommissionPercent = props => {
     const [isConfirmed, setIsConfirmed] = useState(true)
     const { fetchPlatformPercent, updatePlatformPercent } = useKargainContract()
 
-    const { dispatchModal } = useContext(MessageContext)
+    const { dispatchModal } = useMessage()
 
     const [isBlockchainFail, setIsBlockchainFail] = useState(false)
 

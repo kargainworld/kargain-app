@@ -7,7 +7,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import TableMUI from '../TableMUI'
 import AnnounceService from '../../../services/AnnounceService'
 import AnnounceModel from '../../../models/announce.model'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import TablePaginationActions from '../TablePaginationActions'
 import { getTimeAgo } from '../../../libs/utils'
 import StatusBullet from './components/StatusBullet'
@@ -15,6 +15,7 @@ import VisibleBullet from './components/VisibleBullet'
 import ActivatedBullet from './components/ActivatedBullet'
 import CommentsListAdmin from '../../Comments/CommentsListAdmin'
 import { makeStyles } from "@material-ui/styles"
+import { useMessage } from 'context/MessageContext'
 
 const useStyles = makeStyles(()=>({
     table:{
@@ -187,7 +188,7 @@ const AdsTable = () => {
     const rowsLength = 60
     const router = useRouter()
     const classes = useStyles()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const columns = useMemo(() => columnsData, [])
     const [loading, setLoading] = useState(false)
     const [pageIndex, setPageIndex] = useState(0)

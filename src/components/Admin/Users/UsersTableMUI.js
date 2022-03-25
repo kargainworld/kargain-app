@@ -2,15 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
+import { makeStyles } from "@material-ui/styles"
 import UsersService from '../../../services/UsersService'
 import UserModel from '../../../models/user.model'
 import TableMUI from '../TableMUI'
 import BulletPoint from '../../BulletPoint'
 import TablePaginationActions from '../TablePaginationActions'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import ActivatedBullet from './components/ActivatedBullet'
 import IsProBullet from './components/IsProBullet'
-import { makeStyles } from "@material-ui/styles"
+import { useMessage } from 'context/MessageContext'
+
 
 const BooleanBullet = (value) => {
     if (value) return <BulletPoint tooltipHelper="Payé" color="green"/>
@@ -30,7 +32,7 @@ const UsersTable = () => {
     const classes = useStyles()
     const rowsLength = 60
     const router = useRouter()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [loading, setLoading] = useState(false)
     const [pageIndex, setPageIndex] = useState(0)
     const [resultFetch, setResultsFetch] = useState({

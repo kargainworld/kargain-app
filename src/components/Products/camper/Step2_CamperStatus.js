@@ -7,18 +7,19 @@ import SelectInput from '../../Form/Inputs/SelectInput'
 
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
 import TextInput from "../../Form/Inputs/TextInput"
 import CheckBoxInput from "../../Form/Inputs/CheckBoxInput"
+import { useMessage } from '../../../context/MessageContext'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { control, errors, getValues, handleSubmit, watch } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',

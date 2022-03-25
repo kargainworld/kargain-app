@@ -8,7 +8,7 @@ import ChatIcon from '@material-ui/icons/Chat'
 import Button from '@material-ui/core/Button'
 import TransactionsService from "services/TransactionsService"
 import { useAuth } from 'context/AuthProvider'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { ModalContext } from 'context/ModalContext'
 import UsersService from 'services/UsersService'
 import AnnounceService from 'services/AnnounceService'
@@ -22,6 +22,7 @@ import { NewIcons } from 'assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import TabsContainer from "../../../components/TabsContainer"
 import AnnounceModel from 'models/announce.model'
+import { useMessage } from '../../../context/MessageContext'
 
 const useStyles = makeStyles((theme) => ({
     subscriptionWrapper: {
@@ -124,7 +125,7 @@ const Profile = () => {
     const router = useRouter()
     const { username } = router.query
     const { authenticatedUser, isAuthenticated } = useAuth()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { dispatchModalState } = useContext(ModalContext)
     const [followerCounter, setFollowersCounter] = useState(0)
     const [alreadyFollowProfile, setAlreadyFollowProfile] = useState(false)

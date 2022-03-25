@@ -10,7 +10,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { ModalContext } from 'context/ModalContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { NewIcons } from '../assets/icons'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -63,7 +63,7 @@ export default function ModalFollowers() {
 
     const classes = useStyles()
     const { modalStateContext, dispatchModalState } = useContext(ModalContext)
-    const { dispatchModalError } = useContext(MessageContext)
+    // const { dispatchModalError } = useContext(MessageContext)
     const [isFetching, setFetching] = useState(false)
 
     const handleClose = () =>

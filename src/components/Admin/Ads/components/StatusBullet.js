@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import AnnounceService from '../../../../services/AnnounceService'
 import NiceSelect, { components } from 'react-select'
 import Button from '@material-ui/core/Button'
@@ -7,6 +7,7 @@ import SaveIcon from '@material-ui/icons/Save'
 import CloseIcon from '@material-ui/icons/Close'
 import BulletPoint from '../../../BulletPoint'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import { useMessage } from 'context/MessageContext'
 
 const useStyles = makeStyles(() => ({
     editSelectPop: {
@@ -39,7 +40,7 @@ const StatusBullet = ({ slug, status: statusProps }) => {
     const classes = useStyles()
     const [status, setStatus] = useState(statusProps)
     const [clicked, setClicked] = useState(false)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [selectedOption, setSelectedOption] = useState(null)
     const options = [
         {

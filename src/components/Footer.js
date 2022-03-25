@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Link from 'next-translate/Link'
 import { getLogoWhite } from '../libs/utils'
 import useTranslation from 'next-translate/useTranslation'
@@ -6,12 +6,12 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import { useForm } from 'react-hook-form'
-import { MessageContext } from 'context/MessageContext'
+import { useMessage } from 'context/MessageContext'
 import UsersService from '../services/UsersService'
 
 const Footer = () => {
     const { t } = useTranslation()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { register, handleSubmit } = useForm()
 
     const onSubmitNewsletter = (data) => {

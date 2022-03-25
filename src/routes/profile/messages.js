@@ -12,12 +12,13 @@ import UserModel from 'models/user.model'
 import { useAuth } from 'context/AuthProvider'
 import ConversationsService from 'services/ConversationsService'
 import useStyles from 'components/Conversations/conversation.styles'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import ValidationError from 'components/Form/Validations/ValidationError'
 import { useSocket } from 'context/SocketContext'
 import { Avatar } from 'components/AnnounceCard/components'
 import { Container } from 'reactstrap'
 import { NewIcons } from 'assets/icons'
+import { useMessage } from 'context/MessageContext'
 
 const Messages = () => {
 
@@ -27,7 +28,7 @@ const Messages = () => {
     const classes = useStyles()
     const { t } = useTranslation()
     const { isAuthenticated, authenticatedUser } = useAuth()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [conversations, setConversations] = useState([])
     const [selectedConversation, setSelectedConversation] = useState(null)
     const [openedConversation, setOpenedConversation] = useState(false)

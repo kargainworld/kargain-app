@@ -5,12 +5,13 @@ import { Paper } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 import useTranslation from 'next-translate/useTranslation'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 
 import SearchService from '../../services/SearchService'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { withStyles } from "@material-ui/core/styles"
+import { useMessage } from '../../context/MessageContext'
 
 const CssTextField = withStyles({
     root: {
@@ -59,7 +60,7 @@ const AutocompleteDropdown = () => {
         { title: 'The Godfather: Part II', year: 1974 }
     ]
 
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
 
     const [results, setResutls] = useState([])
     const [value, setValue] = useState(null)

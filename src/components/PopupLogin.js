@@ -14,7 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../services/AuthService'
 import { useAuth } from '../context/AuthProvider'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import CheckBoxInput from './Form/Inputs/CheckBoxInput'
 import EmailInput from './Form/Inputs/EmailInput'
 import PasswordInput from './Form/Inputs/PasswordInput'
@@ -24,6 +24,7 @@ import Divider from './Divider'
 import CTALink from './CTALink'
 import CTAButton from './CTAButton'
 import userModel from '../models/user.model'
+import { useMessage } from 'context/MessageContext'
 
 const formConfig = {
     mode: 'onChange',
@@ -93,7 +94,7 @@ const PopupLogin = () => {
     const { t } = useTranslation()
     const { isAuthenticated, avoidCloseLoginModal } = useAuth()
     const { control, errors, handleSubmit } = useForm(formConfig)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [openLoginModal, toggleLoginModal] = useState(!isAuthenticated)
     const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
         defaultMatches: true

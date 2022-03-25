@@ -8,11 +8,12 @@ import SearchLocationInput from '../../../Form/Inputs/SearchLocationInput'
 import FieldWrapper from '../../../Form/FieldWrapper'
 import localeDataHelper from 'libs/localeDataHelper'
 import { vehicleTypes } from 'business/vehicleTypes'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Emoji } from 'react-apple-emojis'
+import { useMessage } from '../../../../context/MessageContext'
 
 const useStyles = makeStyles(() => ({
     buttondropdown:{
@@ -118,7 +119,7 @@ const CarFilters = ({ control, watch, errors, ...props }) => {
     const countrySelect = watch('countrySelect')
     const selectedMileage = watch('mileageType')
     const [ mileageType, setMileageType ] = useState(null)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [formData, setFormData] = useState({
         mileageType: [],
         RadioVehicleGeneralState: [],

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import useTranslation from 'next-translate/useTranslation'
 import Typography from '@material-ui/core/Typography'
 import AuthService from '../../services/AuthService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import TextInput from '../../components/Form/Inputs/TextInput'
 import EmailInput from '../../components/Form/Inputs/EmailInput'
 import CheckBoxInput from '../../components/Form/Inputs/CheckBoxInput'
@@ -13,6 +13,7 @@ import SelectCountryFlags from '../../components/Form/Inputs/SelectCountryFlags'
 import SearchLocationInput from '../../components/Form/Inputs/SearchLocationInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import SSOProviders from '../../components/SSOProviders'
+import { useMessage } from 'context/MessageContext'
 
 const formConfig = {
     mode: 'onChange',
@@ -21,7 +22,7 @@ const formConfig = {
 
 const RegisterPro = () => {
     const { control, errors, getValues, watch, handleSubmit } = useForm(formConfig)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { t } = useTranslation()
 
     const onSubmit = (form) => {

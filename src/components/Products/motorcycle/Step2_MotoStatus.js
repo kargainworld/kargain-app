@@ -8,18 +8,19 @@ import StepNavigation from '../../Form/StepNavigation'
 import FieldWrapper from '../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import TextInput from "../../Form/Inputs/TextInput"
 import CheckBoxInput from "../../Form/Inputs/CheckBoxInput"
+import { useMessage } from '../../../context/MessageContext'
 
 const Step = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
-    const { control, errors, getValues, handleSubmit, watch } = useForm({
+    const { control, errors, handleSubmit, watch } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all',
         defaultValues: formDataContext

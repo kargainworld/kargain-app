@@ -9,13 +9,14 @@ import FieldWrapper from '../../../Form/FieldWrapper'
 import { SelectOptionsUtils } from '../../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../../business/vehicleTypes'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import NumberInput from "../../../Form/Inputs/NumberInput"
+import { useMessage } from '../../../../context/MessageContext'
 
 const UtilityFilters = ({ control, watch, errors }) => {
     const { t, lang } = useTranslation()
     const countrySelect = watch('countrySelect')
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [formData, setFormData] = useState({
         CheckboxOptionsEquipments: [],
         RadioChoicesGas: [],

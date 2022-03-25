@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 
 import CTAButton from '../../components/CTAButton'
 import FieldWrapper from '../../components/Form/FieldWrapper'
@@ -20,6 +20,7 @@ import useSocket from '../../hooks/useSocket'
 
 
 import customColors from '../../theme/palette'
+import { useMessage } from 'context/MessageContext'
 
 
 const useStyles = makeStyles(() => ({
@@ -45,7 +46,7 @@ const LoginPage = ({ forceLogout }) => {
     const classes = useStyles()
 
     const { redirect } = router.query
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { control, errors, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all'

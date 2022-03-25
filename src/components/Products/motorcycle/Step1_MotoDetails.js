@@ -7,15 +7,16 @@ import NumberInput from '../../Form/Inputs/NumberInput'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import StepNavigation from '../../Form/StepNavigation'
 import { FormContext } from 'context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
+import { useMessage } from '../../../context/MessageContext'
 
 const Step1MotoDetails = ({ onSubmitStep, prevStep }) => {
     const { t, lang } = useTranslation()
     const formRef = useRef(null)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
     const { control, errors, handleSubmit, watch, setValue } = useForm({
         mode: 'onChange',

@@ -10,7 +10,7 @@ import useTranslation from 'next-translate/useTranslation'
 import TagsList from 'components/Tags/TagsList'
 import AnnounceService from 'services/AnnounceService'
 import AnnounceModel from 'models/announce.model'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { useAuth } from 'context/AuthProvider'
 import ErrorPage from '../../_error'
 import useKargainContract from 'hooks/useKargainContract'
@@ -28,6 +28,7 @@ import EditLikeAndComments from 'components/AnnounceCard/EditLikeAndComments'
 import VehicleEquipments from 'components/AnnounceCard/VehicleEquipments'
 import SharedURL from 'components/AnnounceCard/SharedURL'
 import { useWeb3Modal } from 'context/Web3Context'
+import { useMessage } from '../../../context/MessageContext'
 
 const useStyles = makeStyles(() => ({
     mintButton: {
@@ -56,7 +57,7 @@ const Announce = () => {
     const { slug } = router.query
     const { t } = useTranslation()
     const { authenticatedUser } = useAuth()
-    const { dispatchModal } = useContext(MessageContext)
+    const { dispatchModal } = useMessage()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
     const [bnbBalance, setBalance] = useState()

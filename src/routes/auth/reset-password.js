@@ -5,7 +5,7 @@ import useTranslation from 'next-translate/useTranslation'
 import PasswordInput from '../../components/Form/Inputs/PasswordInput'
 import FieldWrapper from '../../components/Form/FieldWrapper'
 import AuthService from '../../services/AuthService'
-import { MessageContext } from 'context/MessageContext'
+import { useMessage } from 'context/MessageContext'
 import { Col } from 'reactstrap'
 import CTAButton from '../../components/CTAButton'
 
@@ -13,7 +13,7 @@ const ResetPassword = () => {
     const router = useRouter()
     const { t } = useTranslation()
     const { redirect, token } = router.query
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { control, errors, getValues, handleSubmit } = useForm({
         mode: 'onChange',
         validateCriteriaMode: 'all'

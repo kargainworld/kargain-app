@@ -7,16 +7,17 @@ import Fade from '@material-ui/core/Fade'
 import { useForm } from 'react-hook-form'
 import useTranslation from 'next-translate/useTranslation'
 import copy from 'copy-to-clipboard'
-import { ModalContext } from '../context/ModalContext'
+import { useModal } from '../context/ModalContext'
 import EmailInput from '../components/Form/Inputs/EmailInput'
 import AnnounceService from '../services/AnnounceService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { useAuth } from '../context/AuthProvider'
 
 import customColors from '../theme/palette'
 import clsx from 'clsx'
 import { NewIcons } from '../assets/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useMessage } from '../context/MessageContext'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -116,11 +117,11 @@ const Email = () => {
     const label = 'Via email'
     const { t } = useTranslation()
     const [openForm, setOpenForm] = useState(false)
-    const { modalStateContext } = useContext(ModalContext)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { modalStateContext } = useModal()
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { control, errors, handleSubmit } = useForm()
     const { isAuthenticated } = useAuth()
-    const [clipBoarCopied, setClipBoardCopied] = useState(false)
+    // const [clipBoarCopied, setClipBoardCopied] = useState(false)
 
     const onSubmit = (form) => {
         console.log(modalStateContext.modalShareAnnounce.getAnnounceShareLink)
@@ -197,7 +198,6 @@ const Clipboard = () => {
 
 export default function ModalShare () {
     const classes = useStyles()
-    const router = useRouter()
     const { isAuthenticated } = useAuth()
     const { modalStateContext, dispatchModalState } = useContext(ModalContext)
 

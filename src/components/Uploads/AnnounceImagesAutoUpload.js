@@ -3,15 +3,16 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import { Col, Row } from 'reactstrap'
 import Typography from '@material-ui/core/Typography'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import UploadDropZone from './UploadDropZone'
 import CardMediaMUI from '../CardMediaMUI'
 import AnnounceService from '../../services/AnnounceService'
+import { useMessage } from '../../context/MessageContext'
 
 const AnnounceImagesAutoUpload = ({ announceSlug, enableRefreshAfterUpload }) => {
     const [uploads, setUploads] = useState([])
     const router = useRouter()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
 
     const startUploadAPI = (files) => {
         if (!announceSlug) return dispatchModalError({ err: 'add a slug' })

@@ -4,9 +4,10 @@ import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline'
 import TableMUI from '../TableMUI'
 import CommentsService from '../../../services/CommentsService'
 import CommentModel from '../../../models/comment.model'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import TablePaginationActions from '../TablePaginationActions'
 import { getTimeAgo } from '../../../libs/utils'
+import { useMessage } from 'context/MessageContext'
 
 const columnsData = [
     {
@@ -50,7 +51,7 @@ const AdsTable = () => {
 
     const rowsLength = 60
     const router = useRouter()
-    const { dispatchModalError, dispatchModal } = useContext(MessageContext)
+    const { dispatchModalError, dispatchModal } = useMessage()
     const columns = useMemo(() => columnsData, [])
     const [loading, setLoading] = useState(false)
     const [pageIndex, setPageIndex] = useState(0)

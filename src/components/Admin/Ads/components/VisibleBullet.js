@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import AnnounceService from '../../../../services/AnnounceService'
 import NiceSelect, { components } from 'react-select'
 import Button from '@material-ui/core/Button'
@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import BulletPoint from '../../../BulletPoint'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import BooleanBullet from '../../BooleanBullet'
+import { useMessage } from 'context/MessageContext'
 
 const useStyles = makeStyles((theme) => ({
     editSelectPop: {
@@ -40,7 +41,7 @@ const VisibleBullet = ({ slug, visible: visibleProps }) => {
     const classes = useStyles()
     const [visible, setVisible] = useState(visibleProps)
     const [clicked, setClicked] = useState(false)
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const [selectedOption, setSelectedOption] = useState(null)
     const options = [
         {

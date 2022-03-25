@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import AuthService from '../services/AuthService'
 import UserModel from '../models/user.model'
-import { MessageContext } from './MessageContext'
+import { useMessage } from './MessageContext'
+// import { MessageContext } from './MessageContext'
 
 const defaultContext = {
     isAuthReady: false,
@@ -20,7 +21,7 @@ const AuthContext = createContext(defaultContext)
 
 export const AuthProvider = ({ children }) => {
     const { lang } = useTranslation()
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [authState, setAuthState] = useState(defaultContext)
 
     const updateAuthenticatedRawUser = (rawUser) => {

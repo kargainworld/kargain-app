@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
-
-import { MessageContext } from 'context/MessageContext'
 import useTranslation from 'next-translate/useTranslation'
+import { useMessage } from '../context/MessageContext'
 
 const getMessage = (state, t) => {
     if (state.msg) return state.msg
@@ -16,7 +15,7 @@ const getMessage = (state, t) => {
 
 const PopupAlert = () => {
     const { t } = useTranslation()
-    const { modalState: state  = {} } = useContext(MessageContext)
+    const { modalState: state  = {} } = useMessage()
 
     const message = getMessage(state, t)
 

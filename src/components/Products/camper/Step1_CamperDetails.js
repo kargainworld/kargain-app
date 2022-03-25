@@ -7,16 +7,17 @@ import StepNavigation from '../../Form/StepNavigation'
 import NumberInput from '../../Form/Inputs/NumberInput'
 import SelectInput from '../../Form/Inputs/SelectInput'
 import { FormContext } from '../../../context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import { vehicleTypes } from '../../../business/vehicleTypes'
 import Header from '../../Header'
+import { useMessage } from '../../../context/MessageContext'
 
 const Step1CamperDetails = ({ onSubmitStep, prevStep }) => {
     const formRef = useRef(null)
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
 
     const { t, lang } = useTranslation()
     const { control, errors, handleSubmit, watch, setValue } = useForm({

@@ -1,15 +1,16 @@
-import React, { useReducer, createContext, useContext } from 'react'
-import { MessageContext } from './MessageContext'
+import React, { useReducer, createContext } from 'react'
+// import { MessageContext } from './MessageContext'
 import SearchService from '../services/SearchService'
+import { useMessage } from './MessageContext'
 
 const defaultValues = {
-    openModalSearch : false,
-    loading : false,
-    filters : {},
-    results : {
-        tags : [],
-        users : [],
-        announces : []
+    openModalSearch: false,
+    loading: false,
+    filters: {},
+    results: {
+        tags: [],
+        users: [],
+        announces: []
     }
 }
 
@@ -20,36 +21,36 @@ const reducer = (state, action) => ({
     ...action.payload
 })
 
-const SearchContextProvider = ({children}) => {
-    const { dispatchModalError } = useContext(MessageContext)
+const SearchContextProvider = ({ children }) => {
+    const { dispatchModalError } = useMessage()
     const [searchStateContext, setSearchStateContext] = useReducer(reducer, defaultValues)
-    
+
     const dispatchSearchStateContext = (updates) => {
         setSearchStateContext({
             payload: updates
         })
     }
-    
+
     const closeSearchModal = () => {
         dispatchSearchStateContext({
-            openModalSearch : false
+            openModalSearch: false
         })
     }
-    
+
     const dispatchSearchQuery = (query) => {
         fetchSearch(query)
     }
-    
+
     const fetchSearch = (query) => {
         dispatchSearchStateContext({
-            openModalSearch : true,
-            loading : true
+            openModalSearch: true,
+            loading: true
         })
-        
-        SearchService.fetchSearchResults({ q : query })
-            .then(results => {
+
+        SearchService.fetchSearchResults({ q: query })
+            .then((results) => {
                 const { tags, users, announces } = results
-    
+
                 dispatchSearchStateContext({
                     loading: false,
                     results: {
@@ -58,18 +59,20 @@ const SearchContextProvider = ({children}) => {
                         announces: announces ?? []
                     }
                 })
-                
-            }).catch(err => {
+            })
+            .catch((err) => {
                 dispatchModalError({ err })
             })
     }
-    
+
     return (
-        <SearchContext.Provider value={{
-            searchStateContext,
-            dispatchSearchQuery,
-            closeSearchModal
-        }}>
+        <SearchContext.Provider
+            value={{
+                searchStateContext,
+                dispatchSearchQuery,
+                closeSearchModal
+            }}
+        >
             {children}
         </SearchContext.Provider>
     )

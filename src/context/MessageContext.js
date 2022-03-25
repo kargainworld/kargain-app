@@ -1,8 +1,8 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const MessageContext = createContext({})
 
-const MessageContextProvider = ({ children }) => {
+export const MessageContextProvider = ({ children }) => {
     const [state, setState] = useState({
         active: false,
         type: null,
@@ -63,4 +63,12 @@ const MessageContextProvider = ({ children }) => {
     )
 }
 
-export { MessageContext, MessageContextProvider }
+export const useMessage = () => {
+    const context = useContext(MessageContext)
+    if (context === undefined) {
+        throw new Error('MessageContext must be used within an MessageProvider')
+    }
+    return context
+}
+
+// export { MessageContext, MessageContextProvider }

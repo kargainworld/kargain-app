@@ -4,7 +4,7 @@ import { Col, Container, Row } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import useAddress from '../../../hooks/useAddress'
 import VehiclesService from '../../../services/VehiclesService'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import { vehicleTypes, vehicleTypeRefModels } from '../../../business/vehicleTypes'
 import FieldWrapper from '../../Form/FieldWrapper'
 import SelectInput from '../../Form/Inputs/SelectInput'
@@ -12,6 +12,7 @@ import SliderInput from '../../Form/Inputs/SliderInputUI'
 import SelectCountryFlags from '../../Form/Inputs/SelectCountryFlags'
 import SearchLocationInput from '../../Form/Inputs/SearchLocationInput'
 import localeDataHelper from '../../../libs/localeDataHelper'
+import { useMessage } from 'context/MessageContext'
 
 const HomeFiltersForm = ({ vehicleType, methods }) => {
     const cache = useRef({})
@@ -23,7 +24,7 @@ const HomeFiltersForm = ({ vehicleType, methods }) => {
     const countrySelect = watch('countrySelect')
     const selectedMake = watch('manufacturer.make')
     const selectedModel = watch('manufacturer.model')
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const [manufacturersData, setManufacturersData] = useState({
         makes: [],
         models: [],

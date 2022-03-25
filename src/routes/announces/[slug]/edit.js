@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { inflate } from 'flattenjs'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
-import { Col,  Nav, NavItem, Row, TabContent, TabPane } from 'reactstrap'
+import { Col, Nav, NavItem, Row, TabContent, TabPane } from 'reactstrap'
 import useTranslation from 'next-translate/useTranslation'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -21,7 +21,7 @@ import { SelectOptionsUtils } from '../../../libs/formFieldsUtils'
 import localeDataHelper from '../../../libs/localeDataHelper'
 import AnnounceModel from '../../../models/announce.model'
 import { vehicleTypes } from '../../../business/vehicleTypes'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import AnnounceService from '../../../services/AnnounceService'
 import FieldWrapper from '../../../components/Form/FieldWrapper'
 import TagsControlled from '../../../components/Tags/TagsControlled'
@@ -40,9 +40,9 @@ import GalleryViewer from '../../../components/Gallery/GalleryViewer'
 import ValidationErrors from '../../../components/Form/Validations/ValidationErrors'
 import CTALink from '../../../components/CTALink'
 import Error from '../../_error'
+import { useMessage } from '../../../context/MessageContext'
 
 const useStyles = makeStyles(() => ({
-
     stickyNav: {
         position: 'fixed',
         top: '5rem'
@@ -63,10 +63,10 @@ const useStyles = makeStyles(() => ({
     },
 
     buttonRemove: {
-        backgroundColor : themeColors.red,
+        backgroundColor: themeColors.red,
 
-        "&:hover" : {
-	    backgroundColor : themeColors.red
+        '&:hover': {
+            backgroundColor: themeColors.red
         }
     },
 
@@ -86,16 +86,16 @@ const useStyles = makeStyles(() => ({
         cursor: 'pointer',
 
         '&.active': {
-	    fontWeight: '700',
-	    border: 'none',
-	    borderBottom: `4px solid ${themeColors.blue}`,
-	    color: themeColors.blue,
-	    textAlign: 'center',
-	    background: 'none'
+            fontWeight: '700',
+            border: 'none',
+            borderBottom: `4px solid ${themeColors.blue}`,
+            color: themeColors.blue,
+            textAlign: 'center',
+            background: 'none'
         },
 
         '&:last-child': {
-	    borderBottom: 'unset!important'
+            borderBottom: 'unset!important'
         }
     },
 
@@ -103,8 +103,8 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
 
         '& > div': {
-	    margin: '1rem',
-	    flex: 1
+            margin: '1rem',
+            flex: 1
         }
     },
 
@@ -140,15 +140,15 @@ const allowedFields = {
     vehicleFunctionUse: 'vehicleFunctionUse',
     vehicleGeneralState: 'vehicleGeneralState',
     vehicleFunction: 'vehicleFunction',
-    'vehicleEngineType': 'vehicleEngineType',
-    'vehicleEngineGas': 'vehicleEngineGas',
-    'vehicleEngineCylinder': 'vehicleEngineCylinder',
-    'powerKm': 'powerKm',
-    'powerCh': 'powerCh',
-    'consumptionMixt': 'consumptionMixt',
-    'consumptionCity': 'consumptionCity',
-    'consumptionRoad': 'consumptionRoad',
-    'consumptionGkm': 'consumptionGkm',
+    vehicleEngineType: 'vehicleEngineType',
+    vehicleEngineGas: 'vehicleEngineGas',
+    vehicleEngineCylinder: 'vehicleEngineCylinder',
+    powerKm: 'powerKm',
+    powerCh: 'powerCh',
+    consumptionMixt: 'consumptionMixt',
+    consumptionCity: 'consumptionCity',
+    consumptionRoad: 'consumptionRoad',
+    consumptionGkm: 'consumptionGkm',
     mileage: 'mileage',
     mileageType: 'mileageType',
     equipments: 'equipments',
@@ -183,12 +183,12 @@ const AnnounceEdit = () => {
     const { t } = useTranslation()
 
     const [state, setState] = useState({
-        err : null,
-        stateReady : false,
-        isSelf : false,
-        isAdmin : false,
-        announce : new AnnounceModel(),
-        likesCounter : 0
+        err: null,
+        stateReady: false,
+        isSelf: false,
+        isAdmin: false,
+        announce: new AnnounceModel(),
+        likesCounter: 0
     })
 
     const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
@@ -197,7 +197,7 @@ const AnnounceEdit = () => {
 
     const toggleTab = (tabIndex) => {
         if (activeTab !== tabIndex) {
-	    setActiveTab(tabIndex)
+            setActiveTab(tabIndex)
         }
     }
 
@@ -207,84 +207,86 @@ const AnnounceEdit = () => {
     }
 
     const fetchAnnounce = useCallback(async () => {
-        try{
-	    const result = await AnnounceService.getAnnounceBySlug(slug)
-	    const { announce, isAdmin, isSelf } = result
+        try {
+            const result = await AnnounceService.getAnnounceBySlug(slug)
+            const { announce, isAdmin, isSelf } = result
 
-	    setState(state => ({
+            setState((state) => ({
                 ...state,
-                stateReady : true,
-                announce : new AnnounceModel(announce),
+                stateReady: true,
+                announce: new AnnounceModel(announce),
                 isAdmin,
                 isSelf
-	    }))
+            }))
         } catch (err) {
-	    setState(state => ({
+            setState((state) => ({
                 ...state,
                 stateReady: true,
                 err
-	    }))
+            }))
         }
-    },[slug])
+    }, [slug])
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchAnnounce()
-    },[fetchAnnounce])
+    }, [fetchAnnounce])
 
     if (!state.stateReady) return null
-    if (state.err) return <Error statusCode={state.err?.statusCode}/>
+    if (state.err) return <Error statusCode={state.err?.statusCode} />
 
     return (
         <>
             {!isDesktop && (
-                <NavMobile {...{
-		    activeTab,
-		    toggleTab
-                }}/>
-	    )}
+                <NavMobile
+                    {...{
+                        activeTab,
+                        toggleTab
+                    }}
+                />
+            )}
 
             <Row className="justify-content-center">
                 {isDesktop && (
                     <Col sm="12" md="3" lg="3">
-                        <NavDesktop {...{
-			    activeTab,
-			    toggleTab,
-			    triggerSubmit,
-			    slug
-                        }}/>
+                        <NavDesktop
+                            {...{
+                                activeTab,
+                                toggleTab,
+                                triggerSubmit,
+                                slug
+                            }}
+                        />
                     </Col>
                 )}
 
                 <Col sm="12" md="9" lg="9">
-
                     {state.isAdmin && (
                         <Alert severity="info" className="mb-2">
                             Connected as Admin
                         </Alert>
-		    )}
+                    )}
 
                     <Typography component="h2" variant="h2" className="text-center" gutterBottom>
                         {t('vehicles:edit-announce')}
                     </Typography>
 
-                    <MultiTabsForm {...{
-                        formRef,
-                        activeTab,
-                        slug,
-                        announce : state.announce,
-                        defaultValues : {
-			    ...state.announce.getRaw
-                        }
-		    }}/>
+                    <MultiTabsForm
+                        {...{
+                            formRef,
+                            activeTab,
+                            slug,
+                            announce: state.announce,
+                            defaultValues: {
+                                ...state.announce.getRaw
+                            }
+                        }}
+                    />
                 </Col>
             </Row>
 
             {!isDesktop && (
-                <Buttons
-                    triggerSubmit={triggerSubmit}
-                    announcePageLink={`/announces/${state.announce.getSlug}`}
-                />
-	    )}
+                <Buttons triggerSubmit={triggerSubmit} announcePageLink={`/announces/${state.announce.getSlug}`} />
+            )}
         </>
     )
 }
@@ -294,10 +296,10 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
     const theme = useTheme()
     const { t, lang } = useTranslation()
     const vehicleType = announce.getVehicleType
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
-    const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
-        defaultMatches: true
-    })
+    const { dispatchModal, dispatchModalError } = useMessage()
+    // const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
+    //     defaultMatches: true
+    // })
 
     const { watch, control, register, errors, handleSubmit } = useForm({
         mode: 'onChange',
@@ -320,70 +322,78 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
     })
 
     const getData = useCallback(async () => {
-        try{
-	    const data = await localeDataHelper.getLocaleData(vehicleType, lang)
-	    setFormData(data)
-        }catch (err){
-	    dispatchModalError({ err, persist : true })
+        try {
+            const data = await localeDataHelper.getLocaleData(vehicleType, lang)
+            setFormData(data)
+        } catch (err) {
+            dispatchModalError({ err, persist: true })
         }
-    },[vehicleType, lang])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [vehicleType, lang])
 
     useEffect(() => {
         getData()
     }, [getData])
 
     const onSubmit = (form) => {
-        const updates = inflate(Object.keys(allowedFields).reduce((carry, key) => {
-	    const value = resolveObjectKey(form, key)
-	    if (value) {
-                return {
-		    ...carry,
-		    [allowedFields[key]]: value
+        const updates = inflate(
+            Object.keys(allowedFields).reduce((carry, key) => {
+                const value = resolveObjectKey(form, key)
+                if (value) {
+                    return {
+                        ...carry,
+                        [allowedFields[key]]: value
+                    }
+                } else {
+                    return carry
                 }
-	    } else {
-                return carry
-	    }
-        }, {}))
+            }, {})
+        )
 
         AnnounceService.updateAnnounce(slug, updates)
-	    .then(() => {
+            .then(() => {
                 dispatchModal({
-		    msg: 'Ad successfully updated', persist : true
+                    msg: 'Ad successfully updated',
+                    persist: true
                 })
-	    }).catch(err => {
+            })
+            .catch((err) => {
                 dispatchModalError({ err })
-	    })
+            })
     }
 
     const handleRemove = () => {
         AnnounceService.removeAnnounce(slug)
             .then(() => {
                 dispatchModal({ msg: 'Announce successfully removed' })
-            }).catch(err => {
+            })
+            .catch((err) => {
                 dispatchModalError({ err })
-	    })
+            })
     }
 
     const handleCLickImg = (index) => {
         if (refImg.current) {
-	    refImg.current.slideToIndex(index)
-	    refImg.current.fullScreen()
+            refImg.current.slideToIndex(index)
+            refImg.current.fullScreen()
         }
     }
 
     return (
         <form className="p-3 mx-auto" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
-            {errors && <ValidationErrors errors={errors}/>}
+            {errors && <ValidationErrors errors={errors} />}
 
             <TabContent activeTab={activeTab}>
                 <TabPane tabId={0}>
-                    <VehicleInfosPartialForm {...{
-                        watch,
-                        vehicleType,
-                        formData,
-                        control,
-                        errors
-		    }} />
+                    <VehicleInfosPartialForm
+                        {...{
+                            watch,
+                            vehicleType,
+                            formData,
+                            control,
+                            errors
+                        }}
+                    />
                 </TabPane>
 
                 <TabPane tabId={1}>
@@ -411,17 +421,14 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
                         control={control}
                         defaultValues={announce.getDamagesTabs}
                         selectorFullWidth
-		    />
+                    />
                 </TabPane>
 
                 <TabPane tabId={3}>
                     <div className="pics">
                         {announce.getCountImages > 0 && (
                             <>
-                                <GalleryViewer
-                                    images={announce.getImages}
-                                    ref={refImg}
-                                />
+                                <GalleryViewer images={announce.getImages} ref={refImg} />
                                 {/* {isDesktop && (
 				    <GalleryImgsLazy
 					images={announce.getImages}
@@ -431,20 +438,19 @@ const MultiTabsForm = ({ announce, formRef, activeTab, slug, defaultValues }) =>
                             </>
                         )}
                     </div>
-                    <AnnounceImagesAutoUpload
-                        announceSlug={announce.getSlug}
-                        enableRefreshAfterUpload
-		    />
+                    <AnnounceImagesAutoUpload announceSlug={announce.getSlug} enableRefreshAfterUpload />
                 </TabPane>
 
                 <TabPane tabId={4}>
-                    <PublicationInfosPartialForm {...{
-                        watch,
-                        control,
-                        errors,
-                        register,
-                        handleRemove
-		    }} />
+                    <PublicationInfosPartialForm
+                        {...{
+                            watch,
+                            control,
+                            errors,
+                            register,
+                            handleRemove
+                        }}
+                    />
                 </TabPane>
             </TabContent>
         </form>
@@ -455,7 +461,7 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
     const { t } = useTranslation()
 
     const selectedMileage = watch('mileageType')
-    const [ mileageType, setMileageType ] = useState(selectedMileage)
+    const [mileageType, setMileageType] = useState(selectedMileage)
 
     useEffect(() => {
         setMileageType(selectedMileage)
@@ -470,41 +476,25 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col sm={12} md={6} lg={3}>
                     <FieldWrapper label={t('vehicles:make')}>
-                        <TextInput
-                            name={'manufacturer.make.make'}
-                            control={control}
-                            disabled
-                        />
+                        <TextInput name={'manufacturer.make.make'} control={control} disabled />
                     </FieldWrapper>
                 </Col>
 
                 <Col sm={12} md={6} lg={3}>
                     <FieldWrapper label={t('vehicles:model')}>
-                        <TextInput
-                            name={'manufacturer.model.model'}
-                            control={control}
-                            disabled
-                        />
+                        <TextInput name={'manufacturer.model.model'} control={control} disabled />
                     </FieldWrapper>
                 </Col>
 
                 <Col sm={12} md={6} lg={3}>
                     <FieldWrapper label={t('vehicles:generation')}>
-                        <TextInput
-                            name={'manufacturer.model.trim'}
-                            control={control}
-                            disabled
-                        />
+                        <TextInput name={'manufacturer.model.trim'} control={control} disabled />
                     </FieldWrapper>
                 </Col>
 
                 <Col sm={12} md={6} lg={3}>
                     <FieldWrapper label={t('vehicles:year')}>
-                        <TextInput
-                            name={'manufacturer.model.year'}
-                            control={control}
-                            disabled
-                        />
+                        <TextInput name={'manufacturer.model.year'} control={control} disabled />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -512,25 +502,15 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label={t('vehicles:cylinder')}>
-                        <NumberInput name="vehicleEngineCylinder"
-                            control={control}
-                            errors={errors}
-                            placeholder="150 ch"
-
-                        />
+                        <NumberInput name="vehicleEngineCylinder" control={control} errors={errors} placeholder="150 ch" />
                     </FieldWrapper>
                 </Col>
-
             </Row>
 
             <Row>
                 <Col>
                     <FieldWrapper label={t('vehicles:gas')}>
-                        <SelectInput name="vehicleEngineGas"
-                            options={formData.RadioChoicesGas}
-                            control={control}
-                            errors={errors}
-                        />
+                        <SelectInput name="vehicleEngineGas" options={formData.RadioChoicesGas} control={control} errors={errors} />
                     </FieldWrapper>
                 </Col>
                 <Col>
@@ -548,24 +528,12 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label={t('vehicles:power')}>
-                        <NumberInput
-                            name="powerKw"
-                            control={control}
-                            errors={errors}
-                            placeholder={0}
-
-
-                        />
+                        <NumberInput name="powerKw" control={control} errors={errors} placeholder={0} />
                     </FieldWrapper>
                 </Col>
                 <Col>
                     <FieldWrapper label={t('vehicles:power_ch')}>
-                        <NumberInput
-                            name="powerCh"
-                            control={control}
-                            errors={errors}
-                            placeholder={0}
-                        />
+                        <NumberInput name="powerCh" control={control} errors={errors} placeholder={0} />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -599,24 +567,13 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label={t(`vehicles:${mileageType?.label}`)}>
-                        <NumberInput
-                            name="mileage"
-                            placeholder={`20000 ${mileageType?.value}`}
-                            control={control}
-                            errors={errors}
-
-                        />
+                        <NumberInput name="mileage" placeholder={`20000 ${mileageType?.value}`} control={control} errors={errors} />
                     </FieldWrapper>
                 </Col>
 
                 <Col>
                     <FieldWrapper label={t('vehicles:type')}>
-                        <SelectInput
-                            name="mileageType"
-                            options={formData.mileageType}
-                            control={control}
-                            errors={errors}
-                        />
+                        <SelectInput name="mileageType" options={formData.mileageType} control={control} errors={errors} />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -636,7 +593,7 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
                     <FieldWrapper label={t('vehicles:owners_quantity')}>
                         <SelectInput
                             name="ownersCount"
-                            options={SelectOptionsUtils([1,2,3,4,5,6,7,8,9])}
+                            options={SelectOptionsUtils([1, 2, 3, 4, 5, 6, 7, 8, 9])}
                             placeholder="Select number of owners"
                             control={control}
                             errors={errors}
@@ -651,24 +608,12 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label="Mixte (g/km)">
-                        <NumberInput
-                            name="consumptionMixt"
-                            control={control}
-                            errors={errors}
-                            placeholder="20 g/100"
-
-                        />
+                        <NumberInput name="consumptionMixt" control={control} errors={errors} placeholder="20 g/100" />
                     </FieldWrapper>
                 </Col>
                 <Col>
                     <FieldWrapper label="Ville (g/km)">
-                        <NumberInput
-                            name="consumptionCity"
-                            control={control}
-                            errors={errors}
-                            placeholder="20 g/100"
-
-                        />
+                        <NumberInput name="consumptionCity" control={control} errors={errors} placeholder="20 g/100" />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -676,24 +621,12 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label="Route (g/km)">
-                        <NumberInput
-                            name="consumptionRoad"
-                            control={control}
-                            errors={errors}
-                            placeholder="20 g/100"
-
-                        />
+                        <NumberInput name="consumptionRoad" control={control} errors={errors} placeholder="20 g/100" />
                     </FieldWrapper>
                 </Col>
                 <Col>
                     <FieldWrapper label="CO2 (g/km)">
-                        <NumberInput
-                            name="consumptionGkm"
-                            control={control}
-                            errors={errors}
-                            placeholder={0}
-
-                        />
+                        <NumberInput name="consumptionGkm" control={control} errors={errors} placeholder={0} />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -701,12 +634,7 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
             <Row>
                 <Col>
                     <FieldWrapper label={t('vehicles:class_emission')}>
-                        <SelectInput
-                            name="emission"
-                            options={formData.RadioChoicesEmission}
-                            control={control}
-                            errors={errors}
-                        />
+                        <SelectInput name="emission" options={formData.RadioChoicesEmission} control={control} errors={errors} />
                     </FieldWrapper>
                 </Col>
             </Row>
@@ -721,36 +649,31 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
                         <FieldWrapper label={t('vehicles:doors_quantity')}>
                             <SelectInput
                                 name="doors"
-                                options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                                options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                                 placeholder="Select number of doors"
                                 control={control}
                                 errors={errors}
-			    />
+                            />
                         </FieldWrapper>
                     </Col>
                     <Col>
                         <FieldWrapper label={t('vehicles:seats_quantity')}>
                             <SelectInput
                                 name="seats"
-                                options={SelectOptionsUtils([2,3,4,5,6,7,8,9])}
+                                options={SelectOptionsUtils([2, 3, 4, 5, 6, 7, 8, 9])}
                                 placeholder={t('vehicles:select_seats_quantity')}
                                 control={control}
                                 errors={errors}
-			    />
+                            />
                         </FieldWrapper>
                     </Col>
                 </Row>
-	    )}
+            )}
 
             <Row>
                 <Col>
                     <FieldWrapper label={t('vehicles:paint')}>
-                        <SelectInput
-                            name="paint"
-                            options={formData.RadioChoicesPaints}
-                            control={control}
-                            errors={errors}
-                        />
+                        <SelectInput name="paint" options={formData.RadioChoicesPaints} control={control} errors={errors} />
                     </FieldWrapper>
                 </Col>
                 <Col>
@@ -775,7 +698,7 @@ const VehicleInfosPartialForm = ({ watch, vehicleType, formData, control, errors
                                 options={formData.RadioChoicesExternalColor}
                                 control={control}
                                 errors={errors}
-			    />
+                            />
                         </FieldWrapper>
                     </Col>
                 )}
@@ -832,37 +755,26 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                     control={control}
                     rules={{
                         required: t('form_validations:required'),
-                        validate: val => {
-			    const value = Number(val)
-			    if (value < 500) return t('form_validations:min_price_{min}{currency}', { min : 500, currency : '€' })
-			    if (value > 200000) return t('form_validations:max_price_{max}{currency}', { max : 200000, currency : '€' })
+                        validate: (val) => {
+                            const value = Number(val)
+                            if (value < 500) return t('form_validations:min_price_{min}{currency}', { min: 500, currency: '€' })
+                            if (value > 200000)
+                                return t('form_validations:max_price_{max}{currency}', { max: 200000, currency: '€' })
                         }
-		    }}
+                    }}
                 />
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:description')}>
-                <TextareaInput
-                    name="description"
-                    control={control}
-                    errors={errors}
-                />
+                <TextareaInput name="description" control={control} errors={errors} />
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:tags')}>
-                <TagsControlled
-                    name="tags"
-                    control={control}
-                    errors={errors}
-                />
+                <TagsControlled name="tags" control={control} errors={errors} />
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:country')}>
-                <SelectCountryFlags
-                    name="countrySelect"
-                    errors={errors}
-                    control={control}
-                />
+                <SelectCountryFlags name="countrySelect" errors={errors} control={control} />
             </FieldWrapper>
 
             <FieldWrapper label={t('vehicles:address')}>
@@ -871,22 +783,17 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                     country={countrySelect?.value}
                     control={control}
                     errors={errors}
-                    rules={{ required: t('form_validations:required') }}>
-                </SearchLocationInput>
+                    rules={{ required: t('form_validations:required') }}
+                ></SearchLocationInput>
             </FieldWrapper>
 
-            <div style={{ border : '1px solid', padding : '1rem' }}>
+            <div style={{ border: '1px solid', padding: '1rem' }}>
                 <Typography component="h3" variant="h3" className="text-center" gutterBottom>
                     {t('vehicles:announce-management')}
                 </Typography>
 
-                <FieldWrapper >
-                    <CheckboxMUI
-                        name="showCellPhone"
-                        label={t('vehicles:show-cell-phone')}
-                        control={control}
-                        errors={errors}
-		    />
+                <FieldWrapper>
+                    <CheckboxMUI name="showCellPhone" label={t('vehicles:show-cell-phone')} control={control} errors={errors} />
                 </FieldWrapper>
 
                 <CheckboxMUI
@@ -902,16 +809,14 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                     variant="contained"
                     color="secondary"
                     className={classes.buttonRemove}
-                    startIcon={<DeleteIcon/>}
-                    onClick={handleOpenDialogRemove}>
+                    startIcon={<DeleteIcon />}
+                    onClick={handleOpenDialogRemove}
+                >
                     {t('vehicles:remove-announce')}
                 </Button>
             </div>
 
-            <Dialog
-                open={openDialogRemove}
-                onClose={handleCloseDialogRemove}
-	    >
+            <Dialog open={openDialogRemove} onClose={handleCloseDialogRemove}>
                 <DialogTitle id="alert-dialog-title" disableTypography>
                     {t('vehicles:confirm-suppression')}
                 </DialogTitle>
@@ -923,10 +828,12 @@ const PublicationInfosPartialForm = ({ watch, control, errors, handleRemove }) =
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<DeleteIcon/>}
-                        onClick={ () => {
+                        startIcon={<DeleteIcon />}
+                        onClick={() => {
                             handleRemove()
-                            setTimeout(router.back, 100)}}>
+                            setTimeout(router.back, 100)
+                        }}
+                    >
                         {t('vehicles:remove-announce')}
                     </Button>
                 </DialogActions>
@@ -940,21 +847,22 @@ const Buttons = ({ triggerSubmit, announcePageLink }) => {
     const { t } = useTranslation()
 
     return (
-        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth : '300px' }}>
+        <div className="d-flex flex-column mx-auto my-3" style={{ maxWidth: '300px' }}>
             <Button
                 variant="contained"
                 color="primary"
                 size="large"
                 className={classes.button}
-                startIcon={<SaveIcon/>}
+                startIcon={<SaveIcon />}
                 type="submit"
                 onClick={() => {
-		    triggerSubmit()
-                }}>
+                    triggerSubmit()
+                }}
+            >
                 {t('vehicles:save-announce')}
             </Button>
 
-            <CTALink title={t('vehicles:see-announce')} href={announcePageLink}/>
+            <CTALink title={t('vehicles:see-announce')} href={announcePageLink} />
         </div>
     )
 }
@@ -964,40 +872,39 @@ const NavDesktop = ({ activeTab, toggleTab, triggerSubmit, slug }) => {
     const { t } = useTranslation()
     const tabs = [
         {
-	    title: t('vehicles:vehicle-informations')
+            title: t('vehicles:vehicle-informations')
         },
         {
-	    title: t('vehicles:equipments')
+            title: t('vehicles:equipments')
         },
         {
-	    title: t('vehicles:vehicle-state')
+            title: t('vehicles:vehicle-state')
         },
         {
-	    title: t('vehicles:pictures')
+            title: t('vehicles:pictures')
         },
         {
-	    title: t('vehicles:publication')
+            title: t('vehicles:publication')
         }
     ]
     return (
         <div className={clsx(classes.nav, classes.stickyNav)}>
             <div className="my-2">
                 <Nav vertical className={classes.navList}>
-                    {tabs && tabs.map((tab, index) => (
-                        <NavItem
-                            key={index}
-                            className={clsx(classes.navItem, activeTab === index && 'active')}
-                            onClick={() => toggleTab(index)}>
-                            {tab.title}
-                        </NavItem>
-		    ))}
+                    {tabs &&
+            tabs.map((tab, index) => (
+                <NavItem
+                    key={index}
+                    className={clsx(classes.navItem, activeTab === index && 'active')}
+                    onClick={() => toggleTab(index)}
+                >
+                    {tab.title}
+                </NavItem>
+            ))}
                 </Nav>
             </div>
 
-            <Buttons
-                announcePageLink={`/announces/${slug}`}
-                triggerSubmit={triggerSubmit}
-	    />
+            <Buttons announcePageLink={`/announces/${slug}`} triggerSubmit={triggerSubmit} />
         </div>
     )
 }
@@ -1007,31 +914,33 @@ const NavMobile = ({ activeTab, toggleTab }) => {
     const classes = useStyles()
     const tabs = [
         {
-	    title: t('vehicles:vehicle-informations')
+            title: t('vehicles:vehicle-informations')
         },
         {
-	    title: t('vehicles:equipments')
+            title: t('vehicles:equipments')
         },
         {
-	    title: t('vehicles:vehicle-state')
+            title: t('vehicles:vehicle-state')
         },
         {
-	    title: t('vehicles:pictures')
+            title: t('vehicles:pictures')
         },
         {
-	    title: t('vehicles:publication')
+            title: t('vehicles:publication')
         }
     ]
     return (
         <Nav className={clsx(classes.navList, classes.navMobile)}>
-            {tabs && tabs.map((tab, index) => (
-                <NavItem
-                    key={index}
-                    className={clsx(classes.navItem, activeTab === index && 'active')}
-                    onClick={() => toggleTab(index)}>
-                    {tab.title}
-                </NavItem>
-	    ))}
+            {tabs &&
+        tabs.map((tab, index) => (
+            <NavItem
+                key={index}
+                className={clsx(classes.navItem, activeTab === index && 'active')}
+                onClick={() => toggleTab(index)}
+            >
+                {tab.title}
+            </NavItem>
+        ))}
         </Nav>
     )
 }

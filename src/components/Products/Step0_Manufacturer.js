@@ -10,9 +10,10 @@ import TextInput from '../Form/Inputs/TextInput'
 import StepNavigation from '../Form/StepNavigation'
 import SelectInput from '../Form/Inputs/SelectInput'
 import { FormContext } from 'context/FormContext'
-import { MessageContext } from 'context/MessageContext'
+// import { MessageContext } from 'context/MessageContext'
 import VehiclesService from 'services/VehiclesService'
 import { vehicleTypes, vehicleTypeRefModels } from '../../business/vehicleTypes'
+import { useMessage } from '../../context/MessageContext'
 // import { useWeb3React } from "@web3-react/core"
 
 const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevStep }) => {
@@ -22,7 +23,7 @@ const Step0_Manufacturer = ({ vehicleType, triggerSkipStep, onSubmitStep, prevSt
     const formRef = useRef(null)
     const isCar = vehicleType === vehicleTypes.car
     const vehicleTypeModel = vehicleTypeRefModels[vehicleType]
-    const { dispatchModalError } = useContext(MessageContext)
+    const { dispatchModalError } = useMessage()
     const { formDataContext, dispatchFormUpdate } = useContext(FormContext)
 
     const { watch, control, errors, handleSubmit, setValue } = useForm({

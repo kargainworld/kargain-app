@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
-import { MessageContext } from '../../context/MessageContext'
+// import { MessageContext } from '../../context/MessageContext'
 import Step0_Manufacturer from '../../components/Products/Step0_Manufacturer'
 import Step1CamperDetails from '../../components/Products/camper/Step1_CamperDetails'
 import Step2CamperStatus from '../../components/Products/camper/Step2_CamperStatus'
@@ -13,6 +13,7 @@ import useKargainContract from '../../hooks/useKargainContract'
 import TransactionsService from 'services/TransactionsService'
 import ObjectID from 'bson-objectid'
 import Web3 from 'web3'
+import { useMessage } from '../../context/MessageContext'
 
 const toBN = Web3.utils.toBN
 
@@ -23,7 +24,7 @@ const CamperForm = (props) => {
     const { mintToken, waitTransactionToBeConfirmed }= useKargainContract()
     /*Mint Section*/
     const router = useRouter()
-    const { dispatchModal, dispatchModalError } = useContext(MessageContext)
+    const { dispatchModal, dispatchModalError } = useMessage()
     const { t } = useTranslation()
 
     const onFinalSubmit = form => {
