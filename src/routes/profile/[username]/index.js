@@ -233,15 +233,6 @@ const Profile = () => {
             const result = await AnnounceService.getProfileAnnounces(params)
             state.profile.updateAnnounces(result.rows)
 
-            /*setState(state => ({
-                ...state,
-                profile: new UserModel({
-                    ...state.profile.getRaw,
-                    garage: result.rows
-                }),
-                stateAnnounces: true
-            }))*/
-
             let tokensMinted = []
             for (const announce of result.rows) {
                 const ad = new AnnounceModel(announce)
@@ -296,11 +287,6 @@ const Profile = () => {
         fetchProfile()
         window.scrollTo(0, 0)
     }, [fetchProfile])
-
-    // useEffect(() => {
-    //     if (filterState.loading) return <Loading />
-
-    // }, [filterState.loading])
 
     useEffect(() => {
         if (state.stateReady) {

@@ -15,6 +15,7 @@ import { useAuth } from 'context/AuthProvider'
 import { useRouter } from 'next/router'
 import UserModel from '../../models/user.model'
 import { useMessage } from 'context/MessageContext'
+import { useBackdrop } from '../../context/BackdropContext'
 
 const useStyles = makeStyles(() => ({
 
@@ -31,21 +32,23 @@ const useStyles = makeStyles(() => ({
 }))
 
 const ConnectPage = () => {
-    const { dispatchModal, dispatchModalError } = useMessage()
+    const { dispatchModalError } = useMessage()
     const { connect, address, disconnect } = useWeb3Modal()
     const { initializeAuth } = useAuth()
     const router = useRouter()
-
+    const backdrop = useBackdrop()
     const { t } = useTranslation()
     const classes = useStyles()
     const { redirect } = router.query
 
+
     const onSubmit = (data) => {
+        backdrop.fetch(true)
         AuthService.login({ wallet: data.wallet })
             .then(async (user) => {
                 
                 await initializeAuth()
-
+                backdrop.fetch(false)
                 const User = new UserModel(user)
                 if (redirect) {
                     router.push(`/auth/callback?redirect=${redirect}`)
@@ -61,6 +64,7 @@ const ConnectPage = () => {
             .catch((err) => {
                 disconnect()
                 dispatchModalError({ err })
+                backdrop.fetch(false)
             })
     }
 
@@ -69,6 +73,8 @@ const ConnectPage = () => {
             if (chainId === Number(process.env.NEXT_PUBLIC_MAIN_CHAIN_ID)) {
                 onSubmit({ wallet })
             }
+        }).catch((error) => {
+            dispatchModalError(error?.message)
         })
     }
 
@@ -83,7 +89,6 @@ const ConnectPage = () => {
 
     return (
         <Container>
-            {/* <h1 style={{ fontSize: '24px', marginTop: '40px' }}>{t('vehicles:register')}</h1> */}
             <Grid container justifyContent='center' className='mt-4'>
                 {!address ?
                     (

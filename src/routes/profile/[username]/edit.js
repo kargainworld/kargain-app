@@ -218,9 +218,9 @@ const Edit = () => {
         {
             title: t('vehicles:my-profile')
         },
-        {
-            title: t('vehicles:payments-bills')
-        },
+        // {
+        //     title: t('vehicles:payments-bills')
+        // },
         {
             title: t('vehicles:confidentiality-security')
         }
@@ -256,7 +256,6 @@ const Edit = () => {
     }
 
     const triggerSubmit = async () => {
-
         formRef.current.dispatchEvent(new Event('submit'))
     }
 
@@ -303,6 +302,7 @@ const Edit = () => {
     useEffect(() => {
         if (offer) setActiveTab(1)
         if (isAuthReady) fetchProfile()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthReady, fetchProfile])
 
     if (!state.stateReady) return null
@@ -758,11 +758,9 @@ const Buttons = ({ triggerSubmit, profilePageLink }) => {
                         endIcon={<NewIcons.save style={{ marginLeft: '8px' }} />}
                         type="submit"
                         style={{ height: '35px', width: '250px', marginLeft: '10px' }}
-                        onClick={() => {
-                            triggerSubmit()
-                        }}>
+                        onClick={triggerSubmit}
+                    >
                         {t('vehicles:save')}
-
                     </Button>
 
                     <CTALink className={clsx(classes.bordergradientbtn)} title={t('vehicles:back_to_profile')} href={profilePageLink} style={{ height: '35px', marginTop: '10px', width: '250px', marginLeft: '10px' }} />

@@ -500,12 +500,6 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
             </div>
 
             <li className="nav-item navbar-dropdown">
-                {/* <IconButton color="inherit"
-                    data-toggle="dropdownUser"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    onClick={() => toggle(keyName)}
-                > */}
                 <div
                     data-toggle="dropdownUser"
                     aria-haspopup="true"
@@ -519,7 +513,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                     }}
                 >
                     <img
-                        src={authenticatedUser.getAvatarUrl}
+                        src={authenticatedUser.getAvatar || authenticatedUser.getAvatarUrl}
                         alt="avatar"
                         style={{
                             width: '100%',
@@ -528,10 +522,7 @@ const DropdownUser = ({ isOpen, keyName, toggle }) => {
                             border: '1px solid #aaa'
                         }}
                     />
-                    {/* <NewIcons.navuser style={{ width: '21px', height: '21px' }} /> */}
                 </div>
-                {/* </IconButton> */}
-
                 <ul className={clsx('dropdown', isOpen && 'show')} id="dropdownUser">
                     {authenticatedUser.getIsAdmin && (
                         <li className="px-0 dropdown-item">
