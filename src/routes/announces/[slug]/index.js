@@ -77,8 +77,8 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     const tokenPriceInEuros = useMemo(() => {
-        return (+tokenPrice * priceBNB).toFixed(2)
-    }, [tokenPrice, priceBNB])
+        return (+tokenPrice * 1).toFixed(2)
+    }, [tokenPrice])
 
     const {
         fetchTokenPrice,
@@ -205,7 +205,7 @@ const Announce = () => {
 
         setIsLoading(true)
         getPriceTracker().then((price) => {
-            setPrice(price.quotes.EUR.price)
+            setPrice(price?.quotes?.USD.price)
         })
 
         if (tokenMinted && offerAccepted.length === 0) {
@@ -325,7 +325,8 @@ const Announce = () => {
                                 <Box mb={2} display="flex" flexDirection="row">
                                     <Col sm={3}>
                                         <Row style={{ marginTop: '10px' }}>
-                                            <h4 key={`price-${tokenPriceInEuros}`}>€ {tokenPriceInEuros}</h4>
+                                            <h4 key={`price-${tokenPriceInEuros}`}>$ {tokenPriceInEuros}</h4>
+                                            <div key={`price-polygon`}>({(tokenPrice * priceBNB).toFixed(4)} MATIC)</div>
                                         </Row>
                                     </Col>
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Pending' && (
@@ -347,7 +348,7 @@ const Announce = () => {
                         <EditLikeAndComments announce={state.announce} />
 
                         {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
-                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
+                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce} priceBNB={priceBNB} />
                         )}
 
                         {isOwn && (

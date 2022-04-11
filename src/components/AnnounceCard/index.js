@@ -40,7 +40,8 @@ import CTALink from '../CTALink'
 import { useMessage } from '../../context/MessageContext.js'
 import { useModal } from '../../context/ModalContext.js'
 
-const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug, ...props }) => {
+const Index = ({ announceRaw, tokenPrice = 0, onhandleOpenDialogRemove, onSelectSlug, ...props }) => {
+    console.log(tokenPrice)
     const [modalOpen, setModalOpen] = React.useState(false)
     const classes = useStyles(props)
     const refImg = useRef()
@@ -103,11 +104,11 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
         stateReady: false
     })
 
-    useEffect(() => {
-        getPriceTracker().then((price) => {
-            setPrice(price?.quotes?.EUR.price)
-        })
-    }, [state])
+    // useEffect(() => {
+    //     getPriceTracker().then((price) => {
+    //         setPrice(price?.quotes?.EUR.price)
+    //     })
+    // }, [state])
 
     const str = announce.getAnnounceTitle
     const tempArr = str.split('|')
@@ -176,7 +177,7 @@ const Index = ({ announceRaw, tokenPrice, onhandleOpenDialogRemove, onSelectSlug
                                     </ImageCounter>
                                 )} */}
                                 <div className={classes.priceContainer}>
-                                    <div className={classes.price}>€ {(priceBNB * tokenPrice).toFixed(2)}</div>
+                                    <div className={classes.price}>$ {(tokenPrice * 1).toFixed(2)}</div>
                                 </div>
                             </ImageWrapper>
                         </ImageBox>

@@ -3,9 +3,9 @@ import parseISO from 'date-fns/parseISO'
 import ImageModel from './image.model'
 import CommentModel from './comment.model'
 import ObjectID from 'bson-objectid'
-// import Web3 from 'web3'
+import Web3 from 'web3'
 
-// const toBN = Web3.utils.toBN
+const toBN = Web3.utils.toBN
 
 export default class AnnounceModel {
 
@@ -27,7 +27,7 @@ export default class AnnounceModel {
     }
 
     get getTokenId () {
-        // return toBN(ObjectID(this.raw?.id).toHexString())
+        return toBN(ObjectID(this.raw?.id).toHexString())
     }
 
     get getAuthor () {

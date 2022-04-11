@@ -46,12 +46,12 @@ const useKargainContract = () => {
             try {
                 if (!contract || !library) return
 
-                const START_BLOCK = 0
+                const START_BLOCK = 1000
 
                 const events = contract
                     .getPastEvents('OfferReceived', {
-                        fromBlock: START_BLOCK,
-                        toBlock: 'latest' // You can also specify 'latest'
+                        // fromBlock: START_BLOCK,
+                        // toBlock: 'latest' // You can also specify 'latest'
                     })
                     .then((events) => {
                         for (let i = 0; i < events.length; i++) {
@@ -144,7 +144,7 @@ const useKargainContract = () => {
         async (tokenId, value) => {
             try {
                 if (!contract) return
-
+                console.log(tokenId.toString(), account)
                 const waiPrice = Web3.utils.toWei(value.toString(), 'ether')
 
                 const tx = await contract.methods.createOffer(tokenId).send({ from: account, value: waiPrice })
