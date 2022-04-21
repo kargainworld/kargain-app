@@ -60,7 +60,7 @@ const MakeOffer = (props) => {
             setIsConfirmed(false)
             setError(null)
             const val = await fetchTokenPrice(props.announce.getTokenId)
-            console.log(val)
+            
             const task = makeOffer(props.announce.getTokenId, +(val))
             const hashTx = await task
 

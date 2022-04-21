@@ -1,6 +1,6 @@
 import { Col, Row } from "reactstrap"
 import clsx from "clsx"
-import React, { useCallback, useContext, useState } from "react"
+import React, { useCallback, useContext, useMemo, useState } from "react"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import useKargainContract from "../../hooks/useKargainContract"
 import TransactionsService from "../../services/TransactionsService"
@@ -34,7 +34,7 @@ const HandleOffer = (props) => {
     const [error, setError] = useState(null)
     const { dispatchModal } = useMessage()
     const { t } = useTranslation()
-
+    const offerHashTx = useMemo(() => props?.newOfferCreated?.hashTx, [props])
     const {
         isContractReady,
         acceptOffer,
@@ -42,7 +42,7 @@ const HandleOffer = (props) => {
         waitTransactionToBeConfirmed
     } = useKargainContract()
 
-    const handleRejectOffer = async (offerHashTx) => {
+    const handleRejectOffer = async () => {
         try {
             if (!isContractReady || !props?.announce || !props.tokenPrice || !authenticatedUser.getWallet)
                 return
@@ -66,7 +66,7 @@ const HandleOffer = (props) => {
 
     }
 
-    const handleAcceptOffer = useCallback( async (offerHashTx) => {
+    const handleAcceptOffer = useCallback( async () => {
         try {
             if (!isContractReady || !props?.announce || !props.tokenPrice || !authenticatedUser.getWallet)
                 return
