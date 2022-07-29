@@ -220,7 +220,7 @@ const Step = ({ handleSubmitForm, prevStep, tokenPrice = '', setTokenPrice, erro
                 />
             </FieldWrapper>
             <div className={clsx(classes.div)}>
-                <StepNavigation  prev={prevStep} submitLabel={t('vehicles:publish-my-announce')} submit/>
+                <StepNavigation  prev={prevStep} submitLabel={t('vehicles:create-my-announce')} submit/>
             </div>
         </form>
     )

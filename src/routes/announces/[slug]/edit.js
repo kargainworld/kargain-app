@@ -230,7 +230,7 @@ const AnnounceEdit = () => {
     useEffect(() => {
         fetchAnnounce()
     }, [fetchAnnounce])
-    console.log(state)
+
     if (!state.stateReady) return null
     if (state.err) return <Error statusCode={state.err?.statusCode} />
 

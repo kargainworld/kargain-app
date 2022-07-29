@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { isSuccessfulTransaction, waitTransaction } from 'libs/confirmations'
 import Web3 from 'web3'
 import { useWeb3Modal } from 'context/Web3Context'
-import { ErrorRounded } from '@material-ui/icons'
 const ONE_HOUR = 3600 // sec
 const ONE_DAY = ONE_HOUR * 24
 const toBN = Web3.utils.toBN
@@ -47,12 +46,12 @@ const useKargainContract = () => {
             try {
                 if (!contract || !library) return
 
-                const START_BLOCK = 1000
+                const START_BLOCK = 0
 
                 const events = contract
                     .getPastEvents('OfferReceived', {
-                        // fromBlock: START_BLOCK,
-                        // toBlock: 'latest' // You can also specify 'latest'
+                        fromBlock: START_BLOCK,
+                        toBlock: 'latest' // You can also specify 'latest'
                     })
                     .then((events) => {
                         for (let i = 0; i < events.length; i++) {
@@ -145,10 +144,8 @@ const useKargainContract = () => {
         async (tokenId, value) => {
             try {
                 if (!contract) return
-                
+
                 const waiPrice = Web3.utils.toWei(value.toString(), 'ether')
-                // const gasAmount = await contract.methods.acceptOffer(tokenId).estimateGas({ from: account, value: waiPrice })
-                // console.log(gasAmount, 'Gas Amount')
 
                 const tx = await contract.methods.createOffer(tokenId).send({ from: account, value: waiPrice })
 
@@ -223,7 +220,7 @@ const useKargainContract = () => {
             } catch (error) {
                 // tokenId does not exist
                 console.log(error)
-                throw new Error('TokenId does not exist')
+                return null
             }
         },
         [contract]
@@ -233,6 +230,7 @@ const useKargainContract = () => {
         async (tokenId) => {
             try {
                 if (!contract || !library) return
+
                 const tx = await contract.methods.acceptOffer(tokenId).send({ from: account })
 
                 return tx.transactionHash

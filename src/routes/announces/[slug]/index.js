@@ -60,7 +60,7 @@ const Announce = () => {
     const { dispatchModal } = useMessage()
     const { getPriceTracker } = usePriceTracker()
     const [priceBNB, setPrice] = useState(0)
-    // const [bnbBalance, setBalance] = useState()
+    const [bnbBalance, setBalance] = useState()
     const [walletPayer, setWalletPayer] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenPrice, setTokenPrice] = useState('')
@@ -77,8 +77,8 @@ const Announce = () => {
     const [tried, setTried] = useState(false)
 
     const tokenPriceInEuros = useMemo(() => {
-        return (+tokenPrice * 1).toFixed(2)
-    }, [tokenPrice])
+        return (+tokenPrice * priceBNB).toFixed(2)
+    }, [tokenPrice, priceBNB])
 
     const {
         fetchTokenPrice,
@@ -151,6 +151,7 @@ const Announce = () => {
     const fetchAnnounce = useCallback(async () => {
         try {
             const result = await AnnounceService.getAnnounceBySlug(slug)
+            console.log(result)
             const { announce, isAdmin, isSelf } = result
             const newAnnounce = new AnnounceModel(announce)
             const transactions = await TransactionsService.getTransactionsByAnnounceId(newAnnounce.getID)
@@ -189,6 +190,7 @@ const Announce = () => {
     }, [isContractReady, state?.announce, watchOfferEvent])
 
     useEffect(() => {
+        console.log(walletPayer)
         if (!isContractReady) return
 
         fetchAnnounce()
@@ -203,7 +205,7 @@ const Announce = () => {
 
         setIsLoading(true)
         getPriceTracker().then((price) => {
-            setPrice(price?.quotes?.USD.price)
+            setPrice(price.quotes.EUR.price)
         })
 
         if (tokenMinted && offerAccepted.length === 0) {
@@ -228,11 +230,8 @@ const Announce = () => {
 
     const tokenMinted = transactionsOrdered.find((x) => x.action === 'TokenMinted')
 
-    const offerAccepted = transactionsOrdered.filter((x) => x.action === 'OfferAccepted' && x.status !== 'Approved')
-    const offerRejected = transactionsOrdered.filter((x) => x.action === 'OfferRejected' && x.status !== 'Approved')
-
-    // const accepted = offerAccepted.some(item => item.announce === state.announce.getID && item.status === 'Approved')
-    // const rejected = offerRejected.some(item => item.announce === state.announce.getID && item.status === 'Approved')
+    const offerAccepted = transactionsOrdered.filter((x) => x.action === 'OfferAccepted')
+    const offerRejected = transactionsOrdered.filter((x) => x.action === 'OfferRejected')
 
     const newOfferCreated = transactionsOrdered.find(
         (x) =>
@@ -240,7 +239,7 @@ const Announce = () => {
       !offerAccepted.some((y) => y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status)) &&
       !offerRejected.some((y) => y.data === x.hashTx && ['Approved', 'Pending'].includes(y.status))
     )
-    
+
     const handleApplyPriceChange = async () => {
         const tokenId = state?.announce?.getTokenId
         const announceId = state?.announce?.getID
@@ -269,6 +268,33 @@ const Announce = () => {
             setIsConfirmed(true)
         }
     }
+
+    useEffect(() => {
+        if (!isContractReady) return
+
+        if (!!account && !!library) {
+            let stale = false
+
+            library.eth
+                .getBalance(account)
+                .then((balance) => {
+                    if (!stale) {
+                        let ethBalance = library.utils.fromWei(balance, 'ether')
+                        setBalance(ethBalance)
+                    }
+                })
+                .catch(() => {
+                    if (!stale) {
+                        setBalance(null)
+                    }
+                })
+
+            return () => {
+                stale = true
+                setBalance(undefined)
+            }
+        }
+    }, [account, library, chainId, isContractReady]) //
 
     const isOwn = useMemo(() => {
         return authenticatedUser?.raw?._id === state?.announce?.raw?.user?._id
@@ -299,8 +325,7 @@ const Announce = () => {
                                 <Box mb={2} display="flex" flexDirection="row">
                                     <Col sm={3}>
                                         <Row style={{ marginTop: '10px' }}>
-                                            <h4 key={`price-${tokenPriceInEuros}`}>$ {tokenPriceInEuros}</h4>
-                                            <div key={`price-polygon`}>({(tokenPrice * priceBNB).toFixed(4)} MATIC)</div>
+                                            <h4 key={`price-${tokenPriceInEuros}`}>€ {tokenPriceInEuros}</h4>
                                         </Row>
                                     </Col>
                                     {isOwn && isMinted && newOfferCreated && newOfferCreated.status === 'Pending' && (
@@ -321,8 +346,8 @@ const Announce = () => {
 
                         <EditLikeAndComments announce={state.announce} />
 
-                        {!isOwn && isMinted && (!newOfferCreated ) && authenticatedUser.getWallet && (
-                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce} priceBNB={priceBNB} />
+                        {!isOwn && isMinted && !newOfferCreated && authenticatedUser.getWallet && (
+                            <MakeOffer tokenPrice={tokenPrice} announce={state.announce} bnbBalance={bnbBalance} />
                         )}
 
                         {isOwn && (

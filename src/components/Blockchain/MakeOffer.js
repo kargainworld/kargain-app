@@ -8,11 +8,11 @@ import { useAuth } from "context/AuthProvider"
 // import { MessageContext } from "context/MessageContext"
 import useTranslation from "next-translate/useTranslation"
 import Web3 from "web3"
-import ObjectID from 'bson-objectid'
 import { useMessage } from "../../context/MessageContext"
 
 
-const toBN = Web3.utils.toBN
+
+const web3 = new Web3(Web3.givenProvider)
 
 const useStyles = makeStyles(() => ({
     buttonBlue:{
@@ -43,11 +43,11 @@ const MakeOffer = (props) => {
     const { authenticatedUser } = useAuth()
     const [error, setError] = useState(null)
 
+
     const {
         makeOffer,
         isContractReady,
-        waitTransactionToBeConfirmed,
-        fetchTokenPrice
+        waitTransactionToBeConfirmed
     } = useKargainContract()
 
     const handleMakeOffer = useCallback(async () => {
@@ -59,9 +59,8 @@ const MakeOffer = (props) => {
         try {
             setIsConfirmed(false)
             setError(null)
-            const val = await fetchTokenPrice(props.announce.getTokenId)
-            
-            const task = makeOffer(props.announce.getTokenId, +(val))
+
+            const task = makeOffer(props?.announce?.getTokenId, props.tokenPrice)
             const hashTx = await task
 
             await TransactionsService.addTransaction({ announceId, hashTx, data: authenticatedUser.getWallet, action: "OfferCreated" })
@@ -77,7 +76,6 @@ const MakeOffer = (props) => {
             setIsConfirmed(true)
         }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props?.announce?.getTokenId, isContractReady, props.tokenPrice, makeOffer])
     return(
         <>
