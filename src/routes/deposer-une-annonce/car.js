@@ -1,6 +1,12 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
+import { useWeb3Modal } from 'context/Web3Context'
+import TransactionsService from 'services/TransactionsService'
+import ObjectID from 'bson-objectid'
+import Web3 from 'web3'
+import config from 'config/config'
+
 import FormWizard from '../../components/Form/FormWizard'
 import AnnounceService from '../../services/AnnounceService'
 // import { MessageContext } from '../../context/MessageContext'
@@ -10,12 +16,11 @@ import Step2CarStatus from '../../components/Products/car/Step2_CarStatus'
 import Step3PublishAnnounce from '../../components/Products/Step3_Publish'
 import { vehicleTypes } from '../../business/vehicleTypes.js'
 import useKargainContract from '../../hooks/useKargainContract'
-import TransactionsService from 'services/TransactionsService'
-import ObjectID from 'bson-objectid'
-import Web3 from 'web3'
+
 import { useMessage } from '../../context/MessageContext'
 import { useBackdrop } from '../../context/BackdropContext'
 import ConfirmDialog from './confirm'
+
 
 const toBN = Web3.utils.toBN
 
@@ -31,6 +36,7 @@ const CarForm = (props) => {
     const router = useRouter()
     const { t } = useTranslation()
     const { dispatchModal, dispatchModalError } = useMessage()
+    const { provider } = useWeb3Modal()
 
     const backdrop = useBackdrop()
     const onFinalSubmit = (form, err) => {
@@ -68,9 +74,23 @@ const CarForm = (props) => {
                 ...body,
                 vinNumber: body.chassisNumber
             })
+
             const link = `/announces/${announce?.slug}`
             try {
                 const hashTx = await mintToken(toBN(ObjectID(announce._id).toHexString()), +tokenPrice)
+                await provider.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                        options: {
+                            address: config.contract.KARGAIN_ADDRESS, // The address that the token is at.
+                            symbol: 'KARG', // A ticker symbol or shorthand, up to 5 chars.
+                            decimals: 0, // The number of decimals in the token
+                            image: 'https://gravatar.com/avatar/97698ed127390b4a9322bba71037cec9?s=64&d=retro' // A string url of the token logo
+                        }
+                    }
+                })
+
                 await TransactionsService.addTransaction({
                     announceId: announce._id.toString(),
                     hashTx,
